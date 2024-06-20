@@ -1,0 +1,123 @@
+@extends('layout.master');
+@section('title', 'Category - List')
+@section('breadcrumb-module', 'Category')
+@section('page-content')
+<!--begin::Row-->
+<div class="row">
+    <div class="col-lg-12 col-xxl-12">
+        <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+
+            <!--begin::Entry-->
+            <div class="d-flex flex-column-fluid">
+                <!--begin::Container-->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card card-custom gutter-b">
+                                <form action="{{ route('category.list') }}">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-12 form-group mb-0">
+                                            <input type="text" class="form-control m-5" placeholder="Search Text" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-12 form-group mb-0">
+                                            <button class="btn btn-primary my-5 mx-1" type="submit">Search</button>
+                                            <a class="btn btn-danger my-5 mx-1" href="{{ route('category.list') }}">Resst</a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <!--begin::Card-->
+                            <div class="card card-custom gutter-b">
+                                <div class="card-header flex-wrap py-3">
+                                    <div class="card-title">
+                                        <h3 class="card-label">List
+                                        </h3>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <!--begin: Datatable-->
+                                    <table class="table table-bordered" id="">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Display Name</th>
+                                                <th>Name</th>
+                                                @can('category-status')
+                                                <th>Status</th>
+                                                @endcan
+                                                @can('category-update')
+                                                <th>Actions</th>
+                                                @endcan
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if(!$roles->isEmpty())
+                                            @foreach($roles as $key => $role)
+                                            <tr>
+                                                <td>{{ $roles->firstItem() + $key }}</td>
+                                                <td>{{ $role->display_name }}</td>
+                                                <td>{{ $role->name }}</td>
+                                                @can('category-status')
+                                                <td>
+                                                    <label class="switch">
+                                                        <input type="checkbox" class="updateStatus" data-id="{{ base64_encode($role->id) }}" {{ ($role->role_status==1)?'checked':'' }}>
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                </td>
+                                                @endcan
+                                                @can('category-update')
+                                                <td>
+                                                    <a href="{{ route('category.edit', base64_encode($role->id)) }}" title="Edit"><i class="la la-edit icon-3x"></i></a>
+                                                </td>
+                                                @endcan
+                                            </tr>
+                                            @endforeach
+                                            @else
+                                            <tr>
+                                                <td colspan="4">Record not found</td>
+                                            </tr>
+                                            @endif
+                                        </tbody>
+                                    </table>
+                                    <!--end: Datatable-->
+                                    @if(!$roles->isEmpty())
+                                    {{ $roles->withQueryString()->onEachSide(1)->links() }}
+                                    @endif
+                                </div>
+                            </div>
+
+                            <!--end::Card-->
+                        </div>
+                    </div>
+                </div>
+                <!--end::Container-->
+            </div>
+            <!--end::Entry-->
+        </div>
+    </div>
+</div>
+<!--end::Row-->
+<script>
+    $('body').on('change', '.updateStatus', function(event) {
+        event.preventDefault();
+        id = $(this).data('id')
+        dis = $(this);
+
+        $.ajax({
+            url: "{{ route('category.status', '') }}" + "/" + id,
+            method: "GET",
+            success: function(res) {
+                if (res.response === true) {
+                    sweetAlertSuccess(res.message, 3000);
+                } else {
+                    sweetAlertError(res.message, 3000);
+                }
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    });
+</script>
+@endsection

@@ -1,0 +1,37 @@
+.menu-nav > .menu-item.menu-item-here > .menu-link .menu-text{
+    color: #E6352F !important;
+}
+.aside-menu .menu-nav > .menu-item.menu-item-here > .menu-link .menu-icon {
+    color: #E6352F !important;
+}
+.aside-menu .menu-nav > .menu-item .menu-submenu .menu-item.menu-item-active > .menu-link .menu-text{
+    color: #E6352F !important;
+}
+.aside-menu .menu-nav > .menu-item.menu-item-here > .menu-link .menu-icon i{
+    color: #E6352F !important;
+}
+.switch input:checked ~ span:after{
+    background-color: #E6352F !important;
+}
+.aside-menu .menu-nav > .menu-item:not(.menu-item-parent):not(.menu-item-open):not(.menu-item-here):not(.menu-item-active):hover > .menu-heading .menu-icon, .aside-menu .menu-nav > .menu-item:not(.menu-item-parent):not(.menu-item-open):not(.menu-item-here):not(.menu-item-active):hover > .menu-link .menu-icon{
+    color: #E6352F !important;
+}
+.aside-menu .menu-nav > .menu-item:not(.menu-item-parent):not(.menu-item-open):not(.menu-item-here):not(.menu-item-active):hover > .menu-link .menu-text{
+    color: #E6352F !important;
+}
+.aside-menu .menu-nav > .menu-item:not(.menu-item-parent):not(.menu-item-open):not(.menu-item-here):not(.menu-item-active):hover > .menu-link .menu-icon i{
+    color: #E6352F !important;
+}
+
+.permission_checkbox label{
+    float: left;
+    width: 200px;
+    margin-top:5px;
+    margin-bottom:5px;
+}
+.permission_checkbox span{
+    margin-right: 5px;
+}
+.clear_both{
+    clear: both;
+}

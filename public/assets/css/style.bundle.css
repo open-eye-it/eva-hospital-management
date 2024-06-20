@@ -80242,3 +80242,11 @@ body {
 }
 
 /*# sourceMappingURL=style.bundle.css.map*/
+
+@media (max-width: 676px) {
+  table{
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+  }
+}

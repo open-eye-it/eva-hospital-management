@@ -38,7 +38,7 @@ class Trainee extends Model
         return static::where('tr_real_id', $tr_real_id)->first();
     }
 
-    public function insertUser($data)
+    public function insertTrainee($data)
     {
         return static::create(\Arr::only($data, $this->fillable));
     }
@@ -57,7 +57,7 @@ class Trainee extends Model
         return $output;
     }
 
-    public function updateUser($data, $tr_id)
+    public function updateTrainee($data, $tr_id)
     {
         return static::where('tr_id', $tr_id)->update(\Arr::only($data, $this->fillable));
     }
@@ -66,8 +66,20 @@ class Trainee extends Model
     {
         $search_text    = isset($filterData['search_text']) ? $filterData['search_text'] : '';
         if (isset($search_text) && $search_text != '') {
-            $data->where('tr_name', 'LIKE', '%' . $search_text . '%');
+            $data->where('tr_real_id', 'LIKE', '%' . $search_text . '%');
+            $data->orWhere('tr_name', 'LIKE', '%' . $search_text . '%');
             $data->orWhere('tr_contact_no', 'LIKE', '%' . $search_text . '%');
         }
+    }
+
+    /* Relationship */
+    public function AddedByData()
+    {
+        return $this->hasOne(User::class, 'user_id', 'tr_added_by');
+    }
+
+    public function UpdatedByData()
+    {
+        return $this->hasOne(User::class, 'user_id', 'tr_updated_by');
     }
 }

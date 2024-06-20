@@ -131,12 +131,11 @@
 					</a>
 				</li>
 				@endcan
-				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'trainee') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+				@can('trainee-read')
+				<!-- <li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'trainee') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
 					<a href="javascript:;" class="menu-link menu-toggle">
 						<span class="svg-icon menu-icon">
-							<!--begin::Svg Icon | path:assets/media/svg/icons/Design/Bucket.svg-->
 							<i class="fa fa-user"></i>
-							<!--end::Svg Icon-->
 						</span>
 						<span class="menu-text">Trainee</span>
 						<i class="menu-arrow"></i>
@@ -144,6 +143,7 @@
 					<div class="menu-submenu">
 						<i class="menu-arrow"></i>
 						<ul class="menu-subnav">
+							@can('trainee-create')
 							<li class="menu-item {{ (Request::segment(1) == 'trainee' && Request::segment(2) == 'create') ? 'menu-item-active' : '' }}" aria-haspopup="true">
 								<a href="{{ route('trainee.create') }}" class="menu-link">
 									<i class="menu-bullet menu-bullet-dot">
@@ -152,6 +152,8 @@
 									<span class="menu-text">Create</span>
 								</a>
 							</li>
+							@endcan
+							@can('trainee-read')
 							<li class="menu-item {{ (Request::segment(1) == 'trainee' && Request::segment(2) == 'list') ? 'menu-item-active' : '' }}" aria-haspopup="true">
 								<a href="{{ route('trainee.list') }}" class="menu-link">
 									<i class="menu-bullet menu-bullet-dot">
@@ -160,9 +162,11 @@
 									<span class="menu-text">List</span>
 								</a>
 							</li>
+							@endcan
 						</ul>
 					</div>
-				</li>
+				</li> -->
+				@endcan
 			</ul>
 			<!--end::Menu Nav-->
 		</div>

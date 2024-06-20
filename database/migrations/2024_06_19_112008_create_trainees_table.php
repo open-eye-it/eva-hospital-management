@@ -23,12 +23,12 @@ return new class extends Migration
             $table->date('tr_start_date')->index();
             $table->date('tr_end_date')->index();
             $table->integer('tr_total_amount');
-            $table->integer('tr_paid_amount');
+            $table->integer('tr_paid_amount')->nullable();
             $table->integer('tr_is_advance_received')->default(0)->comment('0-no, 1-yes');
             $table->date('tr_advance_received_date');
-            $table->text('tr_remarks');
+            $table->text('tr_remarks')->nullable();
             $table->integer('tr_status')->index()->default(1)->comment('1-pending, 2-completed, 3-cancelled');
-            $table->text('tr_reason_cancel');
+            $table->text('tr_reason_cancel')->nullable();
             $table->timestamps();
         });
     }

@@ -19,66 +19,66 @@
                                     <h3 class="card-title">Create</h3>
                                 </div>
                                 <!--begin::Form-->
-                                <form method="POST" action="{{ route('trainee.store', base64_encode($tr_real_id)) }}" id="createCatefgory">
+                                <form method="POST" action="{{ route('trainee.update', base64_encode($data->tr_id)) }}" id="createCatefgory">
                                     <meta name="csrf-token" content="{{ csrf_token() }}">
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="form-group">
                                                     <label>Trainee ID <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" placeholder="Trainee ID" name="tr_real_id" id="tr_real_id" value="{{ $tr_real_id }}" disabled />
+                                                    <input type="text" class="form-control" placeholder="Trainee ID" name="tr_real_id" id="tr_real_id" value="{{ $data->tr_real_id }}" disabled />
                                                     <span class="text-danger" id="tr_real_idErr"></span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
                                                     <label>Name <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" placeholder="Name" name="tr_name" id="tr_name" />
+                                                    <input type="text" class="form-control" placeholder="Name" name="tr_name" id="tr_name" value="{{ $data->tr_name }}" />
                                                     <span class="text-danger" id="tr_nameErr"></span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
                                                     <label>Contact No <span class="text-danger">*</span></label>
-                                                    <input type="number" class="form-control" placeholder="Contact No" name="tr_contact_no" id="tr_contact_no" />
+                                                    <input type="number" class="form-control" placeholder="Contact No" name="tr_contact_no" id="tr_contact_no" value="{{ $data->tr_contact_no }}" />
                                                     <span class="text-danger" id="tr_contact_noErr"></span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
                                                     <label>Start Date <span class="text-danger">*</span></label>
-                                                    <input type="date" class="form-control" placeholder="Start Date" name="tr_start_date" id="tr_start_date" />
+                                                    <input type="date" class="form-control" placeholder="Start Date" name="tr_start_date" id="tr_start_date" value="{{ $data->tr_start_date }}" />
                                                     <span class="text-danger" id="tr_start_dateErr"></span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
                                                     <label>End Date <span class="text-danger">*</span></label>
-                                                    <input type="date" class="form-control" placeholder="End Date" name="tr_end_date" id="tr_end_date" />
+                                                    <input type="date" class="form-control" placeholder="End Date" name="tr_end_date" id="tr_end_date" value="{{ $data->tr_end_date }}" />
                                                     <span class="text-danger" id="tr_end_dateErr"></span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
                                                     <label>Total Amount <span class="text-danger">*</span></label>
-                                                    <input type="number" class="form-control" placeholder="Total Amount" name="tr_total_amount" id="tr_total_amount" />
+                                                    <input type="number" class="form-control" placeholder="Total Amount" name="tr_total_amount" id="tr_total_amount" value="{{ $data->tr_total_amount }}" />
                                                     <span class="text-danger" id="tr_total_amountErr"></span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
                                                     <label>Paid Amount</label>
-                                                    <input type="number" class="form-control" placeholder="Paid Amount" name="tr_paid_amount" id="tr_paid_amount" />
+                                                    <input type="number" class="form-control" placeholder="Paid Amount" name="tr_paid_amount" id="tr_paid_amount" value="{{ $data->tr_paid_amount }}" />
                                                     <span class="text-danger" id="tr_paid_amountErr"></span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label>Is Advance Received? <span class="text-danger">*</span></label>
+                                                    <label> Is Advance Received? <span class="text-danger">*</span></label>
                                                     <select name="tr_is_advance_received" id="tr_is_advance_received" class="form-control">
                                                         <option value="">-Select-</option>
-                                                        <option value="1">Yes</option>
-                                                        <option value="0">No</option>
+                                                        <option value="1" {{ ($data->tr_is_advance_received == 1) ? 'selected' : '' }}>Yes</option>
+                                                        <option value="0" {{ ($data->tr_is_advance_received == 0) ? 'selected' : '' }}>No</option>
                                                     </select>
                                                     <span class="text-danger" id="tr_is_advance_receivedErr"></span>
                                                 </div>
@@ -86,21 +86,21 @@
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
                                                     <label>Advance Received Date <span class="text-danger">*</span></label>
-                                                    <input type="date" class="form-control" placeholder="End Date" name="tr_advance_received_date" id="tr_advance_received_date" />
+                                                    <input type="date" class="form-control" placeholder="End Date" name="tr_advance_received_date" id="tr_advance_received_date" value="{{ $data->tr_advance_received_date }}" />
                                                     <span class="text-danger" id="tr_advance_received_dateErr"></span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
                                                     <label>Address <span class="text-danger">*</span></label>
-                                                    <textarea name="tr_address" id="tr_address" class="form-control" cols="30" rows="10"></textarea>
+                                                    <textarea name="tr_address" id="tr_address" class="form-control" cols="30" rows="10">{{ $data->tr_address }}</textarea>
                                                     <span class="text-danger" id="tr_addressErr"></span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
                                                     <label>Remarks</label>
-                                                    <textarea name="tr_remarks" id="tr_remarks" class="form-control" cols="30" rows="10"></textarea>
+                                                    <textarea name="tr_remarks" id="tr_remarks" class="form-control" cols="30" rows="10">{{ $data->tr_remarks }}</textarea>
                                                     <span class="text-danger" id="tr_remarksErr"></span>
                                                 </div>
                                             </div>
@@ -114,7 +114,7 @@
                                         <!--end: Code-->
                                     </div>
                                     <div class="card-footer">
-                                        <button type="submit" class="btn btn-primary mr-2" id="createBtn">Create</button>
+                                        <button type="submit" class="btn btn-primary mr-2" id="createBtn">Update</button>
                                         <a href="{{ route('trainee.list') }}" class="btn btn-secondary">Cancel</a>
                                     </div>
                                 </form>
@@ -197,7 +197,7 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                url:"{{ route('trainee.store', base64_encode($tr_real_id)) }}",
+                url:"{{ route('trainee.update', base64_encode($data->tr_id)) }}",
                 method:"POST",
                 data:{
                     tr_name:tr_name,

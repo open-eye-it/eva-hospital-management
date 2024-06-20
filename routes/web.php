@@ -55,8 +55,12 @@ Route::middleware('signin-check')->group(function () {
     });
 
     Route::prefix('trainee')->group(function () {
-        Route::get('/', [TraineeController::class, 'index'])->name('trainee.list');
-        Route::get('create', [TraineeController::class, 'create'])->name('trainee.create');
-        Route::post('store/{tr_real_id}', [TraineeController::class, 'store'])->name('trainee.store');
+        Route::get('/', [TraineeController::class, 'index'])->name('trainee.list')->middleware(['role_or_permission:trainee-read']);
+        Route::get('create', [TraineeController::class, 'create'])->name('trainee.create')->middleware(['role_or_permission:trainee-create']);
+        Route::post('store/{tr_real_id}', [TraineeController::class, 'store'])->name('trainee.store')->middleware(['role_or_permission:trainee-create']);
+        Route::get('edit/{tr_id}', [TraineeController::class, 'edit'])->name('trainee.edit')->middleware(['role_or_permission:trainee-update']);
+        Route::post('update/{tr_id}', [TraineeController::class, 'update'])->name('trainee.update')->middleware(['role_or_permission:trainee-update']);
+        Route::get('view/{tr_id}', [TraineeController::class, 'viewTrainee'])->name('trainee.view')->middleware(['role_or_permission:trainee-read']);
+        Route::get('status/{tr_id}', [TraineeController::class, 'status'])->name('trainee.status')->middleware(['role_or_permission:trainee-status']);
     });
 });

@@ -132,7 +132,7 @@
 				</li>
 				@endcan
 				@can('trainee-read')
-				<!-- <li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'trainee') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'trainee') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
 					<a href="javascript:;" class="menu-link menu-toggle">
 						<span class="svg-icon menu-icon">
 							<i class="fa fa-user"></i>
@@ -165,7 +165,43 @@
 							@endcan
 						</ul>
 					</div>
-				</li> -->
+				</li>
+				@endcan
+				@can('room-read')
+				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'room') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+					<a href="javascript:;" class="menu-link menu-toggle">
+						<span class="svg-icon menu-icon">
+							<i class="fa fa-user"></i>
+						</span>
+						<span class="menu-text">Room</span>
+						<i class="menu-arrow"></i>
+					</a>
+					<div class="menu-submenu">
+						<i class="menu-arrow"></i>
+						<ul class="menu-subnav">
+							@can('room-create')
+							<li class="menu-item {{ (Request::segment(1) == 'room' && Request::segment(2) == 'create') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+								<a href="{{ route('room.create') }}" class="menu-link">
+									<i class="menu-bullet menu-bullet-dot">
+										<span></span>
+									</i>
+									<span class="menu-text">Create</span>
+								</a>
+							</li>
+							@endcan
+							@can('room-read')
+							<li class="menu-item {{ (Request::segment(1) == 'room' && Request::segment(2) == 'list') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+								<a href="{{ route('room.list') }}" class="menu-link">
+									<i class="menu-bullet menu-bullet-dot">
+										<span></span>
+									</i>
+									<span class="menu-text">List</span>
+								</a>
+							</li>
+							@endcan
+						</ul>
+					</div>
+				</li>
 				@endcan
 			</ul>
 			<!--end::Menu Nav-->

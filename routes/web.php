@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VisitingFeeController;
 use App\Http\Controllers\TraineeController;
+use App\Http\Controllers\RoomController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,5 +63,14 @@ Route::middleware('signin-check')->group(function () {
         Route::post('update/{tr_id}', [TraineeController::class, 'update'])->name('trainee.update')->middleware(['role_or_permission:trainee-update']);
         Route::get('view/{tr_id}', [TraineeController::class, 'viewTrainee'])->name('trainee.view')->middleware(['role_or_permission:trainee-read']);
         Route::get('status/{tr_id}', [TraineeController::class, 'status'])->name('trainee.status')->middleware(['role_or_permission:trainee-status']);
+    });
+
+    Route::prefix('room')->group(function () {
+        Route::get('create', [RoomController::class, 'create'])->name('room.create');
+        Route::post('store', [RoomController::class, 'store'])->name('room.store');
+        Route::get('list', [RoomController::class, 'index'])->name('room.list');
+        Route::get('edit/{user_id}', [RoomController::class, 'edit'])->name('room.edit');
+        Route::post('update/{user_id}', [RoomController::class, 'update'])->name('room.update');
+        Route::get('status/{user_id}', [RoomController::class, 'status'])->name('room.status');
     });
 });

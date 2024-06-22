@@ -31,14 +31,17 @@ class RoomController extends MainController
     public function store(Request $request)
     {
         $input = $request->all();
-        $checkRoomNoExist = $this->room->checkRoomNoExist($input['rm_no']);
-        if (empty($checkRoomNoExist)) {
+        $checkBuildingFloorWardRoomExist = $this->room->checkBuildingFloorWardRoomExist($input['rm_building'], $input['rm_floor'], $input['rm_ward'], $input['rm_no']);
+        if (empty($checkBuildingFloorWardRoomExist)) {
             $rm_id = $this->getUserID();
             $login_user_id = Auth::user()->user_id;
             $data = [
                 'rm_id'         => $rm_id,
                 'rm_added_by'   => $login_user_id,
                 'rm_updated_by' => $login_user_id,
+                'rm_building'   => $input['rm_building'],
+                'rm_ward'       => $input['rm_ward'],
+                'rm_floor'      => $input['rm_floor'],
                 'rm_no'         => $input['rm_no'],
                 'rm_charge'     => $input['rm_charge'],
                 'rm_busy'       => $input['rm_busy'],
@@ -50,7 +53,7 @@ class RoomController extends MainController
                 return $this->getErrorMessage($input['rm_no'] . ' not added to room, something is wrong.');
             }
         } else {
-            return $this->getErrorMessage('Room No Already exist.');
+            return $this->getErrorMessage('Same Building, Floor, Ward And Room No Already exist.');
         }
     }
 
@@ -79,17 +82,25 @@ class RoomController extends MainController
         $updated_by = Auth::user()->user_id;
         $roomData = $this->room->singlRoom($rm_id);
         if (!empty($roomData)) {
-            $data = [
-                'rm_no'         => $input['rm_no'],
-                'rm_charge'     => $input['rm_charge'],
-                'rm_busy'       => $input['rm_busy'],
-                'rm_updated_by' => $updated_by,
-            ];
-            $update = $this->room->updateRoom($data, $rm_id);
-            if ($update == 1) {
-                return $this->getSuccessResult([], $input['rm_no'] . ' updated to room', true);
+            $checkBuildingFloorWardRoomExist = $this->room->checkBuildingFloorWardRoomExistIgnore_rm_id($rm_id, $input['rm_building'], $input['rm_floor'], $input['rm_ward'], $input['rm_no']);
+            if (empty($checkBuildingFloorWardRoomExist)) {
+                $data = [
+                    'rm_building'   => $input['rm_building'],
+                    'rm_ward'       => $input['rm_ward'],
+                    'rm_floor'      => $input['rm_floor'],
+                    'rm_no'         => $input['rm_no'],
+                    'rm_charge'     => $input['rm_charge'],
+                    'rm_busy'       => $input['rm_busy'],
+                    'rm_updated_by' => $updated_by,
+                ];
+                $update = $this->room->updateRoom($data, $rm_id);
+                if ($update == 1) {
+                    return $this->getSuccessResult([], $input['rm_no'] . ' updated to room', true);
+                } else {
+                    return $this->getErrorMessage($input['rm_no'] . ' not updated to room, something is wrong.');
+                }
             } else {
-                return $this->getErrorMessage($input['rm_no'] . ' not updated to room, something is wrong.');
+                return $this->getErrorMessage('Same Building, Floor, Ward And Room No Already exist.');
             }
         } else {
             return $this->getErrorMessage('Room not found.');

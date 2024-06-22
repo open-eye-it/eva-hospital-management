@@ -63,6 +63,7 @@ Route::middleware('signin-check')->group(function () {
         Route::post('update/{tr_id}', [TraineeController::class, 'update'])->name('trainee.update')->middleware(['role_or_permission:trainee-update']);
         Route::get('view/{tr_id}', [TraineeController::class, 'viewTrainee'])->name('trainee.view')->middleware(['role_or_permission:trainee-read']);
         Route::get('status/{tr_id}', [TraineeController::class, 'status'])->name('trainee.status')->middleware(['role_or_permission:trainee-status']);
+        Route::get('download/{file}', [TraineeController::class, 'downloadFile'])->name('trainee.file.download')->middleware(['role_or_permission:trainee-read']);
     });
 
     Route::prefix('room')->group(function () {

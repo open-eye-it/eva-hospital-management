@@ -24,6 +24,7 @@ class Trainee extends Model
         'tr_is_advance_received',
         'tr_advance_received_date',
         'tr_remarks',
+        'tr_documents',
         'tr_status',
         'tr_reason_cancel'
     ];

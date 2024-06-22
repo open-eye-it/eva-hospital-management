@@ -40,6 +40,9 @@
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
+                                                <th>Building</th>
+                                                <th>Floor</th>
+                                                <th>Ward</th>
                                                 <th>Room Number</th>
                                                 <th>Charge</th>
                                                 <th>Room Busy</th>
@@ -54,6 +57,9 @@
                                             @foreach($list as $key => $room)
                                             <tr>
                                                 <td>{{ $list->firstItem() + $key }}</td>
+                                                <td>{{ $room->rm_building }}</td>
+                                                <td>{{ $room->rm_floor }}</td>
+                                                <td>{{ $room->rm_ward }}</td>
                                                 <td>{{ $room->rm_no }}</td>
                                                 <td>{{ $room->rm_charge }}</td>
                                                 <td>

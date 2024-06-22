@@ -104,6 +104,24 @@
                                                     <span class="text-danger" id="tr_remarksErr"></span>
                                                 </div>
                                             </div>
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label>Documents</label>
+                                                    <input type="file" class="form-control" name="tr_documents[]" id="tr_documents" multiple>
+                                                    <span class="text-danger" id="tr_documentsErr"></span>
+                                                    @if(!empty($data->tr_documents))
+                                                    @php
+                                                    $fileString = $data->tr_documents;
+                                                    $fileArr = json_decode($data->tr_documents);
+                                                    $showFile = '';
+                                                    for($i=0; $i<count($fileArr); $i++){ $showFile .='<p id="file_' .$i.'" class="btn btn-primary mx-2 mt-4">' .$fileArr[$i].' <i class="fa fa-trash" onclick="removeFile('.$i.')"></i></p>
+                                                        <input type="hidden" name="file_old[]" id="file_old_'.$i.'" value="'.$fileArr[$i].'">';
+                                                        }
+                                                        echo $showFile;
+                                                        @endphp
+                                                        @endif
+                                                </div>
+                                            </div>
                                         </div>
                                         <!--begin: Code-->
                                         <div class="example-code mt-10">
@@ -145,7 +163,18 @@
         let tr_advance_received_date = $('#tr_advance_received_date').val();
         let tr_address = $('#tr_address').val();
         let tr_remarks = $('#tr_remarks').val();
-        
+        let fileExt = ['jpg', 'jpeg', 'png'];
+        let fileValidation = false;
+        if(tr_documents.length > 0){
+            for(let i=0; i<tr_documents.length; i++){
+                let fileName = tr_documents[i].name;
+                let nameArr = fileName.split('.');
+                let nameArrLength = nameArr.length;
+                if(!fileExt.includes(nameArr[nameArrLength-1])){
+                    fileValidation = true;
+                }
+            }
+        }
         if(tr_name == ''){
             $('#tr_nameErr').text('Please enter name');
             timeoutID('tr_nameErr', 3000);
@@ -190,8 +219,11 @@
             $('#tr_addressErr').text('Please enter trainee address');
             timeoutID('tr_addressErr', 3000);
             scrollTop('tr_addressErr');
-        }
-        else{
+        }else if(fileValidation === true){
+            $('#tr_documentsErr').text('Please enter trainee address');
+            timeoutID('tr_documentsErr', 3000);
+            scrollTop('tr_documentsErr');
+        }else{
             $('#createBtn').addClass('spinner spinner-white spinner-right');
             $.ajax({
                 headers: {
@@ -199,18 +231,10 @@
                 },
                 url:"{{ route('trainee.update', base64_encode($data->tr_id)) }}",
                 method:"POST",
-                data:{
-                    tr_name:tr_name,
-                    tr_contact_no:tr_contact_no,
-                    tr_start_date:tr_start_date,
-                    tr_end_date:tr_end_date,
-                    tr_total_amount:tr_total_amount,
-                    tr_paid_amount:tr_paid_amount,
-                    tr_is_advance_received:tr_is_advance_received,
-                    tr_advance_received_date:tr_advance_received_date,
-                    tr_address:tr_address,
-                    tr_remarks:tr_remarks
-                },
+                data:new FormData(this),
+                contentType: false,
+                cache: false,
+                processData: false,
                 success:function(res){
                     $('#createBtn').removeClass('spinner spinner-white spinner-right');
                     if(res.response === true){
@@ -227,5 +251,10 @@
             });
         }
     })
+
+    function removeFile(number, file){
+        $('#file_'+number).remove();
+        $('#file_old_'+number).remove();
+    }
 </script>
 @endsection

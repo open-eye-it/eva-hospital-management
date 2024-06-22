@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Models\Trainee;
 
+use Illuminate\Support\Facades\Storage;
+
 class TraineeController extends MainController
 {
     public function __construct()
@@ -38,6 +40,15 @@ class TraineeController extends MainController
         $tr_real_id = base64_decode($tr_real_id);
         $login_user_id = Auth::user()->user_id;
 
+        $file_data = [];
+        if ($request->hasFile('tr_documents')) {
+            foreach ($request->file('tr_documents') as $file) {
+
+                $file = UploadCustomeImage($file, $tr_real_id . '-' . $this->randomString(10, 'number'));
+                $file_data[] = $file;
+            }
+        }
+
         $data = [
             'tr_id' => $tr_id,
             'tr_added_by' => $login_user_id,
@@ -54,6 +65,10 @@ class TraineeController extends MainController
             'tr_advance_received_date' => $input['tr_advance_received_date'],
             'tr_remarks' => (string)$input['tr_remarks'],
         ];
+
+        if (count($file_data) > 0) {
+            $data['tr_documents'] = json_encode($file_data);
+        }
 
         $insert = $this->trainee->insertTrainee($data);
         if (isset($insert->tr_id)) {
@@ -82,6 +97,32 @@ class TraineeController extends MainController
         if (!empty($data)) {
             $login_user_id = Auth::user()->user_id;
 
+            $file_data = [];
+            if ($request->hasFile('tr_documents')) {
+                foreach ($request->file('tr_documents') as $file) {
+
+                    $file = UploadCustomeImage($file, $data->tr_real_id . '-' . $this->randomString(10, 'number'));
+                    $file_data[] = $file;
+                }
+            }
+
+            if (isset($input['file_old'])) {
+                $old_file = json_decode($data->tr_documents);
+                foreach ($old_file as $list) {
+                    if (!in_array($list, $input['file_old'])) {
+                        Storage::disk('public')->delete($list);
+                    }
+                }
+                $file_data = array_merge($file_data, $input['file_old']);
+            } else {
+                if ($data->tr_documents != '') {
+                    $old_file = json_decode($data->tr_documents);
+                    foreach ($old_file as $list) {
+                        Storage::disk('public')->delete($list);
+                    }
+                }
+            }
+
             $data = [
                 'tr_updated_by' => $login_user_id,
                 'tr_name' => (string)$input['tr_name'],
@@ -94,7 +135,13 @@ class TraineeController extends MainController
                 'tr_is_advance_received' => $input['tr_is_advance_received'],
                 'tr_advance_received_date' => $input['tr_advance_received_date'],
                 'tr_remarks' => (string)$input['tr_remarks'],
+
             ];
+            if (count($file_data) > 0) {
+                $data['tr_documents'] = json_encode($file_data);
+            } else {
+                $data['tr_documents'] = '';
+            }
             $update = $this->trainee->updateTrainee($data, $tr_id);
             if ($update == 1) {
                 return $this->getSuccessResult([], $input['tr_name'] . ' updated as trainee', true);
@@ -136,6 +183,12 @@ class TraineeController extends MainController
         } else {
             return $this->getErrorMessage('Status not changed, something is wrong.');
         }
+    }
+
+    public function downloadFile($fileName)
+    {
+        $fileName = base64_decode($fileName);
+        Storage::disk('public')->download($fileName);
     }
 
     public function traineedID()

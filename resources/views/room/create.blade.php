@@ -25,8 +25,29 @@
                                         <div class="row">
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
+                                                    <label>Building <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" placeholder="Building" name="rm_building" id="rm_building" />
+                                                    <span class="text-danger" id="rm_buildingErr"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label>Floot <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" placeholder="Floor" name="rm_floor" id="rm_floor" />
+                                                    <span class="text-danger" id="rm_floorErr"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label>Ward <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" placeholder="Ward" name="rm_ward" id="rm_ward" />
+                                                    <span class="text-danger" id="rm_wardErr"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
                                                     <label>Room Number <span class="text-danger">*</span></label>
-                                                    <input type="number" class="form-control" placeholder="Room No" name="rm_no" id="rm_no" />
+                                                    <input type="text" class="form-control" placeholder="Room No" name="rm_no" id="rm_no" />
                                                     <span class="text-danger" id="rm_noErr"></span>
                                                 </div>
                                             </div>
@@ -79,10 +100,25 @@
 <script>
     $("form").submit(function(e) {
         e.preventDefault();
+        let rm_building = $('#rm_building').val();
+        let rm_floor = $('#rm_floor').val();
+        let rm_ward = $('#rm_ward').val();
         let rm_no = $('#rm_no').val();
         let rm_charge = $('#rm_charge').val();
         let rm_busy = $('#rm_busy').val();
-        if(rm_no == ''){
+        if(rm_building == ''){
+            $('#rm_buildingErr').text('Please enter building no');
+            timeoutID('rm_buildingErr', 3000);
+            scrollTop('rm_buildingErr');
+        }else if(rm_floor == ''){
+            $('#rm_floorErr').text('Please enter floor no');
+            timeoutID('rm_floorErr', 3000);
+            scrollTop('rm_floorErr');
+        }else if(rm_ward == ''){
+            $('#rm_wardErr').text('Please enter ward no');
+            timeoutID('rm_wardErr', 3000);
+            scrollTop('rm_wardErr');
+        }else if(rm_no == ''){
             $('#rm_noErr').text('Please enter room no');
             timeoutID('rm_noErr', 3000);
             scrollTop('rm_noErr');
@@ -102,7 +138,7 @@
                 },
                 url:"{{ route('room.store') }}",
                 method:"POST",
-                data:{rm_no:rm_no, rm_charge:rm_charge, rm_busy:rm_busy},
+                data:{rm_building:rm_building, rm_floor:rm_floor, rm_ward:rm_ward, rm_no:rm_no, rm_charge:rm_charge, rm_busy:rm_busy},
                 success:function(res){
                     $('#createBtn').removeClass('spinner spinner-white spinner-right');
                     if(res.response === true){

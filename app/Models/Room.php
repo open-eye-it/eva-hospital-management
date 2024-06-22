@@ -13,14 +13,22 @@ class Room extends Model
         'rm_id',
         'rm_added_by',
         'rm_updated_by',
+        'rm_building',
+        'rm_floor',
+        'rm_ward',
         'rm_no',
         'rm_charge',
         'rm_busy'
     ];
 
-    public function checkRoomNoExist($rm_no)
+    public function checkBuildingFloorWardRoomExist($rm_building, $rm_floor, $rm_ward, $rm_no)
     {
-        return static::where('rm_no', $rm_no)->first();
+        return static::where(['rm_building' => $rm_building, 'rm_floor' => $rm_floor, 'rm_ward' => $rm_ward, 'rm_no' => $rm_no])->first();
+    }
+
+    public function checkBuildingFloorWardRoomExistIgnore_rm_id($rm_id, $rm_building, $rm_floor, $rm_ward, $rm_no)
+    {
+        return static::where('rm_id', '!=', $rm_id)->where(['rm_building' => $rm_building, 'rm_floor' => $rm_floor, 'rm_ward' => $rm_ward, 'rm_no' => $rm_no])->first();
     }
 
     public function insertRoom($data)

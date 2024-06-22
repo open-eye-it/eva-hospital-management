@@ -260,6 +260,14 @@
                     if (data.tr_is_advance_received == 1) {
                         is_advance_received = 'Yes';
                     }
+                    let fileList = '';
+                    if (data.tr_documents != '') {
+                        let fileArr = JSON.parse(data.tr_documents);
+                        let filepath = window.location.origin + '/storage/app/public/';
+                        for (let i = 0; i < fileArr.length; i++) {
+                            fileList += '<p class="btn btn-primary" onclick="downloadFile(`' + fileArr[i] + '`)">' + fileArr[i] + '</p>';
+                        }
+                    }
                     let view = '<tr> \
                         <th>TraineeID</th> \
                         <td>' + data.tr_real_id + '</td> \
@@ -303,6 +311,10 @@
                     <tr> \
                         <th>Advance Received Date</th> \
                         <td>' + data.tr_remarks + '</td> \
+                    </tr> \
+                    <tr> \
+                        <th>Documents</th> \
+                        <td>' + fileList + '</td> \
                     </tr>';
 
                     $('#viewDetail').html(view);
@@ -317,5 +329,17 @@
             }
         });
     })
+
+    function downloadFile(fileName) {
+        let urlPath = "{{ route('trainee.file.download', '') }}" + '/' + btoa(fileName);
+
+        $.ajax({
+            url: urlPath,
+            method: "GET",
+            success: function(res) {
+                console.log(res);
+            }
+        });
+    }
 </script>
 @endsection

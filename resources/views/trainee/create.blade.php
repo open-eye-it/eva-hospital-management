@@ -19,7 +19,7 @@
                                     <h3 class="card-title">Create</h3>
                                 </div>
                                 <!--begin::Form-->
-                                <form method="POST" action="{{ route('trainee.store', base64_encode($tr_real_id)) }}" id="createCatefgory">
+                                <form method="POST" enctype="multipart/form-data" action="{{ route('trainee.store', base64_encode($tr_real_id)) }}" id="createCatefgory">
                                     <meta name="csrf-token" content="{{ csrf_token() }}">
                                     <div class="card-body">
                                         <div class="row">
@@ -101,7 +101,13 @@
                                                 <div class="form-group">
                                                     <label>Remarks</label>
                                                     <textarea name="tr_remarks" id="tr_remarks" class="form-control" cols="30" rows="10"></textarea>
-                                                    <span class="text-danger" id="tr_remarksErr"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label>Documents</label>
+                                                    <input type="file" class="form-control" name="tr_documents[]" id="tr_documents" multiple>
+                                                    <span class="text-danger" id="tr_documentsErr"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -145,12 +151,26 @@
         let tr_advance_received_date = $('#tr_advance_received_date').val();
         let tr_address = $('#tr_address').val();
         let tr_remarks = $('#tr_remarks').val();
+        let tr_documents = $('#tr_documents').prop('files');
+        let fileExt = ['jpg', 'jpeg', 'png'];
+        let fileValidation = false;
+        if(tr_documents.length > 0){
+            for(let i=0; i<tr_documents.length; i++){
+                let fileName = tr_documents[i].name;
+                let nameArr = fileName.split('.');
+                let nameArrLength = nameArr.length;
+                if(!fileExt.includes(nameArr[nameArrLength-1])){
+                    fileValidation = true;
+                }
+            }
+        }
         
         if(tr_name == ''){
             $('#tr_nameErr').text('Please enter name');
             timeoutID('tr_nameErr', 3000);
             scrollTop('tr_nameErr');
-        }else if(tr_contact_no == ''){
+        }
+        else if(tr_contact_no == ''){
             $('#tr_contact_noErr').text('Please enter contact no');
             timeoutID('tr_contact_noErr', 3000);
             scrollTop('tr_contact_noErr');
@@ -190,27 +210,23 @@
             $('#tr_addressErr').text('Please enter trainee address');
             timeoutID('tr_addressErr', 3000);
             scrollTop('tr_addressErr');
+        }else if(fileValidation === true){
+            $('#tr_documentsErr').text('Please enter trainee address');
+            timeoutID('tr_documentsErr', 3000);
+            scrollTop('tr_documentsErr');
         }
         else{
             $('#createBtn').addClass('spinner spinner-white spinner-right');
             $.ajax({
                 headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                 },
                 url:"{{ route('trainee.store', base64_encode($tr_real_id)) }}",
                 method:"POST",
-                data:{
-                    tr_name:tr_name,
-                    tr_contact_no:tr_contact_no,
-                    tr_start_date:tr_start_date,
-                    tr_end_date:tr_end_date,
-                    tr_total_amount:tr_total_amount,
-                    tr_paid_amount:tr_paid_amount,
-                    tr_is_advance_received:tr_is_advance_received,
-                    tr_advance_received_date:tr_advance_received_date,
-                    tr_address:tr_address,
-                    tr_remarks:tr_remarks
-                },
+                data:new FormData(this),
+                contentType: false,
+                cache: false,
+                processData: false,
                 success:function(res){
                     $('#createBtn').removeClass('spinner spinner-white spinner-right');
                     if(res.response === true){

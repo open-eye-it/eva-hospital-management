@@ -16,7 +16,10 @@ return new class extends Migration
             $table->bigInteger('rm_id')->index();
             $table->bigInteger('rm_added_by');
             $table->bigInteger('rm_updated_by');
-            $table->integer('rm_no')->index();
+            $table->string('rm_building');
+            $table->string('rm_floor');
+            $table->string('rm_ward');
+            $table->string('rm_no')->index();
             $table->integer('rm_charge')->index();
             $table->integer('rm_busy')->default(0)->comment('0-No, 1-Yes');
             $table->timestamps();

@@ -15,13 +15,13 @@
                         <div class="col-12">
                             <div class="card card-custom gutter-b">
                                 <form action="{{ route('category.list') }}">
-                                    <div class="row">
-                                        <div class="col-lg-3 col-md-3 col-sm-6 col-12 form-group mb-0">
-                                            <input type="text" class="form-control m-5" placeholder="Search Text" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
+                                    <div class="row p-5">
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-12 form-group">
+                                            <input type="text" class="form-control" placeholder="Search Text" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
                                         </div>
-                                        <div class="col-lg-3 col-md-3 col-sm-6 col-12 form-group mb-0">
-                                            <button class="btn btn-primary my-5 mx-1" type="submit">Search</button>
-                                            <a class="btn btn-danger my-5 mx-1" href="{{ route('category.list') }}">Resst</a>
+                                        <div class="col-12 form-group">
+                                            <button class="btn btn-primary" type="submit">Search</button>
+                                            <a class="btn btn-danger" href="{{ route('category.list') }}">Resst</a>
                                         </div>
                                     </div>
                                 </form>

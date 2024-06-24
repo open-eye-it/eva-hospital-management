@@ -15,13 +15,56 @@
                         <div class="col-12">
                             <div class="card card-custom gutter-b">
                                 <form action="{{ route('room.list') }}">
-                                    <div class="row">
-                                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group mb-0">
-                                            <input type="text" class="form-control m-5" placeholder="Search room number or charge" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
+                                    <div class="row p-5">
+                                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
+                                            <label>Search room number or charge</label>
+                                            <input type="text" class="form-control" placeholder="Search room number or charge" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
                                         </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group mb-0">
-                                            <button class="btn btn-primary my-5 mx-1" type="submit">Search</button>
-                                            <a class="btn btn-danger my-5 mx-1" href="{{ route('room.list') }}">Resst</a>
+                                        <div class="col-lg-3 col-md-4 col-sm-6 col-12 form-group">
+                                            <label for="">BUilding</label>
+                                            <select name="rm_building" id="rm_building" class="form-control" onchange="getFloorFilter(this.value)">
+                                                <option value="">-Select-</option>
+                                                @foreach($Buildings as $building)
+                                                <option value="{{ $building->rm_building }}" {{ ($building->rm_building == $searchData['rm_building']) ? 'selected' : '' }}>{{ $building->rm_building }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-3 col-md-4 col-sm-6 col-12 form-group {{ ($Floors == '') ? 'd-none' : '' }}" id="floor_filter">
+                                            @if($Floors != '')
+                                            <label>Floor</label>
+                                            <select name="rm_floor" id="rm_floor" class="form-control" onchange="getWardFilter('{{ $searchData['rm_building'] }}', this.value)">
+                                                <option value="">-Select</option>
+                                                @foreach($Floors as $flist)
+                                                <option value="{{ $flist->rm_floor }}" {{ ($flist->rm_floor == $searchData['rm_floor']) ? 'selected' : '' }}>{{ $flist->rm_floor }}</option>
+                                                @endforeach
+                                            </select>
+                                            @endif
+                                        </div>
+                                        <div class="col-lg-3 col-md-4 col-sm-6 col-12 form-group {{ ($Wards == '') ? 'd-none' : '' }}" id="ward_filter">
+                                            @if($Wards != '')
+                                            <label>Ward</label>
+                                            <select name="rm_ward" id="rm_ward" class="form-control" onchange="getRoomFilter('{{ $searchData['rm_building'] }}', '{{ $searchData['rm_floor'] }}', this.value)">
+                                                <option value="">-Select</option>
+                                                @foreach($Wards as $wlist)
+                                                <option value="{{ $wlist->rm_ward }}" {{ ($wlist->rm_ward == $searchData['rm_ward']) ? 'selected' : '' }}>{{ $wlist->rm_ward }}</option>
+                                                @endforeach
+                                            </select>
+                                            @endif
+                                        </div>
+                                        <div class="col-lg-3 col-md-4 col-sm-6 col-12 form-group {{ ($Rooms == '') ? 'd-none' : '' }}" id="room_filter">
+                                            @if($Rooms != '')
+                                            <label>Room</label>
+                                            <select name="rm_no" id="rm_no" class="form-control">
+                                                <option value="">-Select</option>
+                                                @foreach($Rooms as $rlist)
+                                                <option value="{{ $rlist->rm_no }}" {{ ($rlist->rm_no == $searchData['rm_no']) ? 'selected' : '' }}>{{ $rlist->rm_no }}</option>
+                                                @endforeach
+                                            </select>
+                                            @endif
+                                        </div>
+                                        <div class="col-12">
+                                            <button class="btn btn-primary " type="submit">Search</button>
+                                            <a class="btn btn-danger" href="{{ route('room.list') }}">Resst</a>
                                         </div>
                                     </div>
                                 </form>
@@ -56,7 +99,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @if(!$list->isEmpty())
+                                            @if(!empty($list))
                                             @foreach($list as $key => $room)
                                             <tr>
                                                 <td>{{ $list->firstItem() + $key }}</td>
@@ -206,5 +249,83 @@
             }
         });
     })
+
+    function getFloorFilter(rm_building) {
+        $.ajax({
+            url: "{{ route('room.floor.filter', '') }}/" + btoa(rm_building),
+            method: "get",
+            success: function(res) {
+                if (rm_building == '') {
+                    $('#floor_filter').html('');
+                    $('#floor_filter').addClass('d-none');
+                    $('#ward_filter').html('');
+                    $('#ward_filter').addClass('d-none');
+                    $('#room_filter').html('');
+                    $('#room_filter').addClass('d-none');
+                } else {
+                    if (res.response === true) {
+                        $('#floor_filter').html(res.data);
+                        $('#floor_filter').removeClass('d-none');
+                        $('#ward_filter').html('');
+                        $('#ward_filter').addClass('d-none');
+                        $('#room_filter').html('');
+                        $('#room_filter').addClass('d-none');
+                    }
+                }
+            }
+        });
+    }
+
+    function getWardFilter(rm_building, rm_floor) {
+        let rm_building_base64 = btoa(rm_building);
+        let rm_floor_base64 = btoa(rm_floor);
+        let urlFinal = "{{ route('room.ward.filter',  ['rm_building' => ':rm_building_base64', 'rm_floor' => ':rm_floor_base64']) }}";
+        urlFinal = urlFinal.replace(':rm_building_base64', rm_building_base64);
+        urlFinal = urlFinal.replace(':rm_floor_base64', rm_floor_base64);
+        $.ajax({
+            url: urlFinal,
+            method: "get",
+            success: function(res) {
+                if (rm_floor == '') {
+                    $('#ward_filter').html('');
+                    $('#ward_filter').addClass('d-none');
+                    $('#room_filter').html('');
+                    $('#room_filter').addClass('d-none');
+                } else {
+                    if (res.response === true) {
+                        $('#ward_filter').html(res.data);
+                        $('#ward_filter').removeClass('d-none');
+                        $('#room_filter').html('');
+                        $('#room_filter').addClass('d-none');
+                    }
+                }
+            }
+        });
+    }
+
+    function getRoomFilter(rm_building, rm_floor, rm_ward) {
+        let rm_building_base64 = btoa(rm_building);
+        let rm_floor_base64 = btoa(rm_floor);
+        let rm_ward_base64 = btoa(rm_ward);
+        let urlFinal = "{{ route('room.room.filter',  ['rm_building' => ':rm_building_base64', 'rm_floor' => ':rm_floor_base64', 'rm_ward' => ':rm_ward_base64']) }}";
+        urlFinal = urlFinal.replace(':rm_building_base64', rm_building_base64);
+        urlFinal = urlFinal.replace(':rm_floor_base64', rm_floor_base64);
+        urlFinal = urlFinal.replace(':rm_ward_base64', rm_ward_base64);
+        $.ajax({
+            url: urlFinal,
+            method: "get",
+            success: function(res) {
+                if (rm_ward == '') {
+                    $('#room_filter').html('');
+                    $('#room_filter').addClass('d-none');
+                } else {
+                    if (res.response === true) {
+                        $('#room_filter').html(res.data);
+                        $('#room_filter').removeClass('d-none');
+                    }
+                }
+            }
+        });
+    }
 </script>
 @endsection

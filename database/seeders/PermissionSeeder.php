@@ -100,6 +100,12 @@ class PermissionSeeder extends Seeder
                 'section'      => 'trainee',
             ],
             [
+                'name'         => 'trainee-certificate',
+                'display_name' => 'Certificate Trainee',
+                'guard_name'   => 'web',
+                'section'      => 'trainee',
+            ],
+            [
                 'name'         => 'room-read',
                 'display_name' => 'Read Room',
                 'guard_name'   => 'web',

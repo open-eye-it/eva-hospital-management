@@ -65,11 +65,21 @@ class Trainee extends Model
 
     public function FilterData($data, $filterData)
     {
-        $search_text    = isset($filterData['search_text']) ? $filterData['search_text'] : '';
+        $search_text = isset($filterData['search_text']) ? $filterData['search_text'] : '';
+        $start_date  = isset($filterData['start_date']) ? $filterData['start_date'] : '';
+        $end_date  = isset($filterData['end_date']) ? $filterData['end_date'] : '';
         if (isset($search_text) && $search_text != '') {
-            $data->where('tr_real_id', 'LIKE', '%' . $search_text . '%');
-            $data->orWhere('tr_name', 'LIKE', '%' . $search_text . '%');
-            $data->orWhere('tr_contact_no', 'LIKE', '%' . $search_text . '%');
+            $data->where(function ($query) use ($search_text) {
+                $query->where('tr_real_id', 'LIKE', '%' . $search_text . '%');
+                $query->orWhere('tr_name', 'LIKE', '%' . $search_text . '%');
+                $query->orWhere('tr_contact_no', 'LIKE', '%' . $search_text . '%');
+            });
+        }
+        if (isset($start_date) && $start_date != '') {
+            $data->where('tr_start_date', $start_date);
+        }
+        if (isset($end_date) && $end_date != '') {
+            $data->where('tr_end_date', $end_date);
         }
     }
 

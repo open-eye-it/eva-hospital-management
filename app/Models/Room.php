@@ -59,9 +59,27 @@ class Room extends Model
     public function FilterData($data, $filterData)
     {
         $search_text    = isset($filterData['search_text']) ? $filterData['search_text'] : '';
+        $rm_building    = isset($filterData['rm_building']) ? $filterData['rm_building'] : '';
+        $rm_floor    = isset($filterData['rm_floor']) ? $filterData['rm_floor'] : '';
+        $rm_ward    = isset($filterData['rm_ward']) ? $filterData['rm_ward'] : '';
+        $rm_no    = isset($filterData['rm_no']) ? $filterData['rm_no'] : '';
+        if (isset($rm_building) && $rm_building != '') {
+            $data->where('rm_building', $rm_building);
+        }
+        if (isset($rm_floor) && $rm_floor != '') {
+            $data->where('rm_floor', $rm_floor);
+        }
+        if (isset($rm_ward) && $rm_ward != '') {
+            $data->where('rm_ward', $rm_ward);
+        }
+        if (isset($rm_no) && $rm_no != '') {
+            $data->where('rm_no', $rm_no);
+        }
         if (isset($search_text) && $search_text != '') {
-            $data->where('rm_no', 'LIKE', '%' . $search_text . '%');
-            $data->orWhere('rm_charge', 'LIKE', '%' . $search_text . '%');
+            $data->where(function ($query) use ($search_text) {
+                $query->where('rm_no', 'LIKE', '%' . $search_text . '%');
+                $query->orWhere('rm_charge', 'LIKE', '%' . $search_text . '%');
+            });
         }
     }
 
@@ -70,9 +88,51 @@ class Room extends Model
         return static::where('rm_id', $rm_id)->first();
     }
 
-    public function buildingActiveList()
+    public function buildingList()
     {
-        return static::where('rm_status', 1)->orderBy('rm_building', 'ASC')->groupBy('rm_building');
+        return static::select('rm_building')->where('rm_status', 1)->orderBy('rm_building', 'ASC')->get()->unique('rm_building');
+    }
+
+    public function floorList($rm_building)
+    {
+        if ($rm_building != '') {
+            return static::select('rm_floor')->where(['rm_status' =>  1, 'rm_building' => $rm_building])->orderBy('rm_floor', 'ASC')->get()->unique('rm_floor');
+        } else {
+            return static::select('rm_floor')->where('rm_status', 1)->orderBy('rm_floor', 'ASC')->get()->unique('rm_floor');
+        }
+    }
+
+    public function wardList($rm_building, $rm_floor)
+    {
+        if ($rm_building != '' && $rm_floor != '') {
+            return static::select('rm_ward')->where(['rm_building' => $rm_building, 'rm_floor' =>  $rm_floor])->orderBy('rm_ward', 'ASC')->get()->unique('rm_ward');
+        } else {
+            return static::select('rm_ward')->where('rm_status', 1)->orderBy('rm_ward', 'ASC')->get()->unique('rm_ward');
+        }
+    }
+
+    public function roomList($rm_building, $rm_floor, $rm_ward)
+    {
+        if ($rm_building != '' && $rm_floor != '' && $rm_ward != '') {
+            return static::select('rm_no')->where(['rm_building' => $rm_building, 'rm_floor' =>  $rm_floor, 'rm_ward' => $rm_ward])->orderBy('rm_no', 'ASC')->get()->unique('rm_no');
+        } else {
+            return static::select('rm_room')->where('rm_status', 1)->orderBy('rm_room', 'ASC')->get()->unique('rm_room');
+        }
+    }
+
+    public function floorFilter($rm_building)
+    {
+        return static::select('rm_floor')->where('rm_building', $rm_building)->orderBy('rm_floor', 'ASC')->get()->unique('rm_floor');
+    }
+
+    public function wardFilter($rm_building, $rm_floor)
+    {
+        return static::select('rm_ward')->where(['rm_building' => $rm_building, 'rm_floor' =>  $rm_floor])->orderBy('rm_ward', 'ASC')->get()->unique('rm_ward');
+    }
+
+    public function roomFilter($rm_building, $rm_floor, $rm_ward)
+    {
+        return static::select('rm_no')->where(['rm_building' => $rm_building, 'rm_floor' =>  $rm_floor, 'rm_ward' => $rm_ward])->orderBy('rm_no', 'ASC')->get()->unique('rm_no');
     }
 
     /* Relationship */

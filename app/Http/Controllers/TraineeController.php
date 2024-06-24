@@ -11,6 +11,8 @@ use App\Models\Trainee;
 
 use Illuminate\Support\Facades\Storage;
 
+use PDF;
+
 class TraineeController extends MainController
 {
     public function __construct()
@@ -22,7 +24,9 @@ class TraineeController extends MainController
     public function index(Request $request)
     {
         $input = $request->all();
-        $searchData['search_text']  = isset($input['search_text']) ? $input['search_text'] : '';
+        $searchData['search_text'] = isset($input['search_text']) ? $input['search_text'] : '';
+        $searchData['start_date']  = isset($input['start_date']) ? $input['start_date'] : '';
+        $searchData['end_date']    = isset($input['end_date']) ? $input['end_date'] : '';
         $list = $this->trainee->getList($searchData);
         return view('trainee.list', compact('list', 'searchData'));
     }
@@ -189,6 +193,19 @@ class TraineeController extends MainController
     {
         $fileName1 = base64_decode($fileName);
         return response()->download(storage_path('app/public/' . $fileName1));
+    }
+
+    public function certificatePDF($tr_id)
+    {
+        $tr_id = base64_decode($tr_id);
+        $data = $this->trainee->singlTrainee($tr_id);
+        if (!empty($data)) {
+            $data = ['data' => $data];
+            $pdf = PDF::loadView('trainee.pdf-view', $data);
+            return $pdf->download('trainee-' . $tr_id . '-' . date('YmdHis') . '.pdf');
+        } else {
+            return redirect()->route('trainee.list');
+        }
     }
 
     public function traineedID()

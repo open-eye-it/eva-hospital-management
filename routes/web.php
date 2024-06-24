@@ -56,7 +56,7 @@ Route::middleware('signin-check')->group(function () {
     });
 
     Route::prefix('trainee')->group(function () {
-        Route::get('/', [TraineeController::class, 'index'])->name('trainee.list')->middleware(['role_or_permission:trainee-read']);
+        Route::get('list', [TraineeController::class, 'index'])->name('trainee.list')->middleware(['role_or_permission:trainee-read']);
         Route::get('create', [TraineeController::class, 'create'])->name('trainee.create')->middleware(['role_or_permission:trainee-create']);
         Route::post('store/{tr_real_id}', [TraineeController::class, 'store'])->name('trainee.store')->middleware(['role_or_permission:trainee-create']);
         Route::get('edit/{tr_id}', [TraineeController::class, 'edit'])->name('trainee.edit')->middleware(['role_or_permission:trainee-update']);
@@ -64,6 +64,7 @@ Route::middleware('signin-check')->group(function () {
         Route::get('view/{tr_id}', [TraineeController::class, 'viewTrainee'])->name('trainee.view')->middleware(['role_or_permission:trainee-read']);
         Route::get('status/{tr_id}', [TraineeController::class, 'status'])->name('trainee.status')->middleware(['role_or_permission:trainee-status']);
         Route::get('download/{file}', [TraineeController::class, 'downloadFile'])->name('trainee.file.download')->middleware(['role_or_permission:trainee-read']);
+        Route::get('certificate/{tr_id}', [TraineeController::class, 'certificatePDF'])->name('trainee.certificate.pdf')->middleware(['role_or_permission:trainee-certificate']);
     });
 
     Route::prefix('room')->group(function () {
@@ -73,5 +74,8 @@ Route::middleware('signin-check')->group(function () {
         Route::get('edit/{rm_id}', [RoomController::class, 'edit'])->name('room.edit');
         Route::post('update/{rm_id}', [RoomController::class, 'update'])->name('room.update');
         Route::get('status/{rm_id}', [RoomController::class, 'status'])->name('room.status');
+        Route::get('floor_filter/{rm_building}', [RoomController::class, 'floorFilter'])->name('room.floor.filter');
+        Route::get('ward_filter/{rm_building}/{rm_floor}', [RoomController::class, 'wardFilter'])->name('room.ward.filter');
+        Route::get('room_filter/{rm_building}/{rm_floor}/{rm_ward}', [RoomController::class, 'roomFilter'])->name('room.room.filter');
     });
 });

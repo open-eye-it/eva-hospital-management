@@ -19,12 +19,27 @@ class RoomController extends MainController
     {
         $input = $request->all();
         $searchData['search_text']  = isset($input['search_text']) ? $input['search_text'] : '';
+        $searchData['rm_building']  = isset($input['rm_building']) ? $input['rm_building'] : '';
+        $searchData['rm_floor']  = isset($input['rm_floor']) ? $input['rm_floor'] : '';
+        $searchData['rm_ward']  = isset($input['rm_ward']) ? $input['rm_ward'] : '';
+        $searchData['rm_no']  = isset($input['rm_no']) ? $input['rm_no'] : '';
         $list = $this->room->getList($searchData);
 
-        $buildings = $this->room->buildingActiveList();
-        print_r($buildings);
-        die;
-        return view('room.list', compact('list', 'searchData'));
+        $Buildings = $this->room->buildingList($searchData['rm_building']);
+        $Floors = '';
+        $Wards = '';
+        $Rooms = '';
+        if (isset($searchData['rm_building']) && $searchData['rm_building'] != '' && isset($searchData['rm_floor']) && $searchData['rm_floor'] != '') {
+            $Floors = $this->room->floorList($searchData['rm_building']);
+        }
+        if (isset($searchData['rm_building']) && $searchData['rm_building'] != '' && isset($searchData['rm_floor']) && $searchData['rm_floor'] != '' && isset($searchData['rm_ward']) && $searchData['rm_ward'] != '') {
+            $Wards = $this->room->wardList($searchData['rm_building'], $searchData['rm_floor']);
+        }
+        if (isset($searchData['rm_building']) && $searchData['rm_building'] != '' && isset($searchData['rm_floor']) && $searchData['rm_floor'] != '' && isset($searchData['rm_ward']) && $searchData['rm_ward'] != '' && isset($searchData['rm_no']) && $searchData['rm_no'] != '') {
+            $Rooms = $this->room->roomList($searchData['rm_building'], $searchData['rm_floor'], $searchData['rm_ward']);
+        }
+
+        return view('room.list', compact('list', 'searchData', 'Buildings', 'Floors', 'Wards', 'Rooms'));
     }
 
     public function create()
@@ -140,5 +155,58 @@ class RoomController extends MainController
         } else {
             return $this->getErrorMessage($message);
         }
+    }
+
+    public function floorFilter($rm_building)
+    {
+        $rm_building = base64_decode($rm_building);
+        $Floors = $this->room->floorFilter($rm_building);
+        $onClickMethod = "getWardFilter('" . $rm_building . "',this.value)";
+        $option = '<label>Floor</label><select name="rm_floor" id="rm_floor" class="form-control" onchange="' . $onClickMethod . '">';
+        $option .= '<option value="">-select-</option>';
+        if (!empty($Floors)) {
+            foreach ($Floors as $floor) {
+                $option .= '<option value="' . $floor->rm_floor . '">' . $floor->rm_floor . '</option>';
+            }
+        }
+        $option .= '</select>';
+        $message = 'Floor Found';
+        return $this->getSuccessResult($option, $message, true);
+    }
+
+    public function wardFilter($rm_building, $rm_floor)
+    {
+        $rm_building = base64_decode($rm_building);
+        $rm_floor = base64_decode($rm_floor);
+        $Wards = $this->room->wardFilter($rm_building, $rm_floor);
+        $onClickMethod = "getRoomFilter('" . $rm_building . "', '" . $rm_floor . "',this.value)";
+        $option = '<label>Ward</label><select name="rm_ward" id="rm_ward" class="form-control" onchange="' . $onClickMethod . '">';
+        $option .= '<option value="">-select-</option>';
+        if (!empty($Wards)) {
+            foreach ($Wards as $ward) {
+                $option .= '<option value="' . $ward->rm_ward . '">' . $ward->rm_ward . '</option>';
+            }
+        }
+        $option .= '</select>';
+        $message = 'Ward Found';
+        return $this->getSuccessResult($option, $message, true);
+    }
+
+    public function roomFilter($rm_building, $rm_floor, $rm_ward)
+    {
+        $rm_building = base64_decode($rm_building);
+        $rm_floor = base64_decode($rm_floor);
+        $rm_ward = base64_decode($rm_ward);
+        $Rooms = $this->room->roomFilter($rm_building, $rm_floor, $rm_ward);
+        $option = '<label>Room</label><select name="rm_no" id="rm_no" class="form-control">';
+        $option .= '<option value="">-select-</option>';
+        if (!empty($Rooms)) {
+            foreach ($Rooms as $room) {
+                $option .= '<option value="' . $room->rm_no . '">' . $room->rm_no . '</option>';
+            }
+        }
+        $option .= '</select>';
+        $message = 'Room Found';
+        return $this->getSuccessResult($option, $message, true);
     }
 }

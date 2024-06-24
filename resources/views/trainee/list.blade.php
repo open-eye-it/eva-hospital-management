@@ -15,13 +15,22 @@
                         <div class="col-12">
                             <div class="card card-custom gutter-b">
                                 <form action="{{ route('trainee.list') }}">
-                                    <div class="row">
-                                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group mb-0">
-                                            <input type="text" class="form-control m-5" placeholder="Search ID OR Name or Contact No" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
+                                    <div class="row p-5">
+                                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
+                                            <label>Search ID or Name or Contact No</label>
+                                            <input type="text" class="form-control" placeholder="Search ID or Name or Contact No" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
                                         </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group mb-0">
-                                            <button class="btn btn-primary my-5 mx-1" type="submit">Search</button>
-                                            <a class="btn btn-danger my-5 mx-1" href="{{ route('trainee.list') }}">Resst</a>
+                                        <div class="col-lg-3 col-md-4 col-sm-6 col-12 form-group">
+                                            <label>Start Date</label>
+                                            <input type="date" name="start_date" id="start_date" value="{{ $searchData['start_date'] }}" class="form-control">
+                                        </div>
+                                        <div class="col-lg-3 col-md-4 col-sm-6 col-12 form-group">
+                                            <label>End Date</label>
+                                            <input type="date" name="end_date" id="end_date" value="{{ $searchData['end_date'] }}" class="form-control">
+                                        </div>
+                                        <div class="col-12 form-group">
+                                            <button class="btn btn-primary" type="submit">Search</button>
+                                            <a class="btn btn-danger" href="{{ route('trainee.list') }}">Resst</a>
                                         </div>
                                     </div>
                                 </form>
@@ -91,6 +100,9 @@
                                                     @endcan
                                                     @can('trainee-read')
                                                     <span id="fullView" data-id="{{ base64_encode($trainee->tr_id) }}" title="Full View"><i class="la la-eye icon-3x"></i></span>
+                                                    @endcan
+                                                    @can('trainee-certificate')
+                                                    <a href="{{ route('trainee.certificate.pdf', base64_encode($trainee->tr_id)) }}" title="Certificate"><i class="la la-certificate icon-3x"></i></a>
                                                     @endcan
                                                 </td>
                                                 @endif

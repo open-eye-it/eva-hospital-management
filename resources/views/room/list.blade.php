@@ -47,6 +47,9 @@
                                                 <th>Charge</th>
                                                 <th>Room Busy</th>
                                                 <th>Added By</th>
+                                                @can('room-status')
+                                                <th>Status</th>
+                                                @endcan
                                                 @can('room-update')
                                                 <th>Actions</th>
                                                 @endcan
@@ -72,6 +75,14 @@
                                                     <span class="label label-lg font-weight-bold label-light-primary label-inline">{{ $status }}</span>
                                                 </td>
                                                 <td>{{ $room->AddedByData->person_name }}</td>
+                                                @can('room-status')
+                                                <td>
+                                                    <label class="switch">
+                                                        <input type="checkbox" class="updateStatus" data-id="{{ base64_encode($room->rm_id) }}" {{ ($room->rm_status==1)?'checked':'' }}>
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                </td>
+                                                @endcan
                                                 @can('room-update')
                                                 <td>
                                                     <a href="{{ route('room.edit', base64_encode($room->rm_id)) }}" title="Edit"><i class="la la-edit icon-3x"></i></a>
@@ -127,11 +138,10 @@
 <script>
     $('body').on('change', '.updateStatus', function(event) {
         event.preventDefault();
-        user_id = $(this).data('id')
+        rm_id = $(this).data('id')
         dis = $(this);
-
         $.ajax({
-            url: "{{ route('user.status', '') }}" + "/" + user_id,
+            url: "{{ route('room.status', '') }}" + "/" + rm_id,
             method: "GET",
             success: function(res) {
                 if (res.response === true) {

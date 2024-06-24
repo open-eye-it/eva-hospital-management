@@ -20,6 +20,10 @@ class RoomController extends MainController
         $input = $request->all();
         $searchData['search_text']  = isset($input['search_text']) ? $input['search_text'] : '';
         $list = $this->room->getList($searchData);
+
+        $buildings = $this->room->buildingActiveList();
+        print_r($buildings);
+        die;
         return view('room.list', compact('list', 'searchData'));
     }
 
@@ -44,7 +48,7 @@ class RoomController extends MainController
                 'rm_floor'      => $input['rm_floor'],
                 'rm_no'         => $input['rm_no'],
                 'rm_charge'     => $input['rm_charge'],
-                'rm_busy'       => $input['rm_busy'],
+                // 'rm_busy'       => $input['rm_busy'],
             ];
             $insert = $this->room->insertRoom($data);
             if (isset($insert->rm_id)) {
@@ -104,6 +108,37 @@ class RoomController extends MainController
             }
         } else {
             return $this->getErrorMessage('Room not found.');
+        }
+    }
+
+    public function status(Request $request, $rm_id)
+    {
+        $rm_id = base64_decode($rm_id);
+        $room = $this->room->singlRoom($rm_id);
+        if (is_null($room)) {
+            return $this->getErrorMessage('Room not found');
+        }
+        $updated_by = Auth::user()->user_id;
+        if ($room->rm_status == 1) {
+            $data = [
+                'updated_by' => $updated_by,
+                'rm_status'     => 0,
+            ];
+            $message    = $room->rm_no . ' ' . 'is now disable';
+        } else {
+            $data = [
+                'updated_by' => $updated_by,
+                'rm_status'     => 1,
+            ];
+            $message    = $room->rm_no . ' ' . 'is now enable';
+        }
+
+        $update = $this->room->updateRoom($data, $rm_id);
+
+        if ($update == 1) {
+            return $this->getSuccessResult([], $message, true);
+        } else {
+            return $this->getErrorMessage($message);
         }
     }
 }

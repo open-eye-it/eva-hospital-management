@@ -187,8 +187,8 @@ class TraineeController extends MainController
 
     public function downloadFile($fileName)
     {
-        $fileName = base64_decode($fileName);
-        Storage::disk('public')->download($fileName);
+        $fileName1 = base64_decode($fileName);
+        return response()->download(storage_path('app/public/' . $fileName1));
     }
 
     public function traineedID()

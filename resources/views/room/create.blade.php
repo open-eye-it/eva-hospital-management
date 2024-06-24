@@ -58,7 +58,7 @@
                                                     <span class="text-danger" id="rm_chargeErr"></span>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-12">
+                                            <!-- <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
                                                     <label>Is Busy <span class="text-danger">*</span></label>
                                                     <select name="rm_busy" id="rm_busy" class="form-control">
@@ -68,7 +68,7 @@
                                                     </select>
                                                     <span class="text-danger" id="rm_busyErr"></span>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>
                                         <!--begin: Code-->
                                         <div class="example-code mt-10">
@@ -105,7 +105,7 @@
         let rm_ward = $('#rm_ward').val();
         let rm_no = $('#rm_no').val();
         let rm_charge = $('#rm_charge').val();
-        let rm_busy = $('#rm_busy').val();
+        // let rm_busy = $('#rm_busy').val();
         if(rm_building == ''){
             $('#rm_buildingErr').text('Please enter building no');
             timeoutID('rm_buildingErr', 3000);
@@ -126,11 +126,13 @@
             $('#rm_chargeErr').text('Please enter room charge');
             timeoutID('rm_chargeErr', 3000);
             scrollTop('rm_chargeErr');
-        }else if(rm_busy == ''){
-            $('#rm_busyErr').text('Please select room is busy or not');
-            timeoutID('rm_busyErr', 3000);
-            scrollTop('rm_busyErr');
-        }else{
+        }
+        // else if(rm_busy == ''){
+        //     $('#rm_busyErr').text('Please select room is busy or not');
+        //     timeoutID('rm_busyErr', 3000);
+        //     scrollTop('rm_busyErr');
+        // }
+        else{
             $('#createBtn').addClass('spinner spinner-white spinner-right');
             $.ajax({
                 headers: {
@@ -138,7 +140,7 @@
                 },
                 url:"{{ route('room.store') }}",
                 method:"POST",
-                data:{rm_building:rm_building, rm_floor:rm_floor, rm_ward:rm_ward, rm_no:rm_no, rm_charge:rm_charge, rm_busy:rm_busy},
+                data:{rm_building:rm_building, rm_floor:rm_floor, rm_ward:rm_ward, rm_no:rm_no, rm_charge:rm_charge},
                 success:function(res){
                     $('#createBtn').removeClass('spinner spinner-white spinner-right');
                     if(res.response === true){

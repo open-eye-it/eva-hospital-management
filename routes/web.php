@@ -70,8 +70,8 @@ Route::middleware('signin-check')->group(function () {
         Route::get('create', [RoomController::class, 'create'])->name('room.create');
         Route::post('store', [RoomController::class, 'store'])->name('room.store');
         Route::get('list', [RoomController::class, 'index'])->name('room.list');
-        Route::get('edit/{user_id}', [RoomController::class, 'edit'])->name('room.edit');
-        Route::post('update/{user_id}', [RoomController::class, 'update'])->name('room.update');
-        Route::get('status/{user_id}', [RoomController::class, 'status'])->name('room.status');
+        Route::get('edit/{rm_id}', [RoomController::class, 'edit'])->name('room.edit');
+        Route::post('update/{rm_id}', [RoomController::class, 'update'])->name('room.update');
+        Route::get('status/{rm_id}', [RoomController::class, 'status'])->name('room.status');
     });
 });

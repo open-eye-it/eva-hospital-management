@@ -18,7 +18,8 @@ class Room extends Model
         'rm_ward',
         'rm_no',
         'rm_charge',
-        'rm_busy'
+        'rm_busy',
+        'rm_status'
     ];
 
     public function checkBuildingFloorWardRoomExist($rm_building, $rm_floor, $rm_ward, $rm_no)
@@ -67,6 +68,11 @@ class Room extends Model
     public function singlRoom($rm_id)
     {
         return static::where('rm_id', $rm_id)->first();
+    }
+
+    public function buildingActiveList()
+    {
+        return static::where('rm_status', 1)->orderBy('rm_building', 'ASC')->groupBy('rm_building');
     }
 
     /* Relationship */

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('rm_no')->index();
             $table->integer('rm_charge')->index();
             $table->integer('rm_busy')->default(0)->comment('0-No, 1-Yes');
+            $table->integer('rm_status')->default(1)->comment('1-Active, 0-Disable');
             $table->timestamps();
         });
     }

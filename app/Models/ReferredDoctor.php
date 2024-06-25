@@ -40,6 +40,11 @@ class ReferredDoctor extends Model
         return $output;
     }
 
+    public function getSearchList($rd_name)
+    {
+        return static::select('rd_name')->where('rd_name', 'LIKE', '%' . $rd_name . '%')->orderBy('rd_name', 'ASC')->get();
+    }
+
     public function updateData($data, $rd_id)
     {
         return static::where('rd_id', $rd_id)->update(\Arr::only($data, $this->fillable));

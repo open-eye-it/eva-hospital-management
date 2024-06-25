@@ -1,0 +1,112 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Patient extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'pa_id',
+        'pa_added_by',
+        'pa_updated_by',
+        'pa_name',
+        'pa_contact_no',
+        'pa_alt_contact_no',
+        'pa_email',
+        'pa_address',
+        'pa_city',
+        'pa_pincode',
+        'pa_state',
+        'pa_dob',
+        'pa_age',
+        'pa_gender',
+        'pa_marital_status',
+        'pa_occupation',
+        'pa_payment_mode',
+        'pa_payment_detail',
+        'pa_last_monestrual_period',
+        'pa_pregnancy_no',
+        'pa_miscarriages_no',
+        'pa_abortion_no',
+        'pa_children_no',
+        'pa_tobacco',
+        'pa_smoking',
+        'pa_alcohol',
+        'pa_medical_history',
+        'pa_family_medical_history',
+        'pa_referred_by',
+        'pa_referred_doctor',
+        'pa_referred_text',
+        'pa_status'
+    ];
+
+    public function checkEmailExist($pa_email)
+    {
+        return static::select('pa_id')->where('pa_email', $pa_email)->where('pa_email', '!=', '')->get()->toArray();
+    }
+
+    public function checkContactNoExist($pa_contact_no)
+    {
+        return static::select('pa_id')->where('pa_contact_no', $pa_contact_no)->where('pa_contact_no', '!=', '')->get()->toArray();
+    }
+
+    public function checkAltContactNoExist($pa_alt_contact_nO)
+    {
+        return static::select('pa_id')->where('pa_alt_contact_nO', $pa_alt_contact_nO)->where('pa_alt_contact_nO', '!=', '')->get()->toArray();
+    }
+
+    public function singlData($pa_id)
+    {
+        return static::where('pa_id', $pa_id)->first();
+    }
+
+    public function insertData($data)
+    {
+        return static::create(\Arr::only($data, $this->fillable));
+    }
+
+    public function getList($filtepaata = [], $paginate = true, $limit = 10, $order_by = ['created_at', 'desc'])
+    {
+        $data = static::select('*');
+        $this->Filtepaata($data, $filtepaata);
+        $data->orderBy($order_by[0], $order_by[1]);
+        if ($paginate === true) :
+            $output = $data->paginate((int)$limit);
+        else :
+            $data->limit((int)$limit);
+            $output = $data->get();
+        endif;
+        return $output;
+    }
+
+    public function updateData($data, $pa_id)
+    {
+        return static::where('pa_id', $pa_id)->update(\Arr::only($data, $this->fillable));
+    }
+
+    public function Filtepaata($data, $filtepaata)
+    {
+        $search_text    = isset($filtepaata['search_text']) ? $filtepaata['search_text'] : '';
+        if (isset($search_text) && $search_text != '') {
+            $data->where('pa_name', 'LIKE', '%' . $search_text . '%');
+            $data->orWhere('pa_contact_no', 'LIKE', '%' . $search_text . '%');
+            $data->orWhere('pa_alt_contact_no', 'LIKE', '%' . $search_text . '%');
+            $data->orWhere('pa_email', 'LIKE', '%' . $search_text . '%');
+        }
+    }
+
+    /* Relationship */
+    public function AddedByData()
+    {
+        return $this->hasOne(User::class, 'user_id', 'pa_added_by');
+    }
+
+    public function UpdatedByData()
+    {
+        return $this->hasOne(User::class, 'user_id', 'pa_updated_by');
+    }
+}

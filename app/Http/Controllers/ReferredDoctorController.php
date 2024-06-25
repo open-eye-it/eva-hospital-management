@@ -88,4 +88,15 @@ class ReferredDoctorController extends MainController
             return $this->getErrorMessage('referred doctor not found.');
         }
     }
+
+    public function searchList($rd_name)
+    {   
+        $rd_name = base64_decode($rd_name);
+        $list = $this->doctor->getSearchList($rd_name);
+        if (!empty($list)) {
+            return $this->getSuccessResult($list, ' updated to referred doctor', true);
+        } else {
+            return $this->getErrorMessage('Search text not found.');
+        }
+    }
 }

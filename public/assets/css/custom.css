@@ -57,3 +57,25 @@
 .aside-menu .menu-nav > .menu-item.menu-item-open > .menu-link .menu-arrow {
     color: #E6352F !important;
 }
+
+.search_bar{
+    position: relative;
+}
+.search_bar ul{
+    position: absolute;
+    border: 1px solid lightgray;
+    background-color: #ffffff;
+    padding:0px;
+    width: 100%;
+}
+.search_bar ul li{
+    padding: 5px;
+    list-style-type: none;
+    margin:0px;
+    padding:7px 10px;
+    border-bottom: 1px solid rgb(230, 230, 230);
+    cursor: pointer;
+}
+.search_bar ul li:hover{
+    background-color: rgb(243, 243, 243);
+}

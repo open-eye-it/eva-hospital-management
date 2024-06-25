@@ -188,6 +188,30 @@ class PermissionSeeder extends Seeder
                 'display_name' => 'Update Referred Doctor',
                 'guard_name'   => 'web',
                 'section'      => 'referred-doctor',
+            ],
+            [
+                'name'         => 'patient-read',
+                'display_name' => 'Read Patient',
+                'guard_name'   => 'web',
+                'section'      => 'patient',
+            ],
+            [
+                'name'         => 'patient-create',
+                'display_name' => 'Create Patient',
+                'guard_name'   => 'web',
+                'section'      => 'patient',
+            ],
+            [
+                'name'         => 'patient-update',
+                'display_name' => 'Update Patient',
+                'guard_name'   => 'web',
+                'section'      => 'patient',
+            ],
+            [
+                'name'         => 'patient-status',
+                'display_name' => 'Status Patient',
+                'guard_name'   => 'web',
+                'section'      => 'patient',
             ]
         ];
 

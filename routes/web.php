@@ -12,6 +12,7 @@ use App\Http\Controllers\RoomController;
 use App\Http\Controllers\medicines\GeneralMedicineController;
 use App\Http\Controllers\medicines\OperationMedicineController;
 use App\Http\Controllers\ReferredDoctorController;
+use App\Http\Controllers\PatientController;
 
 /*
 |--------------------------------------------------------------------------
@@ -108,5 +109,14 @@ Route::middleware('signin-check')->group(function () {
         Route::get('list', [ReferredDoctorController::class, 'index'])->name('referred-doctor.list')->middleware(['role_or_permission:referred-doctor-read']);
         Route::get('edit/{user_id}', [ReferredDoctorController::class, 'edit'])->name('referred-doctor.edit')->middleware(['role_or_permission:referred-doctor-update']);
         Route::post('update/{user_id}', [ReferredDoctorController::class, 'update'])->name('referred-doctor.update')->middleware(['role_or_permission:referred-doctor-update']);
+        Route::get('search_list/{rd_name}', [ReferredDoctorController::class, 'searchList'])->name('referred-doctor.search.list');
+    });
+
+    Route::prefix('patient')->group(function () {
+        Route::get('create', [PatientController::class, 'create'])->name('patient.create');
+        Route::post('store', [PatientController::class, 'store'])->name('patient.store');
+        Route::get('list', [PatientController::class, 'index'])->name('patient.list');
+        Route::get('edit/{user_id}', [PatientController::class, 'edit'])->name('patient.edit');
+        Route::post('update/{user_id}', [PatientController::class, 'update'])->name('patient.update');
     });
 });

@@ -123,6 +123,72 @@ class PermissionSeeder extends Seeder
                 'guard_name'   => 'web',
                 'section'      => 'room',
             ],
+            [
+                'name'         => 'general-medicine-read',
+                'display_name' => 'Read General Medicine',
+                'guard_name'   => 'web',
+                'section'      => 'general-medicine',
+            ],
+            [
+                'name'         => 'general-medicine-create',
+                'display_name' => 'Create General Medicine',
+                'guard_name'   => 'web',
+                'section'      => 'general-medicine',
+            ],
+            [
+                'name'         => 'general-medicine-update',
+                'display_name' => 'Update General Medicine',
+                'guard_name'   => 'web',
+                'section'      => 'general-medicine',
+            ],
+            [
+                'name'         => 'general-medicine-status',
+                'display_name' => 'Status General Medicine',
+                'guard_name'   => 'web',
+                'section'      => 'general-medicine',
+            ],
+            [
+                'name'         => 'operation-medicine-read',
+                'display_name' => 'Read Operation Medicine',
+                'guard_name'   => 'web',
+                'section'      => 'operation-medicine',
+            ],
+            [
+                'name'         => 'operation-medicine-create',
+                'display_name' => 'Create Operation Medicine',
+                'guard_name'   => 'web',
+                'section'      => 'operation-medicine',
+            ],
+            [
+                'name'         => 'operation-medicine-update',
+                'display_name' => 'Update Operation Medicine',
+                'guard_name'   => 'web',
+                'section'      => 'operation-medicine',
+            ],
+            [
+                'name'         => 'operation-medicine-status',
+                'display_name' => 'Status Operation Medicine',
+                'guard_name'   => 'web',
+                'section'      => 'operation-medicine',
+            ],
+            [
+                'name'         => 'referred-doctor-read',
+                'display_name' => 'Read Referred Doctor',
+                'guard_name'   => 'web',
+                'section'      => 'referred-doctor',
+            ],
+            [
+                'name'         => 'referred-doctor-create',
+                'display_name' => 'Create Referred Doctor',
+                'guard_name'   => 'web',
+                'section'      => 'referred-doctor',
+            ],
+            [
+                'name'         => 'referred-doctor-update',
+                'display_name' => 'Update Referred Doctor',
+                'guard_name'   => 'web',
+                'section'      => 'referred-doctor',
+            ]
         ];
 
         foreach ($permission as $key => $value) {

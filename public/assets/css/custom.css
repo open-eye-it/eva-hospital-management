@@ -35,3 +35,25 @@
 .clear_both{
     clear: both;
 }
+
+.aside-menu .menu-nav > .menu-item .menu-submenu .menu-item.menu-item-open > .menu-link .menu-text{
+    color: #E6352F !important;
+}
+.aside-menu .menu-nav > .menu-item.menu-item-here > .menu-link .menu-arrow{
+    color: #E6352F !important;
+}
+.aside-menu .menu-nav > .menu-item .menu-submenu .menu-item.menu-item-open > .menu-link .menu-arrow {
+    color: #E6352F !important;
+}
+.aside-menu .menu-nav > .menu-item .menu-submenu .menu-item:not(.menu-item-parent):not(.menu-item-open):not(.menu-item-here):not(.menu-item-active):hover > .menu-link .menu-text{
+    color: #E6352F !important;
+}
+.aside-menu .menu-nav > .menu-item.menu-item-active > .menu-link .menu-text{
+    color: #E6352F !important;
+}
+.aside-menu .menu-nav > .menu-item.menu-item-open > .menu-link .menu-text {
+    color: #E6352F !important;
+}
+.aside-menu .menu-nav > .menu-item.menu-item-open > .menu-link .menu-arrow {
+    color: #E6352F !important;
+}

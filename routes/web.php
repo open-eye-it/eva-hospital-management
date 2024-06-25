@@ -9,6 +9,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VisitingFeeController;
 use App\Http\Controllers\TraineeController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\medicines\GeneralMedicineController;
+use App\Http\Controllers\medicines\OperationMedicineController;
+use App\Http\Controllers\ReferredDoctorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -77,5 +80,33 @@ Route::middleware('signin-check')->group(function () {
         Route::get('floor_filter/{rm_building}', [RoomController::class, 'floorFilter'])->name('room.floor.filter');
         Route::get('ward_filter/{rm_building}/{rm_floor}', [RoomController::class, 'wardFilter'])->name('room.ward.filter');
         Route::get('room_filter/{rm_building}/{rm_floor}/{rm_ward}', [RoomController::class, 'roomFilter'])->name('room.room.filter');
+    });
+
+    Route::prefix('medicine')->group(function () {
+        Route::prefix('general-medicine')->group(function () {
+            Route::get('create', [GeneralMedicineController::class, 'create'])->name('general-medicine.create')->middleware(['role_or_permission:general-medicine-create']);
+            Route::post('store', [GeneralMedicineController::class, 'store'])->name('general-medicine.store')->middleware(['role_or_permission:general-medicine-create']);
+            Route::get('list', [GeneralMedicineController::class, 'index'])->name('general-medicine.list')->middleware(['role_or_permission:general-medicine-read']);
+            Route::get('edit/{user_id}', [GeneralMedicineController::class, 'edit'])->name('general-medicine.edit')->middleware(['role_or_permission:general-medicine-update']);
+            Route::post('update/{user_id}', [GeneralMedicineController::class, 'update'])->name('general-medicine.update')->middleware(['role_or_permission:general-medicine-update']);
+            Route::get('status/{user_id}', [GeneralMedicineController::class, 'status'])->name('general-medicine.status')->middleware(['role_or_permission:general-medicine-status']);
+        });
+
+        Route::prefix('operation-medicine')->group(function () {
+            Route::get('create', [OperationMedicineController::class, 'create'])->name('operation-medicine.create')->middleware(['role_or_permission:operation-medicine-create']);
+            Route::post('store', [OperationMedicineController::class, 'store'])->name('operation-medicine.store')->middleware(['role_or_permission:operation-medicine-create']);
+            Route::get('list', [OperationMedicineController::class, 'index'])->name('operation-medicine.list')->middleware(['role_or_permission:operation-medicine-read']);
+            Route::get('edit/{user_id}', [OperationMedicineController::class, 'edit'])->name('operation-medicine.edit')->middleware(['role_or_permission:operation-medicine-update']);
+            Route::post('update/{user_id}', [OperationMedicineController::class, 'update'])->name('operation-medicine.update')->middleware(['role_or_permission:operation-medicine-update']);
+            Route::get('status/{user_id}', [OperationMedicineController::class, 'status'])->name('operation-medicine.status')->middleware(['role_or_permission:operation-medicine-status']);
+        });
+    });
+
+    Route::prefix('referred-doctor')->group(function () {
+        Route::get('create', [ReferredDoctorController::class, 'create'])->name('referred-doctor.create')->middleware(['role_or_permission:referred-doctor-create']);
+        Route::post('store', [ReferredDoctorController::class, 'store'])->name('referred-doctor.store')->middleware(['role_or_permission:referred-doctor-create']);
+        Route::get('list', [ReferredDoctorController::class, 'index'])->name('referred-doctor.list')->middleware(['role_or_permission:referred-doctor-read']);
+        Route::get('edit/{user_id}', [ReferredDoctorController::class, 'edit'])->name('referred-doctor.edit')->middleware(['role_or_permission:referred-doctor-update']);
+        Route::post('update/{user_id}', [ReferredDoctorController::class, 'update'])->name('referred-doctor.update')->middleware(['role_or_permission:referred-doctor-update']);
     });
 });

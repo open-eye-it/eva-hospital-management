@@ -39,10 +39,12 @@
 						<span class="menu-text">Dashboard</span>
 					</a>
 				</li>
+				@if(auth()->user()->can('category-read') || auth()->user()->can('user-read') || auth()->user()->can('visiting-fee-read') || auth()->user()->can('trainee-read') || auth()->user()->can('room-read') || auth()->user()->can('referred-doctor-read'))
 				<li class="menu-section">
 					<h4 class="menu-text">Admin</h4>
 					<i class="menu-icon ki ki-bold-more-hor icon-md"></i>
 				</li>
+				@endif
 				@can('category-read')
 				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'category') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
 					<a href="javascript:;" class="menu-link menu-toggle">
@@ -171,7 +173,7 @@
 				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'room') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
 					<a href="javascript:;" class="menu-link menu-toggle">
 						<span class="svg-icon menu-icon">
-							<i class="fa fa-user"></i>
+							<i class="fa fa-bed"></i>
 						</span>
 						<span class="menu-text">Room</span>
 						<i class="menu-arrow"></i>
@@ -203,7 +205,47 @@
 					</div>
 				</li>
 				@endcan
+				@can('referred-doctor-read')
+				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'referred-doctor') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+					<a href="javascript:;" class="menu-link menu-toggle">
+						<span class="svg-icon menu-icon">
+							<i class="fa fa-user-md"></i>
+						</span>
+						<span class="menu-text">Referred Doctor</span>
+						<i class="menu-arrow"></i>
+					</a>
+					<div class="menu-submenu">
+						<i class="menu-arrow"></i>
+						<ul class="menu-subnav">
+							@can('referred-doctor-create')
+							<li class="menu-item {{ (Request::segment(1) == 'referred-doctor' && Request::segment(2) == 'create') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+								<a href="{{ route('referred-doctor.create') }}" class="menu-link">
+									<i class="menu-bullet menu-bullet-dot">
+										<span></span>
+									</i>
+									<span class="menu-text">Create</span>
+								</a>
+							</li>
+							@endcan
+							@can('referred-doctor-read')
+							<li class="menu-item {{ (Request::segment(1) == 'referred-doctor' && Request::segment(2) == 'list') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+								<a href="{{ route('referred-doctor.list') }}" class="menu-link">
+									<i class="menu-bullet menu-bullet-dot">
+										<span></span>
+									</i>
+									<span class="menu-text">List</span>
+								</a>
+							</li>
+							@endcan
+						</ul>
+					</div>
+				</li>
+				@endcan
 				@if(auth()->user()->can('general-medicine-read') || auth()->user()->can('operation-medicine-read'))
+				<li class="menu-section">
+					<h4 class="menu-text">Medicine</h4>
+					<i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+				</li>
 				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'medicine') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
 					<a href="javascript:;" class="menu-link menu-toggle">
 						<span class="svg-icon menu-icon">
@@ -296,42 +338,13 @@
 					</div>
 				</li>
 				@endif
-				@can('referred-doctor-read')
-				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'referred-doctor') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
-					<a href="javascript:;" class="menu-link menu-toggle">
-						<span class="svg-icon menu-icon">
-							<i class="fa fa-user"></i>
-						</span>
-						<span class="menu-text">Referred Doctor</span>
-						<i class="menu-arrow"></i>
-					</a>
-					<div class="menu-submenu">
-						<i class="menu-arrow"></i>
-						<ul class="menu-subnav">
-							@can('referred-doctor-create')
-							<li class="menu-item {{ (Request::segment(1) == 'referred-doctor' && Request::segment(2) == 'create') ? 'menu-item-active' : '' }}" aria-haspopup="true">
-								<a href="{{ route('referred-doctor.create') }}" class="menu-link">
-									<i class="menu-bullet menu-bullet-dot">
-										<span></span>
-									</i>
-									<span class="menu-text">Create</span>
-								</a>
-							</li>
-							@endcan
-							@can('referred-doctor-read')
-							<li class="menu-item {{ (Request::segment(1) == 'referred-doctor' && Request::segment(2) == 'list') ? 'menu-item-active' : '' }}" aria-haspopup="true">
-								<a href="{{ route('referred-doctor.list') }}" class="menu-link">
-									<i class="menu-bullet menu-bullet-dot">
-										<span></span>
-									</i>
-									<span class="menu-text">List</span>
-								</a>
-							</li>
-							@endcan
-						</ul>
-					</div>
+				@if(auth()->user()->can('patient-read'))
+				<li class="menu-section">
+					<h4 class="menu-text">OPD/IPD</h4>
+					<i class="menu-icon ki ki-bold-more-hor icon-md"></i>
 				</li>
-				@endcan
+				@endif
+				@can('patient-read')
 				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'patient') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
 					<a href="javascript:;" class="menu-link menu-toggle">
 						<span class="svg-icon menu-icon">
@@ -343,6 +356,7 @@
 					<div class="menu-submenu">
 						<i class="menu-arrow"></i>
 						<ul class="menu-subnav">
+							@can('patient-create')
 							<li class="menu-item {{ (Request::segment(1) == 'patient' && Request::segment(2) == 'create') ? 'menu-item-active' : '' }}" aria-haspopup="true">
 								<a href="{{ route('patient.create') }}" class="menu-link">
 									<i class="menu-bullet menu-bullet-dot">
@@ -351,6 +365,8 @@
 									<span class="menu-text">Create</span>
 								</a>
 							</li>
+							@endcan
+							@can('patient-read')
 							<li class="menu-item {{ (Request::segment(1) == 'patient' && Request::segment(2) == 'list') ? 'menu-item-active' : '' }}" aria-haspopup="true">
 								<a href="{{ route('patient.list') }}" class="menu-link">
 									<i class="menu-bullet menu-bullet-dot">
@@ -359,9 +375,11 @@
 									<span class="menu-text">List</span>
 								</a>
 							</li>
+							@endcan
 						</ul>
 					</div>
 				</li>
+				@endcan
 			</ul>
 			<!--end::Menu Nav-->
 		</div>

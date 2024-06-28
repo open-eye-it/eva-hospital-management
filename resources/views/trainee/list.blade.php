@@ -58,7 +58,7 @@
                                                 @can('trainee-status')
                                                 <th>Status</th>
                                                 @endcan
-                                                @if(auth()->user()->can('trainee-read') || auth()->user()->can('trainee-update'))
+                                                @if(auth()->user()->can('trainee-read') || auth()->user()->can('trainee-update') || auth()->user()->can('trainee-certificate'))
                                                 <th>Actions</th>
                                                 @endif
                                             </tr>
@@ -93,7 +93,7 @@
                                                     <span onclick="showStatus('{{ base64_encode($trainee->tr_id) }}')" id="updateStatus_{{$trainee->tr_id}}" class="label label-lg font-weight-bold {{ $status_class }} label-inline">{{ $status }}</span>
                                                 </td>
                                                 @endcan
-                                                @if(auth()->user()->can('trainee-read') || auth()->user()->can('trainee-update'))
+                                                @if(auth()->user()->can('trainee-read') || auth()->user()->can('trainee-update') || auth()->user()->can('trainee-certificate'))
                                                 <td>
                                                     @can('trainee-update')
                                                     <a href="{{ route('trainee.edit', base64_encode($trainee->tr_id)) }}" title="Edit"><i class="la la-edit icon-3x"></i></a>

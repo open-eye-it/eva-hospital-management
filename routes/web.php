@@ -9,10 +9,11 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VisitingFeeController;
 use App\Http\Controllers\TraineeController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\ReferredDoctorController;
 use App\Http\Controllers\medicines\GeneralMedicineController;
 use App\Http\Controllers\medicines\OperationMedicineController;
-use App\Http\Controllers\ReferredDoctorController;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\AppointmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +35,7 @@ Route::middleware('signin-check')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/signout', [DashboardController::class, 'signout'])->name('signout');
 
+    /* User Category And Roles */
     Route::prefix('category')->group(function () {
         Route::get('create', [CategoryController::class, 'create'])->name('category.create')->middleware(['role_or_permission:category-create']);
         Route::post('store', [CategoryController::class, 'store'])->name('category.store')->middleware(['role_or_permission:category-create']);
@@ -42,7 +44,7 @@ Route::middleware('signin-check')->group(function () {
         Route::post('update/{id}', [CategoryController::class, 'update'])->name('category.update')->middleware(['role_or_permission:category-update']);
         Route::get('status/{id}', [CategoryController::class, 'status'])->name('category.status')->middleware(['role_or_permission:category-status']);
     });
-
+    /* System Users */
     Route::prefix('user')->group(function () {
         Route::get('create', [UserController::class, 'create'])->name('user.create')->middleware(['role_or_permission:user-create']);
         Route::post('store', [UserController::class, 'store'])->name('user.store')->middleware(['role_or_permission:user-create']);
@@ -52,13 +54,13 @@ Route::middleware('signin-check')->group(function () {
         Route::get('status/{user_id}', [UserController::class, 'status'])->name('user.status')->middleware(['role_or_permission:user-status']);
         Route::get('view/{user_id}', [UserController::class, 'viewUser'])->name('user.view')->middleware(['role_or_permission:user-read']);
     });
-
+    /* Visiting Fee */
     Route::prefix('visiting_fee')->group(function () {
         Route::get('/', [VisitingFeeController::class, 'index'])->name('visiting_fee.list')->middleware(['role_or_permission:visiting-fee-read']);
         Route::get('edit/{vf_id}', [VisitingFeeController::class, 'edit'])->name('visiting_fee.edit')->middleware(['role_or_permission:visiting-fee-update']);
         Route::post('update/{vf_id}', [VisitingFeeController::class, 'update'])->name('visiting_fee.update')->middleware(['role_or_permission:visiting-fee-update']);
     });
-
+    /* Trainee */
     Route::prefix('trainee')->group(function () {
         Route::get('list', [TraineeController::class, 'index'])->name('trainee.list')->middleware(['role_or_permission:trainee-read']);
         Route::get('create', [TraineeController::class, 'create'])->name('trainee.create')->middleware(['role_or_permission:trainee-create']);
@@ -70,7 +72,7 @@ Route::middleware('signin-check')->group(function () {
         Route::get('download/{file}', [TraineeController::class, 'downloadFile'])->name('trainee.file.download')->middleware(['role_or_permission:trainee-read']);
         Route::get('certificate/{tr_id}', [TraineeController::class, 'certificatePDF'])->name('trainee.certificate.pdf')->middleware(['role_or_permission:trainee-certificate']);
     });
-
+    /* Hospital Rooms with building, floor, ward, bed */
     Route::prefix('room')->group(function () {
         Route::get('create', [RoomController::class, 'create'])->name('room.create');
         Route::post('store', [RoomController::class, 'store'])->name('room.store');
@@ -82,7 +84,16 @@ Route::middleware('signin-check')->group(function () {
         Route::get('ward_filter/{rm_building}/{rm_floor}', [RoomController::class, 'wardFilter'])->name('room.ward.filter');
         Route::get('room_filter/{rm_building}/{rm_floor}/{rm_ward}', [RoomController::class, 'roomFilter'])->name('room.room.filter');
     });
-
+    /* Referred Doctor for appointment */
+    Route::prefix('referred-doctor')->group(function () {
+        Route::get('create', [ReferredDoctorController::class, 'create'])->name('referred-doctor.create')->middleware(['role_or_permission:referred-doctor-create']);
+        Route::post('store', [ReferredDoctorController::class, 'store'])->name('referred-doctor.store')->middleware(['role_or_permission:referred-doctor-create']);
+        Route::get('list', [ReferredDoctorController::class, 'index'])->name('referred-doctor.list')->middleware(['role_or_permission:referred-doctor-read']);
+        Route::get('edit/{user_id}', [ReferredDoctorController::class, 'edit'])->name('referred-doctor.edit')->middleware(['role_or_permission:referred-doctor-update']);
+        Route::post('update/{user_id}', [ReferredDoctorController::class, 'update'])->name('referred-doctor.update')->middleware(['role_or_permission:referred-doctor-update']);
+        Route::get('search_list/{rd_name}', [ReferredDoctorController::class, 'searchList'])->name('referred-doctor.search.list');
+    });
+    /* General And Operation Medicine for patient */
     Route::prefix('medicine')->group(function () {
         Route::prefix('general-medicine')->group(function () {
             Route::get('create', [GeneralMedicineController::class, 'create'])->name('general-medicine.create')->middleware(['role_or_permission:general-medicine-create']);
@@ -102,21 +113,20 @@ Route::middleware('signin-check')->group(function () {
             Route::get('status/{user_id}', [OperationMedicineController::class, 'status'])->name('operation-medicine.status')->middleware(['role_or_permission:operation-medicine-status']);
         });
     });
-
-    Route::prefix('referred-doctor')->group(function () {
-        Route::get('create', [ReferredDoctorController::class, 'create'])->name('referred-doctor.create')->middleware(['role_or_permission:referred-doctor-create']);
-        Route::post('store', [ReferredDoctorController::class, 'store'])->name('referred-doctor.store')->middleware(['role_or_permission:referred-doctor-create']);
-        Route::get('list', [ReferredDoctorController::class, 'index'])->name('referred-doctor.list')->middleware(['role_or_permission:referred-doctor-read']);
-        Route::get('edit/{user_id}', [ReferredDoctorController::class, 'edit'])->name('referred-doctor.edit')->middleware(['role_or_permission:referred-doctor-update']);
-        Route::post('update/{user_id}', [ReferredDoctorController::class, 'update'])->name('referred-doctor.update')->middleware(['role_or_permission:referred-doctor-update']);
-        Route::get('search_list/{rd_name}', [ReferredDoctorController::class, 'searchList'])->name('referred-doctor.search.list');
-    });
-
+    /* Patient Detail */
     Route::prefix('patient')->group(function () {
-        Route::get('create', [PatientController::class, 'create'])->name('patient.create');
-        Route::post('store', [PatientController::class, 'store'])->name('patient.store');
-        Route::get('list', [PatientController::class, 'index'])->name('patient.list');
-        Route::get('edit/{user_id}', [PatientController::class, 'edit'])->name('patient.edit');
-        Route::post('update/{user_id}', [PatientController::class, 'update'])->name('patient.update');
+        Route::get('create', [PatientController::class, 'create'])->name('patient.create')->middleware(['role_or_permission:patient-create']);
+        Route::post('store', [PatientController::class, 'store'])->name('patient.store')->middleware(['role_or_permission:patient-create']);
+        Route::get('list', [PatientController::class, 'index'])->name('patient.list')->middleware(['role_or_permission:patient-read']);
+        Route::get('edit/{pa_id}', [PatientController::class, 'edit'])->name('patient.edit')->middleware(['role_or_permission:patient-update']);
+        Route::post('update/{pa_id}', [PatientController::class, 'update'])->name('patient.update')->middleware(['role_or_permission:patient-update']);
+        Route::get('status/{pa_id}', [PatientController::class, 'status'])->name('patient.status')->middleware(['role_or_permission:patient-status']);
+        Route::get('view/{pa_id}', [PatientController::class, 'view'])->name('patient.view')->middleware(['role_or_permission:patient-read']);
+    });
+    /* Appointment Detail */
+    Route::prefix('appointment')->group(function () {
+        Route::get('create', [AppointmentController::class, 'create'])->name('appointment.create');
+        Route::post('store', [AppointmentController::class, 'store'])->name('appointment.store');
+        Route::get('list', [AppointmentController::class, 'index'])->name('appointment.list');
     });
 });

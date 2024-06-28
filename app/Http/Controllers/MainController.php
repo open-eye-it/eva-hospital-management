@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Models\Patient;
+
 class MainController extends Controller
 {
     public function __construct()
     {
+        $this->patient = new Patient;
     }
 
     public function randomString($size, $type = '')

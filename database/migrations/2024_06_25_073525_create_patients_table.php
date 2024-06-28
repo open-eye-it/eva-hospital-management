@@ -36,7 +36,7 @@ return new class extends Migration
             $table->string('pa_miscarriages_no')->nullable();
             $table->string('pa_abortion_no')->nullable();
             $table->string('pa_children_no')->nullable();
-            $table->string('pa_photo')->nullable();
+            $table->json('pa_photo')->nullable();
             $table->string('pa_tobacco')->nullable()->comment('no/regular/occasional');
             $table->string('pa_smoking')->nullable()->comment('no/regular/occasional');
             $table->string('pa_alcohol')->nullable()->comment('no/regular/occasional');

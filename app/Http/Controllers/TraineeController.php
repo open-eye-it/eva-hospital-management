@@ -114,7 +114,7 @@ class TraineeController extends MainController
                 $old_file = json_decode($data->tr_documents);
                 foreach ($old_file as $list) {
                     if (!in_array($list, $input['file_old'])) {
-                        Storage::disk('public')->delete($list);
+                        ImageRemove($list);
                     }
                 }
                 $file_data = array_merge($file_data, $input['file_old']);

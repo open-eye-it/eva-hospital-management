@@ -53,3 +53,26 @@ function UploadCustomeImage($image, $image_name = '', $upath = '', $prefix = '',
 
     return $imageName;
 }
+
+/* Remove Image */
+function ImageRemove($image = '')
+{
+    if ($image != '') {
+        $imgArr = json_decode($image);
+        foreach ($imgArr as $img) {
+            Storage::disk('public')->delete($img);
+        }
+    }
+}
+
+/* Image Path */
+function ImagePath($image = '')
+{
+    if ($image != '') {
+        $imgArr = json_decode($image);
+        $img = $imgArr[0];
+        return $storage = Storage::url($img);
+    } else {
+        return '';
+    }
+}

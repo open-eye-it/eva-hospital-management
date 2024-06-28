@@ -21,6 +21,11 @@ class ReferredDoctor extends Model
         return static::where('rd_id', $rd_id)->first();
     }
 
+    public function singleDataByName($rd_name)
+    {
+        return static::where('rd_name', $rd_name)->first();
+    }
+
     public function insertData($data)
     {
         return static::create(\Arr::only($data, $this->fillable));

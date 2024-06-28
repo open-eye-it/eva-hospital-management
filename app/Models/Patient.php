@@ -33,6 +33,7 @@ class Patient extends Model
         'pa_miscarriages_no',
         'pa_abortion_no',
         'pa_children_no',
+        'pa_photo',
         'pa_tobacco',
         'pa_smoking',
         'pa_alcohol',
@@ -49,9 +50,19 @@ class Patient extends Model
         return static::select('pa_id')->where('pa_email', $pa_email)->where('pa_email', '!=', '')->get()->toArray();
     }
 
+    public function checkEmailExistIgnoreID($pa_email, $pa_id)
+    {
+        return static::select('pa_id')->where('pa_email', $pa_email)->where('pa_email', '!=', '')->where('pa_id', '!=', $pa_id)->get()->toArray();
+    }
+
     public function checkContactNoExist($pa_contact_no)
     {
         return static::select('pa_id')->where('pa_contact_no', $pa_contact_no)->where('pa_contact_no', '!=', '')->get()->toArray();
+    }
+
+    public function checkContactNoExistIgnoreID($pa_contact_no, $pa_id)
+    {
+        return static::select('pa_id')->where('pa_contact_no', $pa_contact_no)->where('pa_contact_no', '!=', '')->where('pa_id', '!=', $pa_id)->get()->toArray();
     }
 
     public function checkAltContactNoExist($pa_alt_contact_nO)
@@ -69,10 +80,10 @@ class Patient extends Model
         return static::create(\Arr::only($data, $this->fillable));
     }
 
-    public function getList($filtepaata = [], $paginate = true, $limit = 10, $order_by = ['created_at', 'desc'])
+    public function getList($filterdata = [], $paginate = true, $limit = 10, $order_by = ['created_at', 'desc'])
     {
         $data = static::select('*');
-        $this->Filtepaata($data, $filtepaata);
+        $this->FilterData($data, $filterdata);
         $data->orderBy($order_by[0], $order_by[1]);
         if ($paginate === true) :
             $output = $data->paginate((int)$limit);
@@ -88,14 +99,16 @@ class Patient extends Model
         return static::where('pa_id', $pa_id)->update(\Arr::only($data, $this->fillable));
     }
 
-    public function Filtepaata($data, $filtepaata)
+    public function FilterData($data, $filterdata)
     {
-        $search_text    = isset($filtepaata['search_text']) ? $filtepaata['search_text'] : '';
+        $search_text    = isset($filterdata['search_text']) ? $filterdata['search_text'] : '';
         if (isset($search_text) && $search_text != '') {
-            $data->where('pa_name', 'LIKE', '%' . $search_text . '%');
+            $data->where('pa_id', 'LIKE', '%' . $search_text . '%');
+            $data->orWhere('pa_name', 'LIKE', '%' . $search_text . '%');
             $data->orWhere('pa_contact_no', 'LIKE', '%' . $search_text . '%');
             $data->orWhere('pa_alt_contact_no', 'LIKE', '%' . $search_text . '%');
             $data->orWhere('pa_email', 'LIKE', '%' . $search_text . '%');
+            $data->orWhere('pa_dob', 'LIKE', '%' . $search_text . '%');
         }
     }
 

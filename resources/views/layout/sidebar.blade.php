@@ -338,7 +338,7 @@
 					</div>
 				</li>
 				@endif
-				<!-- @if(auth()->user()->can('patient-read'))
+				@if(auth()->user()->can('patient-read'))
 				<li class="menu-section">
 					<h4 class="menu-text">OPD/IPD</h4>
 					<i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -409,7 +409,7 @@
 							</li>
 						</ul>
 					</div>
-				</li> -->
+				</li>
 			</ul>
 			<!--end::Menu Nav-->
 		</div>

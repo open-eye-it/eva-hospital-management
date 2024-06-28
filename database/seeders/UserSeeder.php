@@ -26,7 +26,6 @@ class UserSeeder extends Seeder
 			'person_name'       => 'Super Admin',
 			'contactno'         => 1234567890,
 			'address'           => 'EVA hospital, Ahmedabad',
-			'cat_id'            => 0,
 			'added_by'          => rand(1000000000, 9999999999),
 			'updated_by'        => rand(1000000000, 9999999999),
 			'user_status'       => 1,

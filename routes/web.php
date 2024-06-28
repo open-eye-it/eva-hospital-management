@@ -114,19 +114,19 @@ Route::middleware('signin-check')->group(function () {
         });
     });
     /* Patient Detail */
-    Route::prefix('patient')->group(function () {
-        Route::get('create', [PatientController::class, 'create'])->name('patient.create')->middleware(['role_or_permission:patient-create']);
-        Route::post('store', [PatientController::class, 'store'])->name('patient.store')->middleware(['role_or_permission:patient-create']);
-        Route::get('list', [PatientController::class, 'index'])->name('patient.list')->middleware(['role_or_permission:patient-read']);
-        Route::get('edit/{pa_id}', [PatientController::class, 'edit'])->name('patient.edit')->middleware(['role_or_permission:patient-update']);
-        Route::post('update/{pa_id}', [PatientController::class, 'update'])->name('patient.update')->middleware(['role_or_permission:patient-update']);
-        Route::get('status/{pa_id}', [PatientController::class, 'status'])->name('patient.status')->middleware(['role_or_permission:patient-status']);
-        Route::get('view/{pa_id}', [PatientController::class, 'view'])->name('patient.view')->middleware(['role_or_permission:patient-read']);
-    });
-    /* Appointment Detail */
-    Route::prefix('appointment')->group(function () {
-        Route::get('create', [AppointmentController::class, 'create'])->name('appointment.create');
-        Route::post('store', [AppointmentController::class, 'store'])->name('appointment.store');
-        Route::get('list', [AppointmentController::class, 'index'])->name('appointment.list');
-    });
+    // Route::prefix('patient')->group(function () {
+    //     Route::get('create', [PatientController::class, 'create'])->name('patient.create')->middleware(['role_or_permission:patient-create']);
+    //     Route::post('store', [PatientController::class, 'store'])->name('patient.store')->middleware(['role_or_permission:patient-create']);
+    //     Route::get('list', [PatientController::class, 'index'])->name('patient.list')->middleware(['role_or_permission:patient-read']);
+    //     Route::get('edit/{pa_id}', [PatientController::class, 'edit'])->name('patient.edit')->middleware(['role_or_permission:patient-update']);
+    //     Route::post('update/{pa_id}', [PatientController::class, 'update'])->name('patient.update')->middleware(['role_or_permission:patient-update']);
+    //     Route::get('status/{pa_id}', [PatientController::class, 'status'])->name('patient.status')->middleware(['role_or_permission:patient-status']);
+    //     Route::get('view/{pa_id}', [PatientController::class, 'view'])->name('patient.view')->middleware(['role_or_permission:patient-read']);
+    // });
+    // /* Appointment Detail */
+    // Route::prefix('appointment')->group(function () {
+    //     Route::get('create', [AppointmentController::class, 'create'])->name('appointment.create');
+    //     Route::post('store', [AppointmentController::class, 'store'])->name('appointment.store');
+    //     Route::get('list', [AppointmentController::class, 'index'])->name('appointment.list');
+    // });
 });

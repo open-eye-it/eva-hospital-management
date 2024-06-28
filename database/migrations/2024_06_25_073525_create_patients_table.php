@@ -29,8 +29,6 @@ return new class extends Migration
             $table->string('pa_gender')->nullable()->comment('male/female');
             $table->string('pa_marital_status')->nullable()->comment('married/single/divorced/widow');
             $table->string('pa_occupation')->nullable();
-            $table->string('pa_payment_mode')->nullable()->comment('cash/card/mediclaim/corporate');
-            $table->string('pa_payment_detail')->nullable();
             $table->string('pa_last_monestrual_period')->nullable();
             $table->string('pa_pregnancy_no')->nullable();
             $table->string('pa_miscarriages_no')->nullable();

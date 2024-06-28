@@ -115,24 +115,6 @@
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label>Mode of Payment</label>
-                                                    <select name="pa_payment_mode" id="pa_payment_mode" class="form-control">
-                                                        <option value="">-select-</option>
-                                                        <option value="cash">Cash</option>
-                                                        <option value="card">Card</option>
-                                                        <option value="mediclaim">Mediclaim</option>
-                                                        <option value="corporate">Corporate</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6 col-md-6 col-12">
-                                                <div class="form-group">
-                                                    <label>Payment Detail</label>
-                                                    <input type="text" class="form-control" placeholder="Payment Detail" name="pa_payment_detail" id="pa_payment_detail" />
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6 col-md-6 col-12">
-                                                <div class="form-group">
                                                     <label>Last Menstrual Period</label>
                                                     <input type="text" class="form-control" placeholder="Last Menstrual Period" name="pa_last_monestrual_period" id="pa_last_monestrual_period" />
                                                 </div>

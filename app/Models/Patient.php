@@ -26,8 +26,6 @@ class Patient extends Model
         'pa_gender',
         'pa_marital_status',
         'pa_occupation',
-        'pa_payment_mode',
-        'pa_payment_detail',
         'pa_last_monestrual_period',
         'pa_pregnancy_no',
         'pa_miscarriages_no',

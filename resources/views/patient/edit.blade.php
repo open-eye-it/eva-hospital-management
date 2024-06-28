@@ -115,24 +115,6 @@
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label>Mode of Payment</label>
-                                                    <select name="pa_payment_mode" id="pa_payment_mode" class="form-control">
-                                                        <option value="">-select-</option>
-                                                        <option value="cash" {{ ($data->pa_payment_mode == 'cash') ? 'selected' : '' }}>Cash</option>
-                                                        <option value="card" {{ ($data->pa_payment_mode == 'card') ? 'selected' : '' }}>Card</option>
-                                                        <option value="mediclaim" {{ ($data->pa_payment_mode == 'mediclaim') ? 'selected' : '' }}>Mediclaim</option>
-                                                        <option value="corporate" {{ ($data->pa_payment_mode == 'corporate') ? 'selected' : '' }}>Corporate</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6 col-md-6 col-12">
-                                                <div class="form-group">
-                                                    <label>Payment Detail</label>
-                                                    <input type="text" class="form-control" placeholder="Payment Detail" name="pa_payment_detail" id="pa_payment_detail" value="{{ $data->pa_payment_detail }}" />
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6 col-md-6 col-12">
-                                                <div class="form-group">
                                                     <label>Last Menstrual Period</label>
                                                     <input type="text" class="form-control" placeholder="Last Menstrual Period" name="pa_last_monestrual_period" id="pa_last_monestrual_period" value="{{ $data->pa_last_monestrual_period }}" />
                                                 </div>

@@ -68,11 +68,8 @@ class Appointment extends Model
         $search_text    = isset($filterdata['search_text']) ? $filterdata['search_text'] : '';
         if (isset($search_text) && $search_text != '') {
             $data->where('pa_id', 'LIKE', '%' . $search_text . '%');
-            $data->orWhere('pa_name', 'LIKE', '%' . $search_text . '%');
-            $data->orWhere('pa_contact_no', 'LIKE', '%' . $search_text . '%');
-            $data->orWhere('pa_alt_contact_no', 'LIKE', '%' . $search_text . '%');
-            $data->orWhere('pa_email', 'LIKE', '%' . $search_text . '%');
-            $data->orWhere('pa_dob', 'LIKE', '%' . $search_text . '%');
+            $data->orWhere('ap_doctor', 'LIKE', '%' . $search_text . '%');
+            $data->orWhere('ap_date', 'LIKE', '%' . $search_text . '%');
         }
     }
 

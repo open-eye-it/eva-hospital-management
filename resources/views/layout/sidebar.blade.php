@@ -50,7 +50,7 @@
 					<a href="javascript:;" class="menu-link menu-toggle">
 						<span class="svg-icon menu-icon">
 							<!--begin::Svg Icon | path:assets/media/svg/icons/Design/Bucket.svg-->
-							<i class="fa fa-user"></i>
+							<i class="icon-2x flaticon-user"></i>
 							<!--end::Svg Icon-->
 						</span>
 						<span class="menu-text">Categories</span>
@@ -88,7 +88,7 @@
 					<a href="javascript:;" class="menu-link menu-toggle">
 						<span class="svg-icon menu-icon">
 							<!--begin::Svg Icon | path:assets/media/svg/icons/Design/Bucket.svg-->
-							<i class="fa fa-users"></i>
+							<i class="icon-2x flaticon-users"></i>
 							<!--end::Svg Icon-->
 						</span>
 						<span class="menu-text">User</span>
@@ -126,7 +126,7 @@
 					<a href="{{ route('visiting_fee.list') }}" class="menu-link">
 						<span class="svg-icon menu-icon">
 							<!--begin::Svg Icon | path:assets/media/svg/icons/Design/Layers.svg-->
-							<i class="fa fa-rupee-sign"></i>
+							<i class="icon-2x la la-rupee-sign"></i>
 							<!--end::Svg Icon-->
 						</span>
 						<span class="menu-text">Visiting Fee</span>
@@ -137,7 +137,7 @@
 				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'trainee') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
 					<a href="javascript:;" class="menu-link menu-toggle">
 						<span class="svg-icon menu-icon">
-							<i class="fa fa-user"></i>
+							<i class="icon-2x flaticon-user-ok"></i>
 						</span>
 						<span class="menu-text">Trainee</span>
 						<i class="menu-arrow"></i>
@@ -173,7 +173,7 @@
 				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'room') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
 					<a href="javascript:;" class="menu-link menu-toggle">
 						<span class="svg-icon menu-icon">
-							<i class="fa fa-bed"></i>
+							<i class="icon-2x la la-bed"></i>
 						</span>
 						<span class="menu-text">Room</span>
 						<i class="menu-arrow"></i>
@@ -209,7 +209,7 @@
 				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'referred-doctor') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
 					<a href="javascript:;" class="menu-link menu-toggle">
 						<span class="svg-icon menu-icon">
-							<i class="fa fa-user-md"></i>
+							<i class="icon-2x flaticon-user-add"></i>
 						</span>
 						<span class="menu-text">Referred Doctor</span>
 						<i class="menu-arrow"></i>
@@ -249,7 +249,7 @@
 				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'medicine') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
 					<a href="javascript:;" class="menu-link menu-toggle">
 						<span class="svg-icon menu-icon">
-							<i class="fa fa-capsules"></i>
+							<i class="icon-2x la la-tablets"></i>
 						</span>
 						<span class="menu-text">Medicine</span>
 						<i class="menu-arrow"></i>
@@ -338,7 +338,7 @@
 					</div>
 				</li>
 				@endif
-				@if(auth()->user()->can('patient-read'))
+				<!-- @if(auth()->user()->can('patient-read'))
 				<li class="menu-section">
 					<h4 class="menu-text">OPD/IPD</h4>
 					<i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -348,7 +348,7 @@
 				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'patient') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
 					<a href="javascript:;" class="menu-link menu-toggle">
 						<span class="svg-icon menu-icon">
-							<i class="fa fa-user"></i>
+							<i class="icon-2x flaticon-user-settings"></i>
 						</span>
 						<span class="menu-text">Patient</span>
 						<i class="menu-arrow"></i>
@@ -380,6 +380,36 @@
 					</div>
 				</li>
 				@endcan
+				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'appointment') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+					<a href="javascript:;" class="menu-link menu-toggle">
+						<span class="svg-icon menu-icon">
+							<i class="icon-2x flaticon-calendar-2"></i>
+						</span>
+						<span class="menu-text">Appointment</span>
+						<i class="menu-arrow"></i>
+					</a>
+					<div class="menu-submenu">
+						<i class="menu-arrow"></i>
+						<ul class="menu-subnav">
+							<li class="menu-item {{ (Request::segment(1) == 'appointment' && Request::segment(2) == 'create') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+								<a href="{{ route('appointment.create') }}" class="menu-link">
+									<i class="menu-bullet menu-bullet-dot">
+										<span></span>
+									</i>
+									<span class="menu-text">Create</span>
+								</a>
+							</li>
+							<li class="menu-item {{ (Request::segment(1) == 'paappointmenttient' && Request::segment(2) == 'list') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+								<a href="{{ route('appointment.list') }}" class="menu-link">
+									<i class="menu-bullet menu-bullet-dot">
+										<span></span>
+									</i>
+									<span class="menu-text">List</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</li> -->
 			</ul>
 			<!--end::Menu Nav-->
 		</div>

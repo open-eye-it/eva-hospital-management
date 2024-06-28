@@ -30,7 +30,7 @@
 			<!--begin::Menu Nav-->
 			<ul class="menu-nav">
 				<li class="menu-item {{ (Request::segment(1) == 'dashboard') ? 'menu-item-active' : '' }}" aria-haspopup="true">
-					<a href="index.html" class="menu-link">
+					<a href="{{ route('dashboard') }}" class="menu-link">
 						<span class="svg-icon menu-icon">
 							<!--begin::Svg Icon | path:assets/media/svg/icons/Design/Layers.svg-->
 							<i class="fa fa-calculator"></i>
@@ -338,7 +338,7 @@
 					</div>
 				</li>
 				@endif
-				@if(auth()->user()->can('patient-read'))
+				<!-- @if(auth()->user()->can('patient-read'))
 				<li class="menu-section">
 					<h4 class="menu-text">OPD/IPD</h4>
 					<i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -409,7 +409,7 @@
 							</li>
 						</ul>
 					</div>
-				</li>
+				</li> -->
 			</ul>
 			<!--end::Menu Nav-->
 		</div>

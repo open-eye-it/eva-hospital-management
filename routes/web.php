@@ -46,13 +46,13 @@ Route::middleware('signin-check')->group(function () {
     });
     /* System Users */
     Route::prefix('user')->group(function () {
-        Route::get('create', [UserController::class, 'create'])->name('user.create')->middleware(['role_or_permission:user-create']);
-        Route::post('store', [UserController::class, 'store'])->name('user.store')->middleware(['role_or_permission:user-create']);
-        Route::get('list', [UserController::class, 'index'])->name('user.list')->middleware(['role_or_permission:user-read']);
-        Route::get('edit/{user_id}', [UserController::class, 'edit'])->name('user.edit')->middleware(['role_or_permission:user-update']);
-        Route::post('update/{user_id}', [UserController::class, 'update'])->name('user.update')->middleware(['role_or_permission:user-update']);
-        Route::get('status/{user_id}', [UserController::class, 'status'])->name('user.status')->middleware(['role_or_permission:user-status']);
-        Route::get('view/{user_id}', [UserController::class, 'viewUser'])->name('user.view')->middleware(['role_or_permission:user-read']);
+        Route::get('create', [UserController::class, 'create'])->name('user.create');
+        Route::post('store', [UserController::class, 'store'])->name('user.store');
+        Route::get('list', [UserController::class, 'index'])->name('user.list');
+        Route::get('edit/{user_id}', [UserController::class, 'edit'])->name('user.edit');
+        Route::post('update/{user_id}', [UserController::class, 'update'])->name('user.update');
+        Route::get('status/{user_id}', [UserController::class, 'status'])->name('user.status');
+        Route::get('view/{user_id}', [UserController::class, 'viewUser'])->name('user.view');
     });
     /* Visiting Fee */
     Route::prefix('visiting_fee')->group(function () {

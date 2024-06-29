@@ -30,9 +30,9 @@ return new class extends Migration
             $table->string('ap_payment_detail')->nullable();
             $table->string('ap_status')->default('pending')->index()->comment('pending/completed(prescribe)/cancelled');
             $table->string('ap_status_reaason')->nullable();
-            $table->string('ap_complaint')->nullable();
-            $table->string('ap_other_detail')->nullable();
-            $table->string('ap_any_advice')->nullable();
+            $table->text('ap_complaint')->nullable();
+            $table->text('ap_other_detail')->nullable();
+            $table->text('ap_any_advice')->nullable();
             $table->date('ap_follow_up_date')->nullable();
             $table->string('ap_surg_required')->default('no')->index()->comment('yes/no');
             $table->string('ap_is_foc')->default('no')->index()->comment('yes/no');

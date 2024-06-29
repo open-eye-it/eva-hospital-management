@@ -338,7 +338,7 @@
 					</div>
 				</li>
 				@endif
-				<!-- @if(auth()->user()->can('patient-read'))
+				@if(auth()->user()->can('patient-read'))
 				<li class="menu-section">
 					<h4 class="menu-text">OPD/IPD</h4>
 					<i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -399,7 +399,7 @@
 									<span class="menu-text">Create</span>
 								</a>
 							</li>
-							<li class="menu-item {{ (Request::segment(1) == 'paappointmenttient' && Request::segment(2) == 'list') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+							<li class="menu-item {{ (Request::segment(1) == 'appointment' && Request::segment(2) == 'list') ? 'menu-item-active' : '' }}" aria-haspopup="true">
 								<a href="{{ route('appointment.list') }}" class="menu-link">
 									<i class="menu-bullet menu-bullet-dot">
 										<span></span>
@@ -409,7 +409,7 @@
 							</li>
 						</ul>
 					</div>
-				</li> -->
+				</li>
 			</ul>
 			<!--end::Menu Nav-->
 		</div>

@@ -76,3 +76,23 @@ function ImagePath($image = '')
         return '';
     }
 }
+
+/* Payment Model */
+function PaymentMode()
+{
+    $data = [
+        [
+            'ap_payment_mode' => 'cash'
+        ],
+        [
+            'ap_payment_mode' => 'card'
+        ],
+        [
+            'ap_payment_mode' => 'mediclaim'
+        ],
+        [
+            'ap_payment_mode' => 'corporate'
+        ]
+    ];
+    return $data;
+}

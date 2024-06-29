@@ -1,5 +1,5 @@
 @extends('layout.master');
-@section('title', 'Appointment - Create')
+@section('title', 'Appointment - Update')
 @section('breadcrumb-module', 'Appointment')
 @section('page-content')
 <!--begin::Row-->
@@ -19,18 +19,18 @@
                                     <h3 class="card-title">Create</h3>
                                 </div>
                                 <!--begin::Form-->
-                                <form method="POST" action="{{ route('referred-doctor.store') }}" id="createCatefgory">
+                                <form method="POST" action="{{ route('appointment.update', base64_encode($data->ap_id)) }}" id="createCatefgory">
                                     <meta name="csrf-token" content="{{ csrf_token() }}">
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label for="ap_pa_search">Patient Name <span class="text-danger">*</span></label>
+                                                    <label>Patient Name <span class="text-danger">*</span></label>
                                                     <select name="pa_id" id="ap_pa_search" class="form-control">
                                                         <option value="">Select</option>
                                                         @if(!empty($patientList))
                                                         @foreach($patientList as $list)
-                                                        <option value="{{ $list->pa_id }}">{{ $list->pa_name }} - {{ $list->pa_id }}</option>
+                                                        <option value="{{ $list->pa_id }}" {{ ($list->pa_id == $data->pa_id) ? 'selected' : '' }}>{{ $list->pa_name }} - {{ $list->pa_id }}</option>
                                                         @endforeach
                                                         @endif
                                                     </select>
@@ -39,30 +39,30 @@
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label for="ap_height">Height</label>
-                                                    <input type="text" class="form-control" placeholder="Height" name="ap_height" id="ap_height" />
+                                                    <label>Height</label>
+                                                    <input type="text" class="form-control" placeholder="Height" name="ap_height" id="ap_height" value="{{ $data->ap_height }}" />
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label for="ap_weight">Weight</label>
-                                                    <input type="text" class="form-control" placeholder="Weight" name="ap_weight" id="ap_weight" />
+                                                    <label>Weight</label>
+                                                    <input type="text" class="form-control" placeholder="Weight" name="ap_weight" id="ap_weight" value="{{ $data->ap_weight }}" />
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label for="ap_bp">BP</label>
-                                                    <input type="text" class="form-control" placeholder="BP" name="ap_bp" id="ap_bp" />
+                                                    <label>BP</label>
+                                                    <input type="text" class="form-control" placeholder="BP" name="ap_bp" id="ap_bp" value="{{ $data->ap_bp }}" />
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label for="ap_doctor_search">Appointment For Doctor <span class="text-danger">*</span></label>
+                                                    <label>Appointment For Doctor <span class="text-danger">*</span></label>
                                                     <select class="form-control" name="ap_doctor" id="ap_doctor_search">
                                                         <option value="">Select</option>
                                                         @if(!empty($doctors))
                                                         @foreach($doctors as $doctor)
-                                                        <option value="{{$doctor['user_id'] }}">{{ $doctor['person_name'] }}</option>
+                                                        <option value="{{$doctor['user_id'] }}" {{ ($doctor['user_id'] == $data->ap_doctor) ? 'selected' : '' }}>{{ $doctor['person_name'] }}</option>
                                                         @endforeach
                                                         @endif
                                                     </select>
@@ -71,25 +71,25 @@
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label for="ap_date">Appointment Date <span class="text-danger">*</span></label>
-                                                    <input type="date" class="form-control" placeholder="Appointment Date" name="ap_date" id="ap_date" />
+                                                    <label>Appointment Date <span class="text-danger">*</span></label>
+                                                    <input type="date" class="form-control" placeholder="Appointment Date" name="ap_date" id="ap_date" value="{{ $data->ap_date }}" />
                                                     <span class="text-danger" id="ap_dateErr"></span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label for="ap_book_via">Appointment Booked Via</label>
-                                                    <input type="text" class="form-control" placeholder="Appointment Booked Via" name="ap_book_via" id="ap_book_via" />
+                                                    <label>Appointment Booked Via</label>
+                                                    <input type="text" class="form-control" placeholder="Appointment Booked Via" name="ap_book_via" id="ap_book_via" value="{{ $data->ap_book_via }}" />
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label for="ap_case_type">Case Type <span class="text-danger">*</span></label>
+                                                    <label>Case Type <span class="text-danger">*</span></label>
                                                     <select class="form-control" name="ap_case_type" id="ap_case_type" onchange="changeFee(this.value)">
                                                         <option value="">Select</option>
                                                         @if(!empty($visitingFees))
                                                         @foreach($visitingFees as $fee)
-                                                        <option value="{{ $fee->vf_case_type.'-'.$fee->vf_fees }}">{{ ucfirst($fee->vf_case_type) }}</option>
+                                                        <option value="{{ $fee->vf_case_type.'-'.$fee->vf_fees }}" {{ ($fee->vf_case_type == $data->ap_case_type) ? 'selected' : '' }}>{{ ucfirst($fee->vf_case_type) }}</option>
                                                         @endforeach
                                                         @endif
                                                     </select>
@@ -98,8 +98,8 @@
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label for="ap_charge">Fees <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" placeholder="Fees" name="ap_charge" id="ap_charge" disabled />
+                                                    <label>Fees <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" placeholder="Fees" name="ap_charge" id="ap_charge" value="{{ $data->ap_charge }}" disabled />
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
@@ -108,7 +108,7 @@
                                                     <select class="form-control" name="ap_payment_mode" id="ap_payment_mode" onchange="changeFee(this.value)">
                                                         <option value="">Select</option>
                                                         @foreach(PaymentMode() as $paymentType)
-                                                        <option value="{{ $paymentType['ap_payment_mode'] }}">{{ ucfirst($paymentType['ap_payment_mode']) }}</option>
+                                                        <option value="{{ $paymentType['ap_payment_mode'] }}" {{ ($paymentType['ap_payment_mode'] == $data->ap_payment_mode) ? 'selected' : '' }}>{{ ucfirst($paymentType['ap_payment_mode']) }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -116,7 +116,7 @@
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
                                                     <label for="ap_payment_detail">Payment Detail <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" placeholder="Payment Detail" name="ap_payment_detail" id="ap_payment_detail" />
+                                                    <input type="text" class="form-control" placeholder="Payment Detail" name="ap_payment_detail" id="ap_payment_detail" value="{{ $data->ap_payment_detail }}" />
                                                 </div>
                                             </div>
                                         </div>
@@ -129,7 +129,7 @@
                                         <!--end: Code-->
                                     </div>
                                     <div class="card-footer">
-                                        <button type="submit" class="btn btn-primary mr-2" id="createBtn">Create</button>
+                                        <button type="submit" class="btn btn-primary mr-2" id="createBtn">Update</button>
                                         <a href="{{ url()->previous() }}" class="btn btn-secondary">Cancel</a>
                                     </div>
                                 </form>
@@ -188,7 +188,7 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                 },
-                url:"{{ route('appointment.store') }}",
+                url:"{{ route('appointment.update', base64_encode($data->ap_id)) }}",
                 method:"POST",
                 data:{pa_id:pa_id, ap_height:ap_height, ap_weight:ap_weight, ap_bp:ap_bp, ap_doctor:ap_doctor, ap_date:ap_date, ap_book_via:ap_book_via, ap_case_type:ap_case_type, ap_payment_mode:ap_payment_mode, ap_payment_detail:ap_payment_detail},
                 success:function(res){

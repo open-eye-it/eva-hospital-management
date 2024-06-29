@@ -90,7 +90,7 @@
                                     </div>
                                     <div class="card-footer">
                                         <button type="submit" class="btn btn-primary mr-2" id="createBtn">Update</button>
-                                        <a href="{{ route('user.list') }}" class="btn btn-secondary">Cancel</a>
+                                        <a href="{{ url()->previous() }}" class="btn btn-secondary">Cancel</a>
                                     </div>
                                 </form>
                                 <!--end::Form-->

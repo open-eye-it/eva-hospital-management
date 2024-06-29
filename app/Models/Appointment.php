@@ -31,12 +31,14 @@ class Appointment extends Model
         'ap_follow_up_date',
         'ap_surg_required',
         'ap_is_foc',
-        'ap_is_workshop'
+        'ap_is_workshop',
+        'ap_payment_mode',
+        'ap_payment_detail'
     ];
 
-    public function singlData($pa_id)
+    public function singlData($ap_id)
     {
-        return static::where('pa_id', $pa_id)->first();
+        return static::where('ap_id', $ap_id)->first();
     }
 
     public function insertData($data)
@@ -58,18 +60,37 @@ class Appointment extends Model
         return $output;
     }
 
-    public function updateData($data, $pa_id)
+    public function updateData($data, $ap_id)
     {
-        return static::where('pa_id', $pa_id)->update(\Arr::only($data, $this->fillable));
+        return static::where('ap_id', $ap_id)->update(\Arr::only($data, $this->fillable));
     }
 
     public function FilterData($data, $filterdata)
     {
         $search_text    = isset($filterdata['search_text']) ? $filterdata['search_text'] : '';
+        $patient        = isset($filterdata['patient']) ? $filterdata['patient'] : '';
+        $appointment_date_range = isset($filterdata['appointment_date_range']) ? $filterdata['appointment_date_range'] : '';
+        $doctor         = isset($filterdata['doctor']) ? $filterdata['doctor'] : '';
+        $case_type      = isset($filterdata['case_type']) ? $filterdata['case_type'] : '';
         if (isset($search_text) && $search_text != '') {
-            $data->where('pa_id', 'LIKE', '%' . $search_text . '%');
-            $data->orWhere('ap_doctor', 'LIKE', '%' . $search_text . '%');
-            $data->orWhere('ap_date', 'LIKE', '%' . $search_text . '%');
+            $data->where('ap_id', $search_text);
+        }
+        if (isset($patient) && $patient != '') {
+            $data->where('pa_id', $patient);
+        }
+        if (isset($appointment_date_range) && $appointment_date_range != '') {
+            $dateArr = explode(' - ', $appointment_date_range);
+            $dateArr[0] = date('Y-m-d', strtotime($dateArr[0]));
+            $dateArr[1] = date('Y-m-d', strtotime($dateArr[1]));
+            $data->whereBetween('ap_date', $dateArr);
+        } else {
+            $data->where('ap_date', date('Y-m-d'));
+        }
+        if (isset($doctor) && $doctor != '') {
+            $data->where('ap_doctor', $doctor);
+        }
+        if (isset($case_type) && $case_type != '') {
+            $data->where('ap_case_type', $case_type);
         }
     }
 
@@ -82,5 +103,15 @@ class Appointment extends Model
     public function UpdatedByData()
     {
         return $this->hasOne(User::class, 'user_id', 'ap_updated_by');
+    }
+
+    public function patientData()
+    {
+        return $this->hasOne(Patient::class, 'pa_id', 'pa_id');
+    }
+
+    public function doctorData()
+    {
+        return $this->hasOne(User::class, 'user_id', 'ap_doctor');
     }
 }

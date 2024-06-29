@@ -1,6 +1,6 @@
 @extends('layout.master');
 @section('title', 'Patient - Update')
-@section('breadcrumb-module', 'Update')
+@section('breadcrumb-module', 'Patient')
 @section('page-content')
 <!--begin::Row-->
 <div class="row">
@@ -234,7 +234,7 @@
                                     </div>
                                     <div class="card-footer">
                                         <button type="submit" class="btn btn-primary mr-2" id="createBtn">Update</button>
-                                        <a href="{{ route('patient.list') }}" class="btn btn-secondary">Cancel</a>
+                                        <a href="{{ url()->previous() }}" class="btn btn-secondary">Cancel</a>
                                     </div>
                                 </form>
                                 <!--end::Form-->

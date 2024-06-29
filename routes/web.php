@@ -128,5 +128,11 @@ Route::middleware('signin-check')->group(function () {
         Route::get('create', [AppointmentController::class, 'create'])->name('appointment.create');
         Route::post('store', [AppointmentController::class, 'store'])->name('appointment.store');
         Route::get('list', [AppointmentController::class, 'index'])->name('appointment.list');
+        Route::get('edit/{ap_id}', [AppointmentController::class, 'edit'])->name('appointment.edit');
+        Route::post('update/{ap_id}', [AppointmentController::class, 'update'])->name('appointment.update');
+        Route::get('status/{string_val}', [AppointmentController::class, 'status'])->name('appointment.status');
+        Route::get('view/{ap_id}', [AppointmentController::class, 'view'])->name('appointment.view');
+        Route::get('prescribe/{ap_id}', [AppointmentController::class, 'prescribe'])->name('appointment.prescribe');
+        Route::post('prescribe/store/{ap_id}', [AppointmentController::class, 'prescribe_store'])->name('appointment.prescribe.store');
     });
 });

@@ -77,6 +77,8 @@
 <script src="assets/js/pages/widgets.js"></script>
 <script src="assets/js/pages/crud/datatables/basic/basic.js"></script>
 <script src="assets/js/pages/crud/forms/widgets/select2.js"></script>
+<script src="assets/js/pages/crud/forms/widgets/bootstrap-daterangepicker.js"></script>
+<script src="assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js"></script>
 <!--end::Page Scripts-->
 <script src="assets/js/custom.js"></script>
 <script src="assets/js/pages/features/miscellaneous/sweetalert2.js"></script>

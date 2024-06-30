@@ -11,6 +11,8 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use App\Models\User;
 use App\Models\VisitingFee;
+use App\Models\GeneralMedicine;
+use App\Models\AppointmentMedicine;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -23,6 +25,8 @@ class AppointmentController extends MainController
         $this->patient = new Patient;
         $this->user = new User;
         $this->visiting_fee = new VisitingFee;
+        $this->general_medicine = new GeneralMedicine;
+        $this->appointment_medicine = new AppointmentMedicine;
     }
 
     public function index(Request $request)
@@ -159,18 +163,61 @@ class AppointmentController extends MainController
     {
         $ap_id = base64_decode($ap_id);
         $data = $this->appointment->singlData($ap_id);
-        return view('appointment.prescribe', compact('data'));
+        $prescribeMedicineList = $this->appointment_medicine->getList(['ap_id' => $ap_id]);
+
+        $generalMedicines = $this->general_medicine->getList();
+        return view('appointment.prescribe', compact('data', 'generalMedicines', 'prescribeMedicineList'));
     }
 
     public function prescribe_store(Request $request, $ap_id)
     {
         $input = $request->all();
         $ap_id = base64_decode($ap_id);
+        if ($input['ap_is_foc'] == 'yes') {
+            $input['ap_charge'] = 0;
+        } else {
+            $apData = $this->appointment->singlData($ap_id);
+            $visitingFees = $this->visiting_fee->getList();
+            foreach ($visitingFees as $fee) {
+                if ($fee->vf_case_type == $apData->ap_case_type) {
+                    $input['ap_charge'] = $fee->vf_fees;
+                }
+            }
+        }
         $update = $this->appointment->updateData($input, $ap_id);
         if ($update == 1) {
             return $this->getSuccessResult([], 'Prescription update.', true);
         } else {
             return $this->getErrorMessage('Prescription not update, something is wrong.');
+        }
+    }
+
+    public function appointmentMedicineStore(Request $request)
+    {
+        $query = $request->query();
+        $query['ap_id'] = base64_decode($query['ap_id']);
+        $am_id = $this->getAppointmentMedicineID();
+        $query['am_id'] = $am_id;
+        $login_user_id = Auth::user()->user_id;
+        $query['am_added_by'] = $login_user_id;
+        $insert = $this->appointment_medicine->insertData($query);
+        if (isset($insert->am_id)) {
+            $data = $this->appointment_medicine->singlData($insert->am_id);
+            $data['medicine_name'] = $data->medicineData->gm_name . ' (' . $data->medicineData->gm_company_name . ')';
+            return $this->getSuccessResult($data, 'Appointment Medicine added', true);
+        } else {
+            return $this->getErrorMessage('Appointment Medicine not added, something is wrong.');
+        }
+    }
+
+    public function appointmentMedicineRemove($am_id)
+    {
+        $am_id = base64_decode($am_id);
+        $delete = $this->appointment_medicine->deleteData($am_id);
+        if ($delete) {
+            return $this->getSuccessResult([], 'Appointment Medicine removed', true);
+        } else {
+            return $this->getErrorMessage('Appointment Medicine not removed, something is wrong.');
         }
     }
 
@@ -182,6 +229,17 @@ class AppointmentController extends MainController
             $this->getUniqueID();
         } else {
             return $ap_id;
+        }
+    }
+
+    public function getAppointmentMedicineID()
+    {
+        $am_id = $this->randomString(10, 'number');
+        $check = $this->appointment_medicine->singlData($am_id);
+        if (!empty($check)) {
+            $this->getAppointmentMedicineID();
+        } else {
+            return $am_id;
         }
     }
 }

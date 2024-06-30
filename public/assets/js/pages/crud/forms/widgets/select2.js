@@ -7,6 +7,10 @@ var __webpack_exports__ = {};
 var KTSelect2 = function() {
     // Private functions
     var demos = function() {
+        //Apppointment Prescribe Medicine Filter
+        $('#gm_prescribe_id, #gm_prescribe_id').select2({
+            placeholder: 'Select Medicine'
+        });
         //Apppointment Doctor Filter
         $('#doctor, #doctor').select2({
             placeholder: 'Select Patient'

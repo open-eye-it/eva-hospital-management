@@ -119,7 +119,7 @@
                                                 </td>
                                                 <td>
                                                     <a href="{{ route('appointment.edit', base64_encode($appointment->ap_id)) }}" title="Edit"><i class="la la-edit icon-3x"></i></a>
-                                                    <span id="fullView" data-id="{{ base64_encode($appointment->ap_id) }}" title="Full View"><i class="la la-eye icon-3x custor_pointer"></i></span>
+                                                    <span id="fullView" data-id="{{ base64_encode($appointment->ap_id) }}" title="Full View"><i class="la la-eye icon-3x cursor_pointer"></i></span>
                                                 </td>
                                             </tr>
                                             @endforeach

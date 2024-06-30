@@ -157,7 +157,94 @@ PROVISIONAL DIAGNOSIS : zxcas
                                         <hr />
                                         <h4>Medicine Detail</h4>
                                         <div class="row">
-                                            <div class="col-lg-6 col-md-6 col-12"></div>
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label for="gm_prescribe_id">Medicine</label>
+                                                    <select class="form-control" name="gm_id" id="gm_prescribe_id">
+                                                        <option value="">Select</option>
+                                                        @if(!empty($generalMedicines))
+                                                        @foreach($generalMedicines as $gmedicine)
+                                                        <option value="{{ $gmedicine->gm_id }}">{{ $gmedicine->gm_name }} ({{ $gmedicine->gm_company_name }})</option>
+                                                        @endforeach
+                                                        @endif
+                                                    </select>
+                                                    <span class="text-danger" id="gm_idErr"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label for="am_days">No of Days</label>
+                                                    <input type="text" class="form-control" value="" name="am_days" id="am_days">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label for="am_timing">Timing</label>
+                                                    <input type="text" class="form-control" value="" name="am_timing" id="am_timing">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label for="ap_morning">Morning</label>
+                                                    <select class="form-control" name="am_morning" id="am_morning">
+                                                        <option value="no">No</option>
+                                                        <option value="yes">Yes</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label for="ap_afternoon">Afternoon</label>
+                                                    <select class="form-control" name="am_afternoon" id="am_afternoon">
+                                                        <option value="no">No</option>
+                                                        <option value="yes">Yes</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label for="ap_evening">Evening</label>
+                                                    <select class="form-control" name="am_evening" id="am_evening">
+                                                        <option value="no">No</option>
+                                                        <option value="yes">Yes</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 pb-4">
+                                                <button type="button" class="btn btn-primary mr-2" id="addBtn" onclick="addMedicine('{{ base64_encode($data->ap_id) }}')">Add</button>
+                                            </div>
+                                            <div class="col-12">
+                                                <table class="table table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Medicine Name</th>
+                                                            <th>No. of Days</th>
+                                                            <th>Timing</th>
+                                                            <th>Morning</th>
+                                                            <th>Afternoon</th>
+                                                            <th>Evening</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="medicine_detail">
+                                                        @if(!empty($prescribeMedicineList))
+                                                        @foreach($prescribeMedicineList as $prescribeMedicine)
+                                                        <tr id="table_row_{{ $prescribeMedicine->am_id }}">
+                                                            <td>{{ $prescribeMedicine->medicineData->gm_name.' ('.$prescribeMedicine->medicineData->gm_company_name.')' }}</td>
+                                                            <td>{{ $prescribeMedicine->am_days }}</td>
+                                                            <td>{{ $prescribeMedicine->am_timing }}</td>
+                                                            <td>{{ $prescribeMedicine->am_morning }}</td>
+                                                            <td>{{ $prescribeMedicine->am_afternoon }}</td>
+                                                            <td>{{ $prescribeMedicine->am_evening }}</td>
+                                                            <td>
+                                                                <i onclick="removeMedicine('{{ $prescribeMedicine->am_id }}')" title="Remove" class="icon-2x la la-trash cursor_pointer"></i>
+                                                            </td>
+                                                        </tr>
+                                                        @endforeach
+                                                        @endif
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                         <!--begin: Code-->
                                         <div class="example-code mt-10">
@@ -224,5 +311,79 @@ PROVISIONAL DIAGNOSIS : zxcas
             }
         });
     })
+
+    /* Medicine Add */
+    function addMedicine(ap_id){
+        let gm_id = $('#gm_prescribe_id').val();
+        let am_days = $('#am_days').val();
+        let am_timing = $('#am_timing').val();
+        let am_morning = $('#am_morning').val();
+        let am_afternoon = $('#am_afternoon').val();
+        let am_evening = $('#am_evening').val();
+        if(gm_id == ''){
+            $('#gm_idErr').text('Please select medicine');
+            timeoutID('gm_idErr', 3000);
+            scrollTop('gm_idErr');
+        }else{
+            $('#addBtn').addClass('spinner spinner-white spinner-right');
+            let data = 'ap_id='+ap_id+'&gm_id='+gm_id+'&am_days='+am_days+'&am_timing='+am_timing+'&am_morning='+am_morning+'&am_afternoon='+am_afternoon+'&am_evening='+am_evening;
+            $.ajax({
+                url:"{{ route('appointment.medicine.store') }}"+'?'+data,
+                method:"get",
+                success:function(res){
+                    $('#addBtn').removeClass('spinner spinner-white spinner-right');
+                    if(res.response === true){
+                        let data = res.data;
+                        let tableData = '<tr id="table_row_'+data.am_id+'"> \
+                        <td>'+data.medicine_name+'</td> \
+                        <td>'+data.am_days+'</td> \
+                        <td>'+data.am_timing+'</td> \
+                        <td>'+data.am_morning+'</td> \
+                        <td>'+data.am_afternoon+'</td> \
+                        <td>'+data.am_evening+'</td> \
+                        <td><i onclick="removeMedicine('+data.am_id+')" title="Remove" class="icon-2x la la-trash cursor_pointer"></i></td> \
+                        </tr>';
+
+                        $('#gm_prescribe_id').val('');
+                        $('#am_days').val('');
+                        $('#am_timing').val('');
+                        $('#am_morning').val('');
+                        $('#am_afternoon').val('');
+                        $('#am_evening').val('');
+
+                        $('#medicine_detail').prepend(tableData);
+                        sweetAlertSuccess(res.message, 2000);
+                    }else{
+                        sweetAlertError(res.message, 2000); 
+                    }
+                },
+                error:function(r){
+                    $('#addBtn').removeClass('spinner spinner-white spinner-right');
+                    let res = r.responseJSON;
+                    sweetAlertError(res.message, 2000); 
+                }
+            });
+        }
+    }
+
+    /* Medicine Remove */
+    function removeMedicine(am_id){
+        $.ajax({
+            url:"{{ route('appointment.medicine.remove', '') }}"+'/'+btoa(am_id),
+            method:"get",
+            success:function(res){
+                if(res.response === true){
+                    $('#table_row_'+am_id).remove();
+                    sweetAlertSuccess(res.message, 2000);
+                }else{
+                    sweetAlertError(res.message, 2000); 
+                }
+            },
+            error:function(r){
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 2000); 
+            }
+        });
+    }
 </script>
 @endsection

@@ -35,6 +35,8 @@ return new class extends Migration
             $table->text('ap_any_advice')->nullable();
             $table->date('ap_follow_up_date')->nullable();
             $table->string('ap_surg_required')->default('no')->index()->comment('yes/no');
+            $table->string('ap_surg_date')->nullable();
+            $table->string('ap_surg_type')->nullable();
             $table->string('ap_is_foc')->default('no')->index()->comment('yes/no');
             $table->string('ap_is_workshop')->default('no')->index()->comment('yes/no');
             $table->timestamps();

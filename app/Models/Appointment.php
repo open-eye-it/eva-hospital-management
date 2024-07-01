@@ -30,6 +30,8 @@ class Appointment extends Model
         'ap_any_advice',
         'ap_follow_up_date',
         'ap_surg_required',
+        'ap_surg_date',
+        'ap_surg_type',
         'ap_is_foc',
         'ap_is_workshop',
         'ap_payment_mode',

@@ -92,10 +92,22 @@
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
                                                     <label for="ap_surg_required">Surgery Required?</label>
-                                                    <select class="form-control" name="ap_surg_required" id="ap_surg_required">
+                                                    <select class="form-control" name="ap_surg_required" id="ap_surg_required" onchange="changeSurgeryRequired(this.value)">
                                                         <option value="yes" {{ ($data->ap_surg_required == 'yes') ? 'selected' : '' }}>Yes</option>
                                                         <option value="no" {{ ($data->ap_surg_required == 'no') ? 'selected' : '' }}>No</option>
                                                     </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-12 {{ ($data->ap_surg_required != 'yes') ? 'd-none' : '' }}" id="surgeryDate">
+                                                <div class="form-group">
+                                                    <label for="ap_surg_date">Surgery Date</label>
+                                                    <input type="date" class="form-control" name="ap_surg_date" id="ap_surg_date" value="{{ $data->ap_surg_date }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-12 {{ ($data->ap_surg_required != 'yes') ? 'd-none' : '' }}" id="surgeryType">
+                                                <div class="form-group">
+                                                    <label for="ap_surg_type">Type of Surgery</label>
+                                                    <input type="text" class="form-control" name="ap_surg_type" id="ap_surg_type" value="{{ $data->ap_surg_type }}">
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
@@ -309,10 +321,26 @@ PROVISIONAL DIAGNOSIS : zxcas
         $('#ap_charge').val(arr[1]);
     }
 
+    function changeSurgeryRequired(ap_surg_required){
+        if(ap_surg_required == 'yes'){
+            $('#surgeryDate').removeClass('d-none');
+            $('#surgeryType').removeClass('d-none');
+            $('#ap_surg_date').val('{{ $data->ap_surg_date }}');
+            $('#ap_surg_type').val('{{ $data->ap_surg_type }}');
+        }else{
+            $('#surgeryDate').addClass('d-none');
+            $('#surgeryType').addClass('d-none');
+            $('#ap_surg_date').val('');
+            $('#ap_surg_type').val('');
+        }
+    }
+
     $("form").submit(function(e) {
         e.preventDefault();
         let ap_follow_up_date = $('#ap_follow_up_date').val();
         let ap_surg_required = $('#ap_surg_required').val();
+        let ap_surg_date = $('#ap_surg_date').val();
+        let ap_surg_type = $('#ap_surg_type').val();
         let ap_is_foc = $('#ap_is_foc').val();
         let ap_complaint = $('#ap_complaint').val();
         let ap_other_detail = $('#ap_other_detail').val();
@@ -324,7 +352,7 @@ PROVISIONAL DIAGNOSIS : zxcas
             },
             url:"{{ route('appointment.prescribe.store', base64_encode($data->ap_id)) }}",
             method:"POST",
-            data:{ap_follow_up_date:ap_follow_up_date, ap_surg_required:ap_surg_required, ap_is_foc:ap_is_foc, ap_complaint:ap_complaint, ap_other_detail:ap_other_detail, ap_any_advice:ap_any_advice},
+            data:{ap_follow_up_date:ap_follow_up_date, ap_surg_required:ap_surg_required,ap_surg_date:ap_surg_date,ap_surg_type:ap_surg_type, ap_is_foc:ap_is_foc, ap_complaint:ap_complaint, ap_other_detail:ap_other_detail, ap_any_advice:ap_any_advice},
             success:function(res){
                 $('#createBtn').removeClass('spinner spinner-white spinner-right');
                 if(res.response === true){

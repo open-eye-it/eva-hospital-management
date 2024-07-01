@@ -75,7 +75,9 @@ class Appointment extends Model
         $doctor         = isset($filterdata['doctor']) ? $filterdata['doctor'] : '';
         $case_type      = isset($filterdata['case_type']) ? $filterdata['case_type'] : '';
         if (isset($search_text) && $search_text != '') {
-            $data->where('ap_id', $search_text);
+            $data->where(function ($query) use ($search_text) {
+                $query->where('ap_id', $search_text)->orWhere('pa_id', $search_text);
+            });
         }
         if (isset($patient) && $patient != '') {
             $data->where('pa_id', $patient);
@@ -94,6 +96,22 @@ class Appointment extends Model
         if (isset($case_type) && $case_type != '') {
             $data->where('ap_case_type', $case_type);
         }
+    }
+
+    public function totalFees($filterdata)
+    {
+        //return static::sum('ap_charge');
+        $data = static::select('*');
+        $this->FilterData($data, $filterdata);
+        return $data->sum('ap_charge');
+    }
+
+    public function totalAdditionalFees($filterdata)
+    {
+        //return static::sum('ap_additional_charge');
+        $data = static::select('*');
+        $this->FilterData($data, $filterdata);
+        return $data->sum('ap_additional_charge');
     }
 
     /* Patient All appointments */

@@ -8,6 +8,14 @@ var __webpack_exports__ = {};
 var KTDatatablesBasicScrollable = function() {
 
     var initTable1 = function() {
+        let scrollable_table_custom = $('.scrollable_table_custom');
+        scrollable_table_custom.DataTable({
+            scrollX: true,
+            paging: false,
+            info:false,
+            searching:false,
+        });
+
         var table = $('#kt_datatable1');
 
         // begin first table

@@ -76,7 +76,7 @@
                                 </div>
                                 <div class="card-body">
                                     <!--begin: Datatable-->
-                                    <table class="table table-bordered" id="">
+                                    <table class="table table-bordered scrollable_table_custom" id="">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>

@@ -63,7 +63,7 @@
                                             </div>
                                         </div>
                                         <hr />
-                                        <h4>Appointment Detail</h4>
+                                        <h4>Appointment Detail <button type="button" class="btn btn-primary" onclick="checkAllHeightWeightBP('{{ base64_encode($data->pa_id) }}')">Check Ht-Wt-BP</button></h4>
                                         <div class="row">
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
@@ -269,7 +269,36 @@ PROVISIONAL DIAGNOSIS : zxcas
             </div>
             <!--end::Entry-->
         </div>
+    </div>
+</div>
+<div class="modal fade" id="patientHeightWeightBP" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">All Height Weight BP</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Height</th>
+                            <th>Weight</th>
+                            <th>BP</th>
+                        </tr>
+                    </thead>
+                    <tbody id="allHeightWeightBP">
 
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
 </div>
 <!--end::Row-->
@@ -382,6 +411,27 @@ PROVISIONAL DIAGNOSIS : zxcas
             error:function(r){
                 let res = r.responseJSON;
                 sweetAlertError(res.message, 2000); 
+            }
+        });
+    }
+
+    /* Get All height weight bp of current patient */
+    function checkAllHeightWeightBP(pa_id){
+        $.ajax({
+            url:"{{ route('appointment.all_poointment', '') }}"+'/'+pa_id,
+            method:"GET",
+            success:function(res){
+                if(res.response === true){
+                    let data = res.data;
+                    $('#allHeightWeightBP').html(data);
+                    $('#patientHeightWeightBP').modal('show');
+                }else{
+                    sweetAlertError(res.message, 2000); 
+                }
+            },
+            error:function(r){
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 2000);
             }
         });
     }

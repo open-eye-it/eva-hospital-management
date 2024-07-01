@@ -97,6 +97,11 @@ class Patient extends Model
         return static::where('pa_id', $pa_id)->update(\Arr::only($data, $this->fillable));
     }
 
+    public function patientActiveList()
+    {
+        return static::where('pa_status', 1)->orderBy('id', 'DESC')->get();
+    }
+
     public function FilterData($data, $filterdata)
     {
         $search_text    = isset($filterdata['search_text']) ? $filterdata['search_text'] : '';

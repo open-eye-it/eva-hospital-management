@@ -14,6 +14,7 @@ use App\Http\Controllers\medicines\GeneralMedicineController;
 use App\Http\Controllers\medicines\OperationMedicineController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\AccounDetail\OPDAccountDetailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -136,5 +137,11 @@ Route::middleware('signin-check')->group(function () {
         Route::post('prescribe/store/{ap_id}', [AppointmentController::class, 'prescribe_store'])->name('appointment.prescribe.store');
         Route::get('prescribe/medicine/store', [AppointmentController::class, 'appointmentMedicineStore'])->name('appointment.medicine.store');
         Route::get('prescribe/medicine/remove/{am_id}', [AppointmentController::class, 'appointmentMedicineRemove'])->name('appointment.medicine.remove');
+        Route::get('patient_all_appointment/{pa_id}', [AppointmentController::class, 'patientAllAppointment'])->name('appointment.all_poointment');
+    });
+
+    /* Appointment Account Detail */
+    Route::prefix('opd-account-detail')->group(function () {
+        Route::get('list', [OPDAccountDetailController::class, 'index'])->name('opd-account-detail.list');
     });
 });

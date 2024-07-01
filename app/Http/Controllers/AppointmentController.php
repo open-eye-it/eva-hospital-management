@@ -29,6 +29,7 @@ class AppointmentController extends MainController
         $this->appointment_medicine = new AppointmentMedicine;
     }
 
+    /* appointment list show */
     public function index(Request $request)
     {
         $input = $request->all();
@@ -47,9 +48,10 @@ class AppointmentController extends MainController
         return view('appointment.list', compact('list', 'searchData', 'patientList', 'doctors', 'visitingFees'));
     }
 
+    /* appointment create */
     public function create()
     {
-        $patientList = $this->patient->getList();
+        $patientList = $this->patient->patientActiveList();
         $doctorList = User::select('user_id', 'person_name')->role('doctor')->where('user_status', 1)->orderBy('id', 'asc')->get()->toArray();
         $assDoctorList = User::select('user_id', 'person_name')->role('assistant_doctor')->where('user_status', 1)->orderBy('id', 'asc')->get()->toArray();
         $doctors = array_merge($doctorList, $assDoctorList);
@@ -57,6 +59,7 @@ class AppointmentController extends MainController
         return view('appointment.create', compact('patientList', 'doctors', 'visitingFees'));
     }
 
+    /* appointment store */
     public function store(Request $request)
     {
         $input = $request->all();
@@ -78,6 +81,7 @@ class AppointmentController extends MainController
         }
     }
 
+    /* appointment edit */
     public function edit($ap_id)
     {
         $ap_id = base64_decode($ap_id);
@@ -94,6 +98,7 @@ class AppointmentController extends MainController
         }
     }
 
+    /* appointment update */
     public function update(Request $request, $ap_id)
     {
         $input = $request->all();
@@ -117,6 +122,7 @@ class AppointmentController extends MainController
         }
     }
 
+    /* appointment status change */
     public function status($string_val)
     {
         $string_val_decode = base64_decode($string_val);
@@ -140,6 +146,7 @@ class AppointmentController extends MainController
         }
     }
 
+    /* appointment full detail show */
     public function view($ap_id)
     {
         $ap_id = base64_decode($ap_id);
@@ -159,16 +166,18 @@ class AppointmentController extends MainController
         }
     }
 
+    /* prescription detail show */
     public function prescribe($ap_id)
     {
         $ap_id = base64_decode($ap_id);
         $data = $this->appointment->singlData($ap_id);
         $prescribeMedicineList = $this->appointment_medicine->getList(['ap_id' => $ap_id]);
 
-        $generalMedicines = $this->general_medicine->getList();
+        $generalMedicines = $this->general_medicine->getActiveList();
         return view('appointment.prescribe', compact('data', 'generalMedicines', 'prescribeMedicineList'));
     }
 
+    /* prescription store */
     public function prescribe_store(Request $request, $ap_id)
     {
         $input = $request->all();
@@ -192,6 +201,7 @@ class AppointmentController extends MainController
         }
     }
 
+    /* appointment medicine store */
     public function appointmentMedicineStore(Request $request)
     {
         $query = $request->query();
@@ -210,6 +220,7 @@ class AppointmentController extends MainController
         }
     }
 
+    /* Appointment medicine remove */
     public function appointmentMedicineRemove($am_id)
     {
         $am_id = base64_decode($am_id);
@@ -218,6 +229,22 @@ class AppointmentController extends MainController
             return $this->getSuccessResult([], 'Appointment Medicine removed', true);
         } else {
             return $this->getErrorMessage('Appointment Medicine not removed, something is wrong.');
+        }
+    }
+
+    /* Patient all height, weight, bp */
+    public function patientAllAppointment($pa_id)
+    {
+        $pa_id = base64_decode($pa_id);
+        $appointmentList = $this->appointment->patientAllAppointment($pa_id);
+        if (count($appointmentList->toArray()) > 0) {
+            $HeightWeightBPRow = '';
+            foreach ($appointmentList as $hwb) {
+                $HeightWeightBPRow .= '<tr><td>' . date('d M Y', strtotime($hwb->ap_date)) . '</td><td>' . $hwb->ap_height . '</td><td>' . $hwb->ap_weight . '</td><td>' . $hwb->ap_bp . '</td></tr>';
+            }
+            return $this->getSuccessResult($HeightWeightBPRow, 'Patient Height, Weight, BP found', true);
+        } else {
+            return $this->getErrorMessage('Patient Height, Weight, BP not found.');
         }
     }
 

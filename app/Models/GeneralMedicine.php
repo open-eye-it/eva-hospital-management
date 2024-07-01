@@ -44,6 +44,11 @@ class GeneralMedicine extends Model
         return $output;
     }
 
+    public function getActiveList()
+    {
+        return static::where('gm_status', 1)->orderBy('id', 'DESC')->get();
+    }
+
     public function updateGeneralMedicine($data, $gm_id)
     {
         return static::where('gm_id', $gm_id)->update(\Arr::only($data, $this->fillable));

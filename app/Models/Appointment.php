@@ -94,6 +94,12 @@ class Appointment extends Model
         }
     }
 
+    /* Patient All appointments */
+    public function patientAllAppointment($pa_id)
+    {
+        return static::select('*')->where('pa_id', $pa_id)->orderBy('id', "DESC")->get();
+    }
+
     /* Relationship */
     public function AddedByData()
     {

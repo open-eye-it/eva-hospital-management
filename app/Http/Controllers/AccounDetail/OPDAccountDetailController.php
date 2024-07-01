@@ -58,7 +58,7 @@ class OPDAccountDetailController extends MainController
             foreach ($list as $charge) {
                 $tableRow .= '<tr><td>' . $charge->apac_id . '</td><td>' . $charge->apac_desc . '</td><td>' . $charge->apac_qty . '</td><td>' . $charge->apac_charge . '</td><td>' . $charge->apac_final_charge . '</td></tr>';
             }
-            
+
             return $this->getSuccessResult($tableRow, 'Additional Charge list found', true);
         } else {
             return $this->getErrorMessage('Additional Charge list not found.');
@@ -85,7 +85,7 @@ class OPDAccountDetailController extends MainController
 
             /* apoointment overall total with charge + additional charge */
             $inputSearch = $query;
-            $searchData['search_text']  = isset($iinputSearchnput->search_text) ? $inputSearch->search_text : '';
+            $searchData['search_text']  = isset($inputSearch->search_text) ? $inputSearch->search_text : '';
             $searchData['appointment_date_range']  = isset($inputSearch->appointment_date_range) ? $inputSearch->appointment_date_range : '';
             $total_fees = $this->totalFees($searchData);
             $total_additional_fees = $this->totalAdditionalFees($searchData);

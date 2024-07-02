@@ -212,6 +212,36 @@ class PermissionSeeder extends Seeder
                 'display_name' => 'Status Patient',
                 'guard_name'   => 'web',
                 'section'      => 'patient',
+            ],
+            [
+                'name'         => 'mac-address-read',
+                'display_name' => 'Read Mac Address',
+                'guard_name'   => 'web',
+                'section'      => 'mac-address',
+            ],
+            [
+                'name'         => 'mac-address-create',
+                'display_name' => 'Create Mac Address',
+                'guard_name'   => 'web',
+                'section'      => 'mac-address',
+            ],
+            [
+                'name'         => 'mac-address-update',
+                'display_name' => 'Update Mac Address',
+                'guard_name'   => 'web',
+                'section'      => 'mac-address',
+            ],
+            [
+                'name'         => 'mac-address-status',
+                'display_name' => 'Status Mac Address',
+                'guard_name'   => 'web',
+                'section'      => 'mac-address',
+            ],
+            [
+                'name'         => 'mac-address-remove',
+                'display_name' => 'Remove Mac Address',
+                'guard_name'   => 'web',
+                'section'      => 'mac-address',
             ]
         ];
 

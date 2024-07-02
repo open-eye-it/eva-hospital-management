@@ -99,7 +99,17 @@
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
                                                     <label>Fees <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" placeholder="Fees" name="ap_charge" id="ap_charge" value="{{ $data->ap_charge }}" disabled />
+                                                    <input type="text" class="form-control" placeholder="Fees" name="ap_charge" id="ap_charge" value="{{ $data->ap_charge }}" {{ ($data->ap_is_workshop == 'no') ? 'disabled' : '' }} />
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label for="ap_case_type">Is Workshop or not? <span class="text-danger">*</span></label>
+                                                    <select class="form-control" name="ap_is_workshop" id="ap_is_workshop" onchange="changeIsWorkshop(this.value)">
+                                                        <option value="no" {{ ($data->ap_is_workshop == 'no') ? 'selected' : '' }}>No</option>
+                                                        <option value="yes" {{ ($data->ap_is_workshop == 'yes') ? 'selected' : '' }}>Yes</option>
+                                                    </select>
+                                                    <span class="text-danger" id="ap_cate_typeErr"></span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
@@ -154,6 +164,18 @@
         $('#ap_charge').val(arr[1]);
     }
 
+    function changeIsWorkshop(val){
+        if(val == 'yes'){
+            $('#ap_charge').prop('disabled', false);
+            $('#ap_charge').val('{{ $data->ap_charge }}');
+        }else{
+            $('#ap_charge').prop('disabled', true);
+            let val = $('#ap_case_type :selected').val();
+            let arr = val.split('-');
+            $('#ap_charge').val(arr[1]);
+        }
+    }
+
     $("form").submit(function(e) {
         e.preventDefault();
         let pa_id = $('#ap_pa_search').val();
@@ -164,6 +186,8 @@
         let ap_date = $('#ap_date').val();
         let ap_book_via = $('#ap_book_via').val();
         let ap_case_type = $('#ap_case_type').val();
+        let ap_charge = $('#ap_charge').val();
+        let ap_is_workshop = $('#ap_is_workshop').val();
         let ap_payment_mode = $('#ap_payment_mode').val();
         let ap_payment_detail = $('#ap_payment_detail').val();
         if(pa_id == ''){
@@ -190,7 +214,7 @@
                 },
                 url:"{{ route('appointment.update', base64_encode($data->ap_id)) }}",
                 method:"POST",
-                data:{pa_id:pa_id, ap_height:ap_height, ap_weight:ap_weight, ap_bp:ap_bp, ap_doctor:ap_doctor, ap_date:ap_date, ap_book_via:ap_book_via, ap_case_type:ap_case_type, ap_payment_mode:ap_payment_mode, ap_payment_detail:ap_payment_detail},
+                data:{pa_id:pa_id, ap_height:ap_height, ap_weight:ap_weight, ap_bp:ap_bp, ap_doctor:ap_doctor, ap_date:ap_date, ap_book_via:ap_book_via, ap_case_type:ap_case_type, ap_charge:ap_charge, ap_is_workshop:ap_is_workshop, ap_payment_mode:ap_payment_mode, ap_payment_detail:ap_payment_detail},
                 success:function(res){
                     $('#createBtn').removeClass('spinner spinner-white spinner-right');
                     if(res.response === true){

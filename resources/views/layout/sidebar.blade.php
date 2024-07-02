@@ -45,6 +45,44 @@
 					<i class="menu-icon ki ki-bold-more-hor icon-md"></i>
 				</li>
 				@endif
+				@can('mac-address-read')
+				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'mac_address') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+					<a href="javascript:;" class="menu-link menu-toggle">
+						<span class="svg-icon menu-icon">
+							<!--begin::Svg Icon | path:assets/media/svg/icons/Design/Bucket.svg-->
+							<i class="icon-2x la la-server"></i>
+							<!--end::Svg Icon-->
+						</span>
+						<span class="menu-text">Mac Address</span>
+						<i class="menu-arrow"></i>
+					</a>
+					<div class="menu-submenu">
+						<i class="menu-arrow"></i>
+						<ul class="menu-subnav">
+							@can('mac-address-create')
+							<li class="menu-item {{ (Request::segment(1) == 'mac_address' && Request::segment(2) == 'create') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+								<a href="{{ route('mac_address.create') }}" class="menu-link">
+									<i class="menu-bullet menu-bullet-dot">
+										<span></span>
+									</i>
+									<span class="menu-text">Create</span>
+								</a>
+							</li>
+							@endcan
+							@can('mac-address-read')
+							<li class="menu-item {{ (Request::segment(1) == 'mac_address' && Request::segment(2) == 'list') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+								<a href="{{ route('mac_address.list') }}" class="menu-link">
+									<i class="menu-bullet menu-bullet-dot">
+										<span></span>
+									</i>
+									<span class="menu-text">List</span>
+								</a>
+							</li>
+							@endcan
+						</ul>
+					</div>
+				</li>
+				@endcan
 				@can('category-read')
 				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'category') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
 					<a href="javascript:;" class="menu-link menu-toggle">

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MacAddressController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VisitingFeeController;
@@ -36,14 +37,24 @@ Route::middleware('signin-check')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/signout', [DashboardController::class, 'signout'])->name('signout');
 
+    /* Mac Address */
+    Route::prefix('mac_address')->group(function () {
+        Route::get('create', [MacAddressController::class, 'create'])->name('mac_address.create')->middleware(['role_or_permission:mac-address-create']);
+        Route::post('store', [MacAddressController::class, 'store'])->name('mac_address.store')->middleware(['role_or_permission:mac-address-create']);
+        Route::get('list', [MacAddressController::class, 'index'])->name('mac_address.list')->middleware(['role_or_permission:mac-address-read']);
+        Route::get('edit/{ma_id}', [MacAddressController::class, 'edit'])->name('mac_address.edit')->middleware(['role_or_permission:mac-address-update']);
+        Route::post('update/{ma_id}', [MacAddressController::class, 'update'])->name('mac_address.update')->middleware(['role_or_permission:mac-address-update']);
+        Route::get('status/{ma_id}', [MacAddressController::class, 'status'])->name('mac_address.status')->middleware(['role_or_permission:mac-address-status']);
+        Route::get('remove/{ma_id}', [MacAddressController::class, 'remove'])->name('mac_address.remove')->middleware(['role_or_permission:mac-address-remove']);
+    });
     /* User Category And Roles */
     Route::prefix('category')->group(function () {
         Route::get('create', [CategoryController::class, 'create'])->name('category.create')->middleware(['role_or_permission:category-create']);
         Route::post('store', [CategoryController::class, 'store'])->name('category.store')->middleware(['role_or_permission:category-create']);
         Route::get('list', [CategoryController::class, 'index'])->name('category.list')->middleware(['role_or_permission:category-read']);
         Route::get('edit/{id}', [CategoryController::class, 'edit'])->name('category.edit')->middleware(['role_or_permission:category-update']);
-        Route::post('update/{id}', [CategoryController::class, 'update'])->name('category.update')->middleware(['role_or_permission:category-update']);
-        Route::get('status/{id}', [CategoryController::class, 'status'])->name('category.status')->middleware(['role_or_permission:category-status']);
+        Route::post('update/{ma_id}', [CategoryController::class, 'update'])->name('category.update')->middleware(['role_or_permission:category-update']);
+        Route::get('status/{ma_id}', [CategoryController::class, 'status'])->name('category.status')->middleware(['role_or_permission:category-status']);
     });
     /* System Users */
     Route::prefix('user')->group(function () {

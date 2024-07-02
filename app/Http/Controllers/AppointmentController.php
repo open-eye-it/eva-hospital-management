@@ -71,7 +71,9 @@ class AppointmentController extends MainController
 
         $case_type_arr = explode('-', $input['ap_case_type']);
         $input['ap_case_type'] = $case_type_arr[0];
-        $input['ap_charge'] = $case_type_arr[1];
+        if ($input['ap_is_workshop'] == 'no') {
+            $input['ap_charge'] = $case_type_arr[1];
+        }
 
         $insert = $this->appointment->insertData($input);
         if (isset($insert->ap_id)) {
@@ -110,7 +112,9 @@ class AppointmentController extends MainController
 
             $case_type_arr = explode('-', $input['ap_case_type']);
             $input['ap_case_type'] = $case_type_arr[0];
-            $input['ap_charge'] = $case_type_arr[1];
+            if ($input['ap_is_workshop'] == 'no') {
+                $input['ap_charge'] = $case_type_arr[1];
+            }
             $update = $this->appointment->updateData($input, $ap_id);
             if ($update == 1) {
                 return $this->getSuccessResult([], 'Appointment update.', true);

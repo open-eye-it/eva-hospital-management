@@ -76,7 +76,7 @@ class Appointment extends Model
         $case_type      = isset($filterdata['case_type']) ? $filterdata['case_type'] : '';
         if (isset($search_text) && $search_text != '') {
             $data->where(function ($query) use ($search_text) {
-                $query->where('ap_id', $search_text)->orWhere('pa_id', $search_text);
+                $query->where('ap_id', 'LIKE', '%' . $search_text . '%')->orWhere('pa_id', 'LIKE', '%' . $search_text . '%');
             });
         }
         if (isset($patient) && $patient != '') {

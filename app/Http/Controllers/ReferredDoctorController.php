@@ -71,11 +71,11 @@ class ReferredDoctorController extends MainController
     {
         $input = $request->all();
         $rd_id = base64_decode($rd_id);
-        $updated_by = Auth::user()->user_id;
+        $login_user_id = Auth::user()->user_id;
         $medicineData = $this->doctor->singlData($rd_id);
         if (!empty($medicineData)) {
             $data = [
-                'rd_updated_by'   => $updated_by,
+                'rd_updated_by'   => $login_user_id,
                 'rd_name'         => $input['rd_name'],
             ];
             $update = $this->doctor->updateData($data, $rd_id);
@@ -90,7 +90,7 @@ class ReferredDoctorController extends MainController
     }
 
     public function searchList($rd_name)
-    {   
+    {
         $rd_name = base64_decode($rd_name);
         $list = $this->doctor->getSearchList($rd_name);
         if (!empty($list)) {

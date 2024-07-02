@@ -25,7 +25,7 @@ class OPDAccountDetailController extends MainController
     {
         $input = $request->query();
         $searchData['search_text']  = isset($input['search_text']) ? $input['search_text'] : '';
-        $searchData['appointment_date_range']  = isset($input['appointment_date_range']) ? $input['appointment_date_range'] : '';
+        $searchData['appointment_date_range']  = isset($input['appointment_date_range']) ? $input['appointment_date_range'] : date('Y-m-d') . ' - ' . date('Y-m-d');
         $total_fees = $this->totalFees($searchData);
 
         $total_additional_fees = $this->totalAdditionalFees($searchData);

@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\MacAdressCheck;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -70,5 +71,6 @@ class Kernel extends HttpKernel
         'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
         'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
         'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
+        'mac_address_check' => \App\Http\Middleware\MacAdressCheck::class,
     ];
 }

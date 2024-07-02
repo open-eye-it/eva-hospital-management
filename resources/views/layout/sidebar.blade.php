@@ -448,6 +448,16 @@
 						</ul>
 					</div>
 				</li>
+				<li class="menu-item {{ (Request::segment(1) == 'follow-up') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+					<a href="{{ route('follow-up.list') }}" class="menu-link">
+						<span class="svg-icon menu-icon">
+							<!--begin::Svg Icon | path:assets/media/svg/icons/Design/Layers.svg-->
+							<i class="icon-2x flaticon-calendar-with-a-clock-time-tools"></i>
+							<!--end::Svg Icon-->
+						</span>
+						<span class="menu-text">Fllow Up</span>
+					</a>
+				</li>
 				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'opd-account-detail' || Request::segment(1) == 'ipd-account-detail') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
 					<a href="javascript:;" class="menu-link menu-toggle">
 						<span class="svg-icon menu-icon">

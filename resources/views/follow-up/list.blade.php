@@ -1,6 +1,6 @@
 @extends('layout.master');
-@section('title', 'OPD - Account Detail')
-@section('breadcrumb-module', 'OPD')
+@section('title', 'Fllow-Up - Info')
+@section('breadcrumb-module', 'Follow-Up')
 @section('page-content')
 <!--begin::Row-->
 <div class="row">
@@ -14,21 +14,21 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="card card-custom gutter-b p-5">
-                                <form action="{{ route('opd-account-detail.list') }}">
+                                <form action="{{ route('follow-up.list') }}">
                                     <div class="row">
                                         <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
                                             <label for="search_text">Search Patient ID</label>
                                             <input type="text" class="form-control" placeholder="Search Appointment ID" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
                                         </div>
                                         <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
-                                            <label for="appointment_date">OPD Date</label>
+                                            <label for="appointment_date">Follow Up Date</label>
                                             <div class='input-group' id='appointment_date_range'>
-                                                <input type='text' name="appointment_date_range" class="form-control" readonly="readonly" placeholder="Select date range" value="{{ $searchData['appointment_date_range'] }}" />
+                                                <input type='text' name="follow_up_date_range" class="form-control" readonly="readonly" placeholder="Select date range" value="{{ $searchData['follow_up_date_range'] }}" />
                                             </div>
                                         </div>
                                         <div class="col-12 form-group">
                                             <button class="btn btn-primary" type="submit">Search</button>
-                                            <a class="btn btn-danger" href="{{ route('opd-account-detail.list') }}">Resst</a>
+                                            <a class="btn btn-danger" href="{{ route('follow-up.list') }}">Resst</a>
                                         </div>
                                     </div>
                                 </form>

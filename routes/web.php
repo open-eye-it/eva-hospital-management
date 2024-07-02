@@ -15,6 +15,7 @@ use App\Http\Controllers\medicines\GeneralMedicineController;
 use App\Http\Controllers\medicines\OperationMedicineController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\FollowUpController;
 use App\Http\Controllers\AccounDetail\OPDAccountDetailController;
 
 /*
@@ -28,12 +29,16 @@ use App\Http\Controllers\AccounDetail\OPDAccountDetailController;
 |
 */
 
-Route::middleware('signout-check')->group(function () {
+Route::get('access-denied', function () {
+    return view('access-denied');
+})->name('access-denied');
+
+Route::middleware(['mac_address_check', 'signout-check'])->group(function () {
     Route::get('/', [LoginController::class, 'index'])->name('signin.show');
     Route::post('/signin', [LoginController::class, 'signin'])->name('signin.submit');
 });
 
-Route::middleware('signin-check')->group(function () {
+Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/signout', [DashboardController::class, 'signout'])->name('signout');
 
@@ -150,7 +155,10 @@ Route::middleware('signin-check')->group(function () {
         Route::get('prescribe/medicine/remove/{am_id}', [AppointmentController::class, 'appointmentMedicineRemove'])->name('appointment.medicine.remove');
         Route::get('patient_all_appointment/{pa_id}', [AppointmentController::class, 'patientAllAppointment'])->name('appointment.all_poointment');
     });
-
+    /* Follow Up Info */
+    Route::prefix('follow-up')->group(function () {
+        Route::get('/', [FollowUpController::class, 'index'])->name('follow-up.list');
+    });
     /* Appointment Account Detail */
     Route::prefix('opd-account-detail')->group(function () {
         Route::get('list', [OPDAccountDetailController::class, 'index'])->name('opd-account-detail.list');

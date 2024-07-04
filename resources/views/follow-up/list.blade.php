@@ -23,12 +23,13 @@
                                         <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
                                             <label for="appointment_date">Follow Up Date</label>
                                             <div class='input-group' id='appointment_date_range'>
-                                                <input type='text' name="follow_up_date_range" class="form-control" readonly="readonly" placeholder="Select date range" value="{{ $searchData['follow_up_date_range'] }}" />
+                                                <input type='text' name="follow_up_date_range" id="follow_up_date_range" class="form-control" placeholder="Select date range" value="{{ $searchData['follow_up_date_range'] }}" />
                                             </div>
                                         </div>
                                         <div class="col-12 form-group">
                                             <button class="btn btn-primary" type="submit">Search</button>
                                             <a class="btn btn-danger" href="{{ route('follow-up.list') }}">Resst</a>
+                                            <button type="button" class="btn btn-info" onclick="exportFollowUp()"><i class="fa fa-file-export"></i> Export</button>
                                         </div>
                                     </div>
                                 </form>
@@ -61,7 +62,7 @@
                                                 <th>Additional Charges</th>
                                                 <th>Follow Up Date</th>
                                                 <th>Decided Date of Surgery</th>
-                                                <th>Other Charges</th>
+                                                <th>Bill</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -81,8 +82,7 @@
                                                 <td>{{ ($appointment->ap_follow_up_date != '' || !empty($appointment->ap_follow_up_date)) ? date('d M Y', strtotime($appointment->ap_follow_up_date)) : '' }}</td>
                                                 <td>{{ date('d M Y', strtotime($appointment->ap_surg_date)) }}</td>
                                                 <td>
-
-                                                    <i title="Additiona Charge" class="icon-2x flaticon flaticon-add-circular-button cursor_pointer" onclick="additionalChargeShow('{{ base64_encode($appointment->ap_id) }}', '{{ json_encode($searchData) }}')"></i>
+                                                    <span id="billView" data-id="{{ base64_encode($appointment->ap_id) }}" title="Bill"><i class="flaticon flaticon-file-2 icon-3x cursor_pointer"></i></span>
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -245,5 +245,48 @@
             });
         }
     }
+
+    /* Export Follow Up */
+    function exportFollowUp() {
+        let search_text = $('#search_text').val();
+        let follow_up_date_range = $('#follow_up_date_range').val();
+        let query = '?search_text=' + search_text + '&follow_up_date_range=' + follow_up_date_range;
+        window.location.href = "{{ route('follow-up.export') }}" + query;
+    }
+
+    $('body').on('click', '#billView', function(event) {
+        let ap_id = $(this).data('id');
+        $.ajax({
+            url: "{{ route('appointment.bill_print', '') }}" + "/" + ap_id,
+            method: "GET",
+            success: function(res) {
+                console.log(res);
+                printData(res);
+            },
+            error: function(r) {
+                console.log(r);
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+        //openPrintDialogue();
+    });
+
+    function printData(data) {
+        $('<iframe>', {
+                name: 'myiframe',
+                class: 'printFrame'
+            })
+            .appendTo('body')
+            .contents().find('body')
+            .append(data);
+
+        window.frames['myiframe'].focus();
+        window.frames['myiframe'].print();
+
+        setTimeout(() => {
+            $(".printFrame").remove();
+        }, 1000);
+    };
 </script>
 @endsection

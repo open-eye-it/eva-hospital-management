@@ -177,7 +177,7 @@
                 $('#addAdditionalCharge').removeClass('spinner spinner-white spinner-right');
                 if (res.response === true) {
                     let data = res.data;
-                    $('#allAdditionalCharge').prepend(data);
+                    $('#allAdditionalCharge').html(data);
                     $('#addAdditionalCharge').attr("onclick", "addNewCharge('" + ap_id + "', '" + queryData + "')");
                     $('#additionalChargeModal').modal('show');
                 } else {

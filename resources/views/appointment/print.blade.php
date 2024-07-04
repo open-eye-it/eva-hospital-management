@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{{ $data->tr_name }}</title>
+</head>
+
+<body style="font-family: Arial, Helvetica, sans-serif; font-style: italic;">
+    <div style="border:2px solid; width:100%; text-align:center; padding-top:20px; padding-bottom:20px;">
+        <img src="{{ url('assets/eva/img/logo/eva-logo.png') }}" style="max-width:200px;" />
+        <h3 style="margin-bottom:0px; padding-bottom:10px;">
+            BILL
+        </h3>
+        <table style="margin:auto;">
+            <tr>
+                <td style="padding:10px;"><strong>Patient Name</strong></td>
+                <td style="padding:10px;">{{ $data->patientData->pa_name }}</td>
+                <td style="padding:10px;"><Strong>Bill No</Strong></td>
+                <td style="padding:10px;">{{ $data->ap_id }}</td>
+            </tr>
+            <tr>
+                <td style="padding:10px;"><strong>Address</strong></td>
+                <td style="padding:10px;">{{ $data->patientData->pa_address.' '.$data->patientData->pa_city.' '.$data->patientData->pa_pincode.' '.$data->patientData->pa_state }}</td>
+                <td style="padding:10px;"><Strong>Date</Strong></td>
+                <td style="padding:10px;">{{ date('d M Y', strtotime($data->ap_date)) }}</td>
+            </tr>
+            <tr>
+                <td style="padding:10px;"><strong>Doctor</strong></td>
+                <td style="padding:10px;">{{ $data->doctorData->person_name }}</td>
+                <td style="padding:10px;"><Strong>Refer By</Strong></td>
+                <td style="padding:10px;">{{ ($data->patientData->pa_referred_by == 'doctor') ? $data->patientData->pa_referred_doctor : $data->patientData->pa_referred_text }}</td>
+            </tr>
+            <tr>
+                <th style="padding:10px; border-top:1px solid; border-bottom:1px solid; border-right:1px solid; text-align:left;">Services / Charges Description</th>
+                <th style="padding:10px; border-top:1px solid; border-bottom:1px solid; border-right:1px solid; text-align:left;">Qty. / Visit</th>
+                <th style="padding:10px; border-top:1px solid; border-bottom:1px solid; border-right:1px solid; text-align:left;">Rate / Charges (Rs.)</th>
+                <th style="padding:10px; border-top:1px solid; border-bottom:1px solid; text-align:left;">Amount (Rs.)</th>
+            </tr>
+            @if(!empty($data->appointmentAdditionalChargesList->toArray()))
+            @foreach($data->appointmentAdditionalChargesList as $additionalCharge)
+            <tr>
+                <td style="padding:10px; border-bottom:1px solid; border-right:1px solid;">{{ $additionalCharge->apac_desc }}</td>
+                <td style="padding:10px; border-bottom:1px solid; border-right:1px solid;">{{ $additionalCharge->apac_qty }}</td>
+                <td style="padding:10px; border-bottom:1px solid; border-right:1px solid;">{{ $additionalCharge->apac_charge }}</td>
+                <td style="padding:10px; border-bottom:1px solid;">{{ $additionalCharge->apac_final_charge }}</td>
+            </tr>
+            @endforeach
+            @endif
+            <tr>
+                <td style="padding:10px;"></td>
+                <td style="padding:10px; border-right:1px solid;"></td>
+                <th style="padding:10px; border-bottom:1px solid; border-right:1px solid; text-align:left;">Total</th>
+                <td style="padding:10px; border-bottom:1px solid;">{{ $data->ap_additional_charge }}</td>
+            </tr>
+            <tr>
+                <td style="padding:10px;"></td>
+                <td style="padding:10px; border-right:1px solid;"></td>
+                <th style="padding:10px; border-bottom:1px solid; border-right:1px solid; text-align:left;">Case - {{ ucfirst($data->ap_case_type) }}</th>
+                <td style="padding:10px; border-bottom:1px solid;">{{ $data->ap_charge }}</td>
+            </tr>
+            <tr>
+                <td style="padding:10px; border-bottom:1px solid;"></td>
+                <td style="padding:10px; border-bottom:1px solid; border-right:1px solid;"></td>
+                <th style="padding:10px; border-bottom:1px solid; border-right:1px solid; text-align:left;">Final Amount</th>
+                <td style="padding:10px; border-bottom:1px solid;">{{ $data->ap_charge+$data->ap_additional_charge }}</td>
+            </tr>
+            <tr>
+                <td colspan="4" style="padding:10px; text-align:left;"><strong>Amount In Words:</strong>
+                    @php
+                    echo numberToWord($data->ap_charge+$data->ap_additional_charge);
+                    @endphp
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>

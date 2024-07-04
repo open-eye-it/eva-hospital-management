@@ -7,6 +7,10 @@ var __webpack_exports__ = {};
 var KTSelect2 = function() {
     // Private functions
     var demos = function() {
+        //Room Selection
+        $('#rm_id_search, #rm_id_search').select2({
+            placeholder: 'Select Room'
+        });
         //Apppointment Prescribe Medicine Filter
         $('#gm_prescribe_id, #gm_prescribe_id').select2({
             placeholder: 'Select Medicine'

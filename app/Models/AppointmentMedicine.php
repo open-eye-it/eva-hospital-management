@@ -41,18 +41,13 @@ class AppointmentMedicine extends Model
         $data = static::select('*');
         $this->FilterData($data, $filterdata);
         $data->orderBy($order_by[0], $order_by[1]);
-        if ($paginate === true) :
-            $output = $data->paginate((int)$limit);
-        else :
-            $data->limit((int)$limit);
-            $output = $data->get();
-        endif;
+        $output = $data->get();
         return $output;
     }
 
     public function FilterData($data, $filterdata)
     {
-        $ap_id        = isset($filterdata['ap_id']) ? $filterdata['ap_id'] : '';
+        $ap_id = isset($filterdata['ap_id']) ? $filterdata['ap_id'] : '';
         if (isset($ap_id) && $ap_id != '') {
             $data->where('ap_id', $ap_id);
         }

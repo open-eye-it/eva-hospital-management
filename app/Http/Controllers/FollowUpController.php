@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\MainController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\Appointment;
+
+use App\Exports\FollowUpExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class FollowUpController extends MainController
 {
@@ -28,6 +32,15 @@ class FollowUpController extends MainController
         $list = $this->appointment->getList($searchData);
 
         return view('follow-up.list', compact('list', 'searchData', 'total_fees', 'total_additional_fees'));
+    }
+
+    /* Export Appointment */
+    public function export(Request $request)
+    {
+        $input = $request->query();
+        $login_user_id = Auth::user()->user_id;
+        $fileName = 'FollowUp-' . $login_user_id . '-' . date('Ymd-His') . '.xlsx';
+        return Excel::download(new FollowUpExport($input), $fileName);
     }
 
     /* Total of Charge */

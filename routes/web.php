@@ -17,6 +17,7 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\FollowUpController;
 use App\Http\Controllers\AccounDetail\OPDAccountDetailController;
+use App\Http\Controllers\IpdDetailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -154,10 +155,13 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
         Route::get('prescribe/medicine/store', [AppointmentController::class, 'appointmentMedicineStore'])->name('appointment.medicine.store');
         Route::get('prescribe/medicine/remove/{am_id}', [AppointmentController::class, 'appointmentMedicineRemove'])->name('appointment.medicine.remove');
         Route::get('patient_all_appointment/{pa_id}', [AppointmentController::class, 'patientAllAppointment'])->name('appointment.all_poointment');
+        Route::get('export', [AppointmentController::class, 'export'])->name('appointment.export');
+        Route::get('bill_print/{ap_id}', [AppointmentController::class, 'bill_print'])->name('appointment.bill_print');
     });
     /* Follow Up Info */
     Route::prefix('follow-up')->group(function () {
         Route::get('/', [FollowUpController::class, 'index'])->name('follow-up.list');
+        Route::get('export', [FollowUpController::class, 'export'])->name('follow-up.export');
     });
     /* Appointment Account Detail */
     Route::prefix('opd-account-detail')->group(function () {
@@ -165,5 +169,15 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
         Route::get('additional_charge/list/{ap_id}', [OPDAccountDetailController::class, 'additionalChargeList'])->name('opd-account-detail.additional-charge.list');
         Route::get('additional-charge/store', [OPDAccountDetailController::class, 'additionalChargeStore'])->name('opd-account-detail.additional-charge.store');
         Route::get('additional-charge/remove/{apac_id}', [OPDAccountDetailController::class, 'additionalChargeRemove'])->name('opd-account-detail.additional-charge.remove');
+    });
+    /* IPD Detail */
+    Route::prefix('ipd')->group(function () {
+        Route::get('/', [IpdDetailController::class, 'index'])->name('ipd.list');
+        Route::get('create', [IpdDetailController::class, 'create'])->name('ipd.create');
+        Route::post('store', [IpdDetailController::class, 'store'])->name('ipd.store');
+        Route::get('edit/{ipd_id}', [IpdDetailController::class, 'edit'])->name('ipd.edit');
+        Route::post('update/{ipd_id}', [IpdDetailController::class, 'update'])->name('ipd.update');
+        Route::get('view/{ipd_id}', [IpdDetailController::class, 'view'])->name('ipd.view');
+        Route::get('status/{string_val}', [IpdDetailController::class, 'status'])->name('ipd.status');
     });
 });

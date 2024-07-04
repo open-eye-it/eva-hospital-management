@@ -14,6 +14,9 @@ use App\Models\VisitingFee;
 use App\Models\GeneralMedicine;
 use App\Models\AppointmentMedicine;
 
+use App\Exports\AppointmentExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 use Illuminate\Support\Facades\Auth;
 
 class AppointmentController extends MainController
@@ -168,6 +171,23 @@ class AppointmentController extends MainController
         } else {
             return $this->getErrorMessage('Appointment detail not found');
         }
+    }
+
+    /* Export Appointment */
+    public function export(Request $request)
+    {
+        $input = $request->query();
+        $login_user_id = Auth::user()->user_id;
+        $fileName = 'Appointment-' . $login_user_id . '-' . date('Ymd-His') . '.xlsx';
+        return Excel::download(new AppointmentExport($input), $fileName);
+    }
+
+    /* Bill Print */
+    public function bill_print($ap_id)
+    {
+        $ap_id = base64_decode($ap_id);
+        $data = $this->appointment->singlData($ap_id);
+        return response()->view('appointment.print', compact('data'));
     }
 
     /* prescription detail show */

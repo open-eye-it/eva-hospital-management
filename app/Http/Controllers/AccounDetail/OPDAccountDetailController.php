@@ -61,7 +61,7 @@ class OPDAccountDetailController extends MainController
 
             return $this->getSuccessResult($tableRow, 'Additional Charge list found', true);
         } else {
-            return $this->getErrorMessage('Additional Charge list not found.');
+            return $this->getSuccessResult('', 'Additional Charge list found', true);
         }
     }
 

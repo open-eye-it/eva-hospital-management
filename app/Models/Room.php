@@ -51,6 +51,28 @@ class Room extends Model
         return $output;
     }
 
+    public function getListforIPD($filter, $order_by = ['created_at', 'desc'])
+    {
+        $data = static::select('*');
+        $data->where('rm_status', $filter['rm_status']);
+        $data->where('rm_busy', $filter['rm_busy']);
+        $data->orderBy($order_by[0], $order_by[1]);
+        $output = $data->get();
+        return $output;
+    }
+    public function getListIgnoreID($filter, $order_by = ['created_at', 'desc'])
+    {
+        $data = static::select('*');
+        $data->where('rm_status', $filter['rm_status']);
+        $data->where(function ($query) use ($filter) {
+            $query->where('rm_busy', $filter['rm_busy']);
+            $query->orWhere('rm_id', $filter['rm_id']);
+        });
+        $data->orderBy($order_by[0], $order_by[1]);
+        $output = $data->get();
+        return $output;
+    }
+
     public function updateRoom($data, $rm_id)
     {
         return static::where('rm_id', $rm_id)->update(\Arr::only($data, $this->fillable));
@@ -58,11 +80,13 @@ class Room extends Model
 
     public function FilterData($data, $filterData)
     {
-        $search_text    = isset($filterData['search_text']) ? $filterData['search_text'] : '';
-        $rm_building    = isset($filterData['rm_building']) ? $filterData['rm_building'] : '';
+        $search_text = isset($filterData['search_text']) ? $filterData['search_text'] : '';
+        $rm_building = isset($filterData['rm_building']) ? $filterData['rm_building'] : '';
         $rm_floor    = isset($filterData['rm_floor']) ? $filterData['rm_floor'] : '';
-        $rm_ward    = isset($filterData['rm_ward']) ? $filterData['rm_ward'] : '';
-        $rm_no    = isset($filterData['rm_no']) ? $filterData['rm_no'] : '';
+        $rm_ward     = isset($filterData['rm_ward']) ? $filterData['rm_ward'] : '';
+        $rm_no       = isset($filterData['rm_no']) ? $filterData['rm_no'] : '';
+        $rm_status   = isset($filterData['rm_status']) ? $filterData['rm_status'] : '';
+        $rm_busy     = isset($filterData['rm_busy']) ? $filterData['rm_busy'] : '';
         if (isset($rm_building) && $rm_building != '') {
             $data->where('rm_building', $rm_building);
         }
@@ -74,6 +98,12 @@ class Room extends Model
         }
         if (isset($rm_no) && $rm_no != '') {
             $data->where('rm_no', $rm_no);
+        }
+        if (isset($rm_status) && $rm_status != '') {
+            $data->where('rm_status', $rm_status);
+        }
+        if (isset($rm_busy) && $rm_busy != '') {
+            $data->where('rm_busy', $rm_busy);
         }
         if (isset($search_text) && $search_text != '') {
             $data->where(function ($query) use ($search_text) {

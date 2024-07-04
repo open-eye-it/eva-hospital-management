@@ -145,4 +145,9 @@ class Appointment extends Model
     {
         return $this->hasOne(User::class, 'user_id', 'ap_doctor');
     }
+
+    public function appointmentAdditionalChargesList()
+    {
+        return $this->hasMany(AppointmentAdditionalCharge::class, 'ap_id', 'ap_id');
+    }
 }

@@ -17,51 +17,12 @@
                                 <form action="{{ route('appointment.list') }}">
                                     <div class="row">
                                         <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
-                                            <label for="search_text">Search Appointment ID</label>
-                                            <input type="text" class="form-control" placeholder="Search Appointment ID" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
-                                        </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
-                                            <label for="patient">Patient</label>
-                                            <select name="patient" id="patient" class="form-control">
-                                                <option value="">Select</option>
-                                                @if(!empty($patientList))
-                                                @foreach($patientList as $plist)
-                                                <option value="{{ $plist->pa_id }}" {{ ($plist->pa_id == $searchData['patient']) ? 'selected' : '' }}>{{ $plist->pa_name }} - {{ $plist->pa_id }}</option>
-                                                @endforeach
-                                                @endif
-                                            </select>
-                                        </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
-                                            <label for="appointment_date">Appointment Date</label>
-                                            <div class='input-group' id='appointment_date_range'>
-                                                <input type='text' name="appointment_date_range" id="appointment_date_range_filter" class="form-control" placeholder="Select date range" value="{{ $searchData['appointment_date_range'] }}" />
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
-                                            <label for="patient">Doctor</label>
-                                            <select name="doctor" id="doctor" class="form-control">
-                                                <option value="">Select</option>
-                                                @if(!empty($doctors))
-                                                @foreach($doctors as $doctor)
-                                                <option value="{{ $doctor['user_id'] }}" {{ ($doctor['user_id'] == $searchData['doctor']) ? 'selected' : '' }}>{{ $doctor['person_name'] }}</option>
-                                                @endforeach
-                                                @endif
-                                            </select>
-                                        </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
-                                            <label for="patient">Case Type</label>
-                                            <select class="form-control" name="case_type" id="case_type" onchange="changeFee(this.value)">
-                                                <option value="">Select</option>
-                                                @if(!empty($visitingFees))
-                                                @foreach($visitingFees as $fee)
-                                                <option value="{{ $fee->vf_case_type }}" {{ ($fee->vf_case_type == $searchData['case_type']) ? 'selected' : '' }}>{{ ucfirst($fee->vf_case_type) }}</option>
-                                                @endforeach
-                                                @endif
-                                            </select>
+                                            <label for="search_text">Search IPD ID</label>
+                                            <input type="text" class="form-control" placeholder="Search IPD ID" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
                                         </div>
                                         <div class="col-12 form-group">
                                             <button class="btn btn-primary" type="submit">Search</button>
-                                            <a class="btn btn-danger" href="{{ route('appointment.list') }}">Resst</a>
+                                            <a class="btn btn-danger" href="{{ route('ipd.list') }}">Resst</a>
                                             <button type="button" class="btn btn-info" onclick="exportAppointment()"><i class="fa fa-file-export"></i> Export</button>
                                         </div>
                                     </div>
@@ -81,47 +42,46 @@
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
-                                                <th>Appointment ID</th>
-                                                <th>Date</th>
-                                                <th>Case Type</th>
+                                                <th>IPD ID</th>
+                                                <th>Admit Date</th>
+                                                <th>Room No</th>
+                                                <th>Doctor</th>
                                                 <th>Patient ID</th>
                                                 <th>Patient Name</th>
-                                                <th>Doctor</th>
-                                                <th>Has Madiclaim</th>
+                                                <th>DOB</th>
+                                                <th>Age</th>
+                                                <th>Contact No</th>
                                                 <th>Status</th>
-                                                <th>Prescribe</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @if(!$list->isEmpty())
-                                            @foreach($list as $key => $appointment)
+                                            @foreach($list as $key => $ipd)
                                             <tr>
                                                 <td>{{ $list->firstItem() + $key }}</td>
-                                                <td>{{ $appointment->ap_id }}</td>
-                                                <td>{{ $appointment->ap_date }}</td>
-                                                <td>{{ $appointment->ap_case_type }}</td>
-                                                <td>{{ $appointment->pa_id }}</td>
-                                                <td>{{ $appointment->patientData->pa_name }}</td>
-                                                <td>{{ $appointment->doctorData->person_name }}</td>
-                                                <td>{{ ($appointment->ap_pament_mode == 'mediclaim') ? 'Yes' : 'No' }}</td>
+                                                <td>{{ $ipd->ipd_id }}</td>
+                                                <td>{{ date('d M Y', strtotime($ipd->ipd_admit_date)) }}</td>
+                                                <td>{{ $ipd->roomData->rm_building.'-'.$ipd->roomData->rm_floor.'-'.$ipd->roomData->rm_ward.'-'.$ipd->roomData->rm_no }}</td>
+                                                <td>{{ $ipd->doctorData->person_name }}</td>
+                                                <td>{{ $ipd->pa_id }}</td>
+                                                <td>{{ $ipd->patientData->pa_name }}</td>
+                                                <td>{{ date('d M Y', strtotime($ipd->patientData->pa_dob)) }}</td>
+                                                <td>{{ $ipd->patientData->pa_age }}</td>
+                                                <td>{{ $ipd->patientData->pa_contact_no }}</td>
                                                 <td>
-                                                    @if($appointment->ap_status == 'pending')
+                                                    @if($ipd->ipd_status == 'admit')
                                                     @php $statusClass = 'btn-primary'; @endphp
-                                                    @elseif($appointment->ap_status == 'completed')
+                                                    @elseif($ipd->ipd_status == 'discharged')
                                                     @php $statusClass = 'btn-success'; @endphp
                                                     @else
                                                     @php $statusClass = 'btn-danger'; @endphp
                                                     @endif
-                                                    <span class="btn {{ $statusClass }}" id="status_{{ $appointment->ap_id }}" onclick="statusModal('{{ base64_encode($appointment->ap_id) }}')">{{ ucfirst($appointment->ap_status) }}</span>
+                                                    <span class="btn {{ $statusClass }}" id="status_{{ $ipd->ipd_id }}" onclick="statusModal('{{ base64_encode($ipd->ipd_id) }}')">{{ ucfirst($ipd->ipd_status) }}</span>
                                                 </td>
                                                 <td>
-                                                    <span class="btn btn-danger" onclick="prescribeShow('{{ base64_encode($appointment->ap_id) }}')">Prescribe</span>
-                                                </td>
-                                                <td>
-                                                    <a href="{{ route('appointment.edit', base64_encode($appointment->ap_id)) }}" title="Edit"><i class="la la-edit icon-3x"></i></a>
-                                                    <span id="fullView" data-id="{{ base64_encode($appointment->ap_id) }}" title="Full View"><i class="la la-eye icon-3x cursor_pointer"></i></span>
-                                                    <span id="billView" data-id="{{ base64_encode($appointment->ap_id) }}" title="Bill"><i class="flaticon flaticon-file-2 icon-3x cursor_pointer"></i></span>
+                                                    <a href="{{ route('ipd.edit', base64_encode($ipd->ipd_id)) }}" title="Edit"><i class="la la-edit icon-3x"></i></a>
+                                                    <span id="fullView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Full View"><i class="la la-eye icon-3x cursor_pointer"></i></span>
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -154,7 +114,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Appointment Detail</h5>
+                <h5 class="modal-title" id="exampleModalLabel">IPD Detail</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i aria-hidden="true" class="ki ki-close"></i>
                 </button>
@@ -174,19 +134,19 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Appointment Status</h5>
+                <h5 class="modal-title" id="exampleModalLabel">IPD Status</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i aria-hidden="true" class="ki ki-close"></i>
                 </button>
             </div>
             <div class="modal-body">
                 <table class="table table-striped" id="statusDetail">
-                    <span class="btn btn-primary mr-2" id="pendingStatus">Pending</span>
-                    <span class="btn btn-success mr-2" id="completedStatus">Completed</span>
+                    <span class="btn btn-primary mr-2" id="admitStatus">Admit</span>
+                    <span class="btn btn-success mr-2" id="dischargedStatus">Discharged</span>
                     <span class="btn btn-danger mr-2" id="cancelledStatus">Cancelled</span>
                     <div class="form-group pt-4">
-                        <label for="ap_status_reason">Cancel Reason</label>
-                        <textarea class="form-control" name="ap_status_reason" id="ap_status_reason" cols="30" rows="5"></textarea>
+                        <label for="ipd_cancel_reason">Cancel Reason</label>
+                        <textarea class="form-control" name="ipd_cancel_reason" id="ipd_cancel_reason" cols="30" rows="5"></textarea>
                     </div>
                 </table>
             </div>
@@ -198,11 +158,12 @@
 </div>
 <script>
     $('body').on('click', '#fullView', function(event) {
-        let ap_id = $(this).data('id');
+        let ipd_id = $(this).data('id');
         $.ajax({
-            url: "{{ route('appointment.view', '') }}" + "/" + ap_id,
+            url: "{{ route('ipd.view', '') }}" + "/" + ipd_id,
             method: "GET",
             success: function(res) {
+                console.log(res);
                 $('#fullViewModal').modal('show');
                 if (res.response === true) {
                     let data = res.data;
@@ -211,32 +172,44 @@
                         photo = '<img src="' + data.photo + '" class="img-fluid" />';
                     }
                     let view = '<tr> \
+                        <th>IPD ID</th> \
+                        <td>' + $.trim(data.ipd_id) + '</td> \
+                        <th>Admit Date</th> \
+                        <td>' + $.trim(data.ipd_admit_date) + '</td> \
+                    </tr> \
+                    <tr> \
+                        <th>Room No</th> \
+                        <td>' + $.trim(data.room_no) + '</td> \
+                        <th>Doctor</th> \
+                        <td>' + $.trim(data.doctor_name) + '</td> \
+                    </tr> \
+                    <tr> \
+                        <th>Patient ID</th> \
+                        <td>' + $.trim(data.pa_id) + '</td> \
                         <th>Patient Name</th> \
                         <td>' + $.trim(data.patient_name) + '</td> \
-                        <th>Height</th> \
-                        <td>' + $.trim(data.ap_height) + '</td> \
                     </tr> \
                     <tr> \
-                        <th>Weight</th> \
-                        <td>' + $.trim(data.ap_weight) + '</td> \
-                        <th>BP</th> \
-                        <td>' + $.trim(data.ap_bp) + '</td> \
+                        <th>DOB</th> \
+                        <td>' + $.trim(data.patient_dob) + '</td> \
+                        <th>Age</th> \
+                        <td>' + $.trim(data.patient_age) + '</td> \
                     </tr> \
                     <tr> \
-                        <th>Appointment For Doctor</th> \
-                        <td>' + $.trim(data.doctor_name) + '</td> \
-                        <th>Appointment Date</th> \
-                        <td>' + $.trim(data.ap_date) + '</td> \
+                        <th>Contact No</th> \
+                        <td>' + $.trim(data.patient_contact_no) + '</td> \
+                        <th>Date of Surgery</th> \
+                        <td>' + $.trim(data.ipd_surgery_date) + '</td> \
                     </tr> \
                     <tr> \
-                        <th>Apointment booked via</th> \
-                        <td>' + $.trim(data.ap_book_via) + '</td> \
-                        <th>Case Type</th> \
-                        <td>' + $.trim(data.ap_case_type) + '</td> \
+                        <th>Type of Surgery</th> \
+                        <td>' + $.trim(data.ipd_surgery_text) + '</td> \
+                        <th>Bill Amount</th> \
+                        <td>' + $.trim(data.ipd_bill_amount) + '</td> \
                     </tr> \
                     <tr> \
-                        <th>Fees</th> \
-                        <td>' + $.trim(data.ap_charge) + '</td> \
+                        <th>ReceivedAmount</th> \
+                        <td>' + $.trim(data.ipd_received_amount) + '</td> \
                     </tr>';
 
                     $('#viewDetail').html(view);
@@ -253,17 +226,17 @@
         });
     })
 
-    function statusModal(ap_id) {
+    function statusModal(ipd_id) {
         $('#statusModal').modal('show');
-        $('#pendingStatus').attr('onclick', 'changeStatus("' + ap_id.toString() + '", "pending")');
-        $('#completedStatus').attr('onclick', 'changeStatus("' + ap_id.toString() + '", "completed")');
-        $('#cancelledStatus').attr('onclick', 'changeStatus("' + ap_id.toString() + '", "cancelled")');
+        $('#admitStatus').attr('onclick', 'changeStatus("' + ipd_id.toString() + '", "admit")');
+        $('#dischargedStatus').attr('onclick', 'changeStatus("' + ipd_id.toString() + '", "discharged")');
+        $('#cancelledStatus').attr('onclick', 'changeStatus("' + ipd_id.toString() + '", "cancelled")');
         $.ajax({
-            url: "{{ route('appointment.view', '') }}" + "/" + ap_id,
+            url: "{{ route('ipd.view', '') }}" + "/" + ipd_id,
             method: "GET",
             success: function(result) {
                 if (result.response === true) {
-                    $('#ap_status_reason').val(result.data.ap_status_reaason);
+                    $('#ipd_cancel_reason').val(result.data.ipd_cancel_reason);
                 }
             },
             err: function(error) {
@@ -272,30 +245,30 @@
         });
     }
 
-    function changeStatus(ap_id, status) {
-        let ap_status_reason = $('#ap_status_reason').val();
-        let stringVal = btoa(ap_id + '[]' + status + '[]' + ap_status_reason);
+    function changeStatus(ipd_id, status) {
+        let ipd_cancel_reason = $('#ipd_cancel_reason').val();
+        let stringVal = btoa(ipd_id + '[]' + status + '[]' + ipd_cancel_reason);
         $.ajax({
-            url: "{{ route('appointment.status', '') }}" + "/" + stringVal,
+            url: "{{ route('ipd.status', '') }}" + "/" + stringVal,
             method: "GET",
             success: function(res) {
                 if (res.response === true) {
                     let removeClass = 'text-primary text-success text-danger';
                     let addClass = '';
                     let addText = '';
-                    if (status == 'pending') {
+                    if (status == 'admit') {
                         addClass = 'bg-primary';
-                        addText = 'Pending';
-                    } else if (status == 'completed') {
+                        addText = 'Admit';
+                    } else if (status == 'discharged') {
                         addClass = 'bg-success';
-                        addText = 'Completed';
+                        addText = 'Discharged';
                     } else {
                         addClass = 'bg-danger';
                         addText = 'Cancelled';
                     }
-                    $('#status_' + atob(ap_id)).removeClass(removeClass);
-                    $('#status_' + atob(ap_id)).addClass(addClass);
-                    $('#status_' + atob(ap_id)).text(addText);
+                    $('#status_' + atob(ipd_id)).removeClass(removeClass);
+                    $('#status_' + atob(ipd_id)).addClass(addClass);
+                    $('#status_' + atob(ipd_id)).text(addText);
                     sweetAlertSuccess(res.message, 3000);
                     $('#statusModal').modal('hide');
                 } else {

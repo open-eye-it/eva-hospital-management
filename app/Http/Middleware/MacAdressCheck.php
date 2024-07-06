@@ -17,14 +17,14 @@ class MacAdressCheck
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $mac = exec('getmac');
-        $mac = str_replace(' Media disconnected', '', $mac);
-        $mac = trim($mac);
+        // $mac = exec('getmac');
+        // $mac = str_replace(' Media disconnected', '', $mac);
+        // $mac = trim($mac);
 
-        $data = MacAddress::where('ma_address', $mac)->get()->first();
-        if (empty($data)) {
-            return redirect()->route('access-denied');
-        }
+        // $data = MacAddress::where('ma_address', $mac)->get()->first();
+        // if (empty($data)) {
+        //     return redirect()->route('access-denied');
+        // }
         return $next($request);
     }
 }

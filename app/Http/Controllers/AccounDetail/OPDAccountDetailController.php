@@ -24,7 +24,7 @@ class OPDAccountDetailController extends MainController
     public function index(Request $request)
     {
         $input = $request->query();
-        $searchData['search_text']  = isset($input['search_text']) ? $input['search_text'] : '';
+        $searchData['search_text']             = isset($input['search_text']) ? $input['search_text'] : '';
         $searchData['appointment_date_range']  = isset($input['appointment_date_range']) ? $input['appointment_date_range'] : date('Y-m-d') . ' - ' . date('Y-m-d');
         $total_fees = $this->totalFees($searchData);
 
@@ -69,10 +69,10 @@ class OPDAccountDetailController extends MainController
     public function additionalChargeStore(Request $request)
     {
         $input = $request->query();
-        $input['ap_id'] = base64_decode($input['ap_id']);
+        $input['ap_id']             = base64_decode($input['ap_id']);
         $input['apac_final_charge'] = $input['apac_qty'] * $input['apac_charge'];
-        $input['apac_id'] = $this->getUniqueID();
-        $input['apac_added_by'] = Auth::user()->user_id;
+        $input['apac_id']           = $this->getUniqueID();
+        $input['apac_added_by']     = Auth::user()->user_id;
 
         $query = json_decode($input['query']);
 
@@ -85,11 +85,11 @@ class OPDAccountDetailController extends MainController
 
             /* apoointment overall total with charge + additional charge */
             $inputSearch = $query;
-            $searchData['search_text']  = isset($inputSearch->search_text) ? $inputSearch->search_text : '';
-            $searchData['appointment_date_range']  = isset($inputSearch->appointment_date_range) ? $inputSearch->appointment_date_range : '';
-            $total_fees = $this->totalFees($searchData);
-            $total_additional_fees = $this->totalAdditionalFees($searchData);
-            $total_final = $total_fees + $total_additional_fees;
+            $searchData['search_text']            = isset($inputSearch->search_text) ? $inputSearch->search_text : '';
+            $searchData['appointment_date_range'] = isset($inputSearch->appointment_date_range) ? $inputSearch->appointment_date_range : '';
+            $total_fees                           = $this->totalFees($searchData);
+            $total_additional_fees                = $this->totalAdditionalFees($searchData);
+            $total_final                          = $total_fees + $total_additional_fees;
 
             /* Appointment final charge total */
             $appointment_row_additional_charge = $this->additional_charge->appointmentFinalChargesTotal($input['ap_id']);

@@ -62,6 +62,15 @@ class Appointment extends Model
         return $output;
     }
 
+    public function getAllData($filterdata, $order_by = ['created_at', 'desc'])
+    {
+        $data = static::select('*');
+        $this->FilterData($data, $filterdata);
+        $data->orderBy($order_by[0], $order_by[1]);
+        $output = $data->get();
+        return $output;
+    }
+
     public function updateData($data, $ap_id)
     {
         return static::where('ap_id', $ap_id)->update(\Arr::only($data, $this->fillable));

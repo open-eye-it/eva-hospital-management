@@ -18,6 +18,7 @@ use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\FollowUpController;
 use App\Http\Controllers\AccounDetail\OPDAccountDetailController;
 use App\Http\Controllers\IpdDetailController;
+use App\Models\IpdDetail;
 
 /*
 |--------------------------------------------------------------------------
@@ -179,5 +180,6 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
         Route::post('update/{ipd_id}', [IpdDetailController::class, 'update'])->name('ipd.update');
         Route::get('view/{ipd_id}', [IpdDetailController::class, 'view'])->name('ipd.view');
         Route::get('status/{string_val}', [IpdDetailController::class, 'status'])->name('ipd.status');
+        Route::get('bill_amount_update/{ipd_id}', [IpdDetailController::class, 'BillAmountUpdate'])->name('ipd.bill_amount.update');
     });
 });

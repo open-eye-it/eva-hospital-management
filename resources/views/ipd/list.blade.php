@@ -51,6 +51,8 @@
                                                 <th>DOB</th>
                                                 <th>Age</th>
                                                 <th>Contact No</th>
+                                                <th>Bill Amount</th>
+                                                <th>Received Amount</th>
                                                 <th>Status</th>
                                                 <th>Actions</th>
                                             </tr>
@@ -69,6 +71,8 @@
                                                 <td>{{ date('d M Y', strtotime($ipd->patientData->pa_dob)) }}</td>
                                                 <td>{{ $ipd->patientData->pa_age }}</td>
                                                 <td>{{ $ipd->patientData->pa_contact_no }}</td>
+                                                <td id="billAmountShow_{{ $ipd->ipd_id }}">{{ $ipd->ipd_bill_amount }}</td>
+                                                <td>{{ $ipd->ipd_received_amount }}</td>
                                                 <td>
                                                     @if($ipd->ipd_status == 'admit')
                                                     @php $statusClass = 'btn-primary'; @endphp
@@ -82,6 +86,7 @@
                                                 <td>
                                                     <a href="{{ route('ipd.edit', base64_encode($ipd->ipd_id)) }}" title="Edit"><i class="la la-edit icon-3x"></i></a>
                                                     <span id="fullView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Full View"><i class="la la-eye icon-3x cursor_pointer"></i></span>
+                                                    <span id="billAmountView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Bill Amount"><i class="la la-money-bill icon-3x cursor_pointer"></i></span>
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -156,6 +161,26 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="billAmountViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">IPD Bill Amount</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped" id="billAmountViewDetail">
+
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     $('body').on('click', '#fullView', function(event) {
         let ipd_id = $(this).data('id');
@@ -163,8 +188,6 @@
             url: "{{ route('ipd.view', '') }}" + "/" + ipd_id,
             method: "GET",
             success: function(res) {
-                console.log(res);
-                $('#fullViewModal').modal('show');
                 if (res.response === true) {
                     let data = res.data;
                     let photo = '';
@@ -208,7 +231,7 @@
                         <td>' + $.trim(data.ipd_bill_amount) + '</td> \
                     </tr> \
                     <tr> \
-                        <th>ReceivedAmount</th> \
+                        <th>Received Amount</th> \
                         <td>' + $.trim(data.ipd_received_amount) + '</td> \
                     </tr>';
 
@@ -239,8 +262,10 @@
                     $('#ipd_cancel_reason').val(result.data.ipd_cancel_reason);
                 }
             },
-            err: function(error) {
-                sweetAlertError(error.message, 3000);
+            error: function(r) {
+                console.log(r);
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
             }
         });
     }
@@ -276,35 +301,46 @@
                 }
             },
             error: function(r) {
+                console.log(r);
                 let res = r.responseJSON;
                 sweetAlertError(res.message, 3000);
             }
         });
     }
 
-    function prescribeShow(ap_id) {
-        window.location.href = "{{ route('appointment.prescribe', '') }}" + "/" + ap_id;
-    }
-
-    /* Export Appointment */
-    function exportAppointment() {
-        let search_text = $('#search_text').val();
-        let patient = $('#patient').val();
-        let appointment_date_range = $('#appointment_date_range_filter').val();
-        let doctor = $('#doctor').val();
-        let case_type = $('#case_type').val();
-        let query = '?search_text=' + search_text + '&patient=' + patient + '&appointment_date_range=' + appointment_date_range + '&doctor=' + doctor + '&case_type=' + case_type;
-        window.location.href = "{{ route('appointment.export') }}" + query;
-    }
-
-    $('body').on('click', '#billView', function(event) {
-        let ap_id = $(this).data('id');
+    /* Show Bill Amount Modal */
+    $('body').on('click', '#billAmountView', function(event) {
+        let ipd_id = $(this).data('id');
         $.ajax({
-            url: "{{ route('appointment.bill_print', '') }}" + "/" + ap_id,
+            url: "{{ route('ipd.view', '') }}" + "/" + ipd_id,
             method: "GET",
             success: function(res) {
                 console.log(res);
-                printData(res);
+                if (res.response === true) {
+                    let data = res.data;
+                    let view = '<div class="row"> \
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-2 form-group"> \
+                            <label for="patient_name">Patient Name</label> \
+                            <input type="text" class="form-control" name="patient_name" id="patient_name" value="' + data.patient_name + '" disabled /> \
+                        </div> \
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-2 form-group"> \
+                            <label for="surgery_type">Type of Surgery</label> \
+                            <input type="text" class="form-control" name="surgery_type" id="surgery_type" value="' + data.ipd_surgery_text + '" disabled /> \
+                        </div> \
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-2 form-group"> \
+                            <label for="ipd_bill_amount_update">Bill Amount</label> \
+                            <input type="text" class="form-control" name="ipd_bill_amount_update" id="ipd_bill_amount_update" value="' + data.ipd_bill_amount + '" /> \
+                        </div> \
+                        <div class="col-12 form-group"> \
+                            <button class="btn btn-primary" id="bill_amount_update_btn" onclick="updateBillAmount(' + atob(ipd_id) + ')">Update</button> \
+                        </div> \
+                    </div>';
+
+                    $('#billAmountViewDetail').html(view);
+                    $('#billAmountViewModal').modal('show');
+                } else {
+                    sweetAlertError(res.message, 3000);
+                }
             },
             error: function(r) {
                 console.log(r);
@@ -312,24 +348,27 @@
                 sweetAlertError(res.message, 3000);
             }
         });
-        //openPrintDialogue();
-    });
-
-    function printData(data) {
-        $('<iframe>', {
-                name: 'myiframe',
-                class: 'printFrame'
-            })
-            .appendTo('body')
-            .contents().find('body')
-            .append(data);
-
-        window.frames['myiframe'].focus();
-        window.frames['myiframe'].print();
-
-        setTimeout(() => {
-            $(".printFrame").remove();
-        }, 1000);
-    };
+    })
+    /* Update Bill Amount */
+    function updateBillAmount(ipd_id) {
+        let ipd_bill_amount = $('#ipd_bill_amount_update').val();
+        $.ajax({
+            url: "{{ route('ipd.bill_amount.update', '') }}" + '/' + btoa(ipd_id) + '?ipd_bill_amount=' + ipd_bill_amount,
+            method: "get",
+            success: function(res) {
+                if (res.response === true) {
+                    $('#billAmountShow_' + ipd_id).text(ipd_bill_amount);
+                    $('#billAmountViewModal').modal('hide');
+                } else {
+                    sweetAlertError(res.message, 3000);
+                }
+            },
+            error: function(r) {
+                console.log(r);
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    }
 </script>
 @endsection

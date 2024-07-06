@@ -162,6 +162,19 @@ class IpdDetailController extends MainController
         }
     }
 
+    /* Bill Amount Update */
+    public function BillAmountUpdate(Request $request, $ipd_id)
+    {
+        $ipd_id = base64_decode($ipd_id);
+        $input = $request->query();
+        $update = $this->ipd->updateData($input, $ipd_id);
+        if ($update == 1) {
+            return $this->getSuccessResult([], 'Bill Amount update.', true);
+        } else {
+            return $this->getErrorMessage('Bill Amount not update, something is wrong.');
+        }
+    }
+
     public function getUniqueID()
     {
         $ipd_id = $this->randomString(10, 'number');

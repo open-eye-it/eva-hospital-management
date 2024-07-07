@@ -82,7 +82,7 @@
                                                     <a href="{{ route('patient.edit', base64_encode($patient->pa_id)) }}" title="Edit"><i class="la la-edit icon-3x"></i></a>
                                                     @endcan
                                                     @can('patient-read')
-                                                    <span id="fullView" data-id="{{ base64_encode($patient->pa_id) }}" title="Full View"><i class="la la-eye icon-3x"></i></span>
+                                                    <span id="fullView" data-id="{{ base64_encode($patient->pa_id) }}" title="Full View"><i class="la la-eye icon-3x cursor_pointer"></i></span>
                                                     @endcan
                                                 </td>
                                                 @endif

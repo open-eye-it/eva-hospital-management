@@ -74,7 +74,7 @@
                                                     <a href="{{ route('user.edit', base64_encode($user->user_id)) }}" title="Edit"><i class="la la-edit icon-3x"></i></a>
                                                     @endcan
                                                     @can('user-read')
-                                                    <span id="fullView" data-id="{{ base64_encode($user->user_id) }}" title="Full View"><i class="la la-eye icon-3x"></i></span>
+                                                    <span id="fullView" data-id="{{ base64_encode($user->user_id) }}" title="Full View"><i class="la la-eye icon-3x cursor_pointer"></i></span>
                                                     @endcan
                                                 </td>
                                                 @endif

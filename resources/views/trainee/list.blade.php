@@ -99,7 +99,7 @@
                                                     <a href="{{ route('trainee.edit', base64_encode($trainee->tr_id)) }}" title="Edit"><i class="la la-edit icon-3x"></i></a>
                                                     @endcan
                                                     @can('trainee-read')
-                                                    <span id="fullView" data-id="{{ base64_encode($trainee->tr_id) }}" title="Full View"><i class="la la-eye icon-3x"></i></span>
+                                                    <span id="fullView" data-id="{{ base64_encode($trainee->tr_id) }}" title="Full View"><i class="la la-eye icon-3x cursor_pointer"></i></span>
                                                     @endcan
                                                     @can('trainee-certificate')
                                                     <a href="{{ route('trainee.certificate.pdf', base64_encode($trainee->tr_id)) }}" title="Certificate"><i class="la la-certificate icon-3x"></i></a>

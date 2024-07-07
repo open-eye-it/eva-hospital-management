@@ -44,7 +44,7 @@ class AppointmentController extends MainController
 
         $searchData['search_text']  = isset($input['search_text']) ? $input['search_text'] : '';
         $searchData['patient']  = isset($input['patient']) ? $input['patient'] : '';
-        $searchData['appointment_date_range']  = isset($input['appointment_date_range']) ? $input['appointment_date_range'] : '';
+        $searchData['appointment_date_range']  = isset($input['appointment_date_range']) ? $input['appointment_date_range'] : date('Y-m-d') . ' - ' . date('Y-m-d');
         $searchData['doctor']  = isset($input['doctor']) ? $input['doctor'] : '';
         $searchData['case_type']  = isset($input['case_type']) ? $input['case_type'] : '';
         $list = $this->appointment->getList($searchData);

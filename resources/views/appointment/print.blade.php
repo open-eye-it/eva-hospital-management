@@ -9,24 +9,28 @@
     <div style="border:2px solid; width:100%; text-align:center; padding-top:20px; padding-bottom:20px;">
         <img src="{{ url('assets/eva/img/logo/eva-logo.png') }}" style="max-width:200px;" />
         <h3 style="margin-bottom:0px; padding-bottom:10px;">
-            BILL
+            OPD BILL
         </h3>
         <table style="margin:auto;">
             <tr>
+                <td style="padding:10px;"><strong>Patient ID</strong></td>
+                <td style="padding:10px;">{{ $data->pa_id }}</td>
                 <td style="padding:10px;"><strong>Patient Name</strong></td>
                 <td style="padding:10px;">{{ $data->patientData->pa_name }}</td>
+            </tr>
+            <tr>
                 <td style="padding:10px;"><Strong>Bill No</Strong></td>
                 <td style="padding:10px;">{{ $data->ap_id }}</td>
-            </tr>
-            <tr>
                 <td style="padding:10px;"><strong>Address</strong></td>
                 <td style="padding:10px;">{{ $data->patientData->pa_address.' '.$data->patientData->pa_city.' '.$data->patientData->pa_pincode.' '.$data->patientData->pa_state }}</td>
-                <td style="padding:10px;"><Strong>Date</Strong></td>
-                <td style="padding:10px;">{{ date('d M Y', strtotime($data->ap_date)) }}</td>
             </tr>
             <tr>
+                <td style="padding:10px;"><Strong>Date</Strong></td>
+                <td style="padding:10px;">{{ date('d M Y', strtotime($data->ap_date)) }}</td>
                 <td style="padding:10px;"><strong>Doctor</strong></td>
                 <td style="padding:10px;">{{ $data->doctorData->person_name }}</td>
+            </tr>
+            <tr>
                 <td style="padding:10px;"><Strong>Refer By</Strong></td>
                 <td style="padding:10px;">{{ ($data->patientData->pa_referred_by == 'doctor') ? $data->patientData->pa_referred_doctor : $data->patientData->pa_referred_text }}</td>
             </tr>

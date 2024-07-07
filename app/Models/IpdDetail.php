@@ -20,10 +20,18 @@ class IpdDetail extends Model
         'ipd_surgery_text',
         'rm_id',
         'ipd_status',
-        'ipd_dischrage_date',
+        'ipd_discharge_date',
         'ipd_cancel_reason',
+        'ipd_diagnosis',
+        'ipd_investigations',
+        'ipd_treatment_given',
+        'ipd_treatment_discharge',
+        'ipd_operation_medicine',
+        'ipd_operation_medicine_date',
         'ipd_bill_amount',
-        'ipd_received_amount'
+        'ipd_received_amount',
+        'ipd_mediclaim',
+        'ipd_is_foc'
     ];
 
 
@@ -104,5 +112,10 @@ class IpdDetail extends Model
     public function roomData()
     {
         return $this->hasOne(Room::class, 'rm_id', 'rm_id');
+    }
+
+    public function operativNoteData()
+    {
+        return $this->hasOne(IpdOperativeNote::class, 'ipd_id', 'ipd_id');
     }
 }

@@ -44,6 +44,15 @@ class OperationMedicine extends Model
         return $output;
     }
 
+    public function getAllMedicine($filterData, $order_by = ['created_at', 'desc'])
+    {
+        $data = static::select('*');
+        $this->filterData($data, $filterData);
+        $data->orderBy($order_by[0], $order_by[1]);
+        $output = $data->get();
+        return $output;
+    }
+
     public function updateOperationMedicine($data, $om_id)
     {
         return static::where('om_id', $om_id)->update(\Arr::only($data, $this->fillable));
@@ -56,10 +65,16 @@ class OperationMedicine extends Model
 
     public function FilterData($data, $filterData)
     {
-        $search_text    = isset($filterData['search_text']) ? $filterData['search_text'] : '';
+        $search_text = isset($filterData['search_text']) ? $filterData['search_text'] : '';
+        $om_status   = isset($filterData['om_status']) ? $filterData['om_status'] : '';
         if (isset($search_text) && $search_text != '') {
-            $data->where('om_name', 'LIKE', '%' . $search_text . '%');
-            $data->orWhere('om_company_name', 'LIKE', '%' . $search_text . '%');
+            $data->where(function ($query) use ($search_text) {
+                $query->where('om_name', 'LIKE', '%' . $search_text . '%');
+                $query->orWhere('om_company_name', 'LIKE', '%' . $search_text . '%');
+            });
+        }
+        if (isset($om_status) && $om_status != '') {
+            $data->where('om_status', 'LIKE', '%' . $om_status . '%');
         }
     }
 

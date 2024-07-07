@@ -181,5 +181,11 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
         Route::get('view/{ipd_id}', [IpdDetailController::class, 'view'])->name('ipd.view');
         Route::get('status/{string_val}', [IpdDetailController::class, 'status'])->name('ipd.status');
         Route::get('bill_amount_update/{ipd_id}', [IpdDetailController::class, 'BillAmountUpdate'])->name('ipd.bill_amount.update');
+        Route::get('operative_note/{ipd_id}', [IpdDetailController::class, 'IPDOperativeNote'])->name('ipd.operative_note.view');
+        Route::get('operative_note_update/{ipd_id}', [IpdDetailController::class, 'IPDOperativeNoteUpdate'])->name('ipd.operative_note.update');
+        Route::get('prescription_view/{ipd_id}', [IpdDetailController::class, 'PrescriptionView'])->name('ipd.prescription.view');
+        Route::get('prescription_update/{ipd_id}', [IpdDetailController::class, 'PrescriptionUpdate'])->name('ipd.prescription.update');
+        Route::get('opd_history/{pa_id}', [IpdDetailController::class, 'OpdHistory'])->name('ipd.opd_history');
+        Route::get('ipd_history/{pa_id}', [IpdDetailController::class, 'IpdHistory'])->name('ipd.ipd_history');
     });
 });

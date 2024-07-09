@@ -140,6 +140,7 @@
             scrollTop('ipd_admit_dateErr');
         }else{
             $('#createBtn').addClass('spinner spinner-white spinner-right');
+            $('#createBtn').attr('disabled', true);
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
@@ -149,6 +150,7 @@
                 data:{pa_id:pa_id, ipd_doctor:ipd_doctor, rm_id:rm_id, ipd_admit_date:ipd_admit_date, ipd_surgery_date:ipd_surgery_date, ipd_surgery_text:ipd_surgery_text},
                 success:function(res){console.log(res);
                     $('#createBtn').removeClass('spinner spinner-white spinner-right');
+                    $('#createBtn').attr('disabled', false);
                     if(res.response === true){
                         sweetAlertSuccess(res.message, 3000, "{{ route('ipd.list') }}");
                     }else{
@@ -157,6 +159,7 @@
                 },
                 error: function(r){
                     $('#createBtn').removeClass('spinner spinner-white spinner-right');
+                    $('#createBtn').attr('disabled', false);
                     let res = r.responseJSON;
                     sweetAlertError(res.message, 3000); 
                 }

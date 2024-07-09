@@ -119,6 +119,7 @@
             scrollTop('display_nameErr');
         }else{
             $('#createBtn').addClass('spinner spinner-white spinner-right');
+            $('#createBtn').attr('disabled', true);
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -128,6 +129,7 @@
                 data:{name:name,display_name:display_name,permission:permission},
                 success:function(res){
                     $('#createBtn').removeClass('spinner spinner-white spinner-right');
+                    $('#createBtn').attr('disabled', false);
                     if(res.response === true){
                         sweetAlertSuccess(res.message, 3000, "{{ route('category.list') }}");
                     }else{
@@ -136,6 +138,7 @@
                 },
                 error: function(r){
                     $('#createBtn').removeClass('spinner spinner-white spinner-right');
+                    $('#createBtn').attr('disabled', false);
                     let res = r.responseJSON;
                     sweetAlertError(res.message, 3000); 
                 }

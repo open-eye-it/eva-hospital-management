@@ -346,6 +346,7 @@ PROVISIONAL DIAGNOSIS : zxcas
         let ap_other_detail = $('#ap_other_detail').val();
         let ap_any_advice = $('#ap_any_advice').val();
         $('#createBtn').addClass('spinner spinner-white spinner-right');
+        $('#createBtn').attr('disabled', true);
         $.ajax({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
@@ -355,6 +356,7 @@ PROVISIONAL DIAGNOSIS : zxcas
             data:{ap_follow_up_date:ap_follow_up_date, ap_surg_required:ap_surg_required,ap_surg_date:ap_surg_date,ap_surg_type:ap_surg_type, ap_is_foc:ap_is_foc, ap_complaint:ap_complaint, ap_other_detail:ap_other_detail, ap_any_advice:ap_any_advice},
             success:function(res){
                 $('#createBtn').removeClass('spinner spinner-white spinner-right');
+                $('#createBtn').attr('disabled', false);
                 if(res.response === true){
                     sweetAlertSuccess(res.message, 3000, "{{ url()->previous() }}");
                 }else{
@@ -363,6 +365,7 @@ PROVISIONAL DIAGNOSIS : zxcas
             },
             error: function(r){
                 $('#createBtn').removeClass('spinner spinner-white spinner-right');
+                $('#createBtn').attr('disabled', false);
                 let res = r.responseJSON;
                 sweetAlertError(res.message, 3000); 
             }
@@ -383,12 +386,14 @@ PROVISIONAL DIAGNOSIS : zxcas
             scrollTop('gm_idErr');
         }else{
             $('#addBtn').addClass('spinner spinner-white spinner-right');
+            $('#addBtn').attr('disabled', true);
             let data = 'ap_id='+ap_id+'&gm_id='+gm_id+'&am_days='+am_days+'&am_timing='+am_timing+'&am_morning='+am_morning+'&am_afternoon='+am_afternoon+'&am_evening='+am_evening;
             $.ajax({
                 url:"{{ route('appointment.medicine.store') }}"+'?'+data,
                 method:"get",
                 success:function(res){
                     $('#addBtn').removeClass('spinner spinner-white spinner-right');
+                    $('#addBtn').attr('disabled', false);
                     if(res.response === true){
                         let data = res.data;
                         let tableData = '<tr id="table_row_'+data.am_id+'"> \
@@ -416,6 +421,7 @@ PROVISIONAL DIAGNOSIS : zxcas
                 },
                 error:function(r){
                     $('#addBtn').removeClass('spinner spinner-white spinner-right');
+                    $('#addBtn').attr('disabled', false);
                     let res = r.responseJSON;
                     sweetAlertError(res.message, 2000); 
                 }

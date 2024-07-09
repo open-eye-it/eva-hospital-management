@@ -1,5 +1,5 @@
 @extends('layout.master');
-@section('title', 'User - Create')
+@section('title', 'User - Add')
 @section('breadcrumb-module', 'User')
 @section('page-content')
 <!--begin::Row-->
@@ -16,7 +16,7 @@
                             <!--begin::Card-->
                             <div class="card card-custom gutter-b example example-compact">
                                 <div class="card-header">
-                                    <h3 class="card-title">Create</h3>
+                                    <h3 class="card-title">Add</h3>
                                 </div>
                                 <!--begin::Form-->
                                 <form method="POST" action="{{ route('user.store') }}" id="createCatefgory">
@@ -88,7 +88,7 @@
                                         <!--end: Code-->
                                     </div>
                                     <div class="card-footer">
-                                        <button type="submit" class="btn btn-primary mr-2" id="createBtn">Create</button>
+                                        <button type="submit" class="btn btn-primary mr-2" id="createBtn">Add</button>
                                         <a href="{{ url()->previous() }}" class="btn btn-secondary">Cancel</a>
                                     </div>
                                 </form>
@@ -151,6 +151,7 @@
             scrollTop('contactnoErr');
         }else{
             $('#createBtn').addClass('spinner spinner-white spinner-right');
+            $('#createBtn').attr('disabled', true);
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -160,6 +161,7 @@
                 data:{cat_id:cat_id, uname:uname, email:email, password:password, person_name:person_name, contactno:contactno, address:address},
                 success:function(res){
                     $('#createBtn').removeClass('spinner spinner-white spinner-right');
+                    $('#createBtn').attr('disabled', false);
                     if(res.response === true){
                         sweetAlertSuccess(res.message, 3000, "{{ route('user.list') }}");
                     }else{
@@ -168,6 +170,7 @@
                 },
                 error: function(r){
                     $('#createBtn').removeClass('spinner spinner-white spinner-right');
+                    $('#createBtn').attr('disabled', false);
                     let res = r.responseJSON;
                     sweetAlertError(res.message, 3000); 
                 }

@@ -147,6 +147,7 @@
             scrollTop('contactnoErr');
         }else{
             $('#createBtn').addClass('spinner spinner-white spinner-right');
+            $('#createBtn').attr('disabled', true);
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -156,6 +157,7 @@
                 data:{cat_id:cat_id, uname:uname, email:email, person_name:person_name, contactno:contactno, address:address},
                 success:function(res){
                     $('#createBtn').removeClass('spinner spinner-white spinner-right');
+                    $('#createBtn').attr('disabled', false);
                     if(res.response === true){
                         sweetAlertSuccess(res.message, 3000, "{{ route('user.list') }}");
                     }else{
@@ -164,6 +166,7 @@
                 },
                 error: function(r){
                     $('#createBtn').removeClass('spinner spinner-white spinner-right');
+                    $('#createBtn').attr('disabled', false);
                     let res = r.responseJSON;
                     sweetAlertError(res.message, 3000); 
                 }

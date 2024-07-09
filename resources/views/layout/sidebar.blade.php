@@ -65,7 +65,7 @@
 									<i class="menu-bullet menu-bullet-dot">
 										<span></span>
 									</i>
-									<span class="menu-text">Create</span>
+									<span class="menu-text">Add</span>
 								</a>
 							</li>
 							@endcan
@@ -103,7 +103,7 @@
 									<i class="menu-bullet menu-bullet-dot">
 										<span></span>
 									</i>
-									<span class="menu-text">Create</span>
+									<span class="menu-text">Add</span>
 								</a>
 							</li>
 							@endcan
@@ -141,7 +141,7 @@
 									<i class="menu-bullet menu-bullet-dot">
 										<span></span>
 									</i>
-									<span class="menu-text">Create</span>
+									<span class="menu-text">Add</span>
 								</a>
 							</li>
 							@endcan
@@ -189,7 +189,7 @@
 									<i class="menu-bullet menu-bullet-dot">
 										<span></span>
 									</i>
-									<span class="menu-text">Create</span>
+									<span class="menu-text">Add</span>
 								</a>
 							</li>
 							@endcan
@@ -225,7 +225,7 @@
 									<i class="menu-bullet menu-bullet-dot">
 										<span></span>
 									</i>
-									<span class="menu-text">Create</span>
+									<span class="menu-text">Add</span>
 								</a>
 							</li>
 							@endcan
@@ -261,7 +261,7 @@
 									<i class="menu-bullet menu-bullet-dot">
 										<span></span>
 									</i>
-									<span class="menu-text">Create</span>
+									<span class="menu-text">Add</span>
 								</a>
 							</li>
 							@endcan
@@ -318,7 +318,7 @@
 												<i class="menu-bullet menu-bullet-dot">
 													<span></span>
 												</i>
-												<span class="menu-text">Create</span>
+												<span class="menu-text">Add</span>
 											</a>
 										</li>
 										@endcan
@@ -354,7 +354,7 @@
 												<i class="menu-bullet menu-bullet-dot">
 													<span></span>
 												</i>
-												<span class="menu-text">Create</span>
+												<span class="menu-text">Add</span>
 											</a>
 										</li>
 										@endcan
@@ -400,7 +400,7 @@
 									<i class="menu-bullet menu-bullet-dot">
 										<span></span>
 									</i>
-									<span class="menu-text">Create</span>
+									<span class="menu-text">Add</span>
 								</a>
 							</li>
 							@endcan
@@ -434,7 +434,7 @@
 									<i class="menu-bullet menu-bullet-dot">
 										<span></span>
 									</i>
-									<span class="menu-text">Create</span>
+									<span class="menu-text">Add</span>
 								</a>
 							</li>
 							<li class="menu-item {{ (Request::segment(1) == 'appointment' && Request::segment(2) == 'list') ? 'menu-item-active' : '' }}" aria-haspopup="true">
@@ -458,7 +458,7 @@
 						<span class="menu-text">Follow Up</span>
 					</a>
 				</li>
-				<!-- <li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'ipd') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'ipd') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
 					<a href="javascript:;" class="menu-link menu-toggle">
 						<span class="svg-icon menu-icon">
 							<i class="icon-2x la la-bed"></i>
@@ -474,7 +474,7 @@
 									<i class="menu-bullet menu-bullet-dot">
 										<span></span>
 									</i>
-									<span class="menu-text">Create</span>
+									<span class="menu-text">Add</span>
 								</a>
 							</li>
 							<li class="menu-item {{ (Request::segment(1) == 'ipd' && Request::segment(2) == 'list') ? 'menu-item-active' : '' }}" aria-haspopup="true">
@@ -517,7 +517,7 @@
 							</li>
 						</ul>
 					</div>
-				</li> -->
+				</li>
 			</ul>
 			<!--end::Menu Nav-->
 		</div>

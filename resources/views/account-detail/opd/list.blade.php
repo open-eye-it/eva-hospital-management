@@ -174,7 +174,6 @@
             url: "{{ route('opd-account-detail.additional-charge.list', '') }}" + "/" + ap_id,
             method: "GET",
             success: function(res) {
-                $('#addAdditionalCharge').removeClass('spinner spinner-white spinner-right');
                 if (res.response === true) {
                     let data = res.data;
                     $('#allAdditionalCharge').html(data);
@@ -185,7 +184,6 @@
                 }
             },
             error: function(r) {
-                $('#createBtn').removeClass('spinner spinner-white spinner-right');
                 let res = r.responseJSON;
                 sweetAlertError(res.message, 3000);
             }
@@ -210,6 +208,7 @@
             scrollTop('apac_chargeErr');
         } else {
             $('#addAdditionalCharge').addClass('spinner spinner-white spinner-right');
+            $('#addAdditionalCharge').attr('disabled', true);
             let query = 'ap_id=' + ap_id + '&apac_desc=' + apac_desc + '&apac_qty=' + apac_qty + '&apac_charge=' + apac_charge + '&query=' + queryData;
             $.ajax({
                 url: "{{ route('opd-account-detail.additional-charge.store') }}" + '?' + query,
@@ -217,6 +216,7 @@
                 success: function(res) {
                     console.log(res);
                     $('#addAdditionalCharge').removeClass('spinner spinner-white spinner-right');
+                    $('#addAdditionalCharge').attr('disabled', false);
                     if (res.response === true) {
                         let data = res.data;
                         let tableRow = '<tr> \
@@ -238,7 +238,8 @@
                     }
                 },
                 error: function(r) {
-                    $('#createBtn').removeClass('spinner spinner-white spinner-right');
+                    $('#addAdditionalCharge').removeClass('spinner spinner-white spinner-right');
+                    $('#addAdditionalCharge').attr('disabled', false);
                     let res = r.responseJSON;
                     sweetAlertError(res.message, 3000);
                 }

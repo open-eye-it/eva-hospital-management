@@ -208,6 +208,7 @@
             scrollTop('ap_cate_typeErr');
         }else{
             $('#createBtn').addClass('spinner spinner-white spinner-right');
+            $('#createBtn').attr('disabled', false);
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
@@ -217,6 +218,7 @@
                 data:{pa_id:pa_id, ap_height:ap_height, ap_weight:ap_weight, ap_bp:ap_bp, ap_doctor:ap_doctor, ap_date:ap_date, ap_book_via:ap_book_via, ap_case_type:ap_case_type, ap_charge:ap_charge, ap_is_workshop:ap_is_workshop, ap_payment_mode:ap_payment_mode, ap_payment_detail:ap_payment_detail},
                 success:function(res){
                     $('#createBtn').removeClass('spinner spinner-white spinner-right');
+                    $('#createBtn').attr('disabled', false);
                     if(res.response === true){
                         sweetAlertSuccess(res.message, 3000, "{{ route('appointment.list') }}");
                     }else{
@@ -225,6 +227,7 @@
                 },
                 error: function(r){
                     $('#createBtn').removeClass('spinner spinner-white spinner-right');
+                    $('#createBtn').attr('disabled', false);
                     let res = r.responseJSON;
                     sweetAlertError(res.message, 3000); 
                 }

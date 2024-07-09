@@ -1,5 +1,5 @@
 @extends('layout.master');
-@section('title', 'Appointment - Create')
+@section('title', 'Appointment - Add')
 @section('breadcrumb-module', 'Appointment')
 @section('page-content')
 <!--begin::Row-->
@@ -16,7 +16,7 @@
                             <!--begin::Card-->
                             <div class="card card-custom gutter-b example example-compact">
                                 <div class="card-header">
-                                    <h3 class="card-title">Create</h3>
+                                    <h3 class="card-title">Add</h3>
                                 </div>
                                 <!--begin::Form-->
                                 <form method="POST" action="{{ route('referred-doctor.store') }}" id="createCatefgory">
@@ -139,7 +139,7 @@
                                         <!--end: Code-->
                                     </div>
                                     <div class="card-footer">
-                                        <button type="submit" class="btn btn-primary mr-2" id="createBtn">Create</button>
+                                        <button type="submit" class="btn btn-primary mr-2" id="createBtn">Add</button>
                                         <a href="{{ url()->previous() }}" class="btn btn-secondary">Cancel</a>
                                     </div>
                                 </form>
@@ -207,6 +207,7 @@
             scrollTop('ap_cate_typeErr');
         }else{
             $('#createBtn').addClass('spinner spinner-white spinner-right');
+            $('#createBtn').attr('disabled', true);
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
@@ -216,6 +217,7 @@
                 data:{pa_id:pa_id, ap_height:ap_height, ap_weight:ap_weight, ap_bp:ap_bp, ap_doctor:ap_doctor, ap_date:ap_date, ap_book_via:ap_book_via, ap_case_type:ap_case_type, ap_charge:ap_charge, ap_is_workshop:ap_is_workshop, ap_payment_mode:ap_payment_mode, ap_payment_detail:ap_payment_detail},
                 success:function(res){console.log(res);
                     $('#createBtn').removeClass('spinner spinner-white spinner-right');
+                    $('#createBtn').attr('disabled', false);
                     if(res.response === true){
                         sweetAlertSuccess(res.message, 3000, "{{ route('appointment.list') }}");
                     }else{
@@ -224,6 +226,7 @@
                 },
                 error: function(r){
                     $('#createBtn').removeClass('spinner spinner-white spinner-right');
+                    $('#createBtn').attr('disabled', false);
                     let res = r.responseJSON;
                     sweetAlertError(res.message, 3000); 
                 }

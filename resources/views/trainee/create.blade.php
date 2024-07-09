@@ -1,5 +1,5 @@
 @extends('layout.master');
-@section('title', 'Trainee - Create')
+@section('title', 'Trainee - Add')
 @section('breadcrumb-module', 'Trainee')
 @section('page-content')
 <!--begin::Row-->
@@ -16,7 +16,7 @@
                             <!--begin::Card-->
                             <div class="card card-custom gutter-b example example-compact">
                                 <div class="card-header">
-                                    <h3 class="card-title">Create</h3>
+                                    <h3 class="card-title">Add</h3>
                                 </div>
                                 <!--begin::Form-->
                                 <form method="POST" enctype="multipart/form-data" action="{{ route('trainee.store', base64_encode($tr_real_id)) }}" id="createCatefgory">
@@ -120,7 +120,7 @@
                                         <!--end: Code-->
                                     </div>
                                     <div class="card-footer">
-                                        <button type="submit" class="btn btn-primary mr-2" id="createBtn">Create</button>
+                                        <button type="submit" class="btn btn-primary mr-2" id="createBtn">Add</button>
                                         <a href="{{ url()->previous() }}" class="btn btn-secondary">Cancel</a>
                                     </div>
                                 </form>
@@ -217,6 +217,7 @@
         }
         else{
             $('#createBtn').addClass('spinner spinner-white spinner-right');
+            $('#createBtn').attr('disabled', true);
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
@@ -229,6 +230,7 @@
                 processData: false,
                 success:function(res){
                     $('#createBtn').removeClass('spinner spinner-white spinner-right');
+                    $('#createBtn').attr('disabled', false);
                     if(res.response === true){
                         sweetAlertSuccess(res.message, 3000, "{{ route('trainee.list') }}");
                     }else{
@@ -237,6 +239,7 @@
                 },
                 error: function(r){
                     $('#createBtn').removeClass('spinner spinner-white spinner-right');
+                    $('#createBtn').attr('disabled', false);
                     let res = r.responseJSON;
                     sweetAlertError(res.message, 3000); 
                 }

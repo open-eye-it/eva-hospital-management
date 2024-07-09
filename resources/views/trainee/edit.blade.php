@@ -1,5 +1,5 @@
 @extends('layout.master');
-@section('title', 'Trainee - Create')
+@section('title', 'Trainee - Update')
 @section('breadcrumb-module', 'Trainee')
 @section('page-content')
 <!--begin::Row-->
@@ -16,7 +16,7 @@
                             <!--begin::Card-->
                             <div class="card card-custom gutter-b example example-compact">
                                 <div class="card-header">
-                                    <h3 class="card-title">Create</h3>
+                                    <h3 class="card-title">Update</h3>
                                 </div>
                                 <!--begin::Form-->
                                 <form method="POST" action="{{ route('trainee.update', base64_encode($data->tr_id)) }}" id="createCatefgory">
@@ -225,6 +225,7 @@
             scrollTop('tr_documentsErr');
         }else{
             $('#createBtn').addClass('spinner spinner-white spinner-right');
+            $('#createBtn').attr('disabled', true);
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -237,6 +238,7 @@
                 processData: false,
                 success:function(res){
                     $('#createBtn').removeClass('spinner spinner-white spinner-right');
+                    $('#createBtn').attr('disabled', false);
                     if(res.response === true){
                         sweetAlertSuccess(res.message, 3000, "{{ route('trainee.list') }}");
                     }else{
@@ -245,6 +247,7 @@
                 },
                 error: function(r){
                     $('#createBtn').removeClass('spinner spinner-white spinner-right');
+                    $('#createBtn').attr('disabled', false);
                     let res = r.responseJSON;
                     sweetAlertError(res.message, 3000); 
                 }

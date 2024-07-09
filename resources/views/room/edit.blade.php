@@ -1,5 +1,5 @@
 @extends('layout.master');
-@section('title', 'Room - Edit')
+@section('title', 'Room - Update')
 @section('breadcrumb-module', 'Room')
 @section('page-content')
 <!--begin::Row-->
@@ -16,7 +16,7 @@
                             <!--begin::Card-->
                             <div class="card card-custom gutter-b example example-compact">
                                 <div class="card-header">
-                                    <h3 class="card-title">Create</h3>
+                                    <h3 class="card-title">Update</h3>
                                 </div>
                                 <!--begin::Form-->
                                 <form method="POST" action="{{ route('room.update', base64_encode($data->rm_id)) }}" id="createCatefgory">
@@ -26,13 +26,13 @@
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
                                                     <label>Building <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" placeholder="Building" name="rm_building" id="rm_building" value="{{ $data->rm_building }}" />
+                                                    <input type="text" class="form-control" placeholder="Building" name="rm_building" id="rm_building" value="{{ $data->rm_building }}" disabled />
                                                     <span class="text-danger" id="rm_buildingErr"></span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label>Floot <span class="text-danger">*</span></label>
+                                                    <label>Floor <span class="text-danger">*</span></label>
                                                     <input type="text" class="form-control" placeholder="Floor" name="rm_floor" id="rm_floor" value="{{ $data->rm_floor }}" />
                                                     <span class="text-danger" id="rm_floorErr"></span>
                                                 </div>
@@ -132,6 +132,7 @@
             scrollTop('rm_busyErr');
         }else{
             $('#createBtn').addClass('spinner spinner-white spinner-right');
+            $('#createBtn').attr('disabled', true);
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -141,6 +142,7 @@
                 data:{rm_building:rm_building, rm_floor:rm_floor, rm_ward:rm_ward, rm_no:rm_no, rm_charge:rm_charge, rm_busy:rm_busy},
                 success:function(res){
                     $('#createBtn').removeClass('spinner spinner-white spinner-right');
+                    $('#createBtn').attr('disabled', false);
                     if(res.response === true){
                         sweetAlertSuccess(res.message, 3000, "{{ route('room.list') }}");
                     }else{
@@ -149,6 +151,7 @@
                 },
                 error: function(r){
                     $('#createBtn').removeClass('spinner spinner-white spinner-right');
+                    $('#createBtn').attr('disabled', false);
                     let res = r.responseJSON;
                     sweetAlertError(res.message, 3000); 
                 }

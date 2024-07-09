@@ -104,7 +104,7 @@
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label for="ap_case_type">Is Workshop or not? <span class="text-danger">*</span></label>
+                                                    <label for="ap_case_type">Workshop Attended? <span class="text-danger">*</span></label>
                                                     <select class="form-control" name="ap_is_workshop" id="ap_is_workshop" onchange="changeIsWorkshop(this.value)">
                                                         <option value="no">No</option>
                                                         <option value="yes">Yes</option>
@@ -115,7 +115,7 @@
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
                                                     <label for="ap_payment_mode">Mode of Payment</label>
-                                                    <select class="form-control" name="ap_payment_mode" id="ap_payment_mode" onchange="changeFee(this.value)">
+                                                    <select class="form-control" name="ap_payment_mode" id="ap_payment_mode" onchange="changePaymnt(this.value)">
                                                         <option value="">Select</option>
                                                         @foreach(PaymentMode() as $paymentType)
                                                         <option value="{{ $paymentType['ap_payment_mode'] }}">{{ ucfirst($paymentType['ap_payment_mode']) }}</option>
@@ -123,7 +123,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-12">
+                                            <div class="col-lg-6 col-md-6 col-12 d-none" id="payment_detail_box">
                                                 <div class="form-group">
                                                     <label for="ap_payment_detail">Payment Detail</label>
                                                     <input type="text" class="form-control" placeholder="Payment Detail" name="ap_payment_detail" id="ap_payment_detail" />
@@ -162,6 +162,26 @@
         let arr = val.split('-');
         //ap_charge
         $('#ap_charge').val(arr[1]);
+    }
+
+    function changePaymnt(val){
+        $('#ap_payment_detail').val();
+        if(val == 'cash'){
+            $('#payment_detail_box').addClass('d-none');
+            $('#payment_detail_box input').attr('placeholder', 'Cash');
+        }else if(val == 'card'){
+            $('#payment_detail_box').removeClass('d-none');
+            $('#payment_detail_box label').text('Card Details');
+            $('#payment_detail_box input').attr('placeholder', 'Card Details');
+        }else if(val == 'mediclaim'){
+            $('#payment_detail_box').removeClass('d-none');
+            $('#payment_detail_box label').text('Mediclaim Company Name');
+            $('#payment_detail_box input').attr('placeholder', 'Mediclaim Company Name');
+        }else if(val == 'corporate'){
+            $('#payment_detail_box').removeClass('d-none');
+            $('#payment_detail_box label').text('Company Name / Other Details');
+            $('#payment_detail_box input').attr('placeholder', 'Company Name / Other Details');
+        }
     }
 
     function changeIsWorkshop(val){

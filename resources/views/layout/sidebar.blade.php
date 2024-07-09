@@ -249,7 +249,7 @@
 						<span class="svg-icon menu-icon">
 							<i class="icon-2x flaticon-user-add"></i>
 						</span>
-						<span class="menu-text">Referred Doctor</span>
+						<span class="menu-text">Referred By</span>
 						<i class="menu-arrow"></i>
 					</a>
 					<div class="menu-submenu">

@@ -37,52 +37,61 @@ class PatientController extends MainController
     {
         $input = $request->all();
 
-        $checkEmail = $this->patient->checkEmailExist($input['pa_email']);
-        if (count($checkEmail) == 0) {
-            $checkContact = $this->patient->checkContactNoExist($input['pa_contact_no']);
-            if (count($checkContact) == 0) {
-                // $checkAltContact = $this->patient->checkAltContactNoExist($input['pa_alt_contact_no']);
-                // if (count($checkAltContact) == 0) {
-                $pa_id = $this->getUniqueID();
-                $login_user_id = Auth::user()->user_id;
-                $file = '';
-                if ($request->hasFile('pa_photo')) {
-                    $file = UploadCustomeImage($request->file('pa_photo'), $pa_id . '-' . $this->randomString(10, 'number'));
-                }
-                /* Start::If Referred Doctor Not exist then create it */
-                $doctorExist = $this->referred_doctor->singleDataByName($input['pa_referred_doctor']);
-                if (empty($doctorExist) && $input['pa_referred_doctor'] != '') {
-                    $rd_id = $this->referredDoctorUniqueID();
-                    $data = [
-                        'rd_id'           => $rd_id,
-                        'rd_added_by'     => $login_user_id,
-                        'rd_updated_by'   => $login_user_id,
-                        'rd_name'         => $input['pa_referred_doctor'],
-                    ];
-                    $insert = $this->referred_doctor->insertData($data);
-                }
-                /* End::If Referred Doctor Not exist then create it */
-
-                $input['pa_id'] = $pa_id;
-                $input['pa_added_by'] = $login_user_id;
-                $input['pa_updated_by'] = $login_user_id;
-                $input['pa_photo'] = json_encode([$file]);
-
-                $insert = $this->patient->insertData($input);
-                if (isset($insert->pa_id)) {
-                    return $this->getSuccessResult([], $input['pa_name'] . ' added as Patient', true);
-                } else {
-                    return $this->getErrorMessage($input['pa_name'] . ' not added as patient, something is wrong.');
-                }
-                // } else {
-                //     return $this->getErrorMessage($input['pa_alt_contact_no'] . ' already exist.');
-                // }
-            } else {
-                return $this->getErrorMessage($input['pa_contact_no'] . ' already exist.');
-            }
-        } else {
-            return $this->getErrorMessage($input['pa_email'] . ' already exist.');
+        // $checkEmail = $this->patient->checkEmailExist($input['pa_email']);
+        // if (count($checkEmail) == 0) {
+        //     $checkContact = $this->patient->checkContactNoExist($input['pa_contact_no']);
+        //     if (count($checkContact) == 0) {
+        // $checkAltContact = $this->patient->checkAltContactNoExist($input['pa_alt_contact_no']);
+        // if (count($checkAltContact) == 0) {
+        $pa_id = $this->getUniqueID();
+        $login_user_id = Auth::user()->user_id;
+        $file = '';
+        if ($request->hasFile('pa_photo')) {
+            $file = UploadCustomeImage($request->file('pa_photo'), $pa_id . '-' . $this->randomString(10, 'number'));
         }
+        if ($input['pa_referred_by'] != '') {
+            /* Start::If Referred Doctor Not exist then create it */
+            $doctorExist = $this->referred_doctor->singleDataByName($input['pa_referred_doctor']);
+            $textExist = $this->referred_doctor->singleDataByName($input['pa_referred_text']);
+            if ((empty($doctorExist) && $input['pa_referred_doctor'] != '') || (empty($textExist) && $input['pa_referred_text'] != '')) {
+                $rd_name = '';
+                if ($input['pa_referred_doctor'] != '') {
+                    $rd_name = $input['pa_referred_doctor'];
+                } else {
+                    $rd_name = $input['pa_referred_text'];
+                }
+                $rd_id = $this->referredDoctorUniqueID();
+                $data = [
+                    'rd_id'           => $rd_id,
+                    'rd_added_by'     => $login_user_id,
+                    'rd_updated_by'   => $login_user_id,
+                    'rd_name'         => $rd_name,
+                ];
+                $insert = $this->referred_doctor->insertData($data);
+            }
+            /* End::If Referred Doctor Not exist then create it */
+        }
+
+        $input['pa_id'] = $pa_id;
+        $input['pa_added_by'] = $login_user_id;
+        $input['pa_updated_by'] = $login_user_id;
+        $input['pa_photo'] = json_encode([$file]);
+
+        $insert = $this->patient->insertData($input);
+        if (isset($insert->pa_id)) {
+            return $this->getSuccessResult([], $input['pa_name'] . ' added as Patient', true);
+        } else {
+            return $this->getErrorMessage($input['pa_name'] . ' not added as patient, something is wrong.');
+        }
+        // } else {
+        //     return $this->getErrorMessage($input['pa_alt_contact_no'] . ' already exist.');
+        // }
+        //     } else {
+        //         return $this->getErrorMessage($input['pa_contact_no'] . ' already exist.');
+        //     }
+        // } else {
+        //     return $this->getErrorMessage($input['pa_email'] . ' already exist.');
+        // }
     }
 
     public function edit($pa_id)
@@ -96,46 +105,53 @@ class PatientController extends MainController
     {
         $input = $request->all();
         $pa_id = base64_decode($pa_id);
-        $checkEmail = $this->patient->checkEmailExistIgnoreID($input['pa_email'], $pa_id);
-        if (count($checkEmail) == 0) {
-            $checkContact = $this->patient->checkContactNoExistIgnoreID($input['pa_contact_no'], $pa_id);
-            if (count($checkContact) == 0) {
-                $singleData = $this->patient->singlData($pa_id);
-                $login_user_id = Auth::user()->user_id;
-                $file = '';
-                if ($request->hasFile('pa_photo')) {
-                    $file = UploadCustomeImage($request->file('pa_photo'), $pa_id . '-' . $this->randomString(10, 'number'));
-                    ImageRemove($singleData->pa_photo);
-                } else {
-                    $file = $singleData->pa_photo;
-                }
-                $doctorExist = $this->referred_doctor->singleDataByName($input['pa_referred_doctor']);
-                if (empty($doctorExist) && $input['pa_referred_doctor'] != '') {
-                    $rd_id = $this->referredDoctorUniqueID();
-                    $data = [
-                        'rd_id'           => $rd_id,
-                        'rd_added_by'     => $login_user_id,
-                        'rd_updated_by'   => $login_user_id,
-                        'rd_name'         => $input['pa_referred_doctor'],
-                    ];
-                    $insert = $this->referred_doctor->insertData($data);
-                }
-                /* End::If Referred Doctor Not exist then create it */
-
-                $input['pa_updated_by'] = $login_user_id;
-                $input['pa_photo'] = json_encode([$file]);
-                $update = $this->patient->updateData($input, $pa_id);
-                if ($update == 1) {
-                    return $this->getSuccessResult([], $input['pa_name'] . ' updated as Patient', true);
-                } else {
-                    return $this->getErrorMessage($input['pa_name'] . ' not updated as patient, something is wrong.');
-                }
-            } else {
-                return $this->getErrorMessage($input['pa_contact_no'] . ' already exist.');
-            }
+        // $checkEmail = $this->patient->checkEmailExistIgnoreID($input['pa_email'], $pa_id);
+        // if (count($checkEmail) == 0) {
+        //     $checkContact = $this->patient->checkContactNoExistIgnoreID($input['pa_contact_no'], $pa_id);
+        //     if (count($checkContact) == 0) {
+        $singleData = $this->patient->singlData($pa_id);
+        $login_user_id = Auth::user()->user_id;
+        $file = '';
+        if ($request->hasFile('pa_photo')) {
+            $file = UploadCustomeImage($request->file('pa_photo'), $pa_id . '-' . $this->randomString(10, 'number'));
+            ImageRemove($singleData->pa_photo);
         } else {
-            return $this->getErrorMessage($input['pa_email'] . ' already exist.');
+            $file = $singleData->pa_photo;
         }
+        $doctorExist = $this->referred_doctor->singleDataByName($input['pa_referred_doctor']);
+        $textExist = $this->referred_doctor->singleDataByName($input['pa_referred_text']);
+        if ((empty($doctorExist) && $input['pa_referred_doctor'] != '') || (empty($textExist) && $input['pa_referred_text'] != '')) {
+            $rd_name = '';
+            if ($input['pa_referred_doctor'] != '') {
+                $rd_name = $input['pa_referred_doctor'];
+            } else {
+                $rd_name = $input['pa_referred_text'];
+            }
+            $rd_id = $this->referredDoctorUniqueID();
+            $data = [
+                'rd_id'           => $rd_id,
+                'rd_added_by'     => $login_user_id,
+                'rd_updated_by'   => $login_user_id,
+                'rd_name'         => $rd_name,
+            ];
+            $insert = $this->referred_doctor->insertData($data);
+        }
+        /* End::If Referred Doctor Not exist then create it */
+
+        $input['pa_updated_by'] = $login_user_id;
+        $input['pa_photo'] = json_encode([$file]);
+        $update = $this->patient->updateData($input, $pa_id);
+        if ($update == 1) {
+            return $this->getSuccessResult([], $input['pa_name'] . ' updated as Patient', true);
+        } else {
+            return $this->getErrorMessage($input['pa_name'] . ' not updated as patient, something is wrong.');
+        }
+        //     } else {
+        //         return $this->getErrorMessage($input['pa_contact_no'] . ' already exist.');
+        //     }
+        // } else {
+        //     return $this->getErrorMessage($input['pa_email'] . ' already exist.');
+        // }
     }
 
     public function status($pa_id)

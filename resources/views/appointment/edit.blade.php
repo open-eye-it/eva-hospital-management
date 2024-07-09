@@ -104,7 +104,7 @@
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label for="ap_case_type">Is Workshop or not? <span class="text-danger">*</span></label>
+                                                    <label for="ap_case_type">Workshop Attended? <span class="text-danger">*</span></label>
                                                     <select class="form-control" name="ap_is_workshop" id="ap_is_workshop" onchange="changeIsWorkshop(this.value)">
                                                         <option value="no" {{ ($data->ap_is_workshop == 'no') ? 'selected' : '' }}>No</option>
                                                         <option value="yes" {{ ($data->ap_is_workshop == 'yes') ? 'selected' : '' }}>Yes</option>

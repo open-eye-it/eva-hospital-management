@@ -116,7 +116,8 @@
                                                     <span class="btn {{ $statusClass }}" id="status_{{ $appointment->ap_id }}" onclick="statusModal('{{ base64_encode($appointment->ap_id) }}')">{{ ucfirst($appointment->ap_status) }}</span>
                                                 </td>
                                                 <td>
-                                                    <span class="btn btn-danger" onclick="prescribeShow('{{ base64_encode($appointment->ap_id) }}')">Prescribe</span>
+                                                    <span class="btn btn-danger mb-2" onclick="prescribeShow('{{ base64_encode($appointment->ap_id) }}')">Prescribe</span>
+                                                    <span id="prescriptionBillView" data-id="{{ base64_encode($appointment->ap_id) }}" title="Prescription Bill"><i class="flaticon flaticon-file-2 icon-3x cursor_pointer"></i></span>
                                                 </td>
                                                 <td>
                                                     <a href="{{ route('appointment.edit', base64_encode($appointment->ap_id)) }}" title="Edit"><i class="la la-edit icon-3x"></i></a>
@@ -181,12 +182,24 @@
             </div>
             <div class="modal-body">
                 <table class="table table-striped" id="statusDetail">
-                    <span class="btn btn-primary mr-2" id="pendingStatus">Pending</span>
+                    <div class="form-group">
+                        <label for="">Satatus</label>
+                        <select name="ap_status_val" id="ap_status_val" class="form-control" onchange="changeStatusVal(this.value)">
+                            <option value="">-Select-</option>
+                            <option value="pending">Pending</option>
+                            <option value="completed">Comlpleted</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                    <!-- <span class="btn btn-primary mr-2" id="pendingStatus">Pending</span>
                     <span class="btn btn-success mr-2" id="completedStatus">Completed</span>
-                    <span class="btn btn-danger mr-2" id="cancelledStatus">Cancelled</span>
-                    <div class="form-group pt-4">
+                    <span class="btn btn-danger mr-2" id="cancelledStatus">Cancelled</span> -->
+                    <div class="form-group pt-4 d-none" id="statusCancelReason">
                         <label for="ap_status_reason">Cancel Reason</label>
                         <textarea class="form-control" name="ap_status_reason" id="ap_status_reason" cols="30" rows="5"></textarea>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary" id="statusButton">Submit</button>
                     </div>
                 </table>
             </div>
@@ -255,15 +268,17 @@
 
     function statusModal(ap_id) {
         $('#statusModal').modal('show');
-        $('#pendingStatus').attr('onclick', 'changeStatus("' + ap_id.toString() + '", "pending")');
-        $('#completedStatus').attr('onclick', 'changeStatus("' + ap_id.toString() + '", "completed")');
-        $('#cancelledStatus').attr('onclick', 'changeStatus("' + ap_id.toString() + '", "cancelled")');
+        // $('#pendingStatus').attr('onclick', 'changeStatus("' + ap_id.toString() + '", "pending")');
+        // $('#completedStatus').attr('onclick', 'changeStatus("' + ap_id.toString() + '", "completed")');
+        // $('#cancelledStatus').attr('onclick', 'changeStatus("' + ap_id.toString() + '", "cancelled")');
+        $('#statusButton').attr('onclick', 'changeStatus("' + ap_id.toString() + '")');
         $.ajax({
             url: "{{ route('appointment.view', '') }}" + "/" + ap_id,
             method: "GET",
             success: function(result) {
                 if (result.response === true) {
                     $('#ap_status_reason').val(result.data.ap_status_reaason);
+                    $('#statusCancelReason').addClass('d-none');
                 }
             },
             err: function(error) {
@@ -272,7 +287,16 @@
         });
     }
 
-    function changeStatus(ap_id, status) {
+    function changeStatusVal(ap_status_val) {
+        if (ap_status_val == 'cancelled') {
+            $('#statusCancelReason').removeClass('d-none');
+        } else {
+            $('#statusCancelReason').addClass('d-none');
+        }
+    }
+
+    function changeStatus(ap_id) {
+        let status = $('#ap_status_val').val();
         let ap_status_reason = $('#ap_status_reason').val();
         let stringVal = btoa(ap_id + '[]' + status + '[]' + ap_status_reason);
         $.ajax({
@@ -328,6 +352,24 @@
         let ap_id = $(this).data('id');
         $.ajax({
             url: "{{ route('appointment.bill_print', '') }}" + "/" + ap_id,
+            method: "GET",
+            success: function(res) {
+                console.log(res);
+                printData(res);
+            },
+            error: function(r) {
+                console.log(r);
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+        //openPrintDialogue();
+    });
+
+    $('body').on('click', '#prescriptionBillView', function(event) {
+        let ap_id = $(this).data('id');
+        $.ajax({
+            url: "{{ route('appointment.prescription_bill_print', '') }}" + "/" + ap_id,
             method: "GET",
             success: function(res) {
                 console.log(res);

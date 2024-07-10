@@ -190,6 +190,17 @@ class AppointmentController extends MainController
         return response()->view('appointment.print', compact('data'));
     }
 
+    /* Prescription BillPrint */
+    public function prescription_bill_print($ap_id)
+    {
+        $ap_id = base64_decode($ap_id);
+        $data = $this->appointment->singlData($ap_id);
+        $prescribeMedicineList = $this->appointment_medicine->getList(['ap_id' => $ap_id]);
+
+        $generalMedicines = $this->general_medicine->getActiveList();
+        return response()->view('appointment.prescription_print', compact('data', 'prescribeMedicineList', 'generalMedicines'));
+    }
+
     /* prescription detail show */
     public function prescribe($ap_id)
     {

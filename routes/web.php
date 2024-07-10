@@ -158,6 +158,7 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
         Route::get('patient_all_appointment/{pa_id}', [AppointmentController::class, 'patientAllAppointment'])->name('appointment.all_poointment');
         Route::get('export', [AppointmentController::class, 'export'])->name('appointment.export');
         Route::get('bill_print/{ap_id}', [AppointmentController::class, 'bill_print'])->name('appointment.bill_print');
+        Route::get('prescription_bill_print/{ap_id}', [AppointmentController::class, 'prescription_bill_print'])->name('appointment.prescription_bill_print');
     });
     /* Follow Up Info */
     Route::prefix('follow-up')->group(function () {

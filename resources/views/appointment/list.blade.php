@@ -277,8 +277,13 @@
             method: "GET",
             success: function(result) {
                 if (result.response === true) {
-                    $('#ap_status_reason').val(result.data.ap_status_reaason);
+                    let data = result.data;
+                    $('#ap_status_reason').val(data.ap_status_reaason);
                     $('#statusCancelReason').addClass('d-none');
+                    $('#ap_status_val').val(data.ap_status);
+                    if (data.ap_status == 'cancelled') {
+                        $('#statusCancelReason').removeClass('d-none');
+                    }
                 }
             },
             err: function(error) {

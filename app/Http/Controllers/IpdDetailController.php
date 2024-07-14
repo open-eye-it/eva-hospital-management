@@ -15,6 +15,9 @@ use App\Models\IpdOperativeNote;
 use App\Models\OperationMedicine;
 use App\Models\Appointment;
 
+use App\Exports\IPDDetailExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 class IpdDetailController extends MainController
 {
     public function __construct()
@@ -31,14 +34,31 @@ class IpdDetailController extends MainController
     public function index(Request $request)
     {
         $input = $request->all();
-        $searchData['search_text']  = isset($input['search_text']) ? $input['search_text'] : '';
+        $searchData['search_text']      = isset($input['search_text']) ? $input['search_text'] : '';
+        $searchData['admit_date_range'] = isset($input['admit_date_range']) ? $input['admit_date_range'] : date('Y-m-d') . ' - ' . date('Y-m-d');
         $list = $this->ipd->getList($searchData);
         return view('ipd.list', compact('list', 'searchData'));
     }
 
+    /* Export IPD Detail */
+    public function export(Request $request)
+    {
+        $input = $request->query();
+        $login_user_id = Auth::user()->user_id;
+        $fileName = 'IPDDetail-' . $login_user_id . '-' . date('Ymd-His') . '.xlsx';
+        return Excel::download(new IPDDetailExport($input), $fileName);
+    }
+
     public function create()
     {
-        $patientList = $this->patient->patientActiveList();
+        $admitPatientList = $this->ipd->admitPatient()->toArray();
+        $admitPatientArr = [];
+        if (!empty($admitPatientList)) {
+            foreach ($admitPatientList as $admitList) {
+                $admitPatientArr[] = $admitList['pa_id'];
+            }
+        }
+        $patientList = $this->patient->patientWithoutIPD($admitPatientArr);
         $doctorList = User::select('user_id', 'person_name')->role('doctor')->where('user_status', 1)->orderBy('id', 'asc')->get()->toArray();
         $assDoctorList = User::select('user_id', 'person_name')->role('assistant_doctor')->where('user_status', 1)->orderBy('id', 'asc')->get()->toArray();
         $doctors = array_merge($doctorList, $assDoctorList);
@@ -75,7 +95,7 @@ class IpdDetailController extends MainController
                 return $this->getErrorMessage('Room already busy.');
             }
         } else {
-            return $this->getErrorMessage('Patient already exist.');
+            return $this->getErrorMessage('Patient already admit.');
         }
     }
 
@@ -164,12 +184,28 @@ class IpdDetailController extends MainController
         if ($ipd_id != '' && ($status == 'admit' || $status == 'discharged' || $status == 'cancelled')) {
             $data['ipd_status'] = $status;
             if (count($string_val_arr) > 2) {
-                $data['ipd_cancel_reason'] = $string_val_arr[2];
-                $data['ipd_discharge_date'] = ($string_val_arr[3] == '') ? null : $string_val_arr[3];
-                $data['ipd_diagnosis'] = $string_val_arr[4];
-                $data['ipd_investigations'] = $string_val_arr[5];
-                $data['ipd_treatment_given'] = $string_val_arr[6];
-                $data['ipd_treatment_discharge'] = $string_val_arr[7];
+                if ($status == 'discharged') {
+                    $data['ipd_cancel_reason'] = '';
+                    $data['ipd_discharge_date'] = ($string_val_arr[3] == '') ? null : $string_val_arr[3];
+                    $data['ipd_diagnosis'] = $string_val_arr[4];
+                    $data['ipd_investigations'] = $string_val_arr[5];
+                    $data['ipd_treatment_given'] = $string_val_arr[6];
+                    $data['ipd_treatment_discharge'] = $string_val_arr[7];
+                } else if ($status == 'cancelled') {
+                    $data['ipd_cancel_reason'] = $string_val_arr[2];
+                    $data['ipd_discharge_date'] = null;
+                    $data['ipd_diagnosis'] = '';
+                    $data['ipd_investigations'] = '';
+                    $data['ipd_treatment_given'] = '';
+                    $data['ipd_treatment_discharge'] = '';
+                } else {
+                    $data['ipd_cancel_reason'] = '';
+                    $data['ipd_discharge_date'] = null;
+                    $data['ipd_diagnosis'] = '';
+                    $data['ipd_investigations'] = '';
+                    $data['ipd_treatment_given'] = '';
+                    $data['ipd_treatment_discharge'] = '';
+                }
             }
             $update = $this->ipd->updateData($data, $ipd_id);
             if ($update == 1) {

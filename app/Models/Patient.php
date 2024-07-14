@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Patient extends Model
 {
@@ -100,6 +101,11 @@ class Patient extends Model
     public function patientActiveList()
     {
         return static::where('pa_status', 1)->orderBy('id', 'DESC')->get();
+    }
+
+    public function patientWithoutIPD($admitPatientArr)
+    {
+        return static::whereNotIn('pa_id', $admitPatientArr)->get();
     }
 
     public function FilterData($data, $filterdata)

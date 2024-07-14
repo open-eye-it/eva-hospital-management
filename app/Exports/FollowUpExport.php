@@ -22,7 +22,7 @@ class FollowUpExport implements FromView
         $searchData['search_text']  = isset($this->input['search_text']) ? $this->input['search_text'] : '';
         $searchData['follow_up_date_range']  = isset($this->input['follow_up_date_range']) ? $this->input['follow_up_date_range'] : date('Y-m-d') . ' - ' . date('Y-m-d');
 
-        $list = $this->appointment->getList($searchData);
+        $list = $this->appointment->getList($searchData, false);
 
         return view('appointment.export', compact('list'));
     }

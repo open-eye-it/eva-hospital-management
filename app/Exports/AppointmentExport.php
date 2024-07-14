@@ -24,7 +24,7 @@ class AppointmentExport implements FromView
         $searchData['appointment_date_range']  = isset($this->input['appointment_date_range']) ? $this->input['appointment_date_range'] : '';
         $searchData['doctor']  = isset($this->input['doctor']) ? $this->input['doctor'] : '';
         $searchData['case_type']  = isset($this->input['case_type']) ? $this->input['case_type'] : '';
-        $list = $this->appointment->getList($searchData);
+        $list = $this->appointment->getList($searchData, false);
 
         return view('appointment.export', compact('list'));
     }

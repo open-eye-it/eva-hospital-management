@@ -15,13 +15,15 @@
             <th>Additional Charge</th>
             <th>Has Madiclaim</th>
             <th>Status</th>
+            <th>Created At</th>
         </tr>
     </thead>
     <tbody>
         @if(!$list->isEmpty())
+        @php $i=1; @endphp
         @foreach($list as $key => $appointment)
         <tr>
-            <td>{{ $list->firstItem() + $key }}</td>
+            <td>{{ $i }}</td>
             <td>{{ $appointment->ap_id }}</td>
             <td>{{ $appointment->ap_date }}</td>
             <td>{{ $appointment->doctorData->person_name }}</td>
@@ -35,11 +37,13 @@
             <td>{{ ucFirst($appointment->ap_additional_charge) }}</td>
             <td>{{ ($appointment->ap_pament_mode == 'mediclaim') ? 'Yes' : 'No' }}</td>
             <td>{{ ucfirst($appointment->ap_status) }}</td>
+            <td>{{ date('d M Y', strtotime($ipd->created_at)) }}</td>
         </tr>
+        @php $i++; @endphp
         @endforeach
         @else
         <tr>
-            <td colspan="4">Record not found</td>
+            <td colspan="15">Record not found</td>
         </tr>
         @endif
     </tbody>

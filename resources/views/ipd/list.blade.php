@@ -14,16 +14,22 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="card card-custom gutter-b p-5">
-                                <form action="{{ route('appointment.list') }}">
+                                <form action="{{ route('ipd.list') }}">
                                     <div class="row">
                                         <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
                                             <label for="search_text">Search IPD ID</label>
                                             <input type="text" class="form-control" placeholder="Search IPD ID" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
                                         </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
+                                            <label for="appointment_date">Admit Date</label>
+                                            <div class='input-group' id='appointment_date_range'>
+                                                <input type='text' name="admit_date_range" id="admit_date_range" class="form-control" placeholder="Select date range" value="{{ $searchData['admit_date_range'] }}" />
+                                            </div>
+                                        </div>
                                         <div class="col-12 form-group">
                                             <button class="btn btn-primary" type="submit">Search</button>
                                             <a class="btn btn-danger" href="{{ route('ipd.list') }}">Resst</a>
-                                            <button type="button" class="btn btn-info" onclick="exportAppointment()"><i class="fa fa-file-export"></i> Export</button>
+                                            <button type="button" class="btn btn-info" onclick="exportIPD()"><i class="fa fa-file-export"></i> Export</button>
                                         </div>
                                     </div>
                                 </form>
@@ -102,7 +108,7 @@
                                             @endforeach
                                             @else
                                             <tr>
-                                                <td colspan="4">Record not found</td>
+                                                <td colspan="16">Record not found</td>
                                             </tr>
                                             @endif
                                         </tbody>
@@ -156,36 +162,52 @@
             </div>
             <div class="modal-body">
                 <table class="table table-striped" id="statusDetail">
-                    <span class="btn btn-primary mr-2" id="admitStatus">Admit</span>
-                    <hr />
-                    <div class="form-group pt-4">
-                        <label for="ipd_discharge_date">Discharge Date</label>
-                        <input type="date" class="form-control" name="ipd_discharge_date" id="ipd_discharge_date" />
-                        <span class="text-primary cursor_pointer" onclick="ResetDischargeDate()">Reset</span>
+                    <div class="form-group">
+                        <label for="">Satatus</label>
+                        <select name="ip_status_val" id="ip_status_val" class="form-control" onchange="changeStatusVal(this.value)">
+                            <option value="">-Select-</option>
+                            <option value="admit">Admit</option>
+                            <option value="discharged">Discharge</option>
+                            <option value="cancelled">Cancel</option>
+                        </select>
                     </div>
-                    <div class="form-group pt-4">
-                        <label for="ipd_diagnosis">Diagnosis</label>
-                        <input type="text" class="form-control" name="ipd_diagnosis" id="ipd_diagnosis" />
+                    <!-- <span class="btn btn-primary mr-2" id="admitStatus">Admit</span>
+                    <hr /> -->
+                    <div class="d-none" id="dischargeStatusVal">
+                        <div class="form-group pt-4">
+                            <label for="ipd_discharge_date">Discharge Date</label>
+                            <input type="date" class="form-control" name="ipd_discharge_date" id="ipd_discharge_date" />
+                            <span class="text-primary cursor_pointer" onclick="ResetDischargeDate()">Reset</span>
+                        </div>
+                        <div class="form-group pt-4">
+                            <label for="ipd_diagnosis">Diagnosis</label>
+                            <input type="text" class="form-control" name="ipd_diagnosis" id="ipd_diagnosis" />
+                        </div>
+                        <div class="form-group pt-4">
+                            <label for="ipd_investigations">Invastigations</label>
+                            <input type="text" class="form-control" name="ipd_investigations" id="ipd_investigations" />
+                        </div>
+                        <div class="form-group pt-4">
+                            <label for="ipd_treatment_given">Treatment Given</label>
+                            <textarea class="form-control" name="ipd_treatment_given" id="ipd_treatment_given" cols="30" rows="5"></textarea>
+                        </div>
+                        <div class="form-group pt-4">
+                            <label for="ipd_treatment_discharge">Treatment On Discharge</label>
+                            <textarea class="form-control" name="ipd_treatment_discharge" id="ipd_treatment_discharge" cols="30" rows="5"></textarea>
+                        </div>
                     </div>
-                    <div class="form-group pt-4">
-                        <label for="ipd_investigations">Invastigations</label>
-                        <input type="text" class="form-control" name="ipd_investigations" id="ipd_investigations" />
+                    <!-- <span class="btn btn-success mr-2" id="dischargedStatus">Discharge</span>
+                    <hr /> -->
+                    <div class="d-none" id="cancelStatusVal">
+                        <div class="form-group pt-4">
+                            <label for="ipd_cancel_reason">Cancel Reason</label>
+                            <textarea class="form-control" name="ipd_cancel_reason" id="ipd_cancel_reason" cols="30" rows="5"></textarea>
+                        </div>
                     </div>
-                    <div class="form-group pt-4">
-                        <label for="ipd_treatment_given">Treatment Given</label>
-                        <textarea class="form-control" name="ipd_treatment_given" id="ipd_treatment_given" cols="30" rows="5"></textarea>
+                    <!-- <span class="btn btn-danger mr-2" id="cancelledStatus">Cancel</span> -->
+                    <div>
+                        <button class="btn btn-primary" id="statusButton">Submit</button>
                     </div>
-                    <div class="form-group pt-4">
-                        <label for="ipd_treatment_discharge">Treatment On Discharge</label>
-                        <textarea class="form-control" name="ipd_treatment_discharge" id="ipd_treatment_discharge" cols="30" rows="5"></textarea>
-                    </div>
-                    <span class="btn btn-success mr-2" id="dischargedStatus">Discharge</span>
-                    <hr />
-                    <div class="form-group pt-4">
-                        <label for="ipd_cancel_reason">Cancel Reason</label>
-                        <textarea class="form-control" name="ipd_cancel_reason" id="ipd_cancel_reason" cols="30" rows="5"></textarea>
-                    </div>
-                    <span class="btn btn-danger mr-2" id="cancelledStatus">Cancel</span>
                 </table>
             </div>
             <div class="modal-footer">
@@ -334,6 +356,14 @@
     </div>
 </div>
 <script>
+    /* Export IPD Details */
+    function exportIPD() {
+        let search_text = $('#search_text').val();
+        let admit_date_range = $('#admit_date_range').val();
+        let query = '?search_text=' + search_text + '&admit_date_range=' + admit_date_range;
+        window.location.href = "{{ route('ipd.export') }}" + query;
+    }
+
     $('body').on('click', '#fullView', function(event) {
         let ipd_id = $(this).data('id');
         $.ajax({
@@ -416,20 +446,34 @@
 
     function statusModal(ipd_id) {
         $('#statusModal').modal('show');
-        $('#admitStatus').attr('onclick', 'changeStatus("' + ipd_id.toString() + '", "admit")');
-        $('#dischargedStatus').attr('onclick', 'changeStatus("' + ipd_id.toString() + '", "discharged")');
-        $('#cancelledStatus').attr('onclick', 'changeStatus("' + ipd_id.toString() + '", "cancelled")');
+        // $('#admitStatus').attr('onclick', 'changeStatus("' + ipd_id.toString() + '", "admit")');
+        // $('#dischargedStatus').attr('onclick', 'changeStatus("' + ipd_id.toString() + '", "discharged")');
+        // $('#cancelledStatus').attr('onclick', 'changeStatus("' + ipd_id.toString() + '", "cancelled")');
+        $('#statusButton').attr('onclick', 'changeStatus("' + ipd_id.toString() + '")');
         $.ajax({
             url: "{{ route('ipd.view', '') }}" + "/" + ipd_id,
             method: "GET",
             success: function(result) {
+                console.log(result);
                 if (result.response === true) {
-                    $('#ipd_discharge_date').val(result.data.ipd_discharge_date);
-                    $('#ipd_diagnosis').val(result.data.ipd_diagnosis);
-                    $('#ipd_investigations').val(result.data.ipd_investigations);
-                    $('#ipd_treatment_given').val(result.data.ipd_treatment_given);
-                    $('#ipd_treatment_discharge').val(result.data.ipd_treatment_discharge);
-                    $('#ipd_cancel_reason').val(result.data.ipd_cancel_reason);
+                    let data = result.data;
+                    $('#ip_status_val').val(data.ipd_status);
+                    if (data.ipd_status == 'discharged') {
+                        $('#dischargeStatusVal').removeClass('d-none');
+                        $('#cancelStatusVal').addClass('d-none');
+                    } else if (data.ipd_status == 'cancelled') {
+                        $('#dischargeStatusVal').addClass('d-none');
+                        $('#cancelStatusVal').removeClass('d-none');
+                    } else {
+                        $('#dischargeStatusVal').addClass('d-none');
+                        $('#cancelStatusVal').addClass('d-none');
+                    }
+                    $('#ipd_discharge_date').val(data.ipd_discharge_date);
+                    $('#ipd_diagnosis').val(data.ipd_diagnosis);
+                    $('#ipd_investigations').val(data.ipd_investigations);
+                    $('#ipd_treatment_given').val(data.ipd_treatment_given);
+                    $('#ipd_treatment_discharge').val(data.ipd_treatment_discharge);
+                    $('#ipd_cancel_reason').val(data.ipd_cancel_reason);
                 }
             },
             error: function(r) {
@@ -439,18 +483,32 @@
         });
     }
 
+    function changeStatusVal(ip_status_val) {
+        if (ip_status_val == 'cancelled') {
+            $('#dischargeStatusVal').addClass('d-none');
+            $('#cancelStatusVal').removeClass('d-none');
+        } else if (ip_status_val == 'discharged') {
+            $('#dischargeStatusVal').removeClass('d-none');
+            $('#cancelStatusVal').addClass('d-none');
+        } else {
+            $('#dischargeStatusVal').addClass('d-none');
+            $('#cancelStatusVal').addClass('d-none');
+        }
+    }
+
     function ResetDischargeDate() {
         $('#ipd_discharge_date').val('');
     }
 
-    function changeStatus(ipd_id, status) {
+    function changeStatus(ipd_id) {
+        let ip_status_val = $('#ip_status_val').val();
         let ipd_discharge_date = $('#ipd_discharge_date').val();
         let ipd_diagnosis = $('#ipd_diagnosis').val();
         let ipd_investigations = $('#ipd_investigations').val();
         let ipd_treatment_given = $('#ipd_treatment_given').val();
         let ipd_treatment_discharge = $('#ipd_treatment_discharge').val();
         let ipd_cancel_reason = $('#ipd_cancel_reason').val();
-        let stringVal = btoa(ipd_id + '[]' + status + '[]' + ipd_cancel_reason + '[]' + ipd_discharge_date + '[]' + ipd_diagnosis + '[]' + ipd_investigations + '[]' + ipd_treatment_given + '[]' + ipd_treatment_discharge);
+        let stringVal = btoa(ipd_id + '[]' + ip_status_val + '[]' + ipd_cancel_reason + '[]' + ipd_discharge_date + '[]' + ipd_diagnosis + '[]' + ipd_investigations + '[]' + ipd_treatment_given + '[]' + ipd_treatment_discharge);
         $.ajax({
             url: "{{ route('ipd.status', '') }}" + "/" + stringVal,
             method: "GET",
@@ -460,10 +518,10 @@
                     let removeClass = 'bg-primary bg-success bg-danger';
                     let addClass = '';
                     let addText = '';
-                    if (status == 'admit') {
+                    if (ip_status_val == 'admit') {
                         addClass = 'bg-primary';
                         addText = 'Admit';
-                    } else if (status == 'discharged') {
+                    } else if (ip_status_val == 'discharged') {
                         addClass = 'bg-success';
                         addText = 'Discharged';
                     } else {

@@ -188,5 +188,6 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
         Route::get('prescription_update/{ipd_id}', [IpdDetailController::class, 'PrescriptionUpdate'])->name('ipd.prescription.update');
         Route::get('opd_history/{pa_id}', [IpdDetailController::class, 'OpdHistory'])->name('ipd.opd_history');
         Route::get('ipd_history/{pa_id}', [IpdDetailController::class, 'IpdHistory'])->name('ipd.ipd_history');
+        Route::get('export', [IpdDetailController::class, 'export'])->name('ipd.export');
     });
 });

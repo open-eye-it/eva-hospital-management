@@ -72,20 +72,32 @@ class IpdDetail extends Model
     public function FilterData($data, $filterdata)
     {
         $search_text    = isset($filterdata['search_text']) ? $filterdata['search_text'] : '';
+        $admit_date_range = isset($filterdata['admit_date_range']) ? $filterdata['admit_date_range'] : '';
 
         if (isset($search_text) && $search_text != '') {
             $data->where('ipd_id', $search_text);
+        }
+        if (isset($admit_date_range) && $admit_date_range != '') {
+            $dateArr = explode(' - ', $admit_date_range);
+            $dateArr[0] = date('Y-m-d', strtotime($dateArr[0]));
+            $dateArr[1] = date('Y-m-d', strtotime($dateArr[1]));
+            $data->whereBetween('ipd_admit_date', $dateArr);
         }
     }
 
     public function patientExist($pa_id)
     {
-        return static::where('pa_id', $pa_id)->where('ipd_status', '!=', 'admit')->first();
+        return static::where('pa_id', $pa_id)->where('ipd_status', 'admit')->first();
     }
 
     public function updateData($data, $ipd_id)
     {
         return static::where('ipd_id', $ipd_id)->update(\Arr::only($data, $this->fillable));
+    }
+
+    public function admitPatient()
+    {
+        return static::select('pa_id')->where('ipd_status', 'admit')->get();
     }
 
     /* Relationship */

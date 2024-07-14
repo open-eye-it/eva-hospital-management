@@ -37,7 +37,7 @@
             <td>{{ ucFirst($appointment->ap_additional_charge) }}</td>
             <td>{{ ($appointment->ap_pament_mode == 'mediclaim') ? 'Yes' : 'No' }}</td>
             <td>{{ ucfirst($appointment->ap_status) }}</td>
-            <td>{{ date('d M Y', strtotime($ipd->created_at)) }}</td>
+            <td>{{ date('d M Y', strtotime($appointment->created_at)) }}</td>
         </tr>
         @php $i++; @endphp
         @endforeach

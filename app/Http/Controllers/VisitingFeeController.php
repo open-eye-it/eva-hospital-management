@@ -37,7 +37,8 @@ class VisitingFeeController extends MainController
         $vf_updated_by = Auth::user()->user_id;
         $input['vf_updated_by'] = $vf_updated_by;
         $user_id = $this->randomString(10, 'number');
-        $update = $this->visiting_fee->updateFee($input, $vf_id);
+        $data['vf_fees'] = $input['vf_fees'];
+        $update = $this->visiting_fee->updateFee($data, $vf_id);
         if ($update == 1) {
             return $this->getSuccessResult([], 'Visiting fees updated', true);
         } else {

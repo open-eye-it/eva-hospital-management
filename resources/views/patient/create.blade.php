@@ -91,7 +91,7 @@
                                                     <select name="pa_gender" id="pa_gender" class="form-control">
                                                         <option value="">-select-</option>
                                                         <option value="male">Male</option>
-                                                        <option value="female">Female</option>
+                                                        <option value="female" selected>Female</option>
                                                     </select>
                                                 </div>
                                             </div>

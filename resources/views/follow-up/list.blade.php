@@ -1,6 +1,6 @@
 @extends('layout.master');
-@section('title', 'Fllow-Up - Info')
-@section('breadcrumb-module', 'Follow-Up')
+@section('title', 'Follow-Up - OPD')
+@section('breadcrumb-module', 'Follow-Up - OPD')
 @section('page-content')
 <!--begin::Row-->
 <div class="row">

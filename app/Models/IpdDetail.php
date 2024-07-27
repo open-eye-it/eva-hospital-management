@@ -17,6 +17,7 @@ class IpdDetail extends Model
         'ipd_admit_date',
         'ipd_doctor',
         'ipd_surgery_date',
+        'ipd_follow_up_date',
         'ipd_surgery_text',
         'rm_id',
         'ipd_status',
@@ -73,7 +74,7 @@ class IpdDetail extends Model
     {
         $search_text    = isset($filterdata['search_text']) ? $filterdata['search_text'] : '';
         $admit_date_range = isset($filterdata['admit_date_range']) ? $filterdata['admit_date_range'] : '';
-
+        $follow_up_date_range = isset($filterdata['follow_up_date_range']) ? $filterdata['follow_up_date_range'] : '';
         if (isset($search_text) && $search_text != '') {
             $data->where('ipd_id', $search_text);
         }
@@ -83,6 +84,28 @@ class IpdDetail extends Model
             $dateArr[1] = date('Y-m-d', strtotime($dateArr[1]));
             $data->whereBetween('ipd_admit_date', $dateArr);
         }
+        if (isset($follow_up_date_range) && $follow_up_date_range != '') {
+            $dateArr = explode(' - ', $follow_up_date_range);
+            $dateArr[0] = date('Y-m-d', strtotime($dateArr[0]));
+            $dateArr[1] = date('Y-m-d', strtotime($dateArr[1]));
+            $data->whereBetween('ipd_follow_up_date', $dateArr);
+        }
+    }
+
+    public function totalBillAmount($filterdata)
+    {
+        //return static::sum('ap_charge');
+        $data = static::select('*');
+        $this->FilterData($data, $filterdata);
+        return $data->sum('ipd_bill_amount');
+    }
+
+    public function totalReceivedAmount($filterdata)
+    {
+        //return static::sum('ap_additional_charge');
+        $data = static::select('*');
+        $this->FilterData($data, $filterdata);
+        return $data->sum('ipd_received_amount');
     }
 
     public function patientExist($pa_id)

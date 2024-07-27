@@ -18,7 +18,7 @@ use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\FollowUpController;
 use App\Http\Controllers\AccounDetail\OPDAccountDetailController;
 use App\Http\Controllers\IpdDetailController;
-use App\Models\IpdDetail;
+use App\Http\Controllers\AccounDetail\IPDAccountDetailControoller;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,8 +41,10 @@ Route::middleware(['mac_address_check', 'signout-check'])->group(function () {
 });
 
 Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/signout', [DashboardController::class, 'signout'])->name('signout');
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('signout', [DashboardController::class, 'signout'])->name('signout');
+    Route::get('profile', [DashboardController::class, 'profile'])->name('profile');
+    Route::post('change_password', [DashboardController::class, 'change_password'])->name('change_password');
 
     /* Mac Address */
     Route::prefix('mac_address')->group(function () {
@@ -161,16 +163,22 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
         Route::get('prescription_bill_print/{ap_id}', [AppointmentController::class, 'prescription_bill_print'])->name('appointment.prescription_bill_print');
     });
     /* Follow Up Info */
-    Route::prefix('follow-up')->group(function () {
-        Route::get('/', [FollowUpController::class, 'index'])->name('follow-up.list');
-        Route::get('export', [FollowUpController::class, 'export'])->name('follow-up.export');
+    Route::prefix('follow-up')->name('follow-up.')->group(function () {
+        Route::prefix('opd')->group(function () {
+            Route::get('list', [FollowUpController::class, 'index'])->name('list');
+            Route::get('export', [FollowUpController::class, 'export'])->name('export');
+        });
+        Route::prefix('ipd')->group(function () {
+            Route::get('list', [FollowUpController::class, 'ipd_index'])->name('ipd.list');
+            Route::get('export', [FollowUpController::class, 'ipd_export'])->name('ipd.export');
+        });
     });
     /* Appointment Account Detail */
-    Route::prefix('opd-account-detail')->group(function () {
-        Route::get('list', [OPDAccountDetailController::class, 'index'])->name('opd-account-detail.list');
-        Route::get('additional_charge/list/{ap_id}', [OPDAccountDetailController::class, 'additionalChargeList'])->name('opd-account-detail.additional-charge.list');
-        Route::get('additional-charge/store', [OPDAccountDetailController::class, 'additionalChargeStore'])->name('opd-account-detail.additional-charge.store');
-        Route::get('additional-charge/remove/{apac_id}', [OPDAccountDetailController::class, 'additionalChargeRemove'])->name('opd-account-detail.additional-charge.remove');
+    Route::prefix('opd-account-detail')->name('opd-account-detail.')->group(function () {
+        Route::get('/', [OPDAccountDetailController::class, 'index'])->name('list');
+        Route::get('additional_charge/list/{ap_id}', [OPDAccountDetailController::class, 'additionalChargeList'])->name('additional-charge.list');
+        Route::get('additional-charge/store', [OPDAccountDetailController::class, 'additionalChargeStore'])->name('additional-charge.store');
+        Route::get('additional-charge/remove/{apac_id}', [OPDAccountDetailController::class, 'additionalChargeRemove'])->name('additional-charge.remove');
     });
     /* IPD Detail */
     Route::prefix('ipd')->group(function () {
@@ -189,5 +197,16 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
         Route::get('opd_history/{pa_id}', [IpdDetailController::class, 'OpdHistory'])->name('ipd.opd_history');
         Route::get('ipd_history/{pa_id}', [IpdDetailController::class, 'IpdHistory'])->name('ipd.ipd_history');
         Route::get('export', [IpdDetailController::class, 'export'])->name('ipd.export');
+    });
+    /* IPD Account Detail */
+    Route::prefix('ipd-account-detail')->name('ipd-acount-detail.')->group(function () {
+        Route::get('list', [IPDAccountDetailControoller::class, 'index'])->name('list');
+        Route::get('bill-detail/{ipd_id}', [IPDAccountDetailControoller::class, 'bill_detail'])->name('bill-detail');
+        Route::get('charge/add/{ipd_id}', [IPDAccountDetailControoller::class, 'charge_add'])->name('charge.add');
+        Route::get('charge/remove/{ic_id}', [IPDAccountDetailControoller::class, 'charge_remove'])->name('charge.remove');
+        Route::get('charge/single/{ic_id}', [IPDAccountDetailControoller::class, 'charge_single'])->name('charge.single');
+        Route::get('payment/add/{ipd_id}', [IPDAccountDetailControoller::class, 'payment_add'])->name('payment.add');
+        Route::get('payment/remove/{ipl_id}', [IPDAccountDetailControoller::class, 'payment_remove'])->name('payment.remove');
+        Route::get('payment/single/{ipl_id}', [IPDAccountDetailControoller::class, 'payment_single'])->name('payment.single');
     });
 });

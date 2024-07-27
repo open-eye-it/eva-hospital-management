@@ -68,7 +68,7 @@
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
                                                     <label for="ipd_admit_date">Date of Admit <span class="text-danger">*</span></label>
-                                                    <input type="date" class="form-control" placeholder="Date of Admit" name="ipd_admit_date" id="ipd_admit_date" />
+                                                    <input type="date" class="form-control" placeholder="Date of Admit" name="ipd_admit_date" id="ipd_admit_date" onchange="changeAdmitDate(this.value)" />
                                                     <span class="text-danger" id="ipd_admit_dateErr"></span>
                                                 </div>
                                             </div>
@@ -166,5 +166,9 @@
             });
         }
     })
+
+    function changeAdmitDate(val){
+        $("#ipd_surgery_date").val(val);
+    }
 </script>
 @endsection

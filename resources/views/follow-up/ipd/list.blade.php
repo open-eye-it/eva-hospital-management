@@ -1,6 +1,6 @@
 @extends('layout.master');
-@section('title', 'IPD - List')
-@section('breadcrumb-module', 'IPD')
+@section('title', 'Follow Up - IPD')
+@section('breadcrumb-module', 'Follow Up - IPD')
 @section('page-content')
 <!--begin::Row-->
 <div class="row">
@@ -14,16 +14,16 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="card card-custom gutter-b p-5">
-                                <form action="{{ route('ipd.list') }}">
+                                <form action="{{ route('follow-up.ipd.list') }}">
                                     <div class="row">
                                         <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
                                             <label for="search_text">Search IPD ID</label>
                                             <input type="text" class="form-control" placeholder="Search IPD ID" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
                                         </div>
                                         <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
-                                            <label for="appointment_date">Admit Date</label>
+                                            <label for="appointment_date">Follow Up Date</label>
                                             <div class='input-group' id='appointment_date_range'>
-                                                <input type='text' name="admit_date_range" id="admit_date_range" class="form-control" placeholder="Select date range" value="{{ $searchData['admit_date_range'] }}" />
+                                                <input type='text' name="follow_up_date_range" id="follow_up_date_range" class="form-control" placeholder="Select date range" value="{{ $searchData['follow_up_date_range'] }}" />
                                             </div>
                                         </div>
                                         <div class="col-12 form-group">
@@ -59,7 +59,6 @@
                                                 <th>Contact No</th>
                                                 <th>Bill Amount</th>
                                                 <th>Received Amount</th>
-                                                <th>Status</th>
                                                 <th>OPD</th>
                                                 <th>IPD</th>
                                                 <th>Actions</th>
@@ -82,27 +81,13 @@
                                                 <td id="billAmountShow_{{ $ipd->ipd_id }}">{{ $ipd->ipd_bill_amount }}</td>
                                                 <td>{{ $ipd->ipd_received_amount }}</td>
                                                 <td>
-                                                    @if($ipd->ipd_status == 'admit')
-                                                    @php $statusClass = 'btn-primary'; @endphp
-                                                    @elseif($ipd->ipd_status == 'discharged')
-                                                    @php $statusClass = 'btn-success'; @endphp
-                                                    @else
-                                                    @php $statusClass = 'btn-danger'; @endphp
-                                                    @endif
-                                                    <span class="btn {{ $statusClass }}" id="status_{{ $ipd->ipd_id }}" onclick="statusModal('{{ base64_encode($ipd->ipd_id) }}')">{{ ucfirst($ipd->ipd_status) }}</span>
-                                                </td>
-                                                <td>
                                                     <span id="opdHistoryView" data-id="{{ base64_encode($ipd->pa_id) }}" title="OPD History"><i class="la la-eye icon-3x cursor_pointer"></i></span>
                                                 </td>
                                                 <td>
                                                     <span id="ipdHistoryView" data-id="{{ base64_encode($ipd->pa_id) }}" title="IPD History"><i class="la la-eye icon-3x cursor_pointer"></i></span>
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('ipd.edit', base64_encode($ipd->ipd_id)) }}" title="Edit"><i class="la la-edit icon-3x"></i></a>
                                                     <span id="fullView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Full View"><i class="la la-eye icon-3x cursor_pointer"></i></span>
-                                                    <span id="billAmountView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Bill Amount"><i class="la la-money-bill icon-3x cursor_pointer"></i></span>
-                                                    <span id="operativeNoteView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Operative Notes"><i class="flaticon flaticon-notes icon-3x cursor_pointer"></i></span>
-                                                    <span id="prescribeView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Prescribe"><i class="la la-pills icon-3x cursor_pointer"></i></span>
                                                 </td>
                                             </tr>
                                             @endforeach

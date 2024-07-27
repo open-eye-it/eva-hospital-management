@@ -191,9 +191,11 @@ class IpdDetailController extends MainController
                     $data['ipd_investigations'] = $string_val_arr[5];
                     $data['ipd_treatment_given'] = $string_val_arr[6];
                     $data['ipd_treatment_discharge'] = $string_val_arr[7];
+                    $data['ipd_follow_up_date'] = ($string_val_arr[8] != '') ? $string_val_arr[8] : null;
                 } else if ($status == 'cancelled') {
                     $data['ipd_cancel_reason'] = $string_val_arr[2];
                     $data['ipd_discharge_date'] = null;
+                    $data['ipd_follow_up_date'] = null;
                     $data['ipd_diagnosis'] = '';
                     $data['ipd_investigations'] = '';
                     $data['ipd_treatment_given'] = '';
@@ -201,6 +203,7 @@ class IpdDetailController extends MainController
                 } else {
                     $data['ipd_cancel_reason'] = '';
                     $data['ipd_discharge_date'] = null;
+                    $data['ipd_follow_up_date'] = null;
                     $data['ipd_diagnosis'] = '';
                     $data['ipd_investigations'] = '';
                     $data['ipd_treatment_given'] = '';

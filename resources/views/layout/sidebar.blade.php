@@ -448,17 +448,37 @@
 						</ul>
 					</div>
 				</li>
-				<li class="menu-item {{ (Request::segment(1) == 'follow-up') ? 'menu-item-active' : '' }}" aria-haspopup="true">
-					<a href="{{ route('follow-up.list') }}" class="menu-link">
+				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'follow-up') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+					<a href="javascript:;" class="menu-link menu-toggle">
 						<span class="svg-icon menu-icon">
-							<!--begin::Svg Icon | path:assets/media/svg/icons/Design/Layers.svg-->
 							<i class="icon-2x flaticon-calendar-with-a-clock-time-tools"></i>
-							<!--end::Svg Icon-->
 						</span>
 						<span class="menu-text">Follow Up</span>
+						<i class="menu-arrow"></i>
 					</a>
+					<div class="menu-submenu">
+						<i class="menu-arrow"></i>
+						<ul class="menu-subnav">
+							<li class="menu-item {{ (Request::segment(1) == 'follow-up' && Request::segment(2) == 'opd') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+								<a href="{{ route('follow-up.list') }}" class="menu-link">
+									<i class="menu-bullet menu-bullet-dot">
+										<span></span>
+									</i>
+									<span class="menu-text">OPD</span>
+								</a>
+							</li>
+							<li class="menu-item {{ (Request::segment(1) == 'follow-up' && Request::segment(2) == 'ipd') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+								<a href="{{ route('follow-up.ipd.list') }}" class="menu-link">
+									<i class="menu-bullet menu-bullet-dot">
+										<span></span>
+									</i>
+									<span class="menu-text">IPD</span>
+								</a>
+							</li>
+						</ul>
+					</div>
 				</li>
-				<!-- <li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'ipd') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'ipd') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
 					<a href="javascript:;" class="menu-link menu-toggle">
 						<span class="svg-icon menu-icon">
 							<i class="icon-2x la la-bed"></i>
@@ -487,7 +507,7 @@
 							</li>
 						</ul>
 					</div>
-				</li> -->
+				</li>
 				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'opd-account-detail' || Request::segment(1) == 'ipd-account-detail') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
 					<a href="javascript:;" class="menu-link menu-toggle">
 						<span class="svg-icon menu-icon">
@@ -507,14 +527,14 @@
 									<span class="menu-text">OPD</span>
 								</a>
 							</li>
-							<!-- <li class="menu-item {{ (Request::segment(1) == 'ipd-account-detail' && Request::segment(2) == 'list') ? 'menu-item-active' : '' }}" aria-haspopup="true">
-								<a href="{{ route('appointment.list') }}" class="menu-link">
+							<li class="menu-item {{ (Request::segment(1) == 'ipd-account-detail' && Request::segment(2) == 'list') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+								<a href="{{ route('ipd-acount-detail.list') }}" class="menu-link">
 									<i class="menu-bullet menu-bullet-dot">
 										<span></span>
 									</i>
 									<span class="menu-text">IPD</span>
 								</a>
-							</li> -->
+							</li>
 						</ul>
 					</div>
 				</li>

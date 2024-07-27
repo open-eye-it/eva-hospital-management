@@ -215,6 +215,8 @@ class IPDAccountDetailControoller extends MainController
         $data['bill_amount'] = $iplDetail->ipl_amount;
         $data['patient_name'] = $ipdDetail->patientData->pa_name;
         $data['type_of_surgery'] = $ipdDetail->ipd_surgery_text;
+        $data['admit_date'] = ($ipdDetail->ipd_admit_date != null && $ipdDetail->ipd_admit_date != '0000-00-00') ? date('d M Y', strtotime($ipdDetail->ipd_admit_date)) : '';
+        $data['discharge_date'] = ($ipdDetail->ipd_discharge_date != null && $ipdDetail->ipd_discharge_date != '0000-00-00') ? date('d M Y', strtotime($ipdDetail->ipd_discharge_date)) : '';
 
         return response()->view('account-detail.ipd.receipt-print', compact('data'));
     }

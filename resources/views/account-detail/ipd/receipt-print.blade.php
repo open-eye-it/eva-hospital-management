@@ -16,10 +16,11 @@
         </h3>
         <p>Received with thanks from</p>
         <p>Mrs/Ms <strong>{{ $data['paid_by'] }}</strong></p>
-        <p>a sum of Rupees <string></strong></p>
+        <p>a sum of Rupees <strong>{{ displaywords($data['bill_amount']) }}</strong></p>
         <p>received Cash / Cheque / DD No. <strong>{{ $data['received_by'] }}</strong></p>
         <p>For Bill No <strong>{{ $data['ipl_id'] }}</strong> Bill Amoun (Rs.) <strong>{{ $data['bill_amount'] }}</strong></p>
         <p>Patient's Name <strong>{{ $data['patient_name'] }}</strong></p>
+        <p>D.O.A <strong>{{ $data['admit_date'] }}</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; D.O.D <strong>{{ $data['discharge_date'] }}</strong></p>
         <p style="margin-top:50px;"></p>
         <table style="margin-left:20px; padding-right:40px; width:100%; font-style: normal;">
             <tr>

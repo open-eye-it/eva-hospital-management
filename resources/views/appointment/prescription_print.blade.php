@@ -11,6 +11,7 @@
         <h3 style="margin-bottom:0px; padding-bottom:10px;">
             Prescription
         </h3>
+        Date: <strong>{{ date('d M Y') }}</strong>
         <table style="margin:auto;">
             <tr>
                 <td colspan="6">
@@ -32,7 +33,7 @@
                 <td style="padding:10px;" colspan="2">{{ $data->patientData->pa_address.' '.$data->patientData->pa_city.' '.$data->patientData->pa_pincode.' '.$data->patientData->pa_state }}</td>
             </tr>
             <tr>
-                <td style="padding:10px;"><Strong>Date</Strong></td>
+                <td style="padding:10px;"><Strong>Appointment Date</Strong></td>
                 <td style="padding:10px;" colspan="2">{{ date('d M Y', strtotime($data->ap_date)) }}</td>
                 <td style="padding:10px;"><strong>Doctor</strong></td>
                 <td style="padding:10px;" colspan="2">{{ $data->doctorData->person_name }}</td>
@@ -58,14 +59,14 @@
                 <td style="padding:10px;"><Strong>BP</Strong></td>
                 <td style="padding:10px;" colspan="2">{{ $data->ap_bp }}</td>
                 <td style="padding:10px;"><strong>Follow Up Date</strong></td>
-                <td style="padding:10px;" colspan="2">{{ date('d M Y', strtotime($data->ap_follow_up_date)) }}</td>
+                <td style="padding:10px;" colspan="2">{{ ($data->ap_follow_up_date != null && $data->ap_follow_up_date != '0000-00-00') ? date('d M Y', strtotime($data->ap_follow_up_date)) : '' }}</td>
             </tr>
             @if($data->ap_surg_required == 'yes')
             <tr>
                 <td style="padding:10px;"><Strong>Surgery Required?</Strong></td>
                 <td style="padding:10px;" colspan="2">{{ ($data->ap_surg_required == 'yes') ? 'Yes' : 'No' }}</td>
                 <td style="padding:10px;"><strong>Surgery Date</strong></td>
-                <td style="padding:10px;" colspan="2">{{ date('d M Y', strtotime($data->ap_surg_date)) }}</td>
+                <td style="padding:10px;" colspan="2">{{ ($data->ap_surg_date != null && $data->ap_surg_date != '0000-00-00') ? date('d M Y', strtotime($data->ap_surg_date)) : '' }}</td>
             </tr>
             <tr>
                 <td style="padding:10px;"><Strong>Type of Surgery</Strong></td>

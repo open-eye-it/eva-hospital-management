@@ -197,4 +197,25 @@ class IPDAccountDetailControoller extends MainController
             return $ipl_id;
         }
     }
+
+    /* Payment Receipt Print */
+    public function print_receipt($ipl_id, $ipd_id)
+    {
+        $ipl_id = base64_decode($ipl_id);
+        $ipd_id = base64_decode($ipd_id);
+
+        $ipdDetail = $this->ipd->singlData($ipd_id);
+        $iplDetail = $this->ipd_payment->singlData($ipl_id);
+
+        $data['ipl_id'] = $iplDetail->ipl_id;
+        $data['current_date'] = date('d M Y');
+        $data['paid_by'] = $iplDetail->ipl_paid_by;
+        $data['received_by'] = $iplDetail->ipl_received_by . ' - ' . $ipdDetail->ipl_desc;
+        $data['bill_no'] = $iplDetail->ipl_id;
+        $data['bill_amount'] = $iplDetail->ipl_amount;
+        $data['patient_name'] = $ipdDetail->patientData->pa_name;
+        $data['type_of_surgery'] = $ipdDetail->ipd_surgery_text;
+
+        return response()->view('account-detail.ipd.receipt-print', compact('data'));
+    }
 }

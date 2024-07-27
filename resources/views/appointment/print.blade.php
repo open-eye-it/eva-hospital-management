@@ -11,6 +11,7 @@
         <h3 style="margin-bottom:0px; padding-bottom:10px;">
             OPD BILL
         </h3>
+        Date: <strong>{{ date('d M Y') }}</strong>
         <table style="margin:auto;">
             <tr>
                 <td style="padding:10px;"><strong>Patient ID</strong></td>
@@ -25,7 +26,7 @@
                 <td style="padding:10px;">{{ $data->patientData->pa_address.' '.$data->patientData->pa_city.' '.$data->patientData->pa_pincode.' '.$data->patientData->pa_state }}</td>
             </tr>
             <tr>
-                <td style="padding:10px;"><Strong>Date</Strong></td>
+                <td style="padding:10px;"><Strong>Appointment Date</Strong></td>
                 <td style="padding:10px;">{{ date('d M Y', strtotime($data->ap_date)) }}</td>
                 <td style="padding:10px;"><strong>Doctor</strong></td>
                 <td style="padding:10px;">{{ $data->doctorData->person_name }}</td>

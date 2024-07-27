@@ -103,6 +103,7 @@
                                                     <span id="billAmountView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Bill Amount"><i class="la la-money-bill icon-3x cursor_pointer"></i></span>
                                                     <span id="operativeNoteView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Operative Notes"><i class="flaticon flaticon-notes icon-3x cursor_pointer"></i></span>
                                                     <span id="prescribeView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Prescribe"><i class="la la-pills icon-3x cursor_pointer"></i></span>
+                                                    <span id="IPDPrint" data-id="{{ base64_encode($ipd->ipd_id) }}" title="IPD Detail"><i class="flaticon flaticon2-print icon-3x cursor_pointer"></i></span>
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -459,7 +460,6 @@
             url: "{{ route('ipd.view', '') }}" + "/" + ipd_id,
             method: "GET",
             success: function(result) {
-                console.log(result);
                 if (result.response === true) {
                     let data = result.data;
                     $('#ip_status_val').val(data.ipd_status);
@@ -523,7 +523,6 @@
             url: "{{ route('ipd.status', '') }}" + "/" + stringVal,
             method: "GET",
             success: function(res) {
-                console.log(status);
                 if (res.response === true) {
                     let removeClass = 'bg-primary bg-success bg-danger';
                     let addClass = '';
@@ -648,6 +647,7 @@
                         </div> \
                         <div class="col-12 form-group"> \
                             <button class="btn btn-primary" id="operative_note_update_btn" onclick="updateOperativeNote(' + atob(ipd_id) + ')">Update</button> \
+                            <button class="btn btn-info" id="operativeNotPrint" data-id="' + btoa(data.ipd_id) + '">Print <i class="flaticon flaticon2-print cursor_pointer"></i></button> \
                         </div> \
                     </div>';
 
@@ -663,6 +663,22 @@
             }
         });
     })
+
+    /* Operative not print */
+    $('body').on('click', '#operativeNotPrint', function() {
+        let ipd_id = $(this).data('id');
+        $.ajax({
+            url: "{{ route('ipd.operative_note.print', '') }}" + "/" + ipd_id,
+            method: "GET",
+            success: function(res) {
+                printData(res);
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    });
 
     /* Update Operative Note */
     function updateOperativeNote(ipd_id) {
@@ -756,6 +772,22 @@
         });
     })
 
+    /* IPD Print */
+    $('body').on('click', '#IPDPrint', function() {
+        let ipd_id = $(this).data('id');
+        $.ajax({
+            url: "{{ route('ipd.bill.print', '') }}" + "/" + ipd_id,
+            method: "GET",
+            success: function(res) {
+                printData(res);
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    });
+
     /* Reset Operation Medicine Date */
     function ResetOperationMedicineDate() {
         $('#ipd_operation_medicine_date').val('');
@@ -772,7 +804,6 @@
             url: "{{ route('ipd.prescription.update', '') }}" + '/' + btoa(ipd_id) + '?ipd_operation_medicine_date=' + ipd_operation_medicine_date + '&medicine_arr=' + btoa(medicine_arr),
             method: "get",
             success: function(res) {
-                console.log(res);
                 if (res.response === true) {
                     sweetAlertSuccess(res.message, 3000);
                     //$('#operativeNoteViewModal').modal('hide');
@@ -794,7 +825,6 @@
             url: "{{ route('ipd.opd_history', '') }}" + "/" + pa_id,
             method: "GET",
             success: function(res) {
-                console.log(res);
                 if (res.response === true) {
                     let data = res.data.list;
                     let total_fees = res.data.total_fees;
@@ -820,7 +850,6 @@
             url: "{{ route('ipd.ipd_history', '') }}" + "/" + pa_id,
             method: "GET",
             success: function(res) {
-                console.log(res);
                 if (res.response === true) {
                     let data = res.data.list;
                     let total_fees = res.data.total_fees;
@@ -838,5 +867,23 @@
             }
         });
     })
+
+    /* Print Data */
+    function printData(data) {
+        $('<iframe>', {
+                name: 'myiframe',
+                class: 'printFrame'
+            })
+            .appendTo('body')
+            .contents().find('body')
+            .append(data);
+
+        window.frames['myiframe'].focus();
+        window.frames['myiframe'].print();
+
+        setTimeout(() => {
+            $(".printFrame").remove();
+        }, 1000);
+    };
 </script>
 @endsection

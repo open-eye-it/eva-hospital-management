@@ -336,8 +336,8 @@
                                 <td>' + chargeList[i].ic_text + '</td> \
                                 <td>' + chargeList[i].ic_amount + '</td> \
                                 <td> \
-                                    <i class="la la-edit icon-3x cursor_pointer" onclick="editCharge(' + chargeList[i].ic_id + ')"></i> \
-                                    <i class="la la-trash icon-3x cursor_pointer" onclick="removerCharge(' + chargeList[i].ic_id + ')"></i> \
+                                    <i title="Edit" class="la la-edit icon-3x cursor_pointer" onclick="editCharge(' + chargeList[i].ic_id + ')"></i> \
+                                    <i title="Remove" class="la la-trash icon-3x cursor_pointer" onclick="removerCharge(' + chargeList[i].ic_id + ')"></i> \
                                 </td> \
                             </tr>';
                         }
@@ -358,8 +358,9 @@
                                 <td>' + paymentList[i].ipl_desc + '</td> \
                                 <td>' + paymentList[i].ipl_paid_by + '</td> \
                                 <td> \
-                                    <i class="la la-edit icon-3x cursor_pointer" onclick="editPayment(' + paymentList[i].ipl_id + ', ' + paymentList[i].ipd_id + ')"></i> \
-                                    <i class="la la-trash icon-3x cursor_pointer" onclick="removePayment(' + paymentList[i].ipl_id + ', ' + paymentList[i].ipd_id + ')"></i> \
+                                    <i title="Edit" class="la la-edit icon-3x cursor_pointer" onclick="editPayment(' + paymentList[i].ipl_id + ', ' + paymentList[i].ipd_id + ')"></i> \
+                                    <i title="Remove" class="la la-trash icon-3x cursor_pointer" onclick="removePayment(' + paymentList[i].ipl_id + ', ' + paymentList[i].ipd_id + ')"></i> \
+                                    <i title="Print Receipt" class="flaticon flaticon2-print icon-3x cursor_pointer" onclick="printReceipt(' + paymentList[i].ipl_id + ', ' + paymentList[i].ipd_id + ')"></i> \
                                 </td> \
                             </tr>';
                         }
@@ -518,6 +519,7 @@
                                 <td> \
                                     <i class="la la-edit icon-3x cursor_pointer" onclick="editPayment(' + data.ipl_id + ', ' + data.ipd_id + ')"></i> \
                                     <i class="la la-trash icon-3x cursor_pointer" onclick="removePayment(' + data.ipl_id + ', ' + data.ipd_id + ')"></i> \
+                                    <i class="flaticon flaticon2-print icon-3x cursor_pointer" onclick="printReceipt(' + data.ipl_id + ', ' + data.ipd_id + ')"></i> \
                                 </td> \
                             </tr>';
                             $('#paymentDetail').append(chargeRow);
@@ -575,6 +577,24 @@
         });
     }
 
+    /* Print Receipt */
+    function printReceipt(ipl_id, ipd_id) {
+        let url = "{{ route('ipd-acount-detail.payment.receipt.print', ['ipl_id' => ':ipl_id', 'ipd_id' => ':ipd_id']) }}";
+        url = url.replace(':ipl_id', btoa(ipl_id));
+        url = url.replace(':ipd_id', btoa(ipd_id));
+        $.ajax({
+            url: url,
+            method: "GET",
+            success: function(res) {
+                printData(res);
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    }
+
     /* Edit Payment */
     function editPayment(ipl_id) {
         $.ajax({
@@ -619,5 +639,23 @@
             }
         });
     }
+
+    /* Print Data */
+    function printData(data) {
+        $('<iframe>', {
+                name: 'myiframe',
+                class: 'printFrame'
+            })
+            .appendTo('body')
+            .contents().find('body')
+            .append(data);
+
+        window.frames['myiframe'].focus();
+        window.frames['myiframe'].print();
+
+        setTimeout(() => {
+            $(".printFrame").remove();
+        }, 1000);
+    };
 </script>
 @endsection

@@ -220,4 +220,14 @@ class IPDAccountDetailControoller extends MainController
 
         return response()->view('account-detail.ipd.receipt-print', compact('data'));
     }
+
+    /* Payment Bill Print */
+    public function print_bill($ipd_id)
+    {
+        $ipd_id = base64_decode($ipd_id);
+
+        $ipdDetail = $this->ipd->singlData($ipd_id);
+        $iplDetail = $this->ipd_payment->getList(['ipd_id' => $ipd_id]);
+        return response()->view('account-detail.ipd.bill-print', compact('ipdDetail', 'iplDetail'));
+    }
 }

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DoctorOpdIpdController;
 use App\Http\Controllers\MacAddressController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserController;
@@ -45,6 +46,17 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
     Route::get('signout', [DashboardController::class, 'signout'])->name('signout');
     Route::get('profile', [DashboardController::class, 'profile'])->name('profile');
     Route::post('change_password', [DashboardController::class, 'change_password'])->name('change_password');
+
+    /* Doctor OPD/IPD */
+    Route::middleware(['doctor_permission'])->prefix('doctor/opd-ipd')->name('doctor_opd_ipd.')->group(function () {
+        Route::get('/', [DoctorOpdIpdController::class, 'list'])->name('list');
+        Route::prefix('opd')->name('opd.')->group(function () {
+            Route::get('view/{ap_id}', [DoctorOpdIpdController::class, 'opd_view'])->name('view');
+        });
+        Route::prefix('ipd')->name('ipd.')->group(function () {
+            Route::get('view/{ipd_id}', [DoctorOpdIpdController::class, 'ipd_view'])->name('view');
+        });
+    });
 
     /* Mac Address */
     Route::prefix('mac_address')->group(function () {
@@ -211,5 +223,6 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
         Route::get('payment/remove/{ipl_id}', [IPDAccountDetailControoller::class, 'payment_remove'])->name('payment.remove');
         Route::get('payment/single/{ipl_id}', [IPDAccountDetailControoller::class, 'payment_single'])->name('payment.single');
         Route::get('print_receipt/{ipl_id}/{ipd_id}', [IPDAccountDetailControoller::class, 'print_receipt'])->name('payment.receipt.print');
+        Route::get('print_bill/{ipd_id}', [IPDAccountDetailControoller::class, 'print_bill'])->name('payment.bill.print');
     });
 });

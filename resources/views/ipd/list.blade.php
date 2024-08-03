@@ -448,7 +448,7 @@
                 sweetAlertError(res.message, 3000);
             }
         });
-    })
+    });
 
     function statusModal(ipd_id) {
         $('#statusModal').modal('show');

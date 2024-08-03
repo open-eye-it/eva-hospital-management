@@ -76,6 +76,7 @@
                                                 <td>{{ ($ipd->ipd_discharge_date != null) ? 'Yes' : 'No' }}</td>
                                                 <td>
                                                     <span id="billAmountView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Bill Details"><i class="la la-money-bill icon-3x cursor_pointer"></i></span>
+                                                    <i title="Print Bill" class="flaticon flaticon2-print icon-3x cursor_pointer" onclick="printIPDBill('{{ $ipd->ipd_id }}')"></i>
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -313,7 +314,6 @@
         let query = '?search_text=' + search_text + '&admit_date_range=' + admit_date_range;
         window.location.href = "{{ route('ipd.export') }}" + query;
     }
-
     /* Show Bill Amount Modal */
     $('body').on('click', '#billAmountView', function(event) {
         let ipd_id = $(this).data('id');
@@ -381,7 +381,6 @@
             }
         });
     })
-
     /* Add Charge */
     function addCharge(ipd_id) {
         let ic_text = $('#ic_text').val();
@@ -438,7 +437,6 @@
             });
         }
     }
-
     /* Remove Charge */
     function removerCharge(ic_id) {
         $.ajax({
@@ -457,7 +455,6 @@
             }
         });
     }
-
     /* Edit Charge */
     function editCharge(ic_id) {
         $.ajax({
@@ -480,7 +477,6 @@
             }
         });
     }
-
     /* Add Payment */
     function addPayment(ipd_id) {
         let ipl_paid_by = $('#ipl_paid_by').val();
@@ -554,7 +550,6 @@
             });
         }
     }
-
     /* Remove Payment */
     function removePayment(ipl_id) {
         $.ajax({
@@ -576,7 +571,6 @@
             }
         });
     }
-
     /* Print Receipt */
     function printReceipt(ipl_id, ipd_id) {
         let url = "{{ route('ipd-acount-detail.payment.receipt.print', ['ipl_id' => ':ipl_id', 'ipd_id' => ':ipd_id']) }}";
@@ -594,7 +588,6 @@
             }
         });
     }
-
     /* Edit Payment */
     function editPayment(ipl_id) {
         $.ajax({
@@ -619,7 +612,6 @@
             }
         });
     }
-
     /* Received Payment */
     function receivedPayment(ipd_id) {
         $.ajax({
@@ -639,7 +631,6 @@
             }
         });
     }
-
     /* Print Data */
     function printData(data) {
         $('<iframe>', {
@@ -657,5 +648,21 @@
             $(".printFrame").remove();
         }, 1000);
     };
+    /* Print Bill */
+    function printIPDBill(ipd_id) {
+        let url = "{{ route('ipd-acount-detail.payment.bill.print', ['ipd_id' => ':ipd_id']) }}";
+        url = url.replace(':ipd_id', btoa(ipd_id));
+        $.ajax({
+            url: url,
+            method: "GET",
+            success: function(res) {
+                printData(res);
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    }
 </script>
 @endsection

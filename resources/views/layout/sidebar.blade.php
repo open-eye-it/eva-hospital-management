@@ -33,10 +33,20 @@
 					<a href="{{ route('dashboard') }}" class="menu-link">
 						<span class="svg-icon menu-icon">
 							<!--begin::Svg Icon | path:assets/media/svg/icons/Design/Layers.svg-->
-							<i class="fa fa-calculator"></i>
+							<i class="icon-2x flaticon-dashboard"></i>
 							<!--end::Svg Icon-->
 						</span>
 						<span class="menu-text">Dashboard</span>
+					</a>
+				</li>
+				<li class="menu-item {{ (Request::segment(1) == 'doctor-opd-ipd') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+					<a href="{{ route('doctor_opd_ipd.list') }}" class="menu-link">
+						<span class="svg-icon menu-icon">
+							<!--begin::Svg Icon | path:assets/media/svg/icons/Design/Layers.svg-->
+							<i class="icon-2x flaticon-user-settings"></i>
+							<!--end::Svg Icon-->
+						</span>
+						<span class="menu-text">OPD/IPD</span>
 					</a>
 				</li>
 				@if(auth()->user()->can('category-read') || auth()->user()->can('user-read') || auth()->user()->can('visiting-fee-read') || auth()->user()->can('trainee-read') || auth()->user()->can('room-read') || auth()->user()->can('referred-doctor-read'))

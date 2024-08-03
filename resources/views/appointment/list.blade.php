@@ -359,7 +359,6 @@
             url: "{{ route('appointment.bill_print', '') }}" + "/" + ap_id,
             method: "GET",
             success: function(res) {
-                console.log(res);
                 printData(res);
             },
             error: function(r) {
@@ -377,7 +376,6 @@
             url: "{{ route('appointment.prescription_bill_print', '') }}" + "/" + ap_id,
             method: "GET",
             success: function(res) {
-                console.log(res);
                 printData(res);
             },
             error: function(r) {

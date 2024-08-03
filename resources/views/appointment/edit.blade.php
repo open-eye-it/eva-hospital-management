@@ -16,7 +16,7 @@
                             <!--begin::Card-->
                             <div class="card card-custom gutter-b example example-compact">
                                 <div class="card-header">
-                                    <h3 class="card-title">Create</h3>
+                                    <h3 class="card-title">Update</h3>
                                 </div>
                                 <!--begin::Form-->
                                 <form method="POST" action="{{ route('appointment.update', base64_encode($data->ap_id)) }}" id="createCatefgory">
@@ -220,7 +220,11 @@
                     $('#createBtn').removeClass('spinner spinner-white spinner-right');
                     $('#createBtn').attr('disabled', false);
                     if(res.response === true){
-                        sweetAlertSuccess(res.message, 3000, "{{ route('appointment.list') }}");
+                        // sweetAlertSuccess(res.message, 3000, "{{ route('appointment.list') }}");
+                        let previous_url = "{{ Request::session()->previousUrl() }}";
+                        previous_url = previous_url.replaceAll('amp;', '');
+                        previous_url = previous_url.replaceAll('%20-%20', '+-+');
+                        sweetAlertSuccess(res.message, 3000, previous_url);
                     }else{
                         sweetAlertError(res.message, 3000); 
                     }

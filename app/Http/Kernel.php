@@ -72,5 +72,6 @@ class Kernel extends HttpKernel
         'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
         'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
         'mac_address_check' => \App\Http\Middleware\MacAdressCheck::class,
+        'doctor_permission' => \App\Http\Middleware\DoctorPermission::class,
     ];
 }

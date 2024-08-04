@@ -52,6 +52,7 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
         Route::get('/', [DoctorOpdIpdController::class, 'list'])->name('list');
         Route::prefix('opd')->name('opd.')->group(function () {
             Route::get('view/{ap_id}', [DoctorOpdIpdController::class, 'opd_view'])->name('view');
+            Route::get('prescription_show/{ap_id}', [DoctorOpdIpdController::class, 'opd_prescription_show'])->name('prescription.show');
         });
         Route::prefix('ipd')->name('ipd.')->group(function () {
             Route::get('view/{ipd_id}', [DoctorOpdIpdController::class, 'ipd_view'])->name('view');

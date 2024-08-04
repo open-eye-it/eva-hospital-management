@@ -49,6 +49,265 @@
 						<span class="menu-text">OPD/IPD</span>
 					</a>
 				</li>
+				@if(auth()->user()->can('patient-read'))
+				<li class="menu-section">
+					<h4 class="menu-text">OPD/IPD</h4>
+					<i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+				</li>
+				@endif
+				@can('patient-read')
+				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'patient') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+					<a href="javascript:;" class="menu-link menu-toggle">
+						<span class="svg-icon menu-icon">
+							<i class="icon-2x flaticon-user-settings"></i>
+						</span>
+						<span class="menu-text">Patient</span>
+						<i class="menu-arrow"></i>
+					</a>
+					<div class="menu-submenu">
+						<i class="menu-arrow"></i>
+						<ul class="menu-subnav">
+							@can('patient-create')
+							<li class="menu-item {{ (Request::segment(1) == 'patient' && Request::segment(2) == 'create') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+								<a href="{{ route('patient.create') }}" class="menu-link">
+									<i class="menu-bullet menu-bullet-dot">
+										<span></span>
+									</i>
+									<span class="menu-text">Add</span>
+								</a>
+							</li>
+							@endcan
+							@can('patient-read')
+							<li class="menu-item {{ (Request::segment(1) == 'patient' && Request::segment(2) == 'list') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+								<a href="{{ route('patient.list') }}" class="menu-link">
+									<i class="menu-bullet menu-bullet-dot">
+										<span></span>
+									</i>
+									<span class="menu-text">List</span>
+								</a>
+							</li>
+							@endcan
+						</ul>
+					</div>
+				</li>
+				@endcan
+				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'appointment') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+					<a href="javascript:;" class="menu-link menu-toggle">
+						<span class="svg-icon menu-icon">
+							<i class="icon-2x flaticon-calendar-2"></i>
+						</span>
+						<span class="menu-text">Appointment</span>
+						<i class="menu-arrow"></i>
+					</a>
+					<div class="menu-submenu">
+						<i class="menu-arrow"></i>
+						<ul class="menu-subnav">
+							<li class="menu-item {{ (Request::segment(1) == 'appointment' && Request::segment(2) == 'create') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+								<a href="{{ route('appointment.create') }}" class="menu-link">
+									<i class="menu-bullet menu-bullet-dot">
+										<span></span>
+									</i>
+									<span class="menu-text">Add</span>
+								</a>
+							</li>
+							<li class="menu-item {{ (Request::segment(1) == 'appointment' && Request::segment(2) == 'list') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+								<a href="{{ route('appointment.list') }}" class="menu-link">
+									<i class="menu-bullet menu-bullet-dot">
+										<span></span>
+									</i>
+									<span class="menu-text">List</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</li>
+				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'ipd') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+					<a href="javascript:;" class="menu-link menu-toggle">
+						<span class="svg-icon menu-icon">
+							<i class="icon-2x la la-bed"></i>
+						</span>
+						<span class="menu-text">IPD</span>
+						<i class="menu-arrow"></i>
+					</a>
+					<div class="menu-submenu">
+						<i class="menu-arrow"></i>
+						<ul class="menu-subnav">
+							<li class="menu-item {{ (Request::segment(1) == 'ipd' && Request::segment(2) == 'create') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+								<a href="{{ route('ipd.create') }}" class="menu-link">
+									<i class="menu-bullet menu-bullet-dot">
+										<span></span>
+									</i>
+									<span class="menu-text">Add</span>
+								</a>
+							</li>
+							<li class="menu-item {{ (Request::segment(1) == 'ipd' && Request::segment(2) == 'list') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+								<a href="{{ route('ipd.list') }}" class="menu-link">
+									<i class="menu-bullet menu-bullet-dot">
+										<span></span>
+									</i>
+									<span class="menu-text">List</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</li>
+				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'follow-up') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+					<a href="javascript:;" class="menu-link menu-toggle">
+						<span class="svg-icon menu-icon">
+							<i class="icon-2x flaticon-calendar-with-a-clock-time-tools"></i>
+						</span>
+						<span class="menu-text">Follow Up</span>
+						<i class="menu-arrow"></i>
+					</a>
+					<div class="menu-submenu">
+						<i class="menu-arrow"></i>
+						<ul class="menu-subnav">
+							<li class="menu-item {{ (Request::segment(1) == 'follow-up' && Request::segment(2) == 'opd') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+								<a href="{{ route('follow-up.list') }}" class="menu-link">
+									<i class="menu-bullet menu-bullet-dot">
+										<span></span>
+									</i>
+									<span class="menu-text">OPD</span>
+								</a>
+							</li>
+							<li class="menu-item {{ (Request::segment(1) == 'follow-up' && Request::segment(2) == 'ipd') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+								<a href="{{ route('follow-up.ipd.list') }}" class="menu-link">
+									<i class="menu-bullet menu-bullet-dot">
+										<span></span>
+									</i>
+									<span class="menu-text">IPD</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</li>
+				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'opd-account-detail' || Request::segment(1) == 'ipd-account-detail') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+					<a href="javascript:;" class="menu-link menu-toggle">
+						<span class="svg-icon menu-icon">
+							<i class="icon-2x la la-money-bill-wave"></i>
+						</span>
+						<span class="menu-text">Account Detail</span>
+						<i class="menu-arrow"></i>
+					</a>
+					<div class="menu-submenu">
+						<i class="menu-arrow"></i>
+						<ul class="menu-subnav">
+							<li class="menu-item {{ (Request::segment(1) == 'opd-account-detail' && Request::segment(2) == 'list') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+								<a href="{{ route('opd-account-detail.list') }}" class="menu-link">
+									<i class="menu-bullet menu-bullet-dot">
+										<span></span>
+									</i>
+									<span class="menu-text">OPD</span>
+								</a>
+							</li>
+							<li class="menu-item {{ (Request::segment(1) == 'ipd-account-detail' && Request::segment(2) == 'list') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+								<a href="{{ route('ipd-acount-detail.list') }}" class="menu-link">
+									<i class="menu-bullet menu-bullet-dot">
+										<span></span>
+									</i>
+									<span class="menu-text">IPD</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</li>
+				@if(auth()->user()->can('general-medicine-read') || auth()->user()->can('operation-medicine-read'))
+				<li class="menu-section">
+					<h4 class="menu-text">Medicine</h4>
+					<i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+				</li>
+				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'medicine') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+					<a href="javascript:;" class="menu-link menu-toggle">
+						<span class="svg-icon menu-icon">
+							<i class="icon-2x la la-tablets"></i>
+						</span>
+						<span class="menu-text">Medicine</span>
+						<i class="menu-arrow"></i>
+					</a>
+					<div class="menu-submenu">
+						<i class="menu-arrow"></i>
+						<ul class="menu-subnav">
+							<li class="menu-item menu-item-parent" aria-haspopup="true">
+								<span class="menu-link">
+									<span class="menu-text">Medicine</span>
+								</span>
+							</li>
+							@can('general-medicine-read')
+							<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'medicine' && Request::segment(2) == 'general-medicine') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+								<a href="javascript:;" class="menu-link menu-toggle">
+									<i class="menu-bullet menu-bullet-line">
+										<span></span>
+									</i>
+									<span class="menu-text">General Medicine</span>
+									<i class="menu-arrow"></i>
+								</a>
+								<div class="menu-submenu">
+									<i class="menu-arrow"></i>
+									<ul class="menu-subnav">
+										@can('general-medicine-create')
+										<li class="menu-item {{ (Request::segment(1) == 'medicine' && Request::segment(2) == 'general-medicine' && Request::segment(3) == 'create') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+											<a href="{{ route('general-medicine.create') }}" class="menu-link">
+												<i class="menu-bullet menu-bullet-dot">
+													<span></span>
+												</i>
+												<span class="menu-text">Add</span>
+											</a>
+										</li>
+										@endcan
+										@can('general-medicine-read')
+										<li class="menu-item {{ (Request::segment(1) == 'medicine' && Request::segment(2) == 'general-medicine' && Request::segment(3) == 'list') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+											<a href="{{ route('general-medicine.list') }}" class="menu-link">
+												<i class="menu-bullet menu-bullet-dot">
+													<span></span>
+												</i>
+												<span class="menu-text">List</span>
+											</a>
+										</li>
+										@endcan
+									</ul>
+								</div>
+							</li>
+							@endcan
+							@can('operation-medicine-read')
+							<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'medicine' && Request::segment(2) == 'operation-medicine') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+								<a href="javascript:;" class="menu-link menu-toggle">
+									<i class="menu-bullet menu-bullet-line">
+										<span></span>
+									</i>
+									<span class="menu-text">Operation Medicine</span>
+									<i class="menu-arrow"></i>
+								</a>
+								<div class="menu-submenu">
+									<i class="menu-arrow"></i>
+									<ul class="menu-subnav">
+										@can('operation-medicine-create')
+										<li class="menu-item {{ (Request::segment(1) == 'medicine' && Request::segment(2) == 'operation-medicine' && Request::segment(3) == 'create') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+											<a href="{{ route('operation-medicine.create') }}" class="menu-link">
+												<i class="menu-bullet menu-bullet-dot">
+													<span></span>
+												</i>
+												<span class="menu-text">Add</span>
+											</a>
+										</li>
+										@endcan
+										@can('operation-medicine-read')
+										<li class="menu-item {{ (Request::segment(1) == 'medicine' && Request::segment(2) == 'operation-medicine' && Request::segment(3) == 'list') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+											<a href="{{ route('operation-medicine.list') }}" class="menu-link">
+												<i class="menu-bullet menu-bullet-dot">
+													<span></span>
+												</i>
+												<span class="menu-text">List</span>
+											</a>
+										</li>
+										@endcan
+									</ul>
+								</div>
+							</li>
+							@endcan
+						</ul>
+					</div>
+				</li>
+				@endif
 				@if(auth()->user()->can('category-read') || auth()->user()->can('user-read') || auth()->user()->can('visiting-fee-read') || auth()->user()->can('trainee-read') || auth()->user()->can('room-read') || auth()->user()->can('referred-doctor-read'))
 				<li class="menu-section">
 					<h4 class="menu-text">Admin</h4>
@@ -289,265 +548,6 @@
 					</div>
 				</li>
 				@endcan
-				@if(auth()->user()->can('general-medicine-read') || auth()->user()->can('operation-medicine-read'))
-				<li class="menu-section">
-					<h4 class="menu-text">Medicine</h4>
-					<i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-				</li>
-				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'medicine') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
-					<a href="javascript:;" class="menu-link menu-toggle">
-						<span class="svg-icon menu-icon">
-							<i class="icon-2x la la-tablets"></i>
-						</span>
-						<span class="menu-text">Medicine</span>
-						<i class="menu-arrow"></i>
-					</a>
-					<div class="menu-submenu">
-						<i class="menu-arrow"></i>
-						<ul class="menu-subnav">
-							<li class="menu-item menu-item-parent" aria-haspopup="true">
-								<span class="menu-link">
-									<span class="menu-text">Medicine</span>
-								</span>
-							</li>
-							@can('general-medicine-read')
-							<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'medicine' && Request::segment(2) == 'general-medicine') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
-								<a href="javascript:;" class="menu-link menu-toggle">
-									<i class="menu-bullet menu-bullet-line">
-										<span></span>
-									</i>
-									<span class="menu-text">General Medicine</span>
-									<i class="menu-arrow"></i>
-								</a>
-								<div class="menu-submenu">
-									<i class="menu-arrow"></i>
-									<ul class="menu-subnav">
-										@can('general-medicine-create')
-										<li class="menu-item {{ (Request::segment(1) == 'medicine' && Request::segment(2) == 'general-medicine' && Request::segment(3) == 'create') ? 'menu-item-active' : '' }}" aria-haspopup="true">
-											<a href="{{ route('general-medicine.create') }}" class="menu-link">
-												<i class="menu-bullet menu-bullet-dot">
-													<span></span>
-												</i>
-												<span class="menu-text">Add</span>
-											</a>
-										</li>
-										@endcan
-										@can('general-medicine-read')
-										<li class="menu-item {{ (Request::segment(1) == 'medicine' && Request::segment(2) == 'general-medicine' && Request::segment(3) == 'list') ? 'menu-item-active' : '' }}" aria-haspopup="true">
-											<a href="{{ route('general-medicine.list') }}" class="menu-link">
-												<i class="menu-bullet menu-bullet-dot">
-													<span></span>
-												</i>
-												<span class="menu-text">List</span>
-											</a>
-										</li>
-										@endcan
-									</ul>
-								</div>
-							</li>
-							@endcan
-							@can('operation-medicine-read')
-							<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'medicine' && Request::segment(2) == 'operation-medicine') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
-								<a href="javascript:;" class="menu-link menu-toggle">
-									<i class="menu-bullet menu-bullet-line">
-										<span></span>
-									</i>
-									<span class="menu-text">Operation Medicine</span>
-									<i class="menu-arrow"></i>
-								</a>
-								<div class="menu-submenu">
-									<i class="menu-arrow"></i>
-									<ul class="menu-subnav">
-										@can('operation-medicine-create')
-										<li class="menu-item {{ (Request::segment(1) == 'medicine' && Request::segment(2) == 'operation-medicine' && Request::segment(3) == 'create') ? 'menu-item-active' : '' }}" aria-haspopup="true">
-											<a href="{{ route('operation-medicine.create') }}" class="menu-link">
-												<i class="menu-bullet menu-bullet-dot">
-													<span></span>
-												</i>
-												<span class="menu-text">Add</span>
-											</a>
-										</li>
-										@endcan
-										@can('operation-medicine-read')
-										<li class="menu-item {{ (Request::segment(1) == 'medicine' && Request::segment(2) == 'operation-medicine' && Request::segment(3) == 'list') ? 'menu-item-active' : '' }}" aria-haspopup="true">
-											<a href="{{ route('operation-medicine.list') }}" class="menu-link">
-												<i class="menu-bullet menu-bullet-dot">
-													<span></span>
-												</i>
-												<span class="menu-text">List</span>
-											</a>
-										</li>
-										@endcan
-									</ul>
-								</div>
-							</li>
-							@endcan
-						</ul>
-					</div>
-				</li>
-				@endif
-				@if(auth()->user()->can('patient-read'))
-				<li class="menu-section">
-					<h4 class="menu-text">OPD/IPD</h4>
-					<i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-				</li>
-				@endif
-				@can('patient-read')
-				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'patient') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
-					<a href="javascript:;" class="menu-link menu-toggle">
-						<span class="svg-icon menu-icon">
-							<i class="icon-2x flaticon-user-settings"></i>
-						</span>
-						<span class="menu-text">Patient</span>
-						<i class="menu-arrow"></i>
-					</a>
-					<div class="menu-submenu">
-						<i class="menu-arrow"></i>
-						<ul class="menu-subnav">
-							@can('patient-create')
-							<li class="menu-item {{ (Request::segment(1) == 'patient' && Request::segment(2) == 'create') ? 'menu-item-active' : '' }}" aria-haspopup="true">
-								<a href="{{ route('patient.create') }}" class="menu-link">
-									<i class="menu-bullet menu-bullet-dot">
-										<span></span>
-									</i>
-									<span class="menu-text">Add</span>
-								</a>
-							</li>
-							@endcan
-							@can('patient-read')
-							<li class="menu-item {{ (Request::segment(1) == 'patient' && Request::segment(2) == 'list') ? 'menu-item-active' : '' }}" aria-haspopup="true">
-								<a href="{{ route('patient.list') }}" class="menu-link">
-									<i class="menu-bullet menu-bullet-dot">
-										<span></span>
-									</i>
-									<span class="menu-text">List</span>
-								</a>
-							</li>
-							@endcan
-						</ul>
-					</div>
-				</li>
-				@endcan
-				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'appointment') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
-					<a href="javascript:;" class="menu-link menu-toggle">
-						<span class="svg-icon menu-icon">
-							<i class="icon-2x flaticon-calendar-2"></i>
-						</span>
-						<span class="menu-text">Appointment</span>
-						<i class="menu-arrow"></i>
-					</a>
-					<div class="menu-submenu">
-						<i class="menu-arrow"></i>
-						<ul class="menu-subnav">
-							<li class="menu-item {{ (Request::segment(1) == 'appointment' && Request::segment(2) == 'create') ? 'menu-item-active' : '' }}" aria-haspopup="true">
-								<a href="{{ route('appointment.create') }}" class="menu-link">
-									<i class="menu-bullet menu-bullet-dot">
-										<span></span>
-									</i>
-									<span class="menu-text">Add</span>
-								</a>
-							</li>
-							<li class="menu-item {{ (Request::segment(1) == 'appointment' && Request::segment(2) == 'list') ? 'menu-item-active' : '' }}" aria-haspopup="true">
-								<a href="{{ route('appointment.list') }}" class="menu-link">
-									<i class="menu-bullet menu-bullet-dot">
-										<span></span>
-									</i>
-									<span class="menu-text">List</span>
-								</a>
-							</li>
-						</ul>
-					</div>
-				</li>
-				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'follow-up') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
-					<a href="javascript:;" class="menu-link menu-toggle">
-						<span class="svg-icon menu-icon">
-							<i class="icon-2x flaticon-calendar-with-a-clock-time-tools"></i>
-						</span>
-						<span class="menu-text">Follow Up</span>
-						<i class="menu-arrow"></i>
-					</a>
-					<div class="menu-submenu">
-						<i class="menu-arrow"></i>
-						<ul class="menu-subnav">
-							<li class="menu-item {{ (Request::segment(1) == 'follow-up' && Request::segment(2) == 'opd') ? 'menu-item-active' : '' }}" aria-haspopup="true">
-								<a href="{{ route('follow-up.list') }}" class="menu-link">
-									<i class="menu-bullet menu-bullet-dot">
-										<span></span>
-									</i>
-									<span class="menu-text">OPD</span>
-								</a>
-							</li>
-							<li class="menu-item {{ (Request::segment(1) == 'follow-up' && Request::segment(2) == 'ipd') ? 'menu-item-active' : '' }}" aria-haspopup="true">
-								<a href="{{ route('follow-up.ipd.list') }}" class="menu-link">
-									<i class="menu-bullet menu-bullet-dot">
-										<span></span>
-									</i>
-									<span class="menu-text">IPD</span>
-								</a>
-							</li>
-						</ul>
-					</div>
-				</li>
-				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'ipd') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
-					<a href="javascript:;" class="menu-link menu-toggle">
-						<span class="svg-icon menu-icon">
-							<i class="icon-2x la la-bed"></i>
-						</span>
-						<span class="menu-text">IPD</span>
-						<i class="menu-arrow"></i>
-					</a>
-					<div class="menu-submenu">
-						<i class="menu-arrow"></i>
-						<ul class="menu-subnav">
-							<li class="menu-item {{ (Request::segment(1) == 'ipd' && Request::segment(2) == 'create') ? 'menu-item-active' : '' }}" aria-haspopup="true">
-								<a href="{{ route('ipd.create') }}" class="menu-link">
-									<i class="menu-bullet menu-bullet-dot">
-										<span></span>
-									</i>
-									<span class="menu-text">Add</span>
-								</a>
-							</li>
-							<li class="menu-item {{ (Request::segment(1) == 'ipd' && Request::segment(2) == 'list') ? 'menu-item-active' : '' }}" aria-haspopup="true">
-								<a href="{{ route('ipd.list') }}" class="menu-link">
-									<i class="menu-bullet menu-bullet-dot">
-										<span></span>
-									</i>
-									<span class="menu-text">List</span>
-								</a>
-							</li>
-						</ul>
-					</div>
-				</li>
-				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'opd-account-detail' || Request::segment(1) == 'ipd-account-detail') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
-					<a href="javascript:;" class="menu-link menu-toggle">
-						<span class="svg-icon menu-icon">
-							<i class="icon-2x la la-money-bill-wave"></i>
-						</span>
-						<span class="menu-text">Account Detail</span>
-						<i class="menu-arrow"></i>
-					</a>
-					<div class="menu-submenu">
-						<i class="menu-arrow"></i>
-						<ul class="menu-subnav">
-							<li class="menu-item {{ (Request::segment(1) == 'opd-account-detail' && Request::segment(2) == 'list') ? 'menu-item-active' : '' }}" aria-haspopup="true">
-								<a href="{{ route('opd-account-detail.list') }}" class="menu-link">
-									<i class="menu-bullet menu-bullet-dot">
-										<span></span>
-									</i>
-									<span class="menu-text">OPD</span>
-								</a>
-							</li>
-							<li class="menu-item {{ (Request::segment(1) == 'ipd-account-detail' && Request::segment(2) == 'list') ? 'menu-item-active' : '' }}" aria-haspopup="true">
-								<a href="{{ route('ipd-acount-detail.list') }}" class="menu-link">
-									<i class="menu-bullet menu-bullet-dot">
-										<span></span>
-									</i>
-									<span class="menu-text">IPD</span>
-								</a>
-							</li>
-						</ul>
-					</div>
-				</li>
 			</ul>
 			<!--end::Menu Nav-->
 		</div>

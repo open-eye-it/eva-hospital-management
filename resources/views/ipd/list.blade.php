@@ -51,10 +51,8 @@
                                                 <th>IPD ID</th>
                                                 <th>Admit Date</th>
                                                 <th>Room No</th>
-                                                <th>Doctor</th>
                                                 <th>Patient ID</th>
                                                 <th>Patient Name</th>
-                                                <th>DOB</th>
                                                 <th>Age</th>
                                                 <th>Contact No</th>
                                                 <th>Bill Amount</th>
@@ -73,10 +71,8 @@
                                                 <td>{{ $ipd->ipd_id }}</td>
                                                 <td>{{ date('d M Y', strtotime($ipd->ipd_admit_date)) }}</td>
                                                 <td>{{ $ipd->roomData->rm_building.'-'.$ipd->roomData->rm_floor.'-'.$ipd->roomData->rm_ward.'-'.$ipd->roomData->rm_no }}</td>
-                                                <td>{{ $ipd->doctorData->person_name }}</td>
                                                 <td>{{ $ipd->pa_id }}</td>
                                                 <td>{{ $ipd->patientData->pa_name }}</td>
-                                                <td>{{ date('d M Y', strtotime($ipd->patientData->pa_dob)) }}</td>
                                                 <td>{{ $ipd->patientData->pa_age }}</td>
                                                 <td>{{ $ipd->patientData->pa_contact_no }}</td>
                                                 <td id="billAmountShow_{{ $ipd->ipd_id }}">{{ $ipd->ipd_bill_amount }}</td>

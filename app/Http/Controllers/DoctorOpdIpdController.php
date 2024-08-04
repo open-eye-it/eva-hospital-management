@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Appointment;
 use App\Models\IpdDetail;
 use App\Models\VisitingFee;
+use App\Models\GeneralMedicine;
+use App\Models\AppointmentMedicine;
 
 class DoctorOpdIpdController extends MainController
 {
@@ -17,6 +19,8 @@ class DoctorOpdIpdController extends MainController
         $this->appointment = new Appointment;
         $this->ipd = new IpdDetail;
         $this->visiting_fee = new VisitingFee;
+        $this->general_medicine = new GeneralMedicine;
+        $this->appointment_medicine = new AppointmentMedicine;
     }
     /* OPE/IPD listing show */
     public function list(Request $request)
@@ -54,6 +58,20 @@ class DoctorOpdIpdController extends MainController
             return $this->getSuccessResult($design, 'OPD detail found', true);
         } else {
             return $this->getErrorMessage('OPD detail not found');
+        }
+    }
+    /* OPD Prescription Show */
+    public function opd_prescription_show($ap_id)
+    {
+        $ap_id = base64_decode($ap_id);
+        $data = $this->appointment->singlData($ap_id);
+        if (!empty($data->toArray())) {
+            $prescribeMedicineList = $this->appointment_medicine->getList(['ap_id' => $ap_id]);
+            $generalMedicines = $this->general_medicine->getActiveList();
+            $design = view('doctor.opd.prescription', compact('data', 'prescribeMedicineList', 'generalMedicines'))->render();
+            return $this->getSuccessResult($design, 'OPD prescription detail found', true);
+        } else {
+            return $this->getErrorMessage('OPD prescription detail not found');
         }
     }
     /* IPD single view */

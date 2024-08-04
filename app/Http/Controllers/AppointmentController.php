@@ -228,9 +228,11 @@ class AppointmentController extends MainController
                 }
             }
         }
+        $input['ap_status'] = 'completed';
         $update = $this->appointment->updateData($input, $ap_id);
         if ($update == 1) {
-            return $this->getSuccessResult([], 'Prescription update.', true);
+            $data = $this->appointment->singlData($ap_id);
+            return $this->getSuccessResult($data, 'Prescription update.', true);
         } else {
             return $this->getErrorMessage('Prescription not update, something is wrong.');
         }

@@ -191,9 +191,11 @@ class IpdDetailController extends MainController
                     $data['ipd_investigations'] = $string_val_arr[5];
                     $data['ipd_treatment_given'] = $string_val_arr[6];
                     $data['ipd_treatment_discharge'] = $string_val_arr[7];
+                    $data['ipd_follow_up_date'] = ($string_val_arr[8] != '') ? $string_val_arr[8] : null;
                 } else if ($status == 'cancelled') {
                     $data['ipd_cancel_reason'] = $string_val_arr[2];
                     $data['ipd_discharge_date'] = null;
+                    $data['ipd_follow_up_date'] = null;
                     $data['ipd_diagnosis'] = '';
                     $data['ipd_investigations'] = '';
                     $data['ipd_treatment_given'] = '';
@@ -201,6 +203,7 @@ class IpdDetailController extends MainController
                 } else {
                     $data['ipd_cancel_reason'] = '';
                     $data['ipd_discharge_date'] = null;
+                    $data['ipd_follow_up_date'] = null;
                     $data['ipd_diagnosis'] = '';
                     $data['ipd_investigations'] = '';
                     $data['ipd_treatment_given'] = '';
@@ -267,6 +270,27 @@ class IpdDetailController extends MainController
         }
     }
 
+    /* IPD Operative Note Print */
+    public function IPDOperativeNotePrint($ipd_id)
+    {
+        $ipd_id = base64_decode($ipd_id);
+        $data = $this->ipd->singlData($ipd_id);
+        if (!empty($data)) {
+            $data1 = $data->toArray();
+            $data1['patient_id'] = $data->patientData->pa_id;
+            $data1['patient_name'] = $data->patientData->pa_name;
+            $data1['patient_age'] = $data->patientData->pa_age;
+            $data1['ion_date'] = (is_null($data->operativNoteData->ion_date)) ? date('Y-m-d') : (string)$data->operativNoteData->ion_date;
+            $data1['ion_note'] = (string)$data->operativNoteData->ion_note;
+            $data1['doctor'] = $data->doctorData->person_name;
+
+            //return $this->getSuccessResult($data1, 'IPD detail found', true);
+            return response()->view('ipd.operative_note_print', compact('data1'));
+        } else {
+            return $this->getErrorMessage('IPD detail not found');
+        }
+    }
+
     /* IPD Prescription View */
     public function PrescriptionView($ipd_id)
     {
@@ -287,6 +311,28 @@ class IpdDetailController extends MainController
             return $this->getSuccessResult($final_data, 'Operation medicine found.', true);
         } else {
             return $this->getErrorMessage('IPD details not found, something is wrong.');
+        }
+    }
+
+    /* IPD Bill Print */
+    public function IPDBillPrint($ipd_id)
+    {
+        $ipd_id = base64_decode($ipd_id);
+        $data = $this->ipd->singlData($ipd_id);
+        if (!empty($data)) {
+            $data1 = $data->toArray();
+            $data1['patient_id'] = $data->patientData->pa_id;
+            $data1['patient_name'] = $data->patientData->pa_name;
+            $data1['patient_age'] = $data->patientData->pa_age;
+            $data1['ion_date'] = (is_null($data->operativNoteData->ion_date)) ? date('Y-m-d') : (string)$data->operativNoteData->ion_date;
+            $data1['ion_note'] = (string)$data->operativNoteData->ion_note;
+            $data1['doctor'] = $data->doctorData->person_name;
+            $data1['room'] = $data->roomData->rm_building . '-' . $data->roomData->rm_floor . '-' . $data->roomData->rm_ward . '-' . $data->roomData->rm_no;
+
+            //return $this->getSuccessResult($data1, 'IPD detail found', true);
+            return response()->view('ipd.bill_print', compact('data1'));
+        } else {
+            return $this->getErrorMessage('IPD detail not found');
         }
     }
 

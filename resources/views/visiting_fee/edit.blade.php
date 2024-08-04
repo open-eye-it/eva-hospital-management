@@ -24,7 +24,7 @@
                                     <div class="card-body">
                                         <div class="form-group">
                                             <label>Case Type <span class="text-danger">*</span></label>
-                                            <select name="vf_case_type" id="vf_case_type" class="form-control">
+                                            <select name="vf_case_type" id="vf_case_type" class="form-control" disabled>
                                                 <option value="old" {{ ($data->vf_case_type == 'old') ? 'selected' : '' }}>OLD</option>
                                                 <option value="new" {{ ($data->vf_case_type == 'new') ? 'selected' : '' }}>NEW</option>
                                                 <option value="emergency" {{ ($data->vf_case_type == 'emergency') ? 'selected' : '' }}>EMERGENCY</option>

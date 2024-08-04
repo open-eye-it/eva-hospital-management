@@ -84,6 +84,7 @@ class Appointment extends Model
         $doctor         = isset($filterdata['doctor']) ? $filterdata['doctor'] : '';
         $case_type      = isset($filterdata['case_type']) ? $filterdata['case_type'] : '';
         $follow_up_date_range = isset($filterdata['follow_up_date_range']) ? $filterdata['follow_up_date_range'] : '';
+        $ap_doctor    = isset($filterdata['ap_doctor']) ? $filterdata['ap_doctor'] : '';
         if (isset($search_text) && $search_text != '') {
             $data->where(function ($query) use ($search_text) {
                 $query->where('ap_id', 'LIKE', '%' . $search_text . '%')->orWhere('pa_id', 'LIKE', '%' . $search_text . '%');
@@ -109,6 +110,9 @@ class Appointment extends Model
             $dateArr[0] = date('Y-m-d', strtotime($dateArr[0]));
             $dateArr[1] = date('Y-m-d', strtotime($dateArr[1]));
             $data->whereBetween('ap_follow_up_date', $dateArr);
+        }
+        if (isset($ap_doctor) && $ap_doctor != '') {
+            $data->where('ap_doctor', $ap_doctor);
         }
     }
 

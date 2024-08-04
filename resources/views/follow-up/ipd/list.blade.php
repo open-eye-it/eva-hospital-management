@@ -1,6 +1,6 @@
 @extends('layout.master');
-@section('title', 'IPD - List')
-@section('breadcrumb-module', 'IPD')
+@section('title', 'Follow Up - IPD')
+@section('breadcrumb-module', 'Follow Up - IPD')
 @section('page-content')
 <!--begin::Row-->
 <div class="row">
@@ -14,16 +14,16 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="card card-custom gutter-b p-5">
-                                <form action="{{ route('ipd.list') }}">
+                                <form action="{{ route('follow-up.ipd.list') }}">
                                     <div class="row">
                                         <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
                                             <label for="search_text">Search IPD ID</label>
                                             <input type="text" class="form-control" placeholder="Search IPD ID" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
                                         </div>
                                         <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
-                                            <label for="appointment_date">Admit Date</label>
+                                            <label for="appointment_date">Follow Up Date</label>
                                             <div class='input-group' id='appointment_date_range'>
-                                                <input type='text' name="admit_date_range" id="admit_date_range" class="form-control" placeholder="Select date range" value="{{ $searchData['admit_date_range'] }}" />
+                                                <input type='text' name="follow_up_date_range" id="follow_up_date_range" class="form-control" placeholder="Select date range" value="{{ $searchData['follow_up_date_range'] }}" />
                                             </div>
                                         </div>
                                         <div class="col-12 form-group">
@@ -51,13 +51,14 @@
                                                 <th>IPD ID</th>
                                                 <th>Admit Date</th>
                                                 <th>Room No</th>
+                                                <th>Doctor</th>
                                                 <th>Patient ID</th>
                                                 <th>Patient Name</th>
+                                                <th>DOB</th>
                                                 <th>Age</th>
                                                 <th>Contact No</th>
                                                 <th>Bill Amount</th>
                                                 <th>Received Amount</th>
-                                                <th>Status</th>
                                                 <th>OPD</th>
                                                 <th>IPD</th>
                                                 <th>Actions</th>
@@ -71,22 +72,14 @@
                                                 <td>{{ $ipd->ipd_id }}</td>
                                                 <td>{{ date('d M Y', strtotime($ipd->ipd_admit_date)) }}</td>
                                                 <td>{{ $ipd->roomData->rm_building.'-'.$ipd->roomData->rm_floor.'-'.$ipd->roomData->rm_ward.'-'.$ipd->roomData->rm_no }}</td>
+                                                <td>{{ $ipd->doctorData->person_name }}</td>
                                                 <td>{{ $ipd->pa_id }}</td>
                                                 <td>{{ $ipd->patientData->pa_name }}</td>
+                                                <td>{{ date('d M Y', strtotime($ipd->patientData->pa_dob)) }}</td>
                                                 <td>{{ $ipd->patientData->pa_age }}</td>
                                                 <td>{{ $ipd->patientData->pa_contact_no }}</td>
                                                 <td id="billAmountShow_{{ $ipd->ipd_id }}">{{ $ipd->ipd_bill_amount }}</td>
                                                 <td>{{ $ipd->ipd_received_amount }}</td>
-                                                <td>
-                                                    @if($ipd->ipd_status == 'admit')
-                                                    @php $statusClass = 'btn-primary'; @endphp
-                                                    @elseif($ipd->ipd_status == 'discharged')
-                                                    @php $statusClass = 'btn-success'; @endphp
-                                                    @else
-                                                    @php $statusClass = 'btn-danger'; @endphp
-                                                    @endif
-                                                    <span class="btn {{ $statusClass }}" id="status_{{ $ipd->ipd_id }}" onclick="statusModal('{{ base64_encode($ipd->ipd_id) }}')">{{ ucfirst($ipd->ipd_status) }}</span>
-                                                </td>
                                                 <td>
                                                     <span id="opdHistoryView" data-id="{{ base64_encode($ipd->pa_id) }}" title="OPD History"><i class="la la-eye icon-3x cursor_pointer"></i></span>
                                                 </td>
@@ -94,12 +87,7 @@
                                                     <span id="ipdHistoryView" data-id="{{ base64_encode($ipd->pa_id) }}" title="IPD History"><i class="la la-eye icon-3x cursor_pointer"></i></span>
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('ipd.edit', base64_encode($ipd->ipd_id)) }}" title="Edit"><i class="la la-edit icon-3x"></i></a>
                                                     <span id="fullView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Full View"><i class="la la-eye icon-3x cursor_pointer"></i></span>
-                                                    <span id="billAmountView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Bill Amount"><i class="la la-money-bill icon-3x cursor_pointer"></i></span>
-                                                    <span id="operativeNoteView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Operative Notes"><i class="flaticon flaticon-notes icon-3x cursor_pointer"></i></span>
-                                                    <span id="prescribeView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Prescribe"><i class="la la-pills icon-3x cursor_pointer"></i></span>
-                                                    <span id="IPDPrint" data-id="{{ base64_encode($ipd->ipd_id) }}" title="IPD Detail"><i class="flaticon flaticon2-print icon-3x cursor_pointer"></i></span>
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -444,7 +432,7 @@
                 sweetAlertError(res.message, 3000);
             }
         });
-    });
+    })
 
     function statusModal(ipd_id) {
         $('#statusModal').modal('show');
@@ -456,6 +444,7 @@
             url: "{{ route('ipd.view', '') }}" + "/" + ipd_id,
             method: "GET",
             success: function(result) {
+                console.log(result);
                 if (result.response === true) {
                     let data = result.data;
                     $('#ip_status_val').val(data.ipd_status);
@@ -519,6 +508,7 @@
             url: "{{ route('ipd.status', '') }}" + "/" + stringVal,
             method: "GET",
             success: function(res) {
+                console.log(status);
                 if (res.response === true) {
                     let removeClass = 'bg-primary bg-success bg-danger';
                     let addClass = '';
@@ -643,7 +633,6 @@
                         </div> \
                         <div class="col-12 form-group"> \
                             <button class="btn btn-primary" id="operative_note_update_btn" onclick="updateOperativeNote(' + atob(ipd_id) + ')">Update</button> \
-                            <button class="btn btn-info" id="operativeNotPrint" data-id="' + btoa(data.ipd_id) + '">Print <i class="flaticon flaticon2-print cursor_pointer"></i></button> \
                         </div> \
                     </div>';
 
@@ -659,22 +648,6 @@
             }
         });
     })
-
-    /* Operative not print */
-    $('body').on('click', '#operativeNotPrint', function() {
-        let ipd_id = $(this).data('id');
-        $.ajax({
-            url: "{{ route('ipd.operative_note.print', '') }}" + "/" + ipd_id,
-            method: "GET",
-            success: function(res) {
-                printData(res);
-            },
-            error: function(r) {
-                let res = r.responseJSON;
-                sweetAlertError(res.message, 3000);
-            }
-        });
-    });
 
     /* Update Operative Note */
     function updateOperativeNote(ipd_id) {
@@ -768,22 +741,6 @@
         });
     })
 
-    /* IPD Print */
-    $('body').on('click', '#IPDPrint', function() {
-        let ipd_id = $(this).data('id');
-        $.ajax({
-            url: "{{ route('ipd.bill.print', '') }}" + "/" + ipd_id,
-            method: "GET",
-            success: function(res) {
-                printData(res);
-            },
-            error: function(r) {
-                let res = r.responseJSON;
-                sweetAlertError(res.message, 3000);
-            }
-        });
-    });
-
     /* Reset Operation Medicine Date */
     function ResetOperationMedicineDate() {
         $('#ipd_operation_medicine_date').val('');
@@ -800,6 +757,7 @@
             url: "{{ route('ipd.prescription.update', '') }}" + '/' + btoa(ipd_id) + '?ipd_operation_medicine_date=' + ipd_operation_medicine_date + '&medicine_arr=' + btoa(medicine_arr),
             method: "get",
             success: function(res) {
+                console.log(res);
                 if (res.response === true) {
                     sweetAlertSuccess(res.message, 3000);
                     //$('#operativeNoteViewModal').modal('hide');
@@ -821,6 +779,7 @@
             url: "{{ route('ipd.opd_history', '') }}" + "/" + pa_id,
             method: "GET",
             success: function(res) {
+                console.log(res);
                 if (res.response === true) {
                     let data = res.data.list;
                     let total_fees = res.data.total_fees;
@@ -846,6 +805,7 @@
             url: "{{ route('ipd.ipd_history', '') }}" + "/" + pa_id,
             method: "GET",
             success: function(res) {
+                console.log(res);
                 if (res.response === true) {
                     let data = res.data.list;
                     let total_fees = res.data.total_fees;
@@ -863,23 +823,5 @@
             }
         });
     })
-
-    /* Print Data */
-    function printData(data) {
-        $('<iframe>', {
-                name: 'myiframe',
-                class: 'printFrame'
-            })
-            .appendTo('body')
-            .contents().find('body')
-            .append(data);
-
-        window.frames['myiframe'].focus();
-        window.frames['myiframe'].print();
-
-        setTimeout(() => {
-            $(".printFrame").remove();
-        }, 1000);
-    };
 </script>
 @endsection

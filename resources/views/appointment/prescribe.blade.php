@@ -358,7 +358,11 @@ PROVISIONAL DIAGNOSIS : zxcas
                 $('#createBtn').removeClass('spinner spinner-white spinner-right');
                 $('#createBtn').attr('disabled', false);
                 if(res.response === true){
-                    sweetAlertSuccess(res.message, 3000, "{{ route('appointment.list') }}");
+                    //sweetAlertSuccess(res.message, 3000, "{{ route('appointment.list') }}");
+                    let previous_url = "{{ Request::session()->previousUrl() }}";
+                    previous_url = previous_url.replaceAll('amp;', '');
+                    previous_url = previous_url.replaceAll('%20-%20', '+-+');
+                    sweetAlertSuccess(res.message, 3000, previous_url);
                 }else{
                     sweetAlertError(res.message, 3000); 
                 }

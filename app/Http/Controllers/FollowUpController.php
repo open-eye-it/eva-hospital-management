@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\Appointment;
+use App\Models\IpdDetail;
 
 use App\Exports\FollowUpExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -17,9 +18,10 @@ class FollowUpController extends MainController
     {
         parent::__construct();
         $this->appointment = new Appointment;
+        $this->ipd = new IpdDetail;
     }
 
-    /* Follow-Up Info */
+    /* OPD Follow-Up Info */
     public function index(Request $request)
     {
         $input = $request->query();
@@ -34,7 +36,7 @@ class FollowUpController extends MainController
         return view('follow-up.list', compact('list', 'searchData', 'total_fees', 'total_additional_fees'));
     }
 
-    /* Export Appointment */
+    /* OPD Export Appointment */
     public function export(Request $request)
     {
         $input = $request->query();
@@ -55,5 +57,22 @@ class FollowUpController extends MainController
     {
         $total_fees = $this->appointment->totalAdditionalFees($searchData);
         return $total_fees;
+    }
+
+    /* IPD follow up info */
+    public function ipd_index(Request $request)
+    {
+        $input = $request->all();
+        $searchData['search_text']      = isset($input['search_text']) ? $input['search_text'] : '';
+        $searchData['follow_up_date_range']  = isset($input['follow_up_date_range']) ? $input['follow_up_date_range'] : date('Y-m-d') . ' - ' . date('Y-m-d');
+        $list = $this->ipd->getList($searchData);
+        $total_bill_amount = $this->ipd->totalBillAmount($searchData);
+        $total_received_amount = $this->ipd->totalReceivedAmount($searchData);
+        return view('follow-up.ipd.list', compact('list', 'searchData', 'total_bill_amount', 'total_received_amount'));
+    }
+
+    /* IPD export  */
+    public function ipd_export(Request $request)
+    {
     }
 }

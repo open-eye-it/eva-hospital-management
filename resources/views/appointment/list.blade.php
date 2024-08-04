@@ -117,12 +117,12 @@
                                                 </td>
                                                 <td>
                                                     <span class="btn btn-danger mb-2" onclick="prescribeShow('{{ base64_encode($appointment->ap_id) }}')">Prescribe</span>
-                                                    <span id="prescriptionBillView" data-id="{{ base64_encode($appointment->ap_id) }}" title="Prescription Bill"><i class="flaticon flaticon-file-2 icon-3x cursor_pointer"></i></span>
+                                                    <span id="prescriptionBillView" data-id="{{ base64_encode($appointment->ap_id) }}" title="Prescription Bill"><i class="flaticon flaticon2-print icon-3x cursor_pointer"></i></span>
                                                 </td>
                                                 <td>
                                                     <a href="{{ route('appointment.edit', base64_encode($appointment->ap_id)) }}" title="Edit"><i class="la la-edit icon-3x"></i></a>
                                                     <span id="fullView" data-id="{{ base64_encode($appointment->ap_id) }}" title="Full View"><i class="la la-eye icon-3x cursor_pointer"></i></span>
-                                                    <span id="billView" data-id="{{ base64_encode($appointment->ap_id) }}" title="Bill"><i class="flaticon flaticon-file-2 icon-3x cursor_pointer"></i></span>
+                                                    <span id="billView" data-id="{{ base64_encode($appointment->ap_id) }}" title="Bill"><i class="flaticon flaticon2-print icon-3x cursor_pointer"></i></span>
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -359,7 +359,6 @@
             url: "{{ route('appointment.bill_print', '') }}" + "/" + ap_id,
             method: "GET",
             success: function(res) {
-                console.log(res);
                 printData(res);
             },
             error: function(r) {
@@ -377,7 +376,6 @@
             url: "{{ route('appointment.prescription_bill_print', '') }}" + "/" + ap_id,
             method: "GET",
             success: function(res) {
-                console.log(res);
                 printData(res);
             },
             error: function(r) {

@@ -16,17 +16,17 @@
                             <div class="card card-custom gutter-b p-5">
                                 <form action="{{ route('follow-up.list') }}">
                                     <div class="row">
-                                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
+                                        <div class="col-lg-2 col-md-4 col-sm-6 col-12 form-group">
                                             <label for="search_text">Search Patient ID</label>
                                             <input type="text" class="form-control" placeholder="Search Appointment ID" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
                                         </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
+                                        <div class="col-lg-2 col-md-4 col-sm-6 col-12 form-group">
                                             <label for="appointment_date">Follow Up Date</label>
                                             <div class='input-group' id='appointment_date_range'>
                                                 <input type='text' name="follow_up_date_range" id="follow_up_date_range" class="form-control" placeholder="Select date range" value="{{ $searchData['follow_up_date_range'] }}" />
                                             </div>
                                         </div>
-                                        <div class="col-12 form-group">
+                                        <div class="col-lg-4 col-md-6 col-sm-6 col-12 form-group pt-lg-4 mt-lg-4 pt-md-4 mt-md-4">
                                             <button class="btn btn-primary" type="submit">Search</button>
                                             <a class="btn btn-danger" href="{{ route('follow-up.list') }}">Resst</a>
                                             <button type="button" class="btn btn-info" onclick="exportFollowUp()"><i class="fa fa-file-export"></i> Export</button>
@@ -52,17 +52,18 @@
                                             <tr>
                                                 <th>ID</th>
                                                 <th>Appointment ID</th>
-                                                <th>Date</th>
+                                                <th>Appointment Date</th>
                                                 <th>Patient ID</th>
                                                 <th>Patient Name</th>
                                                 <th>Contact No</th>
                                                 <th>Case Type</th>
-                                                <th>Is FOC</th>
+                                                <!-- <th>Is FOC</th>
                                                 <th>Fee</th>
-                                                <th>Additional Charges</th>
+                                                <th>Additional Charges</th> -->
                                                 <th>Follow Up Date</th>
                                                 <th>Decided Date of Surgery</th>
-                                                <th>Bill</th>
+                                                <!-- <th>Bill</th> -->
+                                                <th>Notes</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -76,13 +77,16 @@
                                                 <td>{{ $appointment->patientData->pa_name }}</td>
                                                 <td>{{ $appointment->patientData->pa_contact_no }}</td>
                                                 <td>{{ $appointment->ap_case_type }}</td>
-                                                <td>{{ ($appointment->ap_is_foc == 'yes') ? 'Yes' : 'No' }}</td>
+                                                <!-- <td>{{ ($appointment->ap_is_foc == 'yes') ? 'Yes' : 'No' }}</td>
                                                 <td>{{ $appointment->ap_charge }}</td>
-                                                <td id="app_row_additional_charge_{{ $appointment->ap_id }}">{{ $appointment->ap_additional_charge }}</td>
+                                                <td id="app_row_additional_charge_{{ $appointment->ap_id }}">{{ $appointment->ap_additional_charge }}</td> -->
                                                 <td>{{ ($appointment->ap_follow_up_date != '' || !empty($appointment->ap_follow_up_date)) ? date('d M Y', strtotime($appointment->ap_follow_up_date)) : '' }}</td>
                                                 <td>{{ date('d M Y', strtotime($appointment->ap_surg_date)) }}</td>
-                                                <td>
+                                                <!-- <td>
                                                     <span id="billView" data-id="{{ base64_encode($appointment->ap_id) }}" title="Bill"><i class="flaticon flaticon-file-2 icon-3x cursor_pointer"></i></span>
+                                                </td> -->
+                                                <td>
+                                                    <span id="OPDNote" data-id="{{ base64_encode($appointment->ap_id) }}" title="Note"><i class="flaticon flaticon-file-1 icon-3x cursor_pointer"></i></span>
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -161,6 +165,49 @@
 
                     </tbody>
                 </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="noteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">OPD Note</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="apac_desc">Follow Up Date</label>
+                            <div class="input-group date">
+                                <input type="text" class="form-control" placeholder="Appointment Date" name="ap_follow_up_date" id="ap_follow_up_date" value="{{ date('Y-m-d') }}" />
+                                <div class="input-group-append">
+                                    <span class="input-group-text">
+                                        <i class="la la-calendar-check-o"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <span class="text-danger" id="apac_descErr"></span>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="apac_qty">Notes </label>
+                            <textarea class="form-control" name="ap_follow_up_note" id="ap_follow_up_note" cols="30" rows="10"></textarea>
+                            <span class="text-danger" id="apac_qtyErr"></span>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <button id="addNote" class="btn btn-primary" id="opd_note_submit">Submit</button>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
@@ -254,14 +301,40 @@
         window.location.href = "{{ route('follow-up.export') }}" + query;
     }
 
-    $('body').on('click', '#billView', function(event) {
+    // $('body').on('click', '#billView', function(event) {
+    //     let ap_id = $(this).data('id');
+    //     $.ajax({
+    //         url: "{{ route('appointment.bill_print', '') }}" + "/" + ap_id,
+    //         method: "GET",
+    //         success: function(res) {
+    //             console.log(res);
+    //             printData(res);
+    //         },
+    //         error: function(r) {
+    //             console.log(r);
+    //             let res = r.responseJSON;
+    //             sweetAlertError(res.message, 3000);
+    //         }
+    //     });
+    // });
+
+    /* OPD Note Show */
+    $('body').on('click', '#OPDNote', function() {
         let ap_id = $(this).data('id');
         $.ajax({
-            url: "{{ route('appointment.bill_print', '') }}" + "/" + ap_id,
+            url: "{{ route('appointment.view', '') }}" + "/" + ap_id,
             method: "GET",
             success: function(res) {
                 console.log(res);
-                printData(res);
+                if (res.response === true) {
+                    let data = res.data;
+                    $('#ap_follow_up_date').val(data.ap_follow_up_date);
+                    $('#ap_follow_up_note').val(data.ap_follow_up_note);
+                    $('#addNote').attr('onclick', "OPDNoteSumit('" + ap_id + "')");
+                    $('#noteModal').modal('show');
+                } else {
+                    sweetAlertError(res.message, 3000);
+                }
             },
             error: function(r) {
                 console.log(r);
@@ -269,8 +342,35 @@
                 sweetAlertError(res.message, 3000);
             }
         });
-        //openPrintDialogue();
     });
+    /* OPD Note Submit */
+    function OPDNoteSumit(ap_id) {
+        let ap_follow_up_date = $('#ap_follow_up_date').val();
+        let ap_follow_up_note = $('#ap_follow_up_note').val();
+        let query = 'ap_follow_up_date=' + ap_follow_up_date + '&ap_follow_up_note=' + ap_follow_up_note;
+        $.ajax({
+            url: "{{ route('appointment.note.update', '') }}" + "/" + ap_id + "?" + query,
+            method: "GET",
+            success: function(res) {
+                console.log(res);
+                if (res.response === true) {
+                    $('#ap_follow_up_date').val('');
+                    $('#ap_follow_up_note').val('');
+                    $('#addNote').removeAttr('onclick');
+                    $('#noteModal').modal('hide');
+                    sweetAlertSuccess(res.message, 3000, '');
+                    window.location.reload();
+                } else {
+                    sweetAlertError(res.message, 3000);
+                }
+            },
+            error: function(r) {
+                console.log(r);
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    }
 
     function printData(data) {
         $('<iframe>', {

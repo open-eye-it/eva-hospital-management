@@ -174,6 +174,7 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
         Route::get('export', [AppointmentController::class, 'export'])->name('appointment.export');
         Route::get('bill_print/{ap_id}', [AppointmentController::class, 'bill_print'])->name('appointment.bill_print');
         Route::get('prescription_bill_print/{ap_id}', [AppointmentController::class, 'prescription_bill_print'])->name('appointment.prescription_bill_print');
+        Route::get('note_update/{ap_id}', [AppointmentController::class, 'note_update'])->name('appointment.note.update');
     });
     /* Follow Up Info */
     Route::prefix('follow-up')->name('follow-up.')->group(function () {
@@ -195,7 +196,7 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
     });
     /* IPD Detail */
     Route::prefix('ipd')->group(function () {
-        Route::get('/', [IpdDetailController::class, 'index'])->name('ipd.list');
+        Route::get('list', [IpdDetailController::class, 'index'])->name('ipd.list');
         Route::get('create', [IpdDetailController::class, 'create'])->name('ipd.create');
         Route::post('store', [IpdDetailController::class, 'store'])->name('ipd.store');
         Route::get('edit/{ipd_id}', [IpdDetailController::class, 'edit'])->name('ipd.edit');
@@ -212,6 +213,7 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
         Route::get('opd_history/{pa_id}', [IpdDetailController::class, 'OpdHistory'])->name('ipd.opd_history');
         Route::get('ipd_history/{pa_id}', [IpdDetailController::class, 'IpdHistory'])->name('ipd.ipd_history');
         Route::get('export', [IpdDetailController::class, 'export'])->name('ipd.export');
+        Route::get('note_update/{ipd_id}', [IpdDetailController::class, 'note_update'])->name('ipd.note.update');
     });
     /* IPD Account Detail */
     Route::prefix('ipd-account-detail')->name('ipd-acount-detail.')->group(function () {

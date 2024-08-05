@@ -18,6 +18,7 @@ class IpdDetail extends Model
         'ipd_doctor',
         'ipd_surgery_date',
         'ipd_follow_up_date',
+        'ipd_follow_up_note',
         'ipd_surgery_text',
         'rm_id',
         'ipd_status',

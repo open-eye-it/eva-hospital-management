@@ -123,6 +123,7 @@
                                                     <a href="{{ route('appointment.edit', base64_encode($appointment->ap_id)) }}" title="Edit"><i class="la la-edit icon-3x"></i></a>
                                                     <span id="fullView" data-id="{{ base64_encode($appointment->ap_id) }}" title="Full View"><i class="la la-eye icon-3x cursor_pointer"></i></span>
                                                     <span id="billView" data-id="{{ base64_encode($appointment->ap_id) }}" title="Bill"><i class="flaticon flaticon2-print icon-3x cursor_pointer"></i></span>
+                                                    <span title="Additional Charge"><i title="Additiona Charge" class="flaticon flaticon-add-circular-button icon-3x cursor_pointer" onclick="additionalChargeShow('{{ base64_encode($appointment->ap_id) }}', '{{ json_encode($searchData) }}')"></i></span>
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -209,6 +210,63 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="additionalChargeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">OPD Additional Charges</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <div class="form-group">
+                            <label for="apac_desc">Description <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="apac_desc" id="apac_desc" value="">
+                            <span class="text-danger" id="apac_descErr"></span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <div class="form-group">
+                            <label for="apac_qty">QTY <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" name="apac_qty" id="apac_qty" value="">
+                            <span class="text-danger" id="apac_qtyErr"></span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <div class="form-group">
+                            <label for="apac_charge">Charge <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="apac_charge" id="apac_charge" value="">
+                            <span class="text-danger" id="apac_chargeErr"></span>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <button id="addAdditionalCharge" class="btn btn-primary">Add <i class="la la-plus"></i></button>
+                    </div>
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Sr. No.</th>
+                            <th>Description</th>
+                            <th>QTY</th>
+                            <th>Charge</th>
+                            <th>Total Charge</th>
+                        </tr>
+                    </thead>
+                    <tbody id="allAdditionalCharge">
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     $('body').on('click', '#fullView', function(event) {
         let ap_id = $(this).data('id');
@@ -250,6 +308,8 @@
                     <tr> \
                         <th>Fees</th> \
                         <td>' + $.trim(data.ap_charge) + '</td> \
+                        <th>Additional Charge</th> \
+                        <td>' + $.trim(data.ap_additional_charge) + '</td> \
                     </tr>';
 
                     $('#viewDetail').html(view);
@@ -403,5 +463,83 @@
             $(".printFrame").remove();
         }, 1000);
     };
+
+    function additionalChargeShow(ap_id, queryData) {
+        $.ajax({
+            url: "{{ route('opd-account-detail.additional-charge.list', '') }}" + "/" + ap_id,
+            method: "GET",
+            success: function(res) {
+                if (res.response === true) {
+                    let data = res.data;
+                    $('#allAdditionalCharge').html(data);
+                    $('#addAdditionalCharge').attr("onclick", "addNewCharge('" + ap_id + "', '" + queryData + "')");
+                    $('#additionalChargeModal').modal('show');
+                } else {
+                    sweetAlertError(res.message, 3000);
+                }
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    }
+
+    function addNewCharge(ap_id, queryData) {
+        let apac_desc = $('#apac_desc').val();
+        let apac_qty = $('#apac_qty').val();
+        let apac_charge = $('#apac_charge').val();
+        if (apac_desc == '') {
+            $('#apac_descErr').text('Please enter description');
+            timeoutID('apac_descErr', 3000);
+            scrollTop('apac_descErr');
+        } else if (apac_qty == '') {
+            $('#apac_qtyErr').text('Please enter quantity of charge');
+            timeoutID('apac_qtyErr', 3000);
+            scrollTop('apac_qtyErr');
+        } else if (apac_charge == '') {
+            $('#apac_chargeErr').text('Please enter additional charge');
+            timeoutID('apac_chargeErr', 3000);
+            scrollTop('apac_chargeErr');
+        } else {
+            $('#addAdditionalCharge').addClass('spinner spinner-white spinner-right');
+            $('#addAdditionalCharge').attr('disabled', true);
+            let query = 'ap_id=' + ap_id + '&apac_desc=' + apac_desc + '&apac_qty=' + apac_qty + '&apac_charge=' + apac_charge + '&query=' + queryData;
+            $.ajax({
+                url: "{{ route('opd-account-detail.additional-charge.store') }}" + '?' + query,
+                method: "GET",
+                success: function(res) {
+                    console.log(res);
+                    $('#addAdditionalCharge').removeClass('spinner spinner-white spinner-right');
+                    $('#addAdditionalCharge').attr('disabled', false);
+                    if (res.response === true) {
+                        let data = res.data;
+                        let tableRow = '<tr> \
+                        <td>' + data.data.apac_id + '</td> \
+                        <td>' + data.data.apac_desc + '</td> \
+                        <td>' + data.data.apac_qty + '</td> \
+                        <td>' + data.data.apac_charge + '</td> \
+                        <td>' + data.data.apac_final_charge + '</td> \
+                        </tr>';
+                        $('#allAdditionalCharge').prepend(tableRow);
+                        $('#total_fees_amount').text(data.total_final);
+                        $('#app_row_additional_charge_' + atob(ap_id)).text(data.appointment_row_additional_charge);
+
+                        $('#apac_desc').val('');
+                        $('#apac_qty').val('');
+                        $('#apac_charge').val('');
+                    } else {
+                        sweetAlertError(res.message, 3000);
+                    }
+                },
+                error: function(r) {
+                    $('#addAdditionalCharge').removeClass('spinner spinner-white spinner-right');
+                    $('#addAdditionalCharge').attr('disabled', false);
+                    let res = r.responseJSON;
+                    sweetAlertError(res.message, 3000);
+                }
+            });
+        }
+    }
 </script>
 @endsection

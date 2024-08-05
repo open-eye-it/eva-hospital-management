@@ -55,8 +55,8 @@
                                                 <th>Patient Name</th>
                                                 <th>Age</th>
                                                 <th>Contact No</th>
-                                                <th>Bill Amount</th>
-                                                <th>Received Amount</th>
+                                                <!-- <th>Bill Amount</th>
+                                                <th>Received Amount</th> -->
                                                 <th>Status</th>
                                                 <th>OPD</th>
                                                 <th>IPD</th>
@@ -75,8 +75,8 @@
                                                 <td>{{ $ipd->patientData->pa_name }}</td>
                                                 <td>{{ $ipd->patientData->pa_age }}</td>
                                                 <td>{{ $ipd->patientData->pa_contact_no }}</td>
-                                                <td id="billAmountShow_{{ $ipd->ipd_id }}">{{ $ipd->ipd_bill_amount }}</td>
-                                                <td>{{ $ipd->ipd_received_amount }}</td>
+                                                <!-- <td id="billAmountShow_{{ $ipd->ipd_id }}">{{ $ipd->ipd_bill_amount }}</td>
+                                                <td>{{ $ipd->ipd_received_amount }}</td> -->
                                                 <td>
                                                     @if($ipd->ipd_status == 'admit')
                                                     @php $statusClass = 'btn-primary'; @endphp
@@ -297,7 +297,7 @@
                             <th>Date</th>
                             <th>Patient ID</th>
                             <th>Patient Name</th>
-                            <th>Contact No</th>
+                            <!-- <th>Contact No</th> -->
                             <th>Case Type</th>
                             <th>Is FOC</th>
                             <th>Fee</th>

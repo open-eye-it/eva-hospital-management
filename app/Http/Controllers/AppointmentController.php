@@ -285,6 +285,20 @@ class AppointmentController extends MainController
         }
     }
 
+    /* Note Update */
+    public function note_update(Request $request, $ap_id)
+    {
+        $input = $request->all();
+        $ap_id = base64_decode($ap_id);
+        $update = $this->appointment->updateData($input, $ap_id);
+        if ($update == 1) {
+            $data = $this->appointment->singlData($ap_id);
+            return $this->getSuccessResult($data, 'Note update.', true);
+        } else {
+            return $this->getErrorMessage('Note not update, something is wrong.');
+        }
+    }
+
     public function getUniqueID()
     {
         $ap_id = $this->randomString(10, 'number');

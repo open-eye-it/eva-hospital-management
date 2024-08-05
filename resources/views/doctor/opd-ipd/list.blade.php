@@ -50,115 +50,107 @@
     </div>
     <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
         <div class="content d-flex flex-column flex-column-fluid pt-0 pb-0" id="kt_content">
-            <!--begin::Entry-->
-            <div class="d-flex flex-column-fluid">
-                <!--begin::Card-->
-                <div class="card card-custom gutter-b">
-                    <div class="card-header flex-wrap py-3">
-                        <div class="card-title">
-                            <h3 class="card-label">OPD
-                            </h3>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <!--begin: Datatable-->
-                        <table class="table table-bordered scrollable_table_custom" id="">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Patient Name</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if(!$app_lists->isEmpty())
-                                @foreach($app_lists as $key => $appointment)
-                                <tr>
-                                    <td>{{ $app_lists->firstItem() + $key }}</td>
-                                    <td>{{ $appointment->patientData->pa_name }}</td>
-                                    <td>
-                                        @if($appointment->ap_status == 'pending')
-                                        @php $statusClass = 'btn-primary'; @endphp
-                                        @elseif($appointment->ap_status == 'completed')
-                                        @php $statusClass = 'btn-success'; @endphp
-                                        @else
-                                        @php $statusClass = 'btn-danger'; @endphp
-                                        @endif
-                                        <span class="btn {{ $statusClass }}" id="status_{{ $appointment->ap_id }}" onclick="OPDStatusModal('{{ base64_encode($appointment->ap_id) }}')">{{ ucfirst($appointment->ap_status) }}</span>
-                                    </td>
-                                    <td>
-                                        <span id="OPDDetail" data-id="{{ base64_encode($appointment->ap_id) }}" title="View Detail"><i class="la la-eye icon-3x cursor_pointer"></i></span>
-                                        <span id="OPDPrescriptionDetail" data-id="{{ base64_encode($appointment->ap_id) }}" title="Prescription Detail"><i class="la la-file-prescription icon-3x cursor_pointer"></i></span>
-                                    </td>
-                                </tr>
-                                @endforeach
-                                @endif
-                            </tbody>
-                        </table>
-                        <!--end: Datatable-->
-                        @if(!$app_lists->isEmpty())
-                        {{ $app_lists->withQueryString()->onEachSide(1)->links() }}
-                        @endif
+            <!--begin::Card-->
+            <div class="card card-custom gutter-b">
+                <div class="card-header flex-wrap py-3">
+                    <div class="card-title">
+                        <h3 class="card-label">OPD
+                        </h3>
                     </div>
                 </div>
-                <!--end::Card-->
+                <div class="card-body">
+                    <!--begin: Datatable-->
+                    <table class="table table-bordered scrollable_table_custom" id="">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Patient Name</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if(!$app_lists->isEmpty())
+                            @foreach($app_lists as $key => $appointment)
+                            <tr>
+                                <td>{{ $app_lists->firstItem() + $key }}</td>
+                                <td>{{ $appointment->patientData->pa_name }}</td>
+                                <td>
+                                    @if($appointment->ap_status == 'pending')
+                                    @php $statusClass = 'btn-primary'; @endphp
+                                    @elseif($appointment->ap_status == 'completed')
+                                    @php $statusClass = 'btn-success'; @endphp
+                                    @else
+                                    @php $statusClass = 'btn-danger'; @endphp
+                                    @endif
+                                    <span class="btn {{ $statusClass }}" id="status_{{ $appointment->ap_id }}" onclick="OPDStatusModal('{{ base64_encode($appointment->ap_id) }}')">{{ ucfirst($appointment->ap_status) }}</span>
+                                </td>
+                                <td>
+                                    <span id="OPDDetail" data-id="{{ base64_encode($appointment->ap_id) }}" title="View Detail"><i class="la la-eye icon-3x cursor_pointer"></i></span>
+                                    <span id="OPDPrescriptionDetail" data-id="{{ base64_encode($appointment->ap_id) }}" title="Prescription Detail"><i class="la la-file-prescription icon-3x cursor_pointer"></i></span>
+                                </td>
+                            </tr>
+                            @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+                    <!--end: Datatable-->
+                    @if(!$app_lists->isEmpty())
+                    {{ $app_lists->withQueryString()->onEachSide(1)->links() }}
+                    @endif
+                </div>
             </div>
-            <!--end::Entry-->
+            <!--end::Card-->
         </div>
         <div class="content d-flex flex-column flex-column-fluid pt-0" id="kt_content">
-            <!--begin::Entry-->
-            <div class="d-flex flex-column-fluid">
-                <div class="card card-custom gutter-b">
-                    <div class="card-header flex-wrap py-3">
-                        <div class="card-title">
-                            <h3 class="card-label">IPD
-                            </h3>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <!--begin: Datatable-->
-                        <table class="table table-bordered scrollable_table_custom" id="">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Patient Name</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if(!$ipd_lists->isEmpty())
-                                @foreach($ipd_lists as $key => $ipd)
-                                <tr>
-                                    <td>{{ $ipd_lists->firstItem() + $key }}</td>
-                                    <td>{{ $ipd->patientData->pa_name }}</td>
-                                    <td>
-                                        @if($ipd->ipd_status == 'admit')
-                                        @php $statusClass = 'btn-primary'; @endphp
-                                        @elseif($ipd->ipd_status == 'discharged')
-                                        @php $statusClass = 'btn-success'; @endphp
-                                        @else
-                                        @php $statusClass = 'btn-danger'; @endphp
-                                        @endif
-                                        <span class="btn {{ $statusClass }}" id="status_{{ $ipd->ipd_id }}" onclick="statusModalIPD('{{ base64_encode($ipd->ipd_id) }}')">{{ ucfirst($ipd->ipd_status) }}</span>
-                                    </td>
-                                    <td>
-                                        <span id="IPDDetail" data-id="{{ base64_encode($ipd->ipd_id) }}" title="View Detail"><i class="la la-eye icon-3x cursor_pointer"></i></span>
-                                    </td>
-                                </tr>
-                                @endforeach
-                                @endif
-                            </tbody>
-                        </table>
-                        <!--end: Datatable-->
-                        @if(!$ipd_lists->isEmpty())
-                        {{ $ipd_lists->withQueryString()->onEachSide(1)->links() }}
-                        @endif
+            <div class="card card-custom gutter-b">
+                <div class="card-header flex-wrap py-3">
+                    <div class="card-title">
+                        <h3 class="card-label">IPD
+                        </h3>
                     </div>
                 </div>
+                <div class="card-body">
+                    <!--begin: Datatable-->
+                    <table class="table table-bordered scrollable_table_custom" id="">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Patient Name</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if(!$ipd_lists->isEmpty())
+                            @foreach($ipd_lists as $key => $ipd)
+                            <tr>
+                                <td>{{ $ipd_lists->firstItem() + $key }}</td>
+                                <td>{{ $ipd->patientData->pa_name }}</td>
+                                <td>
+                                    @if($ipd->ipd_status == 'admit')
+                                    @php $statusClass = 'btn-primary'; @endphp
+                                    @elseif($ipd->ipd_status == 'discharged')
+                                    @php $statusClass = 'btn-success'; @endphp
+                                    @else
+                                    @php $statusClass = 'btn-danger'; @endphp
+                                    @endif
+                                    <span class="btn {{ $statusClass }}" id="status_{{ $ipd->ipd_id }}" onclick="statusModalIPD('{{ base64_encode($ipd->ipd_id) }}')">{{ ucfirst($ipd->ipd_status) }}</span>
+                                </td>
+                                <td>
+                                    <span id="IPDDetail" data-id="{{ base64_encode($ipd->ipd_id) }}" title="View Detail"><i class="la la-eye icon-3x cursor_pointer"></i></span>
+                                </td>
+                            </tr>
+                            @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+                    <!--end: Datatable-->
+                    @if(!$ipd_lists->isEmpty())
+                    {{ $ipd_lists->withQueryString()->onEachSide(1)->links() }}
+                    @endif
+                </div>
             </div>
-            <!--end::Entry-->
         </div>
     </div>
     <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12" id="detailView"></div>

@@ -29,6 +29,7 @@ class Appointment extends Model
         'ap_other_detail',
         'ap_any_advice',
         'ap_follow_up_date',
+        'ap_follow_up_note',
         'ap_surg_required',
         'ap_surg_date',
         'ap_surg_type',

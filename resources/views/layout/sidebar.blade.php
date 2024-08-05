@@ -192,7 +192,7 @@
 					<div class="menu-submenu">
 						<i class="menu-arrow"></i>
 						<ul class="menu-subnav">
-							<li class="menu-item {{ (Request::segment(1) == 'opd-account-detail' && Request::segment(2) == 'list') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+							<li class="menu-item {{ (Request::segment(1) == 'opd-account-detail') ? 'menu-item-active' : '' }}" aria-haspopup="true">
 								<a href="{{ route('opd-account-detail.list') }}" class="menu-link">
 									<i class="menu-bullet menu-bullet-dot">
 										<span></span>

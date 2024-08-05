@@ -50,18 +50,22 @@
                                                 <th>ID</th>
                                                 <th>IPD ID</th>
                                                 <th>Admit Date</th>
-                                                <th>Room No</th>
-                                                <th>Doctor</th>
+                                                <!-- <th>Room No</th>
+                                                <th>Doctor</th> -->
                                                 <th>Patient ID</th>
                                                 <th>Patient Name</th>
-                                                <th>DOB</th>
+                                                <!-- <th>DOB</th> -->
                                                 <th>Age</th>
                                                 <th>Contact No</th>
-                                                <th>Bill Amount</th>
-                                                <th>Received Amount</th>
+                                                <th>Date of Surgery</th>
+                                                <th>Type of Surgery</th>
+                                                <th>Follow Up Date</th>
+                                                <!-- <th>Bill Amount</th>
+                                                <th>Received Amount</th> -->
                                                 <th>OPD</th>
                                                 <th>IPD</th>
-                                                <th>Actions</th>
+                                                <!-- <th>Actions</th> -->
+                                                <th>Notes</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -71,23 +75,29 @@
                                                 <td>{{ $list->firstItem() + $key }}</td>
                                                 <td>{{ $ipd->ipd_id }}</td>
                                                 <td>{{ date('d M Y', strtotime($ipd->ipd_admit_date)) }}</td>
-                                                <td>{{ $ipd->roomData->rm_building.'-'.$ipd->roomData->rm_floor.'-'.$ipd->roomData->rm_ward.'-'.$ipd->roomData->rm_no }}</td>
-                                                <td>{{ $ipd->doctorData->person_name }}</td>
+                                                <!-- <td>{{ $ipd->roomData->rm_building.'-'.$ipd->roomData->rm_floor.'-'.$ipd->roomData->rm_ward.'-'.$ipd->roomData->rm_no }}</td>
+                                                <td>{{ $ipd->doctorData->person_name }}</td> -->
                                                 <td>{{ $ipd->pa_id }}</td>
                                                 <td>{{ $ipd->patientData->pa_name }}</td>
-                                                <td>{{ date('d M Y', strtotime($ipd->patientData->pa_dob)) }}</td>
+                                                <!-- <td>{{ date('d M Y', strtotime($ipd->patientData->pa_dob)) }}</td> -->
                                                 <td>{{ $ipd->patientData->pa_age }}</td>
                                                 <td>{{ $ipd->patientData->pa_contact_no }}</td>
-                                                <td id="billAmountShow_{{ $ipd->ipd_id }}">{{ $ipd->ipd_bill_amount }}</td>
-                                                <td>{{ $ipd->ipd_received_amount }}</td>
+                                                <td>{{ date('d M Y', strtotime($ipd->ipd_surgery_date)) }}</td>
+                                                <td>{{ $ipd->ipd_surgery_text }}</td>
+                                                <td>{{ $ipd->ipd_follow_up_date }}</td>
+                                                <!-- <td id="billAmountShow_{{ $ipd->ipd_id }}">{{ $ipd->ipd_bill_amount }}</td>
+                                                <td>{{ $ipd->ipd_received_amount }}</td> -->
                                                 <td>
                                                     <span id="opdHistoryView" data-id="{{ base64_encode($ipd->pa_id) }}" title="OPD History"><i class="la la-eye icon-3x cursor_pointer"></i></span>
                                                 </td>
                                                 <td>
                                                     <span id="ipdHistoryView" data-id="{{ base64_encode($ipd->pa_id) }}" title="IPD History"><i class="la la-eye icon-3x cursor_pointer"></i></span>
                                                 </td>
-                                                <td>
+                                                <!-- <td>
                                                     <span id="fullView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Full View"><i class="la la-eye icon-3x cursor_pointer"></i></span>
+                                                </td> -->
+                                                <td>
+                                                    <span id="IPDNote" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Note"><i class="flaticon flaticon-file-1 icon-3x cursor_pointer"></i></span>
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -116,6 +126,47 @@
     </div>
 </div>
 <!--end::Row-->
+<div class="modal fade" id="noteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">IPD Note</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="apac_desc">Follow Up Date</label>
+                            <div class="input-group date">
+                                <input type="text" class="form-control" placeholder="IPD Date" name="ipd_follow_up_date" id="ipd_follow_up_date" value="{{ date('Y-m-d') }}" />
+                                <div class="input-group-append">
+                                    <span class="input-group-text">
+                                        <i class="la la-calendar-check-o"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="apac_qty">Notes </label>
+                            <textarea class="form-control" name="ipd_follow_up_note" id="ipd_follow_up_note" cols="30" rows="10"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <button id="addNote" class="btn btn-primary" id="ipd_note_submit">Submit</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="fullViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -823,5 +874,59 @@
             }
         });
     })
+
+    /* OPD Note Show */
+    $('body').on('click', '#IPDNote', function() {
+        let ipd_id = $(this).data('id');
+        $.ajax({
+            url: "{{ route('ipd.view', '') }}" + "/" + ipd_id,
+            method: "GET",
+            success: function(res) {
+                console.log(res);
+                if (res.response === true) {
+                    let data = res.data;
+                    $('#ipd_follow_up_date').val(data.ipd_follow_up_date);
+                    $('#ipd_follow_up_note').val(data.ipd_follow_up_note);
+                    $('#addNote').attr('onclick', "IPDNoteSumit('" + ipd_id + "')");
+                    $('#noteModal').modal('show');
+                } else {
+                    sweetAlertError(res.message, 3000);
+                }
+            },
+            error: function(r) {
+                console.log(r);
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    });
+    /* OPD Note Submit */
+    function IPDNoteSumit(ipd_id) {
+        let ipd_follow_up_date = $('#ipd_follow_up_date').val();
+        let ipd_follow_up_note = $('#ipd_follow_up_note').val();
+        let query = 'ipd_follow_up_date=' + ipd_follow_up_date + '&ipd_follow_up_note=' + ipd_follow_up_note;
+        $.ajax({
+            url: "{{ route('ipd.note.update', '') }}" + "/" + ipd_id + "?" + query,
+            method: "GET",
+            success: function(res) {
+                console.log(res);
+                if (res.response === true) {
+                    $('#ipd_follow_up_date').val('');
+                    $('#ipd_follow_up_note').val('');
+                    $('#addNote').removeAttr('onclick');
+                    $('#noteModal').modal('hide');
+                    sweetAlertSuccess(res.message, 3000, '');
+                    window.location.reload();
+                } else {
+                    sweetAlertError(res.message, 3000);
+                }
+            },
+            error: function(r) {
+                console.log(r);
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    }
 </script>
 @endsection

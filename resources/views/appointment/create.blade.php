@@ -72,7 +72,14 @@
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
                                                     <label for="ap_date">Appointment Date <span class="text-danger">*</span></label>
-                                                    <input type="date" class="form-control" placeholder="Appointment Date" name="ap_date" id="ap_date" />
+                                                    <div class="input-group date">
+                                                        <input type="text" class="form-control" placeholder="Appointment Date" name="ap_date" id="ap_date" value="{{ date('Y-m-d') }}" />
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text">
+                                                                <i class="la la-calendar-check-o"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                     <span class="text-danger" id="ap_dateErr"></span>
                                                 </div>
                                             </div>

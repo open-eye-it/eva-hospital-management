@@ -58,10 +58,10 @@
                                                 <th>Case Type</th>
                                                 <th>Is FOC</th>
                                                 <th>Fee</th>
-                                                <th>Additional Charges</th>
+                                                <th>Extra Charges</th>
                                                 <th>Follow Up Date</th>
                                                 <th>Decided Date of Surgery</th>
-                                                <th>Other Charges</th>
+                                                <th>Add Charges</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -115,7 +115,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">OPD Additional Charges</h5>
+                <h5 class="modal-title" id="exampleModalLabel">OPD Extra Charges</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i aria-hidden="true" class="ki ki-close"></i>
                 </button>
@@ -143,7 +143,7 @@
                             <span class="text-danger" id="apac_chargeErr"></span>
                         </div>
                     </div>
-                    <div class="col-12">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pt-lg-4 mt-lg-4 pt-md-4 mt-md-4">
                         <button id="addAdditionalCharge" class="btn btn-primary">Add <i class="la la-plus"></i></button>
                     </div>
                 </div>

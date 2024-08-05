@@ -33,3 +33,22 @@ function sweetAlertError(message, time){
         timer: time
     }); 
 }
+
+/* Start:: Appointment Create */
+$('#ap_date').datepicker({
+    todayHighlight: true,
+    format: 'yyyy-mm-dd'
+});
+/* End:: Appointment Create */
+/* Start:: Follow Up OPD */
+$('#ap_follow_up_date').datepicker({
+    todayHighlight: true,
+    format: 'yyyy-mm-dd'
+});
+/* End:: Follow Up OPD */
+/* Start:: Follow Up IPD */
+$('#ipd_follow_up_date').datepicker({
+    todayHighlight: true,
+    format: 'yyyy-mm-dd'
+});
+/* End:: Follow Up IPD */

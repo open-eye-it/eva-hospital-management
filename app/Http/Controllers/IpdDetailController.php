@@ -391,7 +391,6 @@ class IpdDetailController extends MainController
                     <td>' . date('d M Y', strtotime($appointment->ap_id)) . '</td>
                     <td>' . $appointment->pa_id . '</td>
                     <td>' . $appointment->patientData->pa_name . '</td>
-                    <td>' . $appointment->patientData->pa_contact_no . '</td>
                     <td>' . $appointment->ap_case_type . '</td>
                     <td>' . $is_foc . '</td>
                     <td>' . $appointment->ap_charge . '</td>
@@ -437,6 +436,20 @@ class IpdDetailController extends MainController
             $this->getUniqueID();
         } else {
             return $ion_id;
+        }
+    }
+
+    /* Note Update */
+    public function note_update(Request $request, $ipd_id)
+    {
+        $input = $request->all();
+        $ipd_id = base64_decode($ipd_id);
+        $update = $this->ipd->updateData($input, $ipd_id);
+        if ($update == 1) {
+            $data = $this->ipd->singlData($ipd_id);
+            return $this->getSuccessResult($data, 'Note update.', true);
+        } else {
+            return $this->getErrorMessage('Note not update, something is wrong.');
         }
     }
 }

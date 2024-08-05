@@ -25,7 +25,7 @@
                     <td><strong>Referred By</strong></td>
                     <td>{{ ucfirst($data->patientData->pa_referred_by) }}</td>
                     <td><strong>Referred Name</strong></td>
-                    <td>{{ ($data->patientData->pa_recerred_by == 'doctor') ? $data->patientData->pa_referred_doctor : $data->patientData->pa_referred_text }}</td>
+                    <td>{{ ($data->patientData->pa_referred_by == 'doctor') ? $data->patientData->pa_referred_doctor : $data->patientData->pa_referred_text }}</td>
                 </tr>
                 <tr>
                     <td><strong>Contact No</strong></td>

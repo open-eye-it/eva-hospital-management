@@ -206,11 +206,11 @@
             </div>
             <div class="modal-body" id="billAmountViewDetail">
                 <div class="row">
-                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12"><strong>IPD ID: </strong>123456</div>
-                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12"><strong>Patient Name: </strong>Abhay Luva</div>
-                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12"><strong>Bill Date: </strong>19 July 2024</div>
-                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12"><strong>Bill Amount: </strong><span id="billAmount">18000</span> Rs.</div>
-                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12"><strong>Received Amount: </strong><span id="receivedAmount">18000</span> Rs.</div>
+                    <div class="col-lg-2 col-md-3 col-sm-12 col-xs-12"><strong>IPD ID: </strong>123456</div>
+                    <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12"><strong>Patient Name: </strong>Abhay Luva</div>
+                    <div class="col-lg-7 col-md-5 col-sm-12 col-xs-12"><strong>Bill Date: </strong>19 July 2024</div>
+                    <div class="col-lg-2 col-md-3 col-sm-12 col-xs-12"><strong>Bill Amount: </strong><span id="billAmount">18000</span> Rs.</div>
+                    <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12"><strong>Received Amount: </strong><span id="receivedAmount">18000</span> Rs.</div>
                 </div>
                 <div class="row mt-4">
                     <input type="hidden" id="ipd_id" name="ipd_id" value="">
@@ -258,7 +258,7 @@
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-12">
                                 <div class="form-group">
-                                    <label for="">Received By <span class="text-danger">*</span></label>
+                                    <label for="">Mode of Payment <span class="text-danger">*</span></label>
                                     <select class="form-control" name="ipd_received_by" id="ipd_received_by">
                                         <option value="cash">Cash</option>
                                         <option value="cheque">Cheque</option>
@@ -290,9 +290,10 @@
                                     <th>Receipt No</th>
                                     <th>Date of Received</th>
                                     <th>Amount</th>
-                                    <th>Received IN</th>
+                                    <th>Mode of Payment</th>
                                     <th>Description</th>
                                     <th>Paid By</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody id="paymentDetail"></tbody>

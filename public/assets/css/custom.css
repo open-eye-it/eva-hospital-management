@@ -89,3 +89,17 @@
 .cursor_pointer{
     cursor: pointer !important;
 }
+
+
+@media (min-width: 1400px) {
+    .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
+        max-width: 100%;
+    }
+}
+
+.container{
+    padding: 10px;
+}
+.content{
+    padding:0px;
+}

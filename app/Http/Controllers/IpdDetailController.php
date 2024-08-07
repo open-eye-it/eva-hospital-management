@@ -441,6 +441,47 @@ class IpdDetailController extends MainController
     public function IpdHistory($pa_id)
     {
         $pa_id = base64_decode($pa_id);
+        $searchData['patient'] = $pa_id;
+        $list = $this->ipd->getList($searchData, false);
+        $totalBillAmount = $this->ipd->totalBillAmount($searchData);
+        $totalReceivedAmount = $this->ipd->totalReceivedAmount($searchData);
+        if (!empty($list)) {
+            $tableRow = '';
+            $i = 1;
+            foreach ($list as $ipd) {
+                $is_foc = ($ipd->ipd_is_foc == 'yes') ? 'Yes' : 'No';
+                $is_mediclaim = ($ipd->ipd_mediclaim == 'yes') ? 'Yes' : 'No';
+                $tableRow .= '<tr>
+                    <td>' . $i . '</td>
+                    <td>' . $ipd->ipd_id . '</td>
+                    <td>' . date('d M Y', strtotime($ipd->ipd_admit_date)) . '</td>
+                    <td>' . $ipd->roomData->rm_building . '-' . $ipd->roomData->rm_floor . '-' . $ipd->roomData->rm_ward . '-' . $ipd->roomData->rm_no . '</td>
+                    <td>' . $ipd->patientData->pa_id . '</td>
+                    <td>' . $ipd->patientData->pa_name . '</td>
+                    <td>' . $ipd->patientData->pa_age . '</td>
+                    <td>' . $ipd->patientData->pa_contact_no . '</td>
+                    <td>' . $ipd->ipd_surgery_text . '</td>
+                    <td>' . date('d M Y', strtotime($ipd->ipd_surgery_date)) . '</td>
+                    <td>' . $ipd->doctorData->person_name . '</td>
+                    <td>' . date('d M Y', strtotime($ipd->ipd_discharge_date)) . '</td>
+                    <td>' . date('d M Y', strtotime($ipd->ipd_follow_up_date)) . '</td>
+                    <td>' . $is_foc . '</td>
+                    <td>' . $is_mediclaim . '</td>
+                    <td>' . ucfirst($ipd->ipd_status) . '</td>
+                    <td>' . $ipd->ipd_bill_amount . '</td>
+                    <td>' . $ipd->ipd_received_amount . '</td>
+                </tr>';
+            }
+
+            $data = [
+                'list' => $tableRow,
+                'total_bill' => $totalBillAmount,
+                'total_received' => $totalReceivedAmount
+            ];
+            return $this->getSuccessResult($data, 'OPD History found.', true);
+        } else {
+            return $this->getErrorMessage('OPD History not available.');
+        }
     }
 
     public function getUniqueID()

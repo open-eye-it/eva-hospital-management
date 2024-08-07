@@ -74,11 +74,15 @@ class IpdDetail extends Model
     public function FilterData($data, $filterdata)
     {
         $search_text    = isset($filterdata['search_text']) ? $filterdata['search_text'] : '';
+        $pa_id    = isset($filterdata['patient']) ? $filterdata['patient'] : '';
         $admit_date_range = isset($filterdata['admit_date_range']) ? $filterdata['admit_date_range'] : '';
         $follow_up_date_range = isset($filterdata['follow_up_date_range']) ? $filterdata['follow_up_date_range'] : '';
         $ipd_doctor    = isset($filterdata['ipd_doctor']) ? $filterdata['ipd_doctor'] : '';
         if (isset($search_text) && $search_text != '') {
             $data->where('ipd_id', $search_text);
+        }
+        if (isset($pa_id) && $pa_id != '') {
+            $data->where('pa_id', $pa_id);
         }
         if (isset($admit_date_range) && $admit_date_range != '') {
             $dateArr = explode(' - ', $admit_date_range);

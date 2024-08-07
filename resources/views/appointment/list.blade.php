@@ -75,7 +75,7 @@
                                         </h3>
                                     </div>
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body overflow_visible">
                                     <!--begin: Datatable-->
                                     <table class="table table-bordered table-striped scrollable_table_custom" id="">
                                         <thead>

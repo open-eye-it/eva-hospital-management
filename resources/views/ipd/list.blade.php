@@ -42,7 +42,7 @@
                                         </h3>
                                     </div>
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body overflow_visible">
                                     <!--begin: Datatable-->
                                     <table class="table table-bordered table-striped scrollable_table_custom" id="">
                                         <thead>
@@ -295,7 +295,7 @@
     </div>
 </div>
 <div class="modal fade" id="opdHistoryViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">OPD Details</h5>
@@ -332,7 +332,7 @@
     </div>
 </div>
 <div class="modal fade" id="ipdHistoryViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">IPD Details</h5>
@@ -341,7 +341,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                <h4>Total Fees: <span id="ipd_total_fees"></span></h4>
+                <h4>Bill Amount: <span id="ipd_total_bill"></span></h4>
+                <h4>Received Amount: <span id="ipd_total_received"></span></h4>
                 <table class="table table-bordered table-striped scrollable_table_custom">
                     <thead>
                         <tr>
@@ -351,7 +352,6 @@
                             <th>Room No</th>
                             <th>Patient ID</th>
                             <th>Patient Name</th>
-                            <th>DOM</th>
                             <th>AGE</th>
                             <th>Contact No</th>
                             <th>Surgery Type</th>
@@ -360,6 +360,8 @@
                             <th>Discharge Date</th>
                             <th>Follow Up Date</th>
                             <th>Is Foc</th>
+                            <th>Status</th>
+                            <th>Mediclaim</th>
                             <th>Bill Amount</th>
                             <th>Received Amount</th>
                         </tr>
@@ -890,9 +892,10 @@
             success: function(res) {
                 if (res.response === true) {
                     let data = res.data.list;
-                    let total_fees = res.data.total_fees;
-                    let total_additional_fees = res.data.total_additional_fees;
-                    $('#ipd_total_fees').text(total_fees + total_additional_fees);
+                    let total_bill = res.data.total_bill;
+                    let total_received = res.data.total_received;
+                    $('#ipd_total_bill').text(total_bill);
+                    $('#ipd_total_received').text(total_received);
                     $('#ipdHistoryViewDetail').html(data);
                     $('#ipdHistoryViewModal').modal('show');
                 } else {

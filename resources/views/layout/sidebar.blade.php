@@ -39,6 +39,7 @@
 						<span class="menu-text">Dashboard</span>
 					</a>
 				</li>
+				@if(auth()->user()->hasRole('doctor'))
 				<li class="menu-item {{ (Request::segment(1) == 'doctor-opd-ipd') ? 'menu-item-active' : '' }}" aria-haspopup="true">
 					<a href="{{ route('doctor_opd_ipd.list') }}" class="menu-link">
 						<span class="svg-icon menu-icon">
@@ -49,6 +50,7 @@
 						<span class="menu-text">OPD/IPD</span>
 					</a>
 				</li>
+				@endif
 				@if(auth()->user()->can('patient-read'))
 				<li class="menu-section">
 					<h4 class="menu-text">OPD/IPD</h4>

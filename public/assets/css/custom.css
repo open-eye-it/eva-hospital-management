@@ -144,3 +144,8 @@ table td .btn{
         width: 150px;
     }
 }
+
+
+.overflow_visible .dataTables_scrollBody{
+    overflow: visible !important;
+}

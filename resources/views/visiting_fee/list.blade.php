@@ -15,7 +15,7 @@
                         <div class="col-12">
                             <!--begin::Card-->
                             <div class="card card-custom gutter-b">
-                                <div class="card-header flex-wrap py-3">
+                                <div class="card-header flex-wrap py-2">
                                     <div class="card-title">
                                         <h3 class="card-label">List
                                         </h3>
@@ -23,7 +23,7 @@
                                 </div>
                                 <div class="card-body">
                                     <!--begin: Datatable-->
-                                    <table class="table table-bordered scrollable_table_custom" id="">
+                                    <table class="table table-bordered table-striped scrollable_table_custom" id="">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>

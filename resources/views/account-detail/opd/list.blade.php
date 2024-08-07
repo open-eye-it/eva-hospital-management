@@ -35,7 +35,7 @@
                             </div>
                             <!--begin::Card-->
                             <div class="card card-custom gutter-b">
-                                <div class="card-header flex-wrap py-3">
+                                <div class="card-header flex-wrap py-2">
                                     <div class="card-title">
                                         <h3 class="card-label">Account Detail
                                         </h3>
@@ -46,7 +46,7 @@
                                 </div>
                                 <div class="card-body">
                                     <!--begin: Datatable-->
-                                    <table class="table table-bordered table-separate table-head-custom table-checkable scrollable_table_custom">
+                                    <table class="table table-bordered table-striped table-separate table-head-custom table-checkable scrollable_table_custom">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
@@ -155,6 +155,7 @@
                             <th>QTY</th>
                             <th>Charge</th>
                             <th>Total Charge</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody id="allAdditionalCharge">
@@ -214,18 +215,18 @@
                 url: "{{ route('opd-account-detail.additional-charge.store') }}" + '?' + query,
                 method: "GET",
                 success: function(res) {
-                    console.log(res);
                     $('#addAdditionalCharge').removeClass('spinner spinner-white spinner-right');
                     $('#addAdditionalCharge').attr('disabled', false);
                     if (res.response === true) {
                         let data = res.data;
-                        let tableRow = '<tr> \
+                        let tableRow = '<tr id="row_' + data.data.apac_id + '"> \
                         <td>' + data.data.apac_id + '</td> \
                         <td>' + data.data.apac_desc + '</td> \
                         <td>' + data.data.apac_qty + '</td> \
                         <td>' + data.data.apac_charge + '</td> \
                         <td>' + data.data.apac_final_charge + '</td> \
-                        </tr>';
+                        <td><i title="Remove" class="la la-trash icon-3x cursor_pointer" onclick="removerCharge(' + data.data.apac_id + ')"></i></td> < \
+                        tr > ';
                         $('#allAdditionalCharge').prepend(tableRow);
                         $('#total_fees_amount').text(data.total_final);
                         $('#app_row_additional_charge_' + atob(ap_id)).text(data.appointment_row_additional_charge);
@@ -245,6 +246,25 @@
                 }
             });
         }
+    }
+
+    /* Remove Charge */
+    function removerCharge(apac_id) {
+        $.ajax({
+            url: "{{ route('opd-account-detail.additional-charge.remove', '') }}" + "/" + btoa(apac_id),
+            method: "GET",
+            success: function(res) {
+                if (res.response == true) {
+                    $('#row_' + apac_id).remove();
+                } else {
+                    sweetAlertError(res.message, 3000);
+                }
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
     }
 </script>
 @endsection

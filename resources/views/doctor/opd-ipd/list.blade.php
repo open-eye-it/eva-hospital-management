@@ -52,7 +52,7 @@
         <div class="content d-flex flex-column flex-column-fluid pt-0 pb-0" id="kt_content">
             <!--begin::Card-->
             <div class="card card-custom gutter-b">
-                <div class="card-header flex-wrap py-3">
+                <div class="card-header flex-wrap">
                     <div class="card-title">
                         <h3 class="card-label">OPD
                         </h3>
@@ -60,7 +60,7 @@
                 </div>
                 <div class="card-body">
                     <!--begin: Datatable-->
-                    <table class="table table-bordered scrollable_table_custom" id="">
+                    <table class="table table-bordered table-striped scrollable_table_custom" id="">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -104,7 +104,7 @@
         </div>
         <div class="content d-flex flex-column flex-column-fluid pt-0" id="kt_content">
             <div class="card card-custom gutter-b">
-                <div class="card-header flex-wrap py-3">
+                <div class="card-header flex-wrap">
                     <div class="card-title">
                         <h3 class="card-label">IPD
                         </h3>
@@ -112,7 +112,7 @@
                 </div>
                 <div class="card-body">
                     <!--begin: Datatable-->
-                    <table class="table table-bordered scrollable_table_custom" id="">
+                    <table class="table table-bordered table-striped scrollable_table_custom" id="">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -195,6 +195,68 @@
     </div>
 </div>
 <!-- Start:: OPD MOdal -->
+<!-- Start:: IPD MOdal -->
+<div class="modal fade" id="ipdBillAmountViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">IPD Bill Amount</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped" id="ipdBillAmountViewDetail">
+
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="operativeNoteViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Operative Note</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped" id="operativeNoteViewDetail">
+
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="prescribeViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Operation Medicine</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped" id="prescribeViewDetail">
+
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End:: IPD MOdal -->
 <!-- Start:: OPD Script -->
 <script>
     /* OPD Status Modal Show */
@@ -338,6 +400,315 @@
             }
         });
     });
+
+    /* Show Bill Amount Modal */
+    $('body').on('click', '#ipdBillAmountView', function(event) {
+        let ipd_id = $(this).data('id');
+        $.ajax({
+            url: "{{ route('ipd.view', '') }}" + "/" + ipd_id,
+            method: "GET",
+            success: function(res) {
+                if (res.response === true) {
+                    let data = res.data;
+                    let view = '<div class="row"> \
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-2 form-group"> \
+                            <label for="patient_name">Patient Name</label> \
+                            <input type="text" class="form-control" name="patient_name" id="patient_name" value="' + data.patient_name + '" disabled /> \
+                        </div> \
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-2 form-group"> \
+                            <label for="surgery_type">Type of Surgery</label> \
+                            <input type="text" class="form-control" name="surgery_type" id="surgery_type" value="' + data.ipd_surgery_text + '" disabled /> \
+                        </div> \
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-2 form-group"> \
+                            <label for="ipd_bill_amount_update">Bill Amount</label> \
+                            <input type="text" class="form-control" name="ipd_bill_amount_update" id="ipd_bill_amount_update" value="' + data.ipd_bill_amount + '" /> \
+                        </div> \
+                        <div class="col-12 form-group"> \
+                            <button class="btn btn-primary" id="bill_amount_update_btn" onclick="updateBillAmount(' + atob(ipd_id) + ')">Update</button> \
+                        </div> \
+                    </div>';
+
+                    $('#ipdBillAmountViewDetail').html(view);
+                    $('#ipdBillAmountViewModal').modal('show');
+                } else {
+                    sweetAlertError(res.message, 3000);
+                }
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    })
+    /* Update Bill Amount */
+    function updateBillAmount(ipd_id) {
+        let ipd_bill_amount = $('#ipd_bill_amount_update').val();
+        $.ajax({
+            url: "{{ route('ipd.bill_amount.update', '') }}" + '/' + btoa(ipd_id) + '?ipd_bill_amount=' + ipd_bill_amount,
+            method: "get",
+            success: function(res) {
+                if (res.response === true) {
+                    $('#billAmountShow_' + ipd_id).text(ipd_bill_amount);
+                    $('#ipdBillAmountViewModal').modal('hide');
+                } else {
+                    sweetAlertError(res.message, 3000);
+                }
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    }
+
+    /* Operative Note Show */
+    $('body').on('click', '#operativeNoteView', function(event) {
+        let ipd_id = $(this).data('id');
+        $.ajax({
+            url: "{{ route('ipd.operative_note.view', '') }}" + "/" + ipd_id,
+            method: "GET",
+            success: function(res) {
+                if (res.response === true) {
+                    let data = res.data;
+                    let view = '<div class="row"> \
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-2 form-group"> \
+                            <label for="patient_name">Patient Name</label> \
+                            <input type="text" class="form-control" name="patient_name" id="patient_name" value="' + data.patient_name + '" disabled /> \
+                        </div> \
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-2 form-group"> \
+                            <label for="patient_age">Patient Age</label> \
+                            <input type="text" class="form-control" name="patient_age" id="patient_age" value="' + data.patient_age + '" disabled /> \
+                        </div> \
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-2 form-group"> \
+                            <label for="surgery_type">Type of Surgery</label> \
+                            <input type="text" class="form-control" name="surgery_type" id="surgery_type" value="' + data.ipd_surgery_text + '" disabled /> \
+                        </div> \
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-2 form-group"> \
+                            <label for="ion_date">Print Date <span class="text-danger">*</span></label> \
+                            <input type="date" class="form-control" name="ion_date" id="ion_date" value="' + data.ion_date + '" /> \
+                            <span class="text-danger" id="ion_dateErr"></span> \
+                        </div> \
+                        <div class="col-12 form-group"> \
+                            <label for="ion_note">Operative Note <span class="text-danger">*</span></label> \
+                            <textarea class="form-control" name="ion_note" id="ion_note" rows="15">' + data.ion_note + '</textarea> \
+                            <span class="text-danger" id="ion_noteErr"></span> \
+                        </div> \
+                        <div class="col-12 form-group"> \
+                            <button class="btn btn-primary" id="operative_note_update_btn" onclick="updateOperativeNote(' + atob(ipd_id) + ')">Update</button> \
+                            <button class="btn btn-info" id="operativeNotPrint" data-id="' + btoa(data.ipd_id) + '">Print <i class="flaticon flaticon2-print cursor_pointer"></i></button> \
+                        </div> \
+                    </div>';
+
+                    $('#operativeNoteViewDetail').html(view);
+                    $('#operativeNoteViewModal').modal('show');
+                } else {
+                    sweetAlertError(res.message, 3000);
+                }
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    });
+
+    /* Update Operative Note */
+    function updateOperativeNote(ipd_id) {
+        let ion_date = $('#ion_date').val();
+        let ion_note = $('#ion_note').val();
+        $.ajax({
+            url: "{{ route('ipd.operative_note.update', '') }}" + '/' + btoa(ipd_id) + '?ion_date=' + ion_date + '&ion_note=' + ion_note,
+            method: "get",
+            success: function(res) {
+                if (res.response === true) {
+                    sweetAlertSuccess(res.message, 3000);
+                    //$('#operativeNoteViewModal').modal('hide');
+                } else {
+                    sweetAlertError(res.message, 3000);
+                }
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    }
+
+    /* Prescription Show */
+    $('body').on('click', '#prescribeView', function(event) {
+        let ipd_id = $(this).data('id');
+        $.ajax({
+            url: "{{ route('ipd.prescription.view', '') }}" + "/" + ipd_id,
+            method: "GET",
+            success: function(res) {
+                if (res.response === true) {
+                    let medicineList = res.data.medicineList;
+                    let data = res.data.data;
+                    let ipdMedicine = data.ipd_operation_medicine;
+
+                    let list = '';
+
+                    if (medicineList.length > 0) {
+                        for (let i = 0; i < medicineList.length; i++) {
+                            let medicineVal = 0;
+                            if (ipdMedicine != null) {
+                                ipdMedicine.map(function(val) {
+                                    if (val.medicine_id == medicineList[i].om_id) {
+                                        medicineVal = val.medicine_val;
+                                    }
+                                });
+                            }
+                            // list += '<div class="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12"> \
+                            //     <label for="medicine_' + medicineList[i].om_id + '">' + medicineList[i].om_name + ' (' + medicineList[i].om_company_name + ')</label> \
+                            //     <input type="number" class="form-control" name="medicine[]" id="medicine_' + medicineList[i].om_id + '" value="' + medicineVal + '"  /> \
+                            // </div>';
+                            list += '<table> \
+                                <tr> \
+                                <td for="medicine_' + medicineList[i].om_id + '">' + medicineList[i].om_name + ' (' + medicineList[i].om_company_name + ')</td> \
+                                <td> \
+                                <input type="number" class="form-control" name="medicine[]" id="medicine_' + medicineList[i].om_id + '" value="' + medicineVal + '"  /> \
+                                </td> \
+                                </tr> \
+                            </table>';
+                        }
+                    }
+
+                    let view = '<div class="row"> \
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-2 form-group"> \
+                            <label for="patient_name">Patient Name</label> \
+                            <input type="text" class="form-control" name="patient_name" id="patient_name" value="' + data.patient_name + '" disabled /> \
+                        </div> \
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-2 form-group"> \
+                            <label for="patient_age">Patient Age</label> \
+                            <input type="text" class="form-control" name="patient_age" id="patient_age" value="' + data.patient_age + '" disabled /> \
+                        </div> \
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-2 form-group"> \
+                            <label for="ipd_operation_medicine_date">Print Date <span class="text-danger">*</span></label> \
+                            <input type="date" class="form-control" name="ipd_operation_medicine_date" id="ipd_operation_medicine_date" value="' + data.ipd_operation_medicine_date + '" /> \
+                            <span class="text-primary cursor_pointer" onclick="ResetOperationMedicineDate()">Reset</span> \
+                        </div> \
+                        <hr> \
+                        <div class="col-12 form-group"> \
+                            <strong class="">Medicine</strong> \
+                        </div> \
+                        <div class="col-12"> \
+                            <div class="row">' + list + '</div> \
+                        </div> \
+                        <div class="col-12 form-group pt-4"> \
+                            <button class="btn btn-primary" id="operative_note_update_btn" onclick="updateOperationMedicine(' + atob(ipd_id) + ')">Update</button> \
+                            <button class="btn btn-info" id="operationMedicinePrint" data-id="' + btoa(data.ipd_id) + '">Print <i class="flaticon flaticon2-print cursor_pointer"></i></button> \
+                        </div> \
+                    </div>';
+
+                    $('#prescribeViewDetail').html(view);
+                    $('#prescribeViewModal').modal('show');
+                } else {
+                    sweetAlertError(res.message, 3000);
+                }
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    });
+    
+    /* Operative not print */
+    $('body').on('click', '#operativeNotPrint', function() {
+        let ipd_id = $(this).data('id');
+        $.ajax({
+            url: "{{ route('ipd.operative_note.print', '') }}" + "/" + ipd_id,
+            method: "GET",
+            success: function(res) {
+                printData(res);
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    });
+
+    /* Operation Medicine print */
+    $('body').on('click', '#operationMedicinePrint', function() {
+        let ipd_id = $(this).data('id');
+        $.ajax({
+            url: "{{ route('ipd.operation_medicine.print', '') }}" + "/" + ipd_id,
+            method: "GET",
+            success: function(res) {
+                console.log(res);
+                printData(res);
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    });
+
+    /* Reset Operation Medicine Date */
+    function ResetOperationMedicineDate() {
+        $('#ipd_operation_medicine_date').val('');
+    }
+
+    /* Operation Medicine Update */
+    function updateOperationMedicine(ipd_id) {
+        let ipd_operation_medicine_date = $('#ipd_operation_medicine_date').val();
+        let medicine_arr = [];
+        $('input[name^=medicine]').map(function(idx, elem) {
+            medicine_arr.push($(elem).val());
+        }).get();
+        $.ajax({
+            url: "{{ route('ipd.prescription.update', '') }}" + '/' + btoa(ipd_id) + '?ipd_operation_medicine_date=' + ipd_operation_medicine_date + '&medicine_arr=' + btoa(medicine_arr),
+            method: "get",
+            success: function(res) {
+                if (res.response === true) {
+                    sweetAlertSuccess(res.message, 3000);
+                    //$('#operativeNoteViewModal').modal('hide');
+                } else {
+                    sweetAlertError(res.message, 3000);
+                }
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    }
+
+    /* IPD Print */
+    $('body').on('click', '#IPDPrint', function() {
+        let ipd_id = $(this).data('id');
+        $.ajax({
+            url: "{{ route('ipd.bill.print', '') }}" + "/" + ipd_id,
+            method: "GET",
+            success: function(res) {
+                printData(res);
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    });
+
+    /* Print Data */
+    function printData(data) {
+        $('<iframe>', {
+                name: 'myiframe',
+                class: 'printFrame'
+            })
+            .appendTo('body')
+            .contents().find('body')
+            .append(data);
+
+        window.frames['myiframe'].focus();
+        window.frames['myiframe'].print();
+
+        setTimeout(() => {
+            $(".printFrame").remove();
+        }, 1000);
+    };
 </script>
 <!-- End:: IPD Script -->
 @endsection

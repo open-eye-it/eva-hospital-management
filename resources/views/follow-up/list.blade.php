@@ -36,7 +36,7 @@
                             </div>
                             <!--begin::Card-->
                             <div class="card card-custom gutter-b">
-                                <div class="card-header flex-wrap py-3">
+                                <div class="card-header flex-wrap py-2">
                                     <div class="card-title">
                                         <h3 class="card-label">Account Detail
                                         </h3>
@@ -47,7 +47,7 @@
                                 </div>
                                 <div class="card-body">
                                     <!--begin: Datatable-->
-                                    <table class="table table-bordered table-separate table-head-custom table-checkable scrollable_table_custom">
+                                    <table class="table table-bordered table-striped scrollable_table_custom">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>

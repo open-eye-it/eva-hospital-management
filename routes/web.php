@@ -208,6 +208,7 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
         Route::get('operative_note_update/{ipd_id}', [IpdDetailController::class, 'IPDOperativeNoteUpdate'])->name('ipd.operative_note.update');
         Route::get('operative_note_print/{ipd_id}', [IpdDetailController::class, 'IPDOperativeNotePrint'])->name('ipd.operative_note.print');
         Route::get('prescription_view/{ipd_id}', [IpdDetailController::class, 'PrescriptionView'])->name('ipd.prescription.view');
+        Route::get('operation_medicine_print/{ipd_id}', [IpdDetailController::class, 'IPDOperationMedicinePrint'])->name('ipd.operation_medicine.print');
         Route::get('ipd_bill_print/{ipd_id}', [IpdDetailController::class, 'IPDBillPrint'])->name('ipd.bill.print');
         Route::get('prescription_update/{ipd_id}', [IpdDetailController::class, 'PrescriptionUpdate'])->name('ipd.prescription.update');
         Route::get('opd_history/{pa_id}', [IpdDetailController::class, 'OpdHistory'])->name('ipd.opd_history');

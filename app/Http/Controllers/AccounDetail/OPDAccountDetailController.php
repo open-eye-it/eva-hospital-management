@@ -56,7 +56,7 @@ class OPDAccountDetailController extends MainController
         if (count($list->toArray()) > 0) {
             $tableRow = '';
             foreach ($list as $charge) {
-                $tableRow .= '<tr><td>' . $charge->apac_id . '</td><td>' . $charge->apac_desc . '</td><td>' . $charge->apac_qty . '</td><td>' . $charge->apac_charge . '</td><td>' . $charge->apac_final_charge . '</td></tr>';
+                $tableRow .= '<tr id="row_' . $charge->apac_id . '"><td>' . $charge->apac_id . '</td><td>' . $charge->apac_desc . '</td><td>' . $charge->apac_qty . '</td><td>' . $charge->apac_charge . '</td><td>' . $charge->apac_final_charge . '</td><td><i title="Remove" class="la la-trash icon-3x cursor_pointer" onclick="removerCharge(' . $charge->apac_id . ')"></i></td></tr>';
             }
 
             return $this->getSuccessResult($tableRow, 'Additional Charge list found', true);

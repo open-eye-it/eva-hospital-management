@@ -69,7 +69,7 @@
                             </div>
                             <!--begin::Card-->
                             <div class="card card-custom gutter-b">
-                                <div class="card-header flex-wrap py-3">
+                                <div class="card-header flex-wrap py-2">
                                     <div class="card-title">
                                         <h3 class="card-label">List
                                         </h3>
@@ -77,7 +77,7 @@
                                 </div>
                                 <div class="card-body">
                                     <!--begin: Datatable-->
-                                    <table class="table table-bordered scrollable_table_custom" id="">
+                                    <table class="table table-bordered table-striped scrollable_table_custom" id="">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
@@ -120,10 +120,17 @@
                                                     <span id="prescriptionBillView" data-id="{{ base64_encode($appointment->ap_id) }}" title="Prescription Bill"><i class="flaticon flaticon2-print icon-3x cursor_pointer"></i></span>
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('appointment.edit', base64_encode($appointment->ap_id)) }}" title="Edit"><i class="la la-edit icon-3x"></i></a>
-                                                    <span id="fullView" data-id="{{ base64_encode($appointment->ap_id) }}" title="Full View"><i class="la la-eye icon-3x cursor_pointer"></i></span>
-                                                    <span id="billView" data-id="{{ base64_encode($appointment->ap_id) }}" title="Bill"><i class="flaticon flaticon2-print icon-3x cursor_pointer"></i></span>
-                                                    <span title="Additional Charge"><i title="Additiona Charge" class="flaticon flaticon-add-circular-button icon-3x cursor_pointer" onclick="additionalChargeShow('{{ base64_encode($appointment->ap_id) }}', '{{ json_encode($searchData) }}')"></i></span>
+                                                    <div class="dropdown dropdown-inline">
+                                                        <a href="javascript:;" class="btn btn-sm btn-clean btn-icon" data-toggle="dropdown" aria-expanded="false"> <i class="ki ki-bold-more-hor icon-3x"></i> </a>
+                                                        <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                                            <ul class="nav nav-hoverable">
+                                                                <li class="nav-item"><a class="nav-link" href="{{ route('appointment.edit', base64_encode($appointment->ap_id)) }}" title="Edit"><i class="la la-edit icon-3x px-1"></i></a></li>
+                                                                <li class="nav-item"><span class="nav-link" id="fullView" data-id="{{ base64_encode($appointment->ap_id) }}" title="Full View"><i class="la la-eye icon-3x cursor_pointer px-1"></i></span></li>
+                                                                <li class="nav-item"><span class="nav-link" id="billView" data-id="{{ base64_encode($appointment->ap_id) }}" title="Bill"><i class="flaticon flaticon2-print icon-3x cursor_pointer px-1"></i></span></li>
+                                                                <li class="nav-item"><span class="nav-link" title="Additional Charge"><i title="Additiona Charge" class="flaticon flaticon-add-circular-button icon-3x cursor_pointer px-1" onclick="additionalChargeShow('{{ base64_encode($appointment->ap_id) }}', '{{ json_encode($searchData) }}')"></i></span></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
                                                 </td>
                                             </tr>
                                             @endforeach

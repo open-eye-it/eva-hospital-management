@@ -73,7 +73,7 @@ class IpdDetailController extends MainController
         $patientExist = $this->ipd->patientExist($input['pa_id'],);
         if (empty($patientExist)) {
             $rm_id = $input['rm_id'];
-            $roomExist = $this->ipd->singleDataByColumn(['rm_id' => $rm_id]);
+            $roomExist = $this->ipd->singleDataByColumn(['rm_id' => $rm_id, 'ipd_status' => 'admit']);
             if (empty($roomExist)) {
                 $login_user_id = Auth::user()->user_id;
                 $input['ipd_id'] = $this->getUniqueID();
@@ -288,6 +288,32 @@ class IpdDetailController extends MainController
             return response()->view('ipd.operative_note_print', compact('data1'));
         } else {
             return $this->getErrorMessage('IPD detail not found');
+        }
+    }
+
+    /* IPD Operation Medicine Print */
+    public function IPDOperationMedicinePrint($ipd_id)
+    {
+        $ipd_id = base64_decode($ipd_id);
+        $medicineList = $this->operation_medicine->getAllMedicine(['om_status' => 1]);
+        $data = $this->ipd->singlData($ipd_id);
+        if (count($data->toArray()) > 0) {
+            $data1['patient_id'] = $data->patientData->pa_id;
+            $data1['patient_name'] = $data->patientData->pa_name;
+            $data1['patient_age'] = $data->patientData->pa_age;
+            $data1['ipd_id'] = $data->ipd_id;
+            $data1['ipd_operation_medicine'] = json_decode($data->ipd_operation_medicine);
+            $data1['ipd_operation_medicine_date'] = (is_null($data->ipd_operation_medicine_date)) ? date('Y-m-d') : (string)$data->ipd_operation_medicine_date;
+            $data1['doctor'] = $data->doctorData->person_name;
+
+            $final_data = [
+                'medicineList' => $medicineList->toArray(),
+                'data' => $data1
+            ];
+            return response()->view('ipd.operation_medicine_print', compact('data1', 'medicineList'));
+            //return $this->getSuccessResult($final_data, 'IPD details not found, something is wrong.', true);
+        } else {
+            return $this->getErrorMessage('IPD details not found, something is wrong.');
         }
     }
 

@@ -36,7 +36,7 @@
                             </div>
                             <!--begin::Card-->
                             <div class="card card-custom gutter-b">
-                                <div class="card-header flex-wrap py-3">
+                                <div class="card-header flex-wrap py-2">
                                     <div class="card-title">
                                         <h3 class="card-label">List
                                         </h3>
@@ -44,7 +44,7 @@
                                 </div>
                                 <div class="card-body">
                                     <!--begin: Datatable-->
-                                    <table class="table table-bordered scrollable_table_custom" id="">
+                                    <table class="table table-bordered table-striped scrollable_table_custom" id="">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
@@ -94,12 +94,28 @@
                                                     <span id="ipdHistoryView" data-id="{{ base64_encode($ipd->pa_id) }}" title="IPD History"><i class="la la-eye icon-3x cursor_pointer"></i></span>
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('ipd.edit', base64_encode($ipd->ipd_id)) }}" title="Edit"><i class="la la-edit icon-3x"></i></a>
+                                                    <div class="dropdown dropdown-inline">
+                                                        <a href="javascript:;" class="btn btn-sm btn-clean btn-icon" data-toggle="dropdown" aria-expanded="false"> <i class="ki ki-bold-more-hor icon-3x"></i> </a>
+                                                        <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                                            <ul class="nav nav-hoverable">
+                                                                <!-- <li class="nav-item"><a class="nav-link" href="#"><i class="nav-icon la la-edit"></i><span class="nav-text">Edit Details</span></a></li>
+                                                                <li class="nav-item"><a class="nav-link" href="#"><i class="nav-icon la la-leaf"></i><span class="nav-text">Update Status</span></a></li>
+                                                                <li class="nav-item"><a class="nav-link" href="#"><i class="nav-icon la la-print"></i><span class="nav-text">Print</span></a></li> -->
+                                                                <li class="nav-item"><a class="nav-link" href="{{ route('ipd.edit', base64_encode($ipd->ipd_id)) }}" title="Edit"><i class="la la-edit icon-3x"></i></a></li>
+                                                                <li class="nav-item"><span class="nav-link" id="fullView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Full View"><i class="la la-eye icon-3x cursor_pointer"></i></span> </li>
+                                                                <li class="nav-item"><span class="nav-link" id="billAmountView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Bill Amount"><i class="la la-money-bill icon-3x cursor_pointer"></i></span></li>
+                                                                <li class="nav-item"><span class="nav-link" id="operativeNoteView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Operative Notes"><i class="flaticon flaticon-notes icon-3x cursor_pointer"></i></span></li>
+                                                                <li class="nav-item"><span class="nav-link" id="prescribeView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Prescribe"><i class="la la-pills icon-3x cursor_pointer"></i></span></li>
+                                                                <li class="nav-item"><span class="nav-link" id="IPDPrint" data-id="{{ base64_encode($ipd->ipd_id) }}" title="IPD Detail"><i class="flaticon flaticon2-print icon-3x cursor_pointer"></i></span></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <a href="{{ route('ipd.edit', base64_encode($ipd->ipd_id)) }}" title="Edit"><i class="la la-edit icon-3x"></i></a>
                                                     <span id="fullView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Full View"><i class="la la-eye icon-3x cursor_pointer"></i></span>
                                                     <span id="billAmountView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Bill Amount"><i class="la la-money-bill icon-3x cursor_pointer"></i></span>
                                                     <span id="operativeNoteView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Operative Notes"><i class="flaticon flaticon-notes icon-3x cursor_pointer"></i></span>
                                                     <span id="prescribeView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Prescribe"><i class="la la-pills icon-3x cursor_pointer"></i></span>
-                                                    <span id="IPDPrint" data-id="{{ base64_encode($ipd->ipd_id) }}" title="IPD Detail"><i class="flaticon flaticon2-print icon-3x cursor_pointer"></i></span>
+                                                    <span id="IPDPrint" data-id="{{ base64_encode($ipd->ipd_id) }}" title="IPD Detail"><i class="flaticon flaticon2-print icon-3x cursor_pointer"></i></span> -->
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -289,7 +305,7 @@
             </div>
             <div class="modal-body">
                 <h4>Total Fees: <span id="opd_total_fees"></span></h4>
-                <table class="table table-bordered scrollable_table_custom">
+                <table class="table table-bordered table-striped scrollable_table_custom">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -326,7 +342,7 @@
             </div>
             <div class="modal-body">
                 <h4>Total Fees: <span id="ipd_total_fees"></span></h4>
-                <table class="table table-bordered scrollable_table_custom">
+                <table class="table table-bordered table-striped scrollable_table_custom">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -676,6 +692,23 @@
         });
     });
 
+    /* Operation Medicine print */
+    $('body').on('click', '#operationMedicinePrint', function() {
+        let ipd_id = $(this).data('id');
+        $.ajax({
+            url: "{{ route('ipd.operation_medicine.print', '') }}" + "/" + ipd_id,
+            method: "GET",
+            success: function(res) {
+                console.log(res);
+                printData(res);
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    });
+
     /* Update Operative Note */
     function updateOperativeNote(ipd_id) {
         let ion_date = $('#ion_date').val();
@@ -722,10 +755,18 @@
                                     }
                                 });
                             }
-                            list += '<div class="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12"> \
-                                <label for="medicine_' + medicineList[i].om_id + '">' + medicineList[i].om_name + ' (' + medicineList[i].om_company_name + ')</label> \
+                            // list += '<div class="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12"> \
+                            //     <label for="medicine_' + medicineList[i].om_id + '">' + medicineList[i].om_name + ' (' + medicineList[i].om_company_name + ')</label> \
+                            //     <input type="number" class="form-control" name="medicine[]" id="medicine_' + medicineList[i].om_id + '" value="' + medicineVal + '"  /> \
+                            // </div>';
+                            list += '<table> \
+                                <tr> \
+                                <td for="medicine_' + medicineList[i].om_id + '">' + medicineList[i].om_name + ' (' + medicineList[i].om_company_name + ')</td> \
+                                <td> \
                                 <input type="number" class="form-control" name="medicine[]" id="medicine_' + medicineList[i].om_id + '" value="' + medicineVal + '"  /> \
-                            </div>';
+                                </td> \
+                                </tr> \
+                            </table>';
                         }
                     }
 
@@ -750,8 +791,9 @@
                         <div class="col-12"> \
                             <div class="row">' + list + '</div> \
                         </div> \
-                        <div class="col-12 form-group"> \
+                        <div class="col-12 form-group pt-4"> \
                             <button class="btn btn-primary" id="operative_note_update_btn" onclick="updateOperationMedicine(' + atob(ipd_id) + ')">Update</button> \
+                            <button class="btn btn-info" id="operationMedicinePrint" data-id="' + btoa(data.ipd_id) + '">Print <i class="flaticon flaticon2-print cursor_pointer"></i></button> \
                         </div> \
                     </div>';
 

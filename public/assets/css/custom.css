@@ -103,3 +103,44 @@
 .content{
     padding:0px;
 }
+
+.card.card-custom > .card-body {
+    padding: 0.75rem 1.25rem;
+}
+.card.card-custom > .card-header{
+    min-height: 0px;
+}
+
+.dataTables_wrapper .dataTable th{
+    padding: 0.5rem 0.5rem;;
+}
+.dataTables_wrapper .dataTable td{
+    padding: 0.5rem 0.5rem;;
+}
+
+table td .btn{
+    padding:0.2rem 0.3rem;
+}
+.icon-3x {
+    font-size: 2.2rem !important;
+}
+
+
+.switch input:empty ~ span{
+    height: 20px;
+    width: 47px;
+}
+.switch input:empty ~ span:before{
+    width: 46px;
+}
+.switch input:empty ~ span:after{
+    height: 16px;
+    width: 18px;
+    top: 2px;
+}
+
+@media (min-width: 205px) {
+    .dropdown-menu.dropdown-menu-sm {
+        width: 150px;
+    }
+}

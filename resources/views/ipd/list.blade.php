@@ -57,10 +57,18 @@
                                                 <th>Contact No</th>
                                                 <!-- <th>Bill Amount</th>
                                                 <th>Received Amount</th> -->
+                                                @can('ipd-status')
                                                 <th>Status</th>
+                                                @endcan
+                                                @can('ipd-opd-history')
                                                 <th>OPD</th>
+                                                @endcan
+                                                @can('ipd-ipd-history')
                                                 <th>IPD</th>
+                                                @endcan
+                                                @if(auth()->user()->can('ipd-edit') || auth()->user()->can('ipd-full-view') || auth()->user()->can('ipd-bill-amount') || auth()->user()->can('ipd-operative-note') || auth()->user()->can('ipd-prescribe') || auth()->user()->can('ipd-detail-print'))
                                                 <th>Actions</th>
+                                                @endif
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -77,6 +85,7 @@
                                                 <td>{{ $ipd->patientData->pa_contact_no }}</td>
                                                 <!-- <td id="billAmountShow_{{ $ipd->ipd_id }}">{{ $ipd->ipd_bill_amount }}</td>
                                                 <td>{{ $ipd->ipd_received_amount }}</td> -->
+                                                @can('ipd-status')
                                                 <td>
                                                     @if($ipd->ipd_status == 'admit')
                                                     @php $statusClass = 'btn-primary'; @endphp
@@ -87,12 +96,18 @@
                                                     @endif
                                                     <span class="btn {{ $statusClass }}" id="status_{{ $ipd->ipd_id }}" onclick="statusModal('{{ base64_encode($ipd->ipd_id) }}')">{{ ucfirst($ipd->ipd_status) }}</span>
                                                 </td>
+                                                @endcan
+                                                @can('ipd-opd-history')
                                                 <td>
                                                     <span id="opdHistoryView" data-id="{{ base64_encode($ipd->pa_id) }}" title="OPD History"><i class="la la-eye icon-3x cursor_pointer"></i></span>
                                                 </td>
+                                                @endcan
+                                                @can('ipd-ipd-history')
                                                 <td>
                                                     <span id="ipdHistoryView" data-id="{{ base64_encode($ipd->pa_id) }}" title="IPD History"><i class="la la-eye icon-3x cursor_pointer"></i></span>
                                                 </td>
+                                                @endcan
+                                                @if(auth()->user()->can('ipd-edit') || auth()->user()->can('ipd-full-view') || auth()->user()->can('ipd-bill-amount') || auth()->user()->can('ipd-operative-note') || auth()->user()->can('ipd-prescribe') || auth()->user()->can('ipd-detail-print'))
                                                 <td>
                                                     <div class="dropdown dropdown-inline">
                                                         <a href="javascript:;" class="btn btn-sm btn-clean btn-icon" data-toggle="dropdown" aria-expanded="false"> <i class="ki ki-bold-more-hor icon-3x"></i> </a>
@@ -101,12 +116,24 @@
                                                                 <!-- <li class="nav-item"><a class="nav-link" href="#"><i class="nav-icon la la-edit"></i><span class="nav-text">Edit Details</span></a></li>
                                                                 <li class="nav-item"><a class="nav-link" href="#"><i class="nav-icon la la-leaf"></i><span class="nav-text">Update Status</span></a></li>
                                                                 <li class="nav-item"><a class="nav-link" href="#"><i class="nav-icon la la-print"></i><span class="nav-text">Print</span></a></li> -->
+                                                                @can('ipd-edit')
                                                                 <li class="nav-item"><a class="nav-link" href="{{ route('ipd.edit', base64_encode($ipd->ipd_id)) }}" title="Edit"><i class="la la-edit icon-3x"></i></a></li>
+                                                                @endcan
+                                                                @can('ipd-full-view')
                                                                 <li class="nav-item"><span class="nav-link" id="fullView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Full View"><i class="la la-eye icon-3x cursor_pointer"></i></span> </li>
+                                                                @endcan
+                                                                @can('ipd-bill-amount')
                                                                 <li class="nav-item"><span class="nav-link" id="billAmountView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Bill Amount"><i class="la la-money-bill icon-3x cursor_pointer"></i></span></li>
+                                                                @endcan
+                                                                @can('ipd-operative-note')
                                                                 <li class="nav-item"><span class="nav-link" id="operativeNoteView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Operative Notes"><i class="flaticon flaticon-notes icon-3x cursor_pointer"></i></span></li>
+                                                                @endcan
+                                                                @can('ipd-prescribe')
                                                                 <li class="nav-item"><span class="nav-link" id="prescribeView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Prescribe"><i class="la la-pills icon-3x cursor_pointer"></i></span></li>
+                                                                @endcan
+                                                                @can('ipd-detail-print')
                                                                 <li class="nav-item"><span class="nav-link" id="IPDPrint" data-id="{{ base64_encode($ipd->ipd_id) }}" title="IPD Detail"><i class="flaticon flaticon2-print icon-3x cursor_pointer"></i></span></li>
+                                                                @endcan
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -117,6 +144,7 @@
                                                     <span id="prescribeView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Prescribe"><i class="la la-pills icon-3x cursor_pointer"></i></span>
                                                     <span id="IPDPrint" data-id="{{ base64_encode($ipd->ipd_id) }}" title="IPD Detail"><i class="flaticon flaticon2-print icon-3x cursor_pointer"></i></span> -->
                                                 </td>
+                                                @endif
                                             </tr>
                                             @endforeach
                                             @else

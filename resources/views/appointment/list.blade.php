@@ -88,9 +88,15 @@
                                                 <th>Patient Name</th>
                                                 <th>Doctor</th>
                                                 <th>Has Madiclaim</th>
+                                                @can('appointment-status')
                                                 <th>Status</th>
+                                                @endcan
+                                                @can('appointment-prescription')
                                                 <th>Prescribe</th>
+                                                @endcan
+                                                @if(auth()->user()->can('appointment-edit') || auth()->user()->can('appointment-full-view') || auth()->user()->can('appointment-bill-print') || auth()->user()->can('appointment-additional-charge'))
                                                 <th>Actions</th>
+                                                @endif
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -105,6 +111,7 @@
                                                 <td>{{ $appointment->patientData->pa_name }}</td>
                                                 <td>{{ $appointment->doctorData->person_name }}</td>
                                                 <td>{{ ($appointment->ap_pament_mode == 'mediclaim') ? 'Yes' : 'No' }}</td>
+                                                @can('appointment-status')
                                                 <td>
                                                     @if($appointment->ap_status == 'pending')
                                                     @php $statusClass = 'btn-primary'; @endphp
@@ -115,23 +122,36 @@
                                                     @endif
                                                     <span class="btn {{ $statusClass }}" id="status_{{ $appointment->ap_id }}" onclick="statusModal('{{ base64_encode($appointment->ap_id) }}')">{{ ucfirst($appointment->ap_status) }}</span>
                                                 </td>
+                                                @endcan
+                                                @can('appointment-prescription')
                                                 <td>
                                                     <span class="btn btn-danger mb-2" onclick="prescribeShow('{{ base64_encode($appointment->ap_id) }}')">Prescribe</span>
                                                     <span id="prescriptionBillView" data-id="{{ base64_encode($appointment->ap_id) }}" title="Prescription Bill"><i class="flaticon flaticon2-print icon-3x cursor_pointer"></i></span>
                                                 </td>
+                                                @endcan
+                                                @if(auth()->user()->can('appointment-edit') || auth()->user()->can('appointment-full-view') || auth()->user()->can('appointment-bill-print') || auth()->user()->can('appointment-additional-charge'))
                                                 <td>
                                                     <div class="dropdown dropdown-inline">
                                                         <a href="javascript:;" class="btn btn-sm btn-clean btn-icon" data-toggle="dropdown" aria-expanded="false"> <i class="ki ki-bold-more-hor icon-3x"></i> </a>
                                                         <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
                                                             <ul class="nav nav-hoverable">
+                                                                @can('appointment-edit')
                                                                 <li class="nav-item"><a class="nav-link" href="{{ route('appointment.edit', base64_encode($appointment->ap_id)) }}" title="Edit"><i class="la la-edit icon-3x px-1"></i></a></li>
+                                                                @endcan
+                                                                @can('appointment-full-view')
                                                                 <li class="nav-item"><span class="nav-link" id="fullView" data-id="{{ base64_encode($appointment->ap_id) }}" title="Full View"><i class="la la-eye icon-3x cursor_pointer px-1"></i></span></li>
+                                                                @endcan
+                                                                @can('appointment-bill-print')
                                                                 <li class="nav-item"><span class="nav-link" id="billView" data-id="{{ base64_encode($appointment->ap_id) }}" title="Bill"><i class="flaticon flaticon2-print icon-3x cursor_pointer px-1"></i></span></li>
+                                                                @endcan
+                                                                @can('appointment-additional-charge')
                                                                 <li class="nav-item"><span class="nav-link" title="Additional Charge"><i title="Additiona Charge" class="flaticon flaticon-add-circular-button icon-3x cursor_pointer px-1" onclick="additionalChargeShow('{{ base64_encode($appointment->ap_id) }}', '{{ json_encode($searchData) }}')"></i></span></li>
+                                                                @endcan
                                                             </ul>
                                                         </div>
                                                     </div>
                                                 </td>
+                                                @endif
                                             </tr>
                                             @endforeach
                                             @else

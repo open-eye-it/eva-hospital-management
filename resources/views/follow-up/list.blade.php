@@ -63,7 +63,9 @@
                                                 <th>Follow Up Date</th>
                                                 <th>Decided Date of Surgery</th>
                                                 <!-- <th>Bill</th> -->
+                                                @can('follow-up-opd-note')
                                                 <th>Notes</th>
+                                                @endcan
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -85,9 +87,11 @@
                                                 <!-- <td>
                                                     <span id="billView" data-id="{{ base64_encode($appointment->ap_id) }}" title="Bill"><i class="flaticon flaticon-file-2 icon-3x cursor_pointer"></i></span>
                                                 </td> -->
+                                                @can('follow-up-opd-note')
                                                 <td>
                                                     <span id="OPDNote" data-id="{{ base64_encode($appointment->ap_id) }}" title="Note"><i class="flaticon flaticon-file-1 icon-3x cursor_pointer"></i></span>
                                                 </td>
+                                                @endcan
                                             </tr>
                                             @endforeach
                                             @else

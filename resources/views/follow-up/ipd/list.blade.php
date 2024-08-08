@@ -62,10 +62,16 @@
                                                 <th>Follow Up Date</th>
                                                 <!-- <th>Bill Amount</th>
                                                 <th>Received Amount</th> -->
+                                                @can('follow-up-ipd-opd-history')
                                                 <th>OPD</th>
+                                                @endcan
+                                                @can('follow-up-ipd-ipd-history')
                                                 <th>IPD</th>
+                                                @endcan
                                                 <!-- <th>Actions</th> -->
+                                                @can('follow-up-ipd-note')
                                                 <th>Notes</th>
+                                                @endcan
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -87,18 +93,24 @@
                                                 <td>{{ $ipd->ipd_follow_up_date }}</td>
                                                 <!-- <td id="billAmountShow_{{ $ipd->ipd_id }}">{{ $ipd->ipd_bill_amount }}</td>
                                                 <td>{{ $ipd->ipd_received_amount }}</td> -->
+                                                @can('follow-up-ipd-opd-history')
                                                 <td>
                                                     <span id="opdHistoryView" data-id="{{ base64_encode($ipd->pa_id) }}" title="OPD History"><i class="la la-eye icon-3x cursor_pointer"></i></span>
                                                 </td>
+                                                @endcan
+                                                @can('follow-up-ipd-ipd-history')
                                                 <td>
                                                     <span id="ipdHistoryView" data-id="{{ base64_encode($ipd->pa_id) }}" title="IPD History"><i class="la la-eye icon-3x cursor_pointer"></i></span>
                                                 </td>
+                                                @endcan
                                                 <!-- <td>
                                                     <span id="fullView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Full View"><i class="la la-eye icon-3x cursor_pointer"></i></span>
                                                 </td> -->
+                                                @can('follow-up-ipd-note')
                                                 <td>
                                                     <span id="IPDNote" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Note"><i class="flaticon flaticon-file-1 icon-3x cursor_pointer"></i></span>
                                                 </td>
+                                                @endcan
                                             </tr>
                                             @endforeach
                                             @else

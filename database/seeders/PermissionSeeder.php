@@ -242,6 +242,180 @@ class PermissionSeeder extends Seeder
                 'display_name' => 'Remove Mac Address',
                 'guard_name'   => 'web',
                 'section'      => 'mac-address',
+            ],
+            [
+                'name'         => 'appointment-read',
+                'display_name' => 'Read Appointment',
+                'guard_name'   => 'web',
+                'section'      => 'appointment'
+            ],
+            [
+                'name'         => 'appointment-create',
+                'display_name' => 'Create Appointment',
+                'guard_name'   => 'web',
+                'section'      => 'appointment'
+            ],
+            [
+                'name'         => 'appointment-edit',
+                'display_name' => 'Edit Appointment',
+                'guard_name'   => 'web',
+                'section'      => 'appointment'
+            ],
+            [
+                'name'         => 'appointment-status',
+                'display_name' => 'Status Appointment',
+                'guard_name'   => 'web',
+                'section'      => 'appointment'
+            ],
+            [
+                'name'         => 'appointment-prescription',
+                'display_name' => 'Prescription Appointment',
+                'guard_name'   => 'web',
+                'section'      => 'appointment'
+            ],
+            [
+                'name'         => 'appointment-full-view',
+                'display_name' => 'Full View Appointment',
+                'guard_name'   => 'web',
+                'section'      => 'appointment'
+            ],
+            [
+                'name'         => 'appointment-bill-print',
+                'display_name' => 'Bill Print Appointment',
+                'guard_name'   => 'web',
+                'section'      => 'appointment'
+            ],
+            [
+                'name'         => 'appointment-additional-charge',
+                'display_name' => 'Additional Charge Appointment',
+                'guard_name'   => 'web',
+                'section'      => 'appointment'
+            ],
+            [
+                'name'         => 'ipd-read',
+                'display_name' => 'Read IPD',
+                'guard_name'   => 'web',
+                'section'      => 'ipd'
+            ],
+            [
+                'name'         => 'ipd-create',
+                'display_name' => 'Create IPD',
+                'guard_name'   => 'web',
+                'section'      => 'ipd'
+            ],
+            [
+                'name'         => 'ipd-edit',
+                'display_name' => 'Edit IPD',
+                'guard_name'   => 'web',
+                'section'      => 'ipd'
+            ],
+            [
+                'name'         => 'ipd-status',
+                'display_name' => 'Status IPD',
+                'guard_name'   => 'web',
+                'section'      => 'ipd'
+            ],
+            [
+                'name'         => 'ipd-opd-history',
+                'display_name' => 'OPD History IPD',
+                'guard_name'   => 'web',
+                'section'      => 'ipd'
+            ],
+            [
+                'name'         => 'ipd-ipd-history',
+                'display_name' => 'IPD History IPD',
+                'guard_name'   => 'web',
+                'section'      => 'ipd'
+            ],
+            [
+                'name'         => 'ipd-full-view',
+                'display_name' => 'Full View IPD',
+                'guard_name'   => 'web',
+                'section'      => 'ipd'
+            ],
+            [
+                'name'         => 'ipd-bill-amount',
+                'display_name' => 'Bill Amount IPD',
+                'guard_name'   => 'web',
+                'section'      => 'ipd'
+            ],
+            [
+                'name'         => 'ipd-operative-notes',
+                'display_name' => 'Operative Notes IPD',
+                'guard_name'   => 'web',
+                'section'      => 'ipd'
+            ],
+            [
+                'name'         => 'ipd-prescribe',
+                'display_name' => 'Prescribe IPD',
+                'guard_name'   => 'web',
+                'section'      => 'ipd'
+            ],
+            [
+                'name'         => 'ipd-detail-print',
+                'display_name' => 'Detail Print IPD',
+                'guard_name'   => 'web',
+                'section'      => 'ipd'
+            ],
+            [
+                'name'         => 'follow-up-opd-read',
+                'display_name' => 'Read OPD Follow Up',
+                'guard_name'   => 'web',
+                'section'      => 'follow-up-opd'
+            ],
+            [
+                'name'         => 'follow-up-opd-notes',
+                'display_name' => 'Notes OPD Follow Up',
+                'guard_name'   => 'web',
+                'section'      => 'follow-up-opd'
+            ],
+            [
+                'name'         => 'follow-up-ipd-read',
+                'display_name' => 'Read IPD Follow Up',
+                'guard_name'   => 'web',
+                'section'      => 'follow-up-ipd'
+            ],
+            [
+                'name'         => 'follow-up-ipd-notes',
+                'display_name' => 'Notes IPD Follow Up',
+                'guard_name'   => 'web',
+                'section'      => 'follow-up-ipd'
+            ],
+            [
+                'name'         => 'follow-up-ipd-opd-history',
+                'display_name' => 'OPD History IPD Follow Up',
+                'guard_name'   => 'web',
+                'section'      => 'follow-up-ipd'
+            ],
+            [
+                'name'         => 'follow-up-ipd-ipd-history',
+                'display_name' => 'IPD History IPD Follow Up',
+                'guard_name'   => 'web',
+                'section'      => 'follow-up-ipd'
+            ],
+            [
+                'name'         => 'account-detail-opd-read',
+                'display_name' => 'Read OPD Account Detail',
+                'guard_name'   => 'web',
+                'section'      => 'account-detail-opd'
+            ],
+            [
+                'name'         => 'account-detail-opd-additional-charge',
+                'display_name' => 'Additional Charge OPD Account Detail',
+                'guard_name'   => 'web',
+                'section'      => 'account-detail-opd'
+            ],
+            [
+                'name'         => 'account-detail-ipd-read',
+                'display_name' => 'Read IPD Account Detail',
+                'guard_name'   => 'web',
+                'section'      => 'account-detail-ipd'
+            ],
+            [
+                'name'         => 'account-detail-ipd-bill-amount',
+                'display_name' => 'Bill Amount iPD Account Detail',
+                'guard_name'   => 'web',
+                'section'      => 'account-detail-ipd'
             ]
         ];
 

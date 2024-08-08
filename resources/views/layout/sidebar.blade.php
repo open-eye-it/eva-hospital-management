@@ -93,6 +93,7 @@
 					</div>
 				</li>
 				@endcan
+				@can('appointment-read')
 				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'appointment') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
 					<a href="javascript:;" class="menu-link menu-toggle">
 						<span class="svg-icon menu-icon">
@@ -104,6 +105,7 @@
 					<div class="menu-submenu">
 						<i class="menu-arrow"></i>
 						<ul class="menu-subnav">
+							@can('appointment-create')
 							<li class="menu-item {{ (Request::segment(1) == 'appointment' && Request::segment(2) == 'create') ? 'menu-item-active' : '' }}" aria-haspopup="true">
 								<a href="{{ route('appointment.create') }}" class="menu-link">
 									<i class="menu-bullet menu-bullet-dot">
@@ -112,6 +114,8 @@
 									<span class="menu-text">Add</span>
 								</a>
 							</li>
+							@endcan
+							@can('appointment-read')
 							<li class="menu-item {{ (Request::segment(1) == 'appointment' && Request::segment(2) == 'list') ? 'menu-item-active' : '' }}" aria-haspopup="true">
 								<a href="{{ route('appointment.list') }}" class="menu-link">
 									<i class="menu-bullet menu-bullet-dot">
@@ -120,9 +124,12 @@
 									<span class="menu-text">List</span>
 								</a>
 							</li>
+							@endcan
 						</ul>
 					</div>
 				</li>
+				@endcan
+				@can('ipd-read')
 				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'ipd') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
 					<a href="javascript:;" class="menu-link menu-toggle">
 						<span class="svg-icon menu-icon">
@@ -134,6 +141,7 @@
 					<div class="menu-submenu">
 						<i class="menu-arrow"></i>
 						<ul class="menu-subnav">
+							@can('ipd-create')
 							<li class="menu-item {{ (Request::segment(1) == 'ipd' && Request::segment(2) == 'create') ? 'menu-item-active' : '' }}" aria-haspopup="true">
 								<a href="{{ route('ipd.create') }}" class="menu-link">
 									<i class="menu-bullet menu-bullet-dot">
@@ -142,6 +150,8 @@
 									<span class="menu-text">Add</span>
 								</a>
 							</li>
+							@endcan
+							@can('ipd-read')
 							<li class="menu-item {{ (Request::segment(1) == 'ipd' && Request::segment(2) == 'list') ? 'menu-item-active' : '' }}" aria-haspopup="true">
 								<a href="{{ route('ipd.list') }}" class="menu-link">
 									<i class="menu-bullet menu-bullet-dot">
@@ -150,9 +160,12 @@
 									<span class="menu-text">List</span>
 								</a>
 							</li>
+							@endcan
 						</ul>
 					</div>
 				</li>
+				@endcan
+				@if(auth()->user()->can('follow-up-opd-read') || auth()->user()->can('follow-up-ipd-read'))
 				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'follow-up') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
 					<a href="javascript:;" class="menu-link menu-toggle">
 						<span class="svg-icon menu-icon">
@@ -164,6 +177,7 @@
 					<div class="menu-submenu">
 						<i class="menu-arrow"></i>
 						<ul class="menu-subnav">
+							@can('follow-up-opd-read')
 							<li class="menu-item {{ (Request::segment(1) == 'follow-up' && Request::segment(2) == 'opd') ? 'menu-item-active' : '' }}" aria-haspopup="true">
 								<a href="{{ route('follow-up.list') }}" class="menu-link">
 									<i class="menu-bullet menu-bullet-dot">
@@ -172,6 +186,8 @@
 									<span class="menu-text">OPD</span>
 								</a>
 							</li>
+							@endcan
+							@can('follow-up-ipd-read')
 							<li class="menu-item {{ (Request::segment(1) == 'follow-up' && Request::segment(2) == 'ipd') ? 'menu-item-active' : '' }}" aria-haspopup="true">
 								<a href="{{ route('follow-up.ipd.list') }}" class="menu-link">
 									<i class="menu-bullet menu-bullet-dot">
@@ -180,9 +196,12 @@
 									<span class="menu-text">IPD</span>
 								</a>
 							</li>
+							@endcan
 						</ul>
 					</div>
 				</li>
+				@endif
+				@if(auth()->user()->can('account-detail-opd-read') || auth()->user()->can('account-detail-ipd-read'))
 				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'opd-account-detail' || Request::segment(1) == 'ipd-account-detail') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
 					<a href="javascript:;" class="menu-link menu-toggle">
 						<span class="svg-icon menu-icon">
@@ -194,6 +213,7 @@
 					<div class="menu-submenu">
 						<i class="menu-arrow"></i>
 						<ul class="menu-subnav">
+							@can('account-detail-opd-read')
 							<li class="menu-item {{ (Request::segment(1) == 'opd-account-detail') ? 'menu-item-active' : '' }}" aria-haspopup="true">
 								<a href="{{ route('opd-account-detail.list') }}" class="menu-link">
 									<i class="menu-bullet menu-bullet-dot">
@@ -202,6 +222,8 @@
 									<span class="menu-text">OPD</span>
 								</a>
 							</li>
+							@endcan
+							@can('account-detail-ipd-read')
 							<li class="menu-item {{ (Request::segment(1) == 'ipd-account-detail' && Request::segment(2) == 'list') ? 'menu-item-active' : '' }}" aria-haspopup="true">
 								<a href="{{ route('ipd-acount-detail.list') }}" class="menu-link">
 									<i class="menu-bullet menu-bullet-dot">
@@ -210,9 +232,11 @@
 									<span class="menu-text">IPD</span>
 								</a>
 							</li>
+							@endcan
 						</ul>
 					</div>
 				</li>
+				@endif
 				@if(auth()->user()->can('general-medicine-read') || auth()->user()->can('operation-medicine-read'))
 				<li class="menu-section">
 					<h4 class="menu-text">Medicine</h4>

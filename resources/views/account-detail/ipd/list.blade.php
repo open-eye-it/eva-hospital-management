@@ -57,7 +57,9 @@
                                                 <th>Admit Date</th>
                                                 <th>Discharge Date</th>
                                                 <th>Is Discharged</th>
+                                                @if(auth()->user()->can('account-detail-ipd-bill-amount') || auth()->user()->can('account-detail-ipd-print-bill'))
                                                 <th>Actions</th>
+                                                @endif
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -74,10 +76,16 @@
                                                 <td>{{ date('d M Y', strtotime($ipd->ipd_admit_date)) }}</td>
                                                 <td>{{ ($ipd->ipd_discharge_date != null) ? date('d M Y', strtotime($ipd->ipd_discharge_date)) : '' }}</td>
                                                 <td>{{ ($ipd->ipd_discharge_date != null) ? 'Yes' : 'No' }}</td>
+                                                @if(auth()->user()->can('account-detail-ipd-bill-amount') || auth()->user()->can('account-detail-ipd-print-bill'))
                                                 <td>
+                                                    @can('account-detail-ipd-bill-amount')
                                                     <span id="billAmountView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Bill Details"><i class="la la-money-bill icon-3x cursor_pointer"></i></span>
+                                                    @endcan
+                                                    @can('account-detail-ipd-print-bill')
                                                     <i title="Print Bill" class="flaticon flaticon2-print icon-3x cursor_pointer" onclick="printIPDBill('{{ $ipd->ipd_id }}')"></i>
+                                                    @endcan
                                                 </td>
+                                                @endif
                                             </tr>
                                             @endforeach
                                             @else

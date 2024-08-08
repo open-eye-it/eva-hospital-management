@@ -159,67 +159,67 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
     });
     /* Appointment Detail */
     Route::prefix('appointment')->group(function () {
-        Route::get('create', [AppointmentController::class, 'create'])->name('appointment.create');
-        Route::post('store', [AppointmentController::class, 'store'])->name('appointment.store');
-        Route::get('list', [AppointmentController::class, 'index'])->name('appointment.list');
-        Route::get('edit/{ap_id}', [AppointmentController::class, 'edit'])->name('appointment.edit');
-        Route::post('update/{ap_id}', [AppointmentController::class, 'update'])->name('appointment.update');
-        Route::get('status/{string_val}', [AppointmentController::class, 'status'])->name('appointment.status');
-        Route::get('view/{ap_id}', [AppointmentController::class, 'view'])->name('appointment.view');
-        Route::get('prescribe/{ap_id}', [AppointmentController::class, 'prescribe'])->name('appointment.prescribe');
-        Route::post('prescribe/store/{ap_id}', [AppointmentController::class, 'prescribe_store'])->name('appointment.prescribe.store');
+        Route::get('create', [AppointmentController::class, 'create'])->name('appointment.create')->middleware(['role_or_permission:appointment-create']);
+        Route::post('store', [AppointmentController::class, 'store'])->name('appointment.store')->middleware(['role_or_permission:appointment-create']);
+        Route::get('list', [AppointmentController::class, 'index'])->name('appointment.list')->middleware(['role_or_permission:appointment-read']);
+        Route::get('edit/{ap_id}', [AppointmentController::class, 'edit'])->name('appointment.edit')->middleware(['role_or_permission:appointment-edit']);
+        Route::post('update/{ap_id}', [AppointmentController::class, 'update'])->name('appointment.update')->middleware(['role_or_permission:appointment-edit']);
+        Route::get('status/{string_val}', [AppointmentController::class, 'status'])->name('appointment.status')->middleware(['role_or_permission:appointment-status']);
+        Route::get('view/{ap_id}', [AppointmentController::class, 'view'])->name('appointment.view')->middleware(['role_or_permission:appointment-full-view|follow-up-opd-notes']);
+        Route::get('prescribe/{ap_id}', [AppointmentController::class, 'prescribe'])->name('appointment.prescribe')->middleware(['role_or_permission:appointment-prescription']);
+        Route::post('prescribe/store/{ap_id}', [AppointmentController::class, 'prescribe_store'])->name('appointment.prescribe.store')->middleware(['role_or_permission:appointment-prescription']);
         Route::get('prescribe/medicine/store', [AppointmentController::class, 'appointmentMedicineStore'])->name('appointment.medicine.store');
         Route::get('prescribe/medicine/remove/{am_id}', [AppointmentController::class, 'appointmentMedicineRemove'])->name('appointment.medicine.remove');
         Route::get('patient_all_appointment/{pa_id}', [AppointmentController::class, 'patientAllAppointment'])->name('appointment.all_poointment');
         Route::get('export', [AppointmentController::class, 'export'])->name('appointment.export');
-        Route::get('bill_print/{ap_id}', [AppointmentController::class, 'bill_print'])->name('appointment.bill_print');
+        Route::get('bill_print/{ap_id}', [AppointmentController::class, 'bill_print'])->name('appointment.bill_print')->middleware(['role_or_permission:appointment-bill-print']);
         Route::get('prescription_bill_print/{ap_id}', [AppointmentController::class, 'prescription_bill_print'])->name('appointment.prescription_bill_print');
         Route::get('note_update/{ap_id}', [AppointmentController::class, 'note_update'])->name('appointment.note.update');
     });
     /* Follow Up Info */
     Route::prefix('follow-up')->name('follow-up.')->group(function () {
         Route::prefix('opd')->group(function () {
-            Route::get('list', [FollowUpController::class, 'index'])->name('list');
+            Route::get('list', [FollowUpController::class, 'index'])->name('list')->middleware(['role_or_permission:follow-up-opd-read']);
             Route::get('export', [FollowUpController::class, 'export'])->name('export');
         });
         Route::prefix('ipd')->group(function () {
-            Route::get('list', [FollowUpController::class, 'ipd_index'])->name('ipd.list');
+            Route::get('list', [FollowUpController::class, 'ipd_index'])->name('ipd.list')->middleware(['role_or_permission:follow-up-ipd-read']);
             Route::get('export', [FollowUpController::class, 'ipd_export'])->name('ipd.export');
         });
     });
     /* Appointment Account Detail */
     Route::prefix('opd-account-detail')->name('opd-account-detail.')->group(function () {
-        Route::get('/', [OPDAccountDetailController::class, 'index'])->name('list');
-        Route::get('additional_charge/list/{ap_id}', [OPDAccountDetailController::class, 'additionalChargeList'])->name('additional-charge.list');
+        Route::get('/', [OPDAccountDetailController::class, 'index'])->name('list')->middleware(['role_or_permission:account-detail-opd-read']);
+        Route::get('additional_charge/list/{ap_id}', [OPDAccountDetailController::class, 'additionalChargeList'])->name('additional-charge.list')->middleware(['role_or_permission:appointment-additional-charge|account-detail-opd-additional-charge']);
         Route::get('additional-charge/store', [OPDAccountDetailController::class, 'additionalChargeStore'])->name('additional-charge.store');
         Route::get('additional-charge/remove/{apac_id}', [OPDAccountDetailController::class, 'additionalChargeRemove'])->name('additional-charge.remove');
     });
     /* IPD Detail */
     Route::prefix('ipd')->group(function () {
-        Route::get('list', [IpdDetailController::class, 'index'])->name('ipd.list');
-        Route::get('create', [IpdDetailController::class, 'create'])->name('ipd.create');
-        Route::post('store', [IpdDetailController::class, 'store'])->name('ipd.store');
-        Route::get('edit/{ipd_id}', [IpdDetailController::class, 'edit'])->name('ipd.edit');
-        Route::post('update/{ipd_id}', [IpdDetailController::class, 'update'])->name('ipd.update');
-        Route::get('view/{ipd_id}', [IpdDetailController::class, 'view'])->name('ipd.view');
-        Route::get('status/{string_val}', [IpdDetailController::class, 'status'])->name('ipd.status');
-        Route::get('bill_amount_update/{ipd_id}', [IpdDetailController::class, 'BillAmountUpdate'])->name('ipd.bill_amount.update');
-        Route::get('operative_note/{ipd_id}', [IpdDetailController::class, 'IPDOperativeNote'])->name('ipd.operative_note.view');
-        Route::get('operative_note_update/{ipd_id}', [IpdDetailController::class, 'IPDOperativeNoteUpdate'])->name('ipd.operative_note.update');
+        Route::get('list', [IpdDetailController::class, 'index'])->name('ipd.list')->middleware(['role_or_permission:ipd-read']);
+        Route::get('create', [IpdDetailController::class, 'create'])->name('ipd.create')->middleware(['role_or_permission:ipd-create']);
+        Route::post('store', [IpdDetailController::class, 'store'])->name('ipd.store')->middleware(['role_or_permission:ipd-create']);
+        Route::get('edit/{ipd_id}', [IpdDetailController::class, 'edit'])->name('ipd.edit')->middleware(['role_or_permission:ipd-edit']);
+        Route::post('update/{ipd_id}', [IpdDetailController::class, 'update'])->name('ipd.update')->middleware(['role_or_permission:ipd-edit']);
+        Route::get('view/{ipd_id}', [IpdDetailController::class, 'view'])->name('ipd.view')->middleware(['role_or_permission:ipd-status|ipd-full-view|ipd-bill-amount']);
+        Route::get('status/{string_val}', [IpdDetailController::class, 'status'])->name('ipd.status')->middleware(['role_or_permission:ipd-status']);
+        Route::get('bill_amount_update/{ipd_id}', [IpdDetailController::class, 'BillAmountUpdate'])->name('ipd.bill_amount.update')->middleware(['role_or_permission:ipd-bill-amount']);
+        Route::get('operative_note/{ipd_id}', [IpdDetailController::class, 'IPDOperativeNote'])->name('ipd.operative_note.view')->middleware(['role_or_permission:ipd-operative-note']);
+        Route::get('operative_note_update/{ipd_id}', [IpdDetailController::class, 'IPDOperativeNoteUpdate'])->name('ipd.operative_note.update')->middleware(['role_or_permission:ipd-operative-notes']);
         Route::get('operative_note_print/{ipd_id}', [IpdDetailController::class, 'IPDOperativeNotePrint'])->name('ipd.operative_note.print');
-        Route::get('prescription_view/{ipd_id}', [IpdDetailController::class, 'PrescriptionView'])->name('ipd.prescription.view');
+        Route::get('prescription_view/{ipd_id}', [IpdDetailController::class, 'PrescriptionView'])->name('ipd.prescription.view')->middleware(['role_or_permission:ipd-prescribe']);
         Route::get('operation_medicine_print/{ipd_id}', [IpdDetailController::class, 'IPDOperationMedicinePrint'])->name('ipd.operation_medicine.print');
-        Route::get('ipd_bill_print/{ipd_id}', [IpdDetailController::class, 'IPDBillPrint'])->name('ipd.bill.print');
+        Route::get('ipd_bill_print/{ipd_id}', [IpdDetailController::class, 'IPDBillPrint'])->name('ipd.bill.print')->middleware(['role_or_permission:ipd-detail-print']);
         Route::get('prescription_update/{ipd_id}', [IpdDetailController::class, 'PrescriptionUpdate'])->name('ipd.prescription.update');
-        Route::get('opd_history/{pa_id}', [IpdDetailController::class, 'OpdHistory'])->name('ipd.opd_history');
-        Route::get('ipd_history/{pa_id}', [IpdDetailController::class, 'IpdHistory'])->name('ipd.ipd_history');
+        Route::get('opd_history/{pa_id}', [IpdDetailController::class, 'OpdHistory'])->name('ipd.opd_history')->middleware(['role_or_permission:follow-up-ipd-opd-history|ipd-opd-history']);
+        Route::get('ipd_history/{pa_id}', [IpdDetailController::class, 'IpdHistory'])->name('ipd.ipd_history')->middleware(['role_or_permission:follow-up-ipd-ipd-history|ipd-ipd-history']);
         Route::get('export', [IpdDetailController::class, 'export'])->name('ipd.export');
         Route::get('note_update/{ipd_id}', [IpdDetailController::class, 'note_update'])->name('ipd.note.update');
     });
     /* IPD Account Detail */
     Route::prefix('ipd-account-detail')->name('ipd-acount-detail.')->group(function () {
-        Route::get('list', [IPDAccountDetailControoller::class, 'index'])->name('list');
-        Route::get('bill-detail/{ipd_id}', [IPDAccountDetailControoller::class, 'bill_detail'])->name('bill-detail');
+        Route::get('list', [IPDAccountDetailControoller::class, 'index'])->name('list')->middleware(['role_or_permission:account-detail-ipd-read']);
+        Route::get('bill-detail/{ipd_id}', [IPDAccountDetailControoller::class, 'bill_detail'])->name('bill-detail')->middleware(['role_or_permission:account-detail-ipd-bill-amount']);
         Route::get('charge/add/{ipd_id}', [IPDAccountDetailControoller::class, 'charge_add'])->name('charge.add');
         Route::get('charge/remove/{ic_id}', [IPDAccountDetailControoller::class, 'charge_remove'])->name('charge.remove');
         Route::get('charge/single/{ic_id}', [IPDAccountDetailControoller::class, 'charge_single'])->name('charge.single');
@@ -227,6 +227,6 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
         Route::get('payment/remove/{ipl_id}', [IPDAccountDetailControoller::class, 'payment_remove'])->name('payment.remove');
         Route::get('payment/single/{ipl_id}', [IPDAccountDetailControoller::class, 'payment_single'])->name('payment.single');
         Route::get('print_receipt/{ipl_id}/{ipd_id}', [IPDAccountDetailControoller::class, 'print_receipt'])->name('payment.receipt.print');
-        Route::get('print_bill/{ipd_id}', [IPDAccountDetailControoller::class, 'print_bill'])->name('payment.bill.print');
+        Route::get('print_bill/{ipd_id}', [IPDAccountDetailControoller::class, 'print_bill'])->name('payment.bill.print')->middleware(['role_or_permission:account-detail-ipd-print-bill']);
     });
 });

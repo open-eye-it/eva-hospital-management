@@ -61,7 +61,9 @@
                                                 <th>Extra Charges</th>
                                                 <th>Follow Up Date</th>
                                                 <th>Decided Date of Surgery</th>
+                                                @can('account-detail-opd-additional-charge')
                                                 <th>Add Charges</th>
+                                                @endcan
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -80,10 +82,12 @@
                                                 <td id="app_row_additional_charge_{{ $appointment->ap_id }}">{{ $appointment->ap_additional_charge }}</td>
                                                 <td>{{ ($appointment->ap_follow_up_date != '' || !empty($appointment->ap_follow_up_date)) ? date('d M Y', strtotime($appointment->ap_follow_up_date)) : '' }}</td>
                                                 <td>{{ date('d M Y', strtotime($appointment->ap_surg_date)) }}</td>
+                                                @can('account-detail-opd-additional-charge')
                                                 <td>
 
                                                     <i title="Additiona Charge" class="icon-2x flaticon flaticon-add-circular-button cursor_pointer" onclick="additionalChargeShow('{{ base64_encode($appointment->ap_id) }}', '{{ json_encode($searchData) }}')"></i>
                                                 </td>
+                                                @endcan
                                             </tr>
                                             @endforeach
                                             @else

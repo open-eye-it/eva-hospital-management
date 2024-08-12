@@ -203,7 +203,7 @@ var KTWidgets = function () {
 
         var options = {
             series: [{
-                name: 'Net Profit',
+                name: 'OPD',
                 data: [30, 45, 32, 70, 40]
             }],
             chart: {
@@ -307,11 +307,11 @@ var KTWidgets = function () {
                     fontSize: '12px',
                     fontFamily: KTApp.getSettings()['font-family']
                 },
-                y: {
-                    formatter: function (val) {
-                        return "$" + val + " thousands"
-                    }
-                }
+                // y: {
+                //     formatter: function (val) {
+                //         return "$" + val + " thousands"
+                //     }
+                // }
             },
             colors: [KTApp.getSettings()['colors']['theme']['light']['danger']],
             markers: {

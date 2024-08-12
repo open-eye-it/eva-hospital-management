@@ -8,15 +8,17 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Appointment;
 use App\Models\IpdDetail;
+use App\Models\Patient;
 
 class DashboardController extends Controller
 {
-    public $user, $appointment, $ipd_detail;
+    public $user, $appointment, $ipd_detail, $patient;
     public function __construct()
     {
         $this->user        = new User;
         $this->appointment = new Appointment;
         $this->ipd_detail  = new IpdDetail;
+        $this->patient     = new Patient;
     }
 
     public function index()
@@ -29,12 +31,13 @@ class DashboardController extends Controller
             $filterData['doctor'] = $user->user_id;
             $filterData['ipd_doctor'] = $user->user_id;
         }
-        $opdAllCount = $this->appointment->getList([], false)->count();
-        $ipdAllCount = $this->ipd_detail->getList([], false)->count();
-        $opdTodayCount = $this->appointment->getList($filterData, false)->count();
-        $ipdTodayCount = $this->ipd_detail->getList($filterData, false)->count();
+        $opdAllCount     = $this->appointment->getList([], false)->count();
+        $ipdAllCount     = $this->ipd_detail->getList([], false)->count();
+        $patientAllCount = $this->patient->getList([], false)->count();
+        $opdTodayCount   = $this->appointment->getList($filterData, false)->count();
+        $ipdTodayCount   = $this->ipd_detail->getList($filterData, false)->count();
 
-        return view('dashboard.dashboard', compact('opdAllCount', 'ipdAllCount', 'opdTodayCount', 'ipdTodayCount'));
+        return view('dashboard.dashboard', compact('opdAllCount', 'ipdAllCount', 'patientAllCount', 'opdTodayCount', 'ipdTodayCount'));
     }
 
     public function signout()

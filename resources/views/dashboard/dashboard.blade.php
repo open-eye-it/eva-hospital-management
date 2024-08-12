@@ -12,15 +12,13 @@
             <div class="card-body my-4">
                 <div class="d-flex align-items-center justify-content-between card-spacer flex-grow-1">
                     <div class="d-flex flex-column mr-2">
-                        <a href="#" class="text-white font-size-h1 text-hover-primary font-weight-bolder">OPD</a>
+                        <i class="icon-2x flaticon-calendar-2 text-white"></i>
+                        <a href="#" class="text-white font-size-h1 text-hover-primary font-weight-bolder mt-4">OPD</a>
                         <span class="text-white font-size-h6 font-weight-bold mt-2">All OPD</span>
                     </div>
                     <span class="symbol symbol-light-danger symbol-70">
                         <span class="symbol-label font-weight-bolder font-size-h1">{{ $opdAllCount }}</span>
                     </span>
-                </div>
-                <div class="progress progress-xs mt-7 bg-white-o-60">
-                    <div class="progress-bar bg-white" role="progressbar" style="width: 70%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             </div>
         </div>
@@ -30,15 +28,13 @@
             <div class="card-body my-4">
                 <div class="d-flex align-items-center justify-content-between card-spacer flex-grow-1">
                     <div class="d-flex flex-column mr-2">
-                        <a href="#" class="text-white font-size-h1 text-hover-primary font-weight-bolder">IPD</a>
+                        <i class="icon-3x la la-bed text-white"></i>
+                        <a href="#" class="text-white font-size-h1 text-hover-primary font-weight-bolder mt-4">IPD</a>
                         <span class="text-white font-size-h6 font-weight-bold mt-2">All IPD</span>
                     </div>
                     <span class="symbol symbol-light-success symbol-70">
                         <span class="symbol-label font-weight-bolder font-size-h1">{{ $ipdAllCount }}</span>
                     </span>
-                </div>
-                <div class="progress progress-xs mt-7 bg-white-o-60">
-                    <div class="progress-bar bg-white" role="progressbar" style="width: 30%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             </div>
         </div>
@@ -48,15 +44,13 @@
             <div class="card-body my-4">
                 <div class="d-flex align-items-center justify-content-between card-spacer flex-grow-1">
                     <div class="d-flex flex-column mr-2">
-                        <a href="#" class="text-white font-size-h1 text-hover-primary font-weight-bolder">OPD</a>
+                        <i class="icon-2x flaticon-calendar-2 text-white"></i>
+                        <a href="#" class="text-white font-size-h1 text-hover-primary font-weight-bolder mt-4">OPD</a>
                         <span class="text-white font-size-h6 font-weight-bold mt-2">Today OPD</span>
                     </div>
                     <span class="symbol symbol-light-primary symbol-70">
                         <span class="symbol-label font-weight-bolder font-size-h1">{{ $opdTodayCount }}</span>
                     </span>
-                </div>
-                <div class="progress progress-xs mt-7 bg-white-o-60">
-                    <div class="progress-bar bg-white" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             </div>
         </div>
@@ -66,15 +60,13 @@
             <div class="card-body my-4">
                 <div class="d-flex align-items-center justify-content-between card-spacer flex-grow-1">
                     <div class="d-flex flex-column mr-2">
-                        <a href="#" class="text-white font-size-h1 text-hover-primary font-weight-bolder">IPD</a>
+                        <i class="icon-3x la la-bed text-white"></i>
+                        <a href="#" class="text-white font-size-h1 text-hover-primary font-weight-bolder mt-4">IPD</a>
                         <span class="text-white font-size-h6 font-weight-bold mt-2">Today IPD</span>
                     </div>
                     <span class="symbol symbol-light-info symbol-70">
                         <span class="symbol-label font-weight-bolder font-size-h1">{{ $ipdTodayCount }}</span>
                     </span>
-                </div>
-                <div class="progress progress-xs mt-7 bg-white-o-60">
-                    <div class="progress-bar bg-white" role="progressbar" style="width: 60%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             </div>
         </div>
@@ -84,15 +76,29 @@
             <div class="card-body my-4">
                 <div class="d-flex align-items-center justify-content-between card-spacer flex-grow-1">
                     <div class="d-flex flex-column mr-2">
-                        <a href="#" class="text-white font-size-h1 text-hover-primary font-weight-bolder">Patient</a>
+                        <i class="icon-2x flaticon-user-settings text-white"></i>
+                        <a href="#" class="text-white font-size-h1 text-hover-primary font-weight-bolder mt-4">Patient</a>
+                        <span class="text-white font-size-h6 font-weight-bold mt-2">All Patient</span>
+                    </div>
+                    <span class="symbol symbol-light-dark symbol-70">
+                        <span class="symbol-label font-weight-bolder font-size-h1">{{ $patientAllCount }}</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-xs-12">
+        <div class="card card-custom bg-dark card-stretch gutter-b">
+            <div class="card-body my-4">
+                <div class="d-flex align-items-center justify-content-between card-spacer flex-grow-1">
+                    <div class="d-flex flex-column mr-2">
+                        <i class="icon-2x flaticon-user-settings text-white"></i>
+                        <a href="#" class="text-white font-size-h1 text-hover-primary font-weight-bolder mt-4">Patient</a>
                         <span class="text-white font-size-h6 font-weight-bold mt-2">Today New Patient</span>
                     </div>
                     <span class="symbol symbol-light-dark symbol-70">
                         <span class="symbol-label font-weight-bolder font-size-h1">{{ $ipdTodayCount }}</span>
                     </span>
-                </div>
-                <div class="progress progress-xs mt-7 bg-white-o-60">
-                    <div class="progress-bar bg-white" role="progressbar" style="width: 40%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             </div>
         </div>

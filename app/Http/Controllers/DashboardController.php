@@ -31,13 +31,14 @@ class DashboardController extends Controller
             $filterData['doctor'] = $user->user_id;
             $filterData['ipd_doctor'] = $user->user_id;
         }
-        $opdAllCount     = $this->appointment->getList([], false)->count();
-        $ipdAllCount     = $this->ipd_detail->getList([], false)->count();
-        $patientAllCount = $this->patient->getList([], false)->count();
-        $opdTodayCount   = $this->appointment->getList($filterData, false)->count();
-        $ipdTodayCount   = $this->ipd_detail->getList($filterData, false)->count();
+        $opdAllCount       = $this->appointment->getList([], false, '')->count();
+        $ipdAllCount       = $this->ipd_detail->getList([], false, '')->count();
+        $patientAllCount   = $this->patient->getList([], false, '')->count();
+        $opdTodayCount     = $this->appointment->getList($filterData, false, '')->count();
+        $ipdTodayCount     = $this->ipd_detail->getList($filterData, false, '')->count();
+        $patientTodayCount = $this->patient->getList(['created_at' => date('Y-m-d')], false, '')->count();
 
-        return view('dashboard.dashboard', compact('opdAllCount', 'ipdAllCount', 'patientAllCount', 'opdTodayCount', 'ipdTodayCount'));
+        return view('dashboard.dashboard', compact('opdAllCount', 'ipdAllCount', 'patientAllCount', 'opdTodayCount', 'ipdTodayCount', 'patientTodayCount'));
     }
 
     public function signout()

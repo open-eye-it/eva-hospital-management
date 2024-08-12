@@ -13,7 +13,7 @@
                 <div class="d-flex align-items-center justify-content-between card-spacer flex-grow-1">
                     <div class="d-flex flex-column mr-2">
                         <i class="icon-2x flaticon-calendar-2 text-white"></i>
-                        <a href="#" class="text-white font-size-h1 text-hover-primary font-weight-bolder mt-4">OPD</a>
+                        <a href="{{ route('appointment.list') }}" class="text-white font-size-h1 text-hover-primary font-weight-bolder mt-4">OPD</a>
                         <span class="text-white font-size-h6 font-weight-bold mt-2">All OPD</span>
                     </div>
                     <span class="symbol symbol-light-danger symbol-70">
@@ -29,7 +29,7 @@
                 <div class="d-flex align-items-center justify-content-between card-spacer flex-grow-1">
                     <div class="d-flex flex-column mr-2">
                         <i class="icon-3x la la-bed text-white"></i>
-                        <a href="#" class="text-white font-size-h1 text-hover-primary font-weight-bolder mt-4">IPD</a>
+                        <a href="{{ route('ipd.list') }}" class="text-white font-size-h1 text-hover-primary font-weight-bolder mt-4">IPD</a>
                         <span class="text-white font-size-h6 font-weight-bold mt-2">All IPD</span>
                     </div>
                     <span class="symbol symbol-light-success symbol-70">
@@ -45,7 +45,11 @@
                 <div class="d-flex align-items-center justify-content-between card-spacer flex-grow-1">
                     <div class="d-flex flex-column mr-2">
                         <i class="icon-2x flaticon-calendar-2 text-white"></i>
-                        <a href="#" class="text-white font-size-h1 text-hover-primary font-weight-bolder mt-4">OPD</a>
+                        @role('doctor')
+                        <a href="{{ route('doctor_opd_ipd.list') }}" class="text-white font-size-h1 text-hover-primary font-weight-bolder mt-4">OPD</a>
+                        @else
+                        <a href="{{ route('appointment.list') }}" class="text-white font-size-h1 text-hover-primary font-weight-bolder mt-4">OPD</a>
+                        @endrole
                         <span class="text-white font-size-h6 font-weight-bold mt-2">Today OPD</span>
                     </div>
                     <span class="symbol symbol-light-primary symbol-70">
@@ -61,7 +65,11 @@
                 <div class="d-flex align-items-center justify-content-between card-spacer flex-grow-1">
                     <div class="d-flex flex-column mr-2">
                         <i class="icon-3x la la-bed text-white"></i>
-                        <a href="#" class="text-white font-size-h1 text-hover-primary font-weight-bolder mt-4">IPD</a>
+                        @role('doctor')
+                        <a href="{{ route('doctor_opd_ipd.list') }}" class="text-white font-size-h1 text-hover-primary font-weight-bolder mt-4">IPD</a>
+                        @else
+                        <a href="{{ route('ipd.list') }}" class="text-white font-size-h1 text-hover-primary font-weight-bolder mt-4">IPD</a>
+                        @endrole
                         <span class="text-white font-size-h6 font-weight-bold mt-2">Today IPD</span>
                     </div>
                     <span class="symbol symbol-light-info symbol-70">
@@ -77,7 +85,7 @@
                 <div class="d-flex align-items-center justify-content-between card-spacer flex-grow-1">
                     <div class="d-flex flex-column mr-2">
                         <i class="icon-2x flaticon-user-settings text-white"></i>
-                        <a href="#" class="text-white font-size-h1 text-hover-primary font-weight-bolder mt-4">Patient</a>
+                        <a href="{{ route('patient.list') }}" class="text-white font-size-h1 text-hover-primary font-weight-bolder mt-4">Patient</a>
                         <span class="text-white font-size-h6 font-weight-bold mt-2">All Patient</span>
                     </div>
                     <span class="symbol symbol-light-dark symbol-70">
@@ -93,11 +101,11 @@
                 <div class="d-flex align-items-center justify-content-between card-spacer flex-grow-1">
                     <div class="d-flex flex-column mr-2">
                         <i class="icon-2x flaticon-user-settings text-white"></i>
-                        <a href="#" class="text-white font-size-h1 text-hover-primary font-weight-bolder mt-4">Patient</a>
+                        <a href="{{ route('patient.list') }}" class="text-white font-size-h1 text-hover-primary font-weight-bolder mt-4">Patient</a>
                         <span class="text-white font-size-h6 font-weight-bold mt-2">Today New Patient</span>
                     </div>
                     <span class="symbol symbol-light-dark symbol-70">
-                        <span class="symbol-label font-weight-bolder font-size-h1">{{ $ipdTodayCount }}</span>
+                        <span class="symbol-label font-weight-bolder font-size-h1">{{ $patientTodayCount }}</span>
                     </span>
                 </div>
             </div>

@@ -40,7 +40,7 @@
 					</a>
 				</li>
 				@if(auth()->user()->hasRole('doctor'))
-				<li class="menu-item {{ (Request::segment(1) == 'doctor-opd-ipd') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+				<li class="menu-item {{ (Request::segment(1) == 'doctor' && Request::segment(2) == 'opd-ipd') ? 'menu-item-active' : '' }}" aria-haspopup="true">
 					<a href="{{ route('doctor_opd_ipd.list') }}" class="menu-link">
 						<span class="svg-icon menu-icon">
 							<!--begin::Svg Icon | path:assets/media/svg/icons/Design/Layers.svg-->

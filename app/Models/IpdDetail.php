@@ -55,7 +55,7 @@ class IpdDetail extends Model
         if ($paginate === true) :
             $output = $data->paginate((int)$limit);
         else :
-            $data->limit((int)$limit);
+            //$data->limit((int)$limit);
             $output = $data->get();
         endif;
         return $output;

@@ -87,7 +87,7 @@ class Patient extends Model
         if ($paginate === true) :
             $output = $data->paginate((int)$limit);
         else :
-            $data->limit((int)$limit);
+            //$data->limit((int)$limit);
             $output = $data->get();
         endif;
         return $output;
@@ -111,6 +111,7 @@ class Patient extends Model
     public function FilterData($data, $filterdata)
     {
         $search_text    = isset($filterdata['search_text']) ? $filterdata['search_text'] : '';
+        $created_at    = isset($filterdata['created_at']) ? $filterdata['created_at'] : '';
         if (isset($search_text) && $search_text != '') {
             $data->where('pa_id', 'LIKE', '%' . $search_text . '%');
             $data->orWhere('pa_name', 'LIKE', '%' . $search_text . '%');
@@ -118,6 +119,9 @@ class Patient extends Model
             $data->orWhere('pa_alt_contact_no', 'LIKE', '%' . $search_text . '%');
             $data->orWhere('pa_email', 'LIKE', '%' . $search_text . '%');
             $data->orWhere('pa_dob', 'LIKE', '%' . $search_text . '%');
+        }
+        if (isset($created_at) && $created_at != '') {
+            $data->where('created_at', $created_at);
         }
     }
 

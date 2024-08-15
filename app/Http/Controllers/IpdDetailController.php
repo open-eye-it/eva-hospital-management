@@ -14,12 +14,14 @@ use App\Models\IpdDetail;
 use App\Models\IpdOperativeNote;
 use App\Models\OperationMedicine;
 use App\Models\Appointment;
+use App\Models\Notification;
 
 use App\Exports\IPDDetailExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class IpdDetailController extends MainController
 {
+    public $patient, $room, $ipd, $ipd_note, $operation_medicine, $appointment, $notification;
     public function __construct()
     {
         parent::__construct();
@@ -29,6 +31,7 @@ class IpdDetailController extends MainController
         $this->ipd_note = new IpdOperativeNote;
         $this->operation_medicine = new OperationMedicine;
         $this->appointment = new Appointment;
+        $this->notification = new Notification;
     }
 
     public function index(Request $request)
@@ -70,6 +73,7 @@ class IpdDetailController extends MainController
     public function store(Request $request)
     {
         $input = $request->all();
+        $login_user = Auth::user();
         $patientExist = $this->ipd->patientExist($input['pa_id'],);
         if (empty($patientExist)) {
             $rm_id = $input['rm_id'];
@@ -81,6 +85,20 @@ class IpdDetailController extends MainController
                 $input['ipd_updated_by'] = $login_user_id;
                 $insert = $this->ipd->insertData($input);
                 if (isset($insert->ipd_id)) {
+                    $notificationData = [
+                        'no_id' => $this->getUniqueID(),
+                        'ipd_id' => $insert->ipd_id,
+                        'no_type' => 2,
+                        'no_subject' => notificationSubjectList('ipd_add'),
+                        'no_message' => notificationMessageList('ipd_add'),
+                        'no_icon'    => notificationIconList('ipd_add'),
+                        'no_action'  => 'ipd_add_doctor',
+                        'no_created_for' => $input['ipd_doctor'],
+                        'no_created_by' => $login_user->user_id
+                    ];
+                    $this->notification->insertData($notificationData);
+
+
                     $ion_data = [
                         'ion_id' => $this->getOperativeNoteID(),
                         'ipd_id' => $insert->ipd_id,
@@ -177,9 +195,11 @@ class IpdDetailController extends MainController
 
     public function status($string_val)
     {
+        $login_user = Auth::user();
         $string_val_decode = base64_decode($string_val);
         $string_val_arr = explode('[]', $string_val_decode);
         $ipd_id = base64_decode($string_val_arr[0]);
+        $ipdData = $this->ipd->singlData($ipd_id);
         $status = $string_val_arr[1];
         if ($ipd_id != '' && ($status == 'admit' || $status == 'discharged' || $status == 'cancelled')) {
             $data['ipd_status'] = $status;
@@ -212,6 +232,20 @@ class IpdDetailController extends MainController
             }
             $update = $this->ipd->updateData($data, $ipd_id);
             if ($update == 1) {
+                if ($status == 'discharged') {
+                    $notificationData = [
+                        'no_id' => $this->getUniqueID(),
+                        'ipd_id' => $ipd_id,
+                        'no_type' => 2,
+                        'no_subject' => notificationSubjectList('ipd_discharge'),
+                        'no_message' => notificationMessageList('ipd_discharge'),
+                        'no_icon'    => notificationIconList('ipd_discharge'),
+                        'no_action'  => 'ipd_discharge',
+                        'no_created_for' => $ipdData->ipd_doctor,
+                        'no_created_by' => $login_user->user_id
+                    ];
+                    $this->notification->insertData($notificationData);
+                }
                 $dataNew = $this->ipd->singlData($ipd_id);
                 if ($ipd_id != '' && ($status == 'discharged' || $status == 'cancelled')) {
                     $this->room->updateRoom(['rm_busy' => 0], $dataNew->rm_id);

@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Models\VisitingFee;
 use App\Models\GeneralMedicine;
 use App\Models\AppointmentMedicine;
+use App\Models\Notification;
 
 use App\Exports\AppointmentExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -21,15 +22,17 @@ use Illuminate\Support\Facades\Auth;
 
 class AppointmentController extends MainController
 {
+    public $appointment, $patient, $user, $visiting_fee, $general_medicine, $appointment_medicine, $notification;
     public function __construct()
     {
         parent::__construct();
-        $this->appointment = new Appointment;
-        $this->patient = new Patient;
-        $this->user = new User;
-        $this->visiting_fee = new VisitingFee;
-        $this->general_medicine = new GeneralMedicine;
+        $this->appointment          = new Appointment;
+        $this->patient              = new Patient;
+        $this->user                 = new User;
+        $this->visiting_fee         = new VisitingFee;
+        $this->general_medicine     = new GeneralMedicine;
         $this->appointment_medicine = new AppointmentMedicine;
+        $this->notification         = new notification;
     }
 
     /* appointment list show */
@@ -66,7 +69,8 @@ class AppointmentController extends MainController
     public function store(Request $request)
     {
         $input = $request->all();
-        $login_user_id = Auth::user()->user_id;
+        $login_user = Auth::user();
+        $login_user_id = $login_user->user_id;
 
         $input['ap_id'] = $this->getUniqueID();
         $input['ap_added_by'] = $login_user_id;
@@ -80,6 +84,19 @@ class AppointmentController extends MainController
 
         $insert = $this->appointment->insertData($input);
         if (isset($insert->ap_id)) {
+            $notificationData = [
+                'no_id' => $this->getUniqueID(),
+                'ap_id' => $insert->ap_id,
+                'no_type' => 1,
+                'no_subject' => notificationSubjectList('opd_add'),
+                'no_message' => notificationMessageList('opd_add'),
+                'no_icon'    => notificationIconList('opd_add'),
+                'no_action'  => 'opd_add_doctor',
+                'no_created_for' => $input['ap_doctor'],
+                'no_created_by' => $login_user->user_id
+            ];
+            $this->notification->insertData($notificationData);
+
             return $this->getSuccessResult([], 'Appointment added', true);
         } else {
             return $this->getErrorMessage('Appointment not added, something is wrong.');

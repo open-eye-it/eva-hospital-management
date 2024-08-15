@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 07, 2024 at 04:03 PM
+-- Generation Time: Aug 15, 2024 at 04:24 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.1.17
 
@@ -74,7 +74,9 @@ INSERT INTO `appointments` (`id`, `ap_id`, `pa_id`, `ap_added_by`, `ap_updated_b
 (7, 6627154988, 8823312118, 9622814060, 8022048049, '5\'3\'\'', '70', '120', 8022048049, '2024-07-07', 'asdqwe', 'old', '200', '300', 'card', 'asd', 'completed', '', NULL, 'MENSTRUAL HISTORY\n- LMP : asd\n- CYCLES : REGULAR / IRREGULAR\n- NO. OF DAYS : qwe\n- LASTING FOR : zxc\n- BLOOD FLOW : AVERAGE / NORMAL / HEAVY\n- CLOTS : Yes / No\n- DYSMENNORHAGIA : asdqwe\n\nOBSTETRIC HISTORY : qwezxc\n\nPERSONAL HISTORY : zxcasd\n\nPAST HISTORY : asqw\n\nFAMILY HISTORY : qwzx\n\nEXAMINATION : zxas\n\nINVESTIGATIONS\n- USG : asdqw\n- CT/MRI : qwezx\n\nPROVISIONAL DIAGNOSIS : zxcas', NULL, NULL, NULL, 'no', NULL, NULL, 'no', 'no', '2024-07-07 06:30:18', '2024-08-05 14:31:29'),
 (8, 2666185699, 3197211687, 3507097541, 3507097541, '5\'3\'\'', '70', '120', 8022048049, '2024-08-04', 'asdqwe12', 'new', '500', '0', 'cash', NULL, 'pending', NULL, NULL, NULL, NULL, NULL, NULL, 'no', NULL, NULL, 'no', 'no', '2024-08-04 05:02:35', '2024-08-04 05:02:35'),
 (9, 9247888596, 5981076475, 3507097541, 3507097541, '5\'4\'\'', '70', '121', 6636406942, '2024-08-04', 'asdqwe1', 'new', '500', '760', 'cash', NULL, 'pending', NULL, NULL, NULL, NULL, NULL, NULL, 'no', NULL, NULL, 'no', 'no', '2024-08-04 05:03:37', '2024-08-04 05:37:44'),
-(10, 9881264608, 3197211687, 8022048049, 8022048049, '5\'3\'\'', '67', '120', 8022048049, '2024-08-04', 'asdqwe1', 'old', '200', '150', 'cash', NULL, 'pending', NULL, NULL, NULL, NULL, NULL, NULL, 'no', NULL, NULL, 'no', 'no', '2024-08-04 09:34:44', '2024-08-04 09:41:35');
+(10, 9881264608, 3197211687, 8022048049, 8022048049, '5\'3\'\'', '67', '120', 8022048049, '2024-08-04', 'asdqwe1', 'old', '200', '150', 'cash', NULL, 'pending', NULL, NULL, NULL, NULL, NULL, NULL, 'no', NULL, NULL, 'no', 'no', '2024-08-04 09:34:44', '2024-08-04 09:41:35'),
+(13, 5745563744, 5981076475, 9622814060, 9622814060, NULL, NULL, NULL, 8022048049, '2024-08-12', 'asdqwe', 'emergency', '700', '0', 'cash', NULL, 'pending', '', NULL, NULL, NULL, NULL, NULL, 'no', NULL, NULL, 'no', 'no', '2024-08-12 15:56:21', '2024-08-12 16:02:43'),
+(19, 8435299711, 5981076475, 9622814060, 9622814060, '5\'3\'\'', '56', '120', 8022048049, '2024-08-15', 'asdqwe', 'new', '500', '0', NULL, NULL, 'pending', NULL, NULL, NULL, NULL, NULL, NULL, 'no', NULL, NULL, 'no', 'no', '2024-08-14 01:52:41', '2024-08-14 01:52:41');
 
 -- --------------------------------------------------------
 
@@ -288,7 +290,9 @@ INSERT INTO `ipd_details` (`id`, `ipd_id`, `ipd_added_by`, `ipd_updated_by`, `pa
 (5, 1576522958, 3507097541, 8022048049, 3197211687, '2024-08-04', 8022048049, '2024-08-15', 'appendix', 4867399090, 'admit', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '0', 'no', 'no', '2024-08-04 05:54:20', '2024-08-04 08:59:29'),
 (6, 7326186155, 3507097541, 3507097541, 5981076475, '2024-08-04', 6636406942, '2024-08-13', 'appendix', 5671800060, 'admit', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '0', 'no', 'no', '2024-08-04 05:54:50', '2024-08-04 05:54:50'),
 (7, 1652346691, 9622814060, 9622814060, 2575834800, '2024-08-05', 8022048049, '2024-08-09', 'kidney change', 5704770808, 'admit', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '0', 'no', 'no', '2024-08-05 14:39:03', '2024-08-05 14:39:03'),
-(8, 7311788032, 9622814060, 9622814060, 1945164148, '2024-08-05', 8022048049, '2024-08-07', 'kidney change', 4560129688, 'admit', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '0', 'no', 'no', '2024-08-05 14:49:04', '2024-08-05 14:49:04');
+(8, 7311788032, 9622814060, 9622814060, 1945164148, '2024-08-05', 8022048049, '2024-08-07', 'kidney change', 4560129688, 'admit', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '0', 'no', 'no', '2024-08-05 14:49:04', '2024-08-05 14:49:04'),
+(9, 7334697627, 9622814060, 9622814060, 6625798458, '2024-08-12', 8022048049, '2024-08-16', 'kidney change', 7626108364, 'discharged', '2024-08-12', '2024-08-16', NULL, '', 'asd', '', '', '', NULL, NULL, '0', '0', 'no', 'no', '2024-08-12 16:00:55', '2024-08-12 16:09:21'),
+(10, 3224913712, 9622814060, 9622814060, 8561981100, '2024-08-15', 8022048049, '2024-08-19', 'appendix', 7626108364, 'admit', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '0', 'no', 'no', '2024-08-14 01:54:59', '2024-08-14 01:54:59');
 
 -- --------------------------------------------------------
 
@@ -318,7 +322,9 @@ INSERT INTO `ipd_operative_notes` (`id`, `ion_id`, `ipd_id`, `ion_date`, `ion_no
 (5, 7396691835, 1576522958, NULL, NULL, '2024-08-04 05:54:20', '2024-08-04 05:54:20'),
 (6, 3573337733, 7326186155, NULL, NULL, '2024-08-04 05:54:50', '2024-08-04 05:54:50'),
 (7, 4002979504, 1652346691, NULL, NULL, '2024-08-05 14:39:03', '2024-08-05 14:39:03'),
-(8, 6253198686, 7311788032, NULL, NULL, '2024-08-05 14:49:04', '2024-08-05 14:49:04');
+(8, 6253198686, 7311788032, NULL, NULL, '2024-08-05 14:49:04', '2024-08-05 14:49:04'),
+(9, 2174312271, 7334697627, NULL, NULL, '2024-08-12 16:00:55', '2024-08-12 16:00:55'),
+(10, 4263261767, 3224913712, NULL, NULL, '2024-08-14 01:54:59', '2024-08-14 01:54:59');
 
 -- --------------------------------------------------------
 
@@ -429,7 +435,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (33, '2024_07_06_173240_create_ipd_payment_lists_table', 23),
 (34, '2024_07_06_180451_add_column_mediclaim_foc_to_ipd_details_table', 24),
 (35, '2024_08_04_152645_add_column_ap_follow_up_note_to_appointments_table', 25),
-(36, '2024_08_04_162205_add_column_ap_follow_up_note_to_ipd_details_table', 26);
+(36, '2024_08_04_162205_add_column_ap_follow_up_note_to_ipd_details_table', 26),
+(37, '2024_08_12_200732_create_notifications_table', 27);
 
 -- --------------------------------------------------------
 
@@ -466,6 +473,40 @@ INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
 (3, 'App\\Models\\User', 2),
 (3, 'App\\Models\\User', 5),
 (5, 'App\\Models\\User', 7);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `notifications`
+--
+
+CREATE TABLE `notifications` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `no_id` bigint(20) NOT NULL,
+  `ap_id` bigint(20) DEFAULT NULL COMMENT 'Appointment id',
+  `ipd_id` bigint(20) DEFAULT NULL COMMENT 'IPD id',
+  `no_type` text DEFAULT NULL COMMENT '1-opd, 2-ipd',
+  `no_subject` text NOT NULL COMMENT 'New Appoitnemtn, New Patient Admit, Patient Discharged',
+  `no_message` text NOT NULL COMMENT 'New appointment added',
+  `no_icon` text NOT NULL COMMENT 'Notification related icon',
+  `no_action` text NOT NULL,
+  `no_created_for` bigint(20) NOT NULL COMMENT 'User ID',
+  `no_created_by` bigint(20) NOT NULL COMMENT 'User ID',
+  `no_read` int(11) NOT NULL DEFAULT 0 COMMENT '0-unread, 1-read',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `notifications`
+--
+
+INSERT INTO `notifications` (`id`, `no_id`, `ap_id`, `ipd_id`, `no_type`, `no_subject`, `no_message`, `no_icon`, `no_action`, `no_created_for`, `no_created_by`, `no_read`, `created_at`, `updated_at`) VALUES
+(1, 9667857410, 5745563744, NULL, '1', 'New Appointment', 'New appointment has beed created', 'flaticon-calendar-2', 'opd_add_doctor', 8022048049, 9622814060, 0, '2024-08-12 15:56:21', '2024-08-12 15:56:21'),
+(2, 3568159663, NULL, 7334697627, '2', 'New Patient Admit', 'New patient has beedn admitted', 'la la-bed', 'ipd_add_doctor', 8022048049, 9622814060, 0, '2024-08-12 16:00:55', '2024-08-12 16:00:55'),
+(3, 2155449654, NULL, 7334697627, '2', 'Patient Discharged', 'Patient has discharged', 'la la-bed', 'ipd_discharge', 8022048049, 9622814060, 0, '2024-08-12 16:09:21', '2024-08-12 16:09:21'),
+(4, 4708908730, 8435299711, NULL, '1', 'New Appointment', 'New appointment has beed created', 'flaticon-calendar-2', 'opd_add_doctor', 8022048049, 9622814060, 0, '2024-08-14 01:52:41', '2024-08-14 01:52:41'),
+(5, 5588787428, NULL, 3224913712, '2', 'New Patient Admit', 'New patient has beedn admitted', 'la la-bed', 'ipd_add_doctor', 8022048049, 9622814060, 0, '2024-08-14 01:54:59', '2024-08-15 02:06:23');
 
 -- --------------------------------------------------------
 
@@ -728,7 +769,37 @@ INSERT INTO `permissions` (`id`, `name`, `display_name`, `guard_name`, `section`
 (43, 'mac-address-create', 'Create Mac Address', 'web', 'mac-address', '2024-06-24 08:51:15', '2024-06-24 08:51:15'),
 (44, 'mac-address-update', 'Update Mac Address', 'web', 'mac-address', '2024-06-24 08:51:15', '2024-06-24 08:51:15'),
 (45, 'mac-address-status', 'Status Mac Address', 'web', 'mac-address', '2024-06-24 08:51:15', '2024-06-24 08:51:15'),
-(46, 'mac-address-remove', 'Remove Mac Address', 'web', 'mac-address', '2024-06-24 08:51:15', '2024-06-24 08:51:15');
+(46, 'mac-address-remove', 'Remove Mac Address', 'web', 'mac-address', '2024-06-24 08:51:15', '2024-06-24 08:51:15'),
+(47, 'appointment-read', 'Read Appointment', 'web', 'appointment', NULL, NULL),
+(48, 'appointment-create', 'Create Appointment', 'web', 'appointment', NULL, NULL),
+(49, 'appointment-edit', 'Edit Appointment', 'web', 'appointment', NULL, NULL),
+(50, 'appointment-status', 'Status Appointment', 'web', 'appointment', NULL, NULL),
+(51, 'appointment-prescription', 'Prescription Appointment', 'web', 'appointment', NULL, NULL),
+(52, 'appointment-full-view', 'Full View Appointment', 'web', 'appointment', NULL, NULL),
+(53, 'appointment-bill-print', 'Bill Print Appointment', 'web', 'appointment', NULL, NULL),
+(54, 'appointment-additional-charge', 'Additional Charge Appointment', 'web', 'appointment', NULL, NULL),
+(55, 'ipd-read', 'Read IPD', 'web', 'ipd', NULL, NULL),
+(56, 'ipd-create', 'Create IPD', 'web', 'ipd', NULL, NULL),
+(57, 'ipd-edit', 'Edit IPD', 'web', 'ipd', NULL, NULL),
+(58, 'ipd-status', 'Status IPD', 'web', 'ipd', NULL, NULL),
+(59, 'ipd-opd-history', 'OPD History IPD', 'web', 'ipd', NULL, NULL),
+(60, 'ipd-ipd-history', 'IPD History IPD', 'web', 'ipd', NULL, NULL),
+(61, 'ipd-full-view', 'Full View IPD', 'web', 'ipd', NULL, NULL),
+(62, 'ipd-bill-amount', 'Bill Amount IPD', 'web', 'ipd', NULL, NULL),
+(63, 'ipd-operative-note', 'Operative Note IPD', 'web', 'ipd', NULL, NULL),
+(64, 'ipd-prescribe', 'Prescribe IPD', 'web', 'ipd', NULL, NULL),
+(65, 'ipd-detail-print', 'Detail Print IPD', 'web', 'ipd', NULL, NULL),
+(66, 'follow-up-opd-read', 'Read OPD Follow Up', 'web', 'follow-up-opd', NULL, NULL),
+(67, 'follow-up-opd-note', 'Note OPD Follow Up', 'web', 'follow-up-opd', NULL, NULL),
+(68, 'follow-up-ipd-read', 'Read IPD Follow Up', 'web', 'follow-up-ipd', NULL, NULL),
+(69, 'follow-up-ipd-note', 'Note IPD Follow Up', 'web', 'follow-up-ipd', NULL, NULL),
+(70, 'follow-up-ipd-opd-history', 'Opd History IPD Follow Up', 'web', 'follow-up-ipd', NULL, NULL),
+(71, 'follow-up-ipd-ipd-history', 'IPD History IPD Follow Up', 'web', 'follow-up-ipd', NULL, NULL),
+(72, 'account-detail-opd-read', 'Read OPD Account Detail', 'web', 'account-detail-opd', NULL, NULL),
+(73, 'account-detail-opd-additional-charge', 'Additional Charge OPD Account Detail', 'web', 'account-detail-opd', NULL, NULL),
+(74, 'account-detail-ipd-read', 'Read IPD Account Detail', 'web', 'account-detail-ipd', NULL, NULL),
+(75, 'account-detail-ipd-bill-amount', 'Bill Amount IPD Account Detail', 'web', 'account-detail-ipd', NULL, NULL),
+(76, 'account-detail-ipd-print-bill', 'Print Bill IPD Account Detail', 'web', 'account-detail-ipd', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -893,7 +964,56 @@ INSERT INTO `role_has_permissions` (`permission_id`, `role_id`) VALUES
 (43, 1),
 (44, 1),
 (45, 1),
-(46, 1);
+(46, 1),
+(47, 1),
+(47, 2),
+(48, 1),
+(48, 2),
+(49, 1),
+(49, 2),
+(50, 1),
+(50, 2),
+(51, 1),
+(51, 2),
+(52, 1),
+(52, 2),
+(53, 1),
+(53, 2),
+(54, 1),
+(54, 2),
+(55, 1),
+(55, 2),
+(56, 1),
+(56, 2),
+(57, 1),
+(57, 2),
+(58, 1),
+(58, 2),
+(59, 1),
+(59, 2),
+(60, 1),
+(60, 2),
+(61, 1),
+(61, 2),
+(62, 1),
+(62, 2),
+(63, 1),
+(63, 2),
+(64, 1),
+(64, 2),
+(65, 1),
+(65, 2),
+(66, 1),
+(67, 1),
+(68, 1),
+(69, 1),
+(70, 1),
+(71, 1),
+(72, 1),
+(73, 1),
+(74, 1),
+(75, 1),
+(76, 1);
 
 -- --------------------------------------------------------
 
@@ -938,7 +1058,7 @@ INSERT INTO `rooms` (`id`, `rm_id`, `rm_added_by`, `rm_updated_by`, `rm_building
 (14, 5671800060, 9622814060, 9622814060, 'C', '1', 'A', '101', 700, 1, 1, '2024-06-23 22:03:25', '2024-08-04 05:54:50'),
 (15, 1745383720, 9622814060, 9622814060, 'C', '1', 'A', '102', 700, 0, 1, '2024-06-23 22:03:30', '2024-06-23 22:03:30'),
 (16, 4867399090, 9622814060, 9622814060, 'C', '1', 'A', '103', 700, 1, 1, '2024-06-23 22:03:38', '2024-08-04 08:59:29'),
-(17, 7626108364, 9622814060, 9622814060, 'C', '2', 'A', '101', 700, 0, 1, '2024-06-23 22:03:54', '2024-06-23 22:03:54'),
+(17, 7626108364, 9622814060, 9622814060, 'C', '2', 'A', '101', 700, 1, 1, '2024-06-23 22:03:54', '2024-08-14 01:54:59'),
 (18, 5704770808, 9622814060, 9622814060, 'C', '3', 'A', '101', 700, 1, 1, '2024-06-23 22:04:03', '2024-08-05 14:39:03'),
 (19, 8735526459, 9622814060, 9622814060, 'C', '1', 'B', '101', 700, 1, 1, '2024-06-23 22:04:16', '2024-08-03 09:34:49'),
 (20, 4560129688, 9622814060, 9622814060, 'C', '1', 'B', '102', 700, 1, 1, '2024-06-23 22:04:21', '2024-08-05 14:49:04'),
@@ -1017,7 +1137,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `user_id`, `name`, `email`, `email_verified_at`, `password`, `person_name`, `contactno`, `address`, `added_by`, `updated_by`, `user_status`, `show_to_doctor_list`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 9622814060, 'super_admin', 'superadmin@gmail.com', '2024-06-17 06:27:21', '$2y$12$.OnlOXKQC.UlJqRQc2n5Hue9evXhVsxA8nYW2t6fBPnJ/OR/r2eeW', 'Super Admin', 1234567890, 'EVA hospital, Ahmedabad', 9622814060, 9622814060, 1, 1, 'Nv3Cx1YofsL4rL7OlTXnjY82nI9SxOuR17GMWhJQwBbxnmC3S3bLYwzHo7OO', '2024-06-17 06:27:21', '2024-07-27 07:52:16'),
+(1, 9622814060, 'super_admin', 'superadmin@gmail.com', '2024-06-17 06:27:21', '$2y$12$.OnlOXKQC.UlJqRQc2n5Hue9evXhVsxA8nYW2t6fBPnJ/OR/r2eeW', 'Super Admin', 1234567890, 'EVA hospital, Ahmedabad', 9622814060, 9622814060, 1, 1, '94XD3e6fImcsnL6D6GgoVTKiR1jytsFYa9ufMB7TvZPfcUzExF1ZC86moXIL', '2024-06-17 06:27:21', '2024-07-27 07:52:16'),
 (2, 5962819849, 'abhay_luva', 'ablov@gmail.com', NULL, '$2y$12$uJN2Ddjob97F7vqw2ufkROYVoNYa1JNOVEb4QYX3xpoS3Wuu8bsgG', 'Abhay Luva', 1245784251, 'dwarkadhish so, anand nagar, beind vrajwihar, rajkot', 9622814060, 9622814060, 1, 1, NULL, '2024-06-18 03:29:40', '2024-06-28 06:09:51'),
 (3, 8022048049, 'haresh_bhai', 'hr@gmail.com', NULL, '$2y$12$lxNz9YPwZN6lJpCdg4Q3reDnW4xDdaC6ZIBvNJzerSDKgKdJEguH2', 'Haresh Bhai', 1245784251, 'asasds sas adsd', 5962819849, 9622814060, 1, 1, NULL, '2024-06-18 03:47:03', '2024-06-28 06:08:36'),
 (4, 6636406942, 'raj', 'raj@gmail.com', NULL, '$2y$12$jmAFeQGPaIgM.DhK.dGrM.sVk7ODQ4ufKVqKXpzJ7DCwRRYokVtyG', 'Raj Bhai', 1234567890, 'asd as dasdasda', 9622814060, 9622814060, 1, 1, NULL, '2024-06-19 04:20:03', '2024-06-28 06:09:42'),
@@ -1153,6 +1273,12 @@ ALTER TABLE `model_has_permissions`
 ALTER TABLE `model_has_roles`
   ADD PRIMARY KEY (`role_id`,`model_id`,`model_type`),
   ADD KEY `model_has_roles_model_id_model_type_index` (`model_id`,`model_type`);
+
+--
+-- Indexes for table `notifications`
+--
+ALTER TABLE `notifications`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `oauth_access_tokens`
@@ -1293,7 +1419,7 @@ ALTER TABLE `visiting_fees`
 -- AUTO_INCREMENT for table `appointments`
 --
 ALTER TABLE `appointments`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `appointment_additional_charges`
@@ -1329,13 +1455,13 @@ ALTER TABLE `ipd_charges`
 -- AUTO_INCREMENT for table `ipd_details`
 --
 ALTER TABLE `ipd_details`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `ipd_operative_notes`
 --
 ALTER TABLE `ipd_operative_notes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `ipd_payment_lists`
@@ -1353,7 +1479,13 @@ ALTER TABLE `mac_addresses`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+
+--
+-- AUTO_INCREMENT for table `notifications`
+--
+ALTER TABLE `notifications`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `oauth_clients`
@@ -1383,7 +1515,7 @@ ALTER TABLE `patients`
 -- AUTO_INCREMENT for table `permissions`
 --
 ALTER TABLE `permissions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`

@@ -17,6 +17,9 @@ class MacAdressCheck
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // get ip address and fix from all pc which we want to connect
+        // Request::ip();
+
         // $mac = exec('getmac');
         // $mac = str_replace(' Media disconnected', '', $mac);
         // $mac = trim($mac);

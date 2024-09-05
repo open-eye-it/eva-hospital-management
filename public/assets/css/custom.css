@@ -149,3 +149,9 @@ table td .btn{
 .overflow_visible .dataTables_scrollBody{
     overflow: visible !important;
 }
+
+.symbol.symbol-70 .symbol-label{
+    width: 100% !important;
+    min-width: 70px !important;
+    padding: 5px;
+}

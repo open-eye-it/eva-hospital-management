@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Notification;
 /* ----------------------------------------------------------- */
 /* Rendom Code */
 /* ----------------------------------------------------------- */
@@ -212,4 +214,66 @@ function displaywords($number)
     if (trim($result[0]) != "") echo $result[0] . "Rupees ";
     if ($result[1] != "") echo $result[1] . "Paise";
     echo " Only";
+}
+
+if (!function_exists('notificationSubjectList')) {
+    function notificationSubjectList($key)
+    {
+        $data = [
+            'opd_add'       => 'New Appointment',
+            'ipd_add'       => 'New Patient Admit',
+            'ipd_discharge' => 'Patient Discharged'
+        ];
+        return $data[$key];
+    }
+}
+
+if (!function_exists('notificationMessageList')) {
+    function notificationMessageList($key)
+    {
+        $data = [
+            'opd_add'       => 'New appointment has beed created',
+            'ipd_add'       => 'New patient has beedn admitted',
+            'ipd_discharge' => 'Patient has discharged'
+        ];
+        return $data[$key];
+    }
+}
+
+if (!function_exists('notificationIconList')) {
+    function notificationIconList($key)
+    {
+        $data = [
+            'opd_add'       => 'flaticon-calendar-2',
+            'ipd_add'       => 'la la-bed',
+            'ipd_discharge' => 'la la-bed'
+        ];
+        return $data[$key];
+    }
+}
+
+if (!function_exists('notificationRoute')) {
+    function notificationRoute($key)
+    {
+        $loginUser = Auth::user();
+        $data = [
+            'opd_add'        => route('appointment.list'),
+            'opd_add_doctor' => route('doctor_opd_ipd.list'),
+            'ipd_add'        => route('ipd.list'),
+            'ipd_add_doctor' => route('doctor_opd_ipd.list'),
+            'ipd_discharge'  => route('ipd.list')
+        ];
+        return $data[$key];
+    }
+}
+
+if (!function_exists('loginUserUnreadNotification')) {
+    function loginUserUnreadNotification()
+    {
+        $loginUser = Auth::user();
+        $notification = new Notification;
+        $notificationList  = $notification->getList(['no_created_for' => $loginUser->user_id, 'no_read' => 0], false, '');
+        $notificationCount = $notification->getList(['no_created_for' => $loginUser->user_id, 'no_read' => 0], false, '')->count();
+        return ['notificationList' => $notificationList, 'notificationCount' => $notificationCount];
+    }
 }

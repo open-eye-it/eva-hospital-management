@@ -97,9 +97,9 @@
     }
 }
 
-.container{
+/* .container{
     padding: 10px;
-}
+} */
 .content{
     padding:0px;
 }
@@ -121,6 +121,16 @@
 table td .btn{
     padding:0.2rem 0.3rem;
 }
+
+thead tr th {
+    height: 50px;
+    vertical-align: middle;
+    background-color: #EBEDF3;
+    color: #666;
+    font-weight: 500;
+    border: none;
+}
+
 .icon-3x {
     font-size: 2.2rem !important;
 }
@@ -154,4 +164,38 @@ table td .btn{
     width: 100% !important;
     min-width: 70px !important;
     padding: 5px;
+}
+
+.menu-nav .menu-text{
+    font-size: 16px !important;
+}
+
+.menu-nav .icon-2x{
+    font-size:1.5rem !important;
+    color: #000;
+}
+
+.aside-menu .menu-nav > .menu-section .menu-text {
+    color: #E6352F;
+    font-weight: 600;
+}
+
+
+input, select{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    min-height: 50px;
+    font-size: 16px !important;
+    border: 1px solid gray !important;
+}
+label{
+    font-size: 16px !important;
+}
+.select2-selection, .date{
+    min-height: 50px;
+    font-size: 16px !important;
+    border: 1px solid gray !important;
+}
+textarea{
+    border: 1px solid gray !important;
 }

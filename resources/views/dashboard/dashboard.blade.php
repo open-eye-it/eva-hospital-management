@@ -4,9 +4,9 @@
 @section('page-content')
 <!--begin::Row-->
 <div class="row">
-    <div class="col-12">
+    <!-- <div class="col-12">
         <h1>Dashboard</h1>
-    </div>
+    </div> -->
     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-xs-12">
         <div class="card card-custom bg-danger card-stretch gutter-b">
             <div class="card-body my-4">

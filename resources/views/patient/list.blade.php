@@ -17,7 +17,7 @@
                                 <form action="{{ route('patient.list') }}">
                                     <div class="row">
                                         <div class="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
-                                            <label>Search Patient <span class="text-danger">[Note: Search by patient id, name, contact no alternate contact no, email, dob]</span></label>
+                                            <label>Search Patient <span class="text-danger">[Note: Search by patient id, name, contact no, alternate contact no, email, dob]</span></label>
                                             <input type="text" class="form-control" placeholder="Search Patient" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
                                         </div>
                                         <div class="col-12 form-group">

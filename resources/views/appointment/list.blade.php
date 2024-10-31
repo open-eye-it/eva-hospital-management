@@ -77,7 +77,7 @@
                                 </div>
                                 <div class="card-body overflow_visible">
                                     <!--begin: Datatable-->
-                                    <table class="table table-bordered table-striped scrollable_table_custom" id="">
+                                    <table class="table table-bordered scrollable_table_custom" id="">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
@@ -189,7 +189,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <table class="table table-striped" id="viewDetail">
+                <table class="table" id="viewDetail">
 
                 </table>
             </div>
@@ -209,7 +209,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <table class="table table-striped" id="statusDetail">
+                <table class="table" id="statusDetail">
                     <div class="form-group">
                         <label for="">Satatus</label>
                         <select name="ap_status_val" id="ap_status_val" class="form-control" onchange="changeStatusVal(this.value)">
@@ -273,7 +273,7 @@
                         <button id="addAdditionalCharge" class="btn btn-primary">Add <i class="la la-plus"></i></button>
                     </div>
                 </div>
-                <table class="table table-striped">
+                <table class="table">
                     <thead>
                         <tr>
                             <th>Sr. No.</th>

@@ -41,9 +41,10 @@
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
+                                                <th>Person Name</th>
                                                 <th>User Name</th>
-                                                <th>Added By</th>
                                                 <th>Category</th>
+                                                <th>Added By</th>
                                                 @can('user-status')
                                                 <th>Status</th>
                                                 @endcan
@@ -57,9 +58,10 @@
                                             @foreach($list as $key => $user)
                                             <tr>
                                                 <td>{{ $list->firstItem() + $key }}</td>
+                                                <td>{{ $user->person_name }}</td>
                                                 <td>{{ $user->name }}</td>
-                                                <td>{{ $user->AddedByData->person_name }}</td>
                                                 <td>{!! implode('|', $user->getRoleNames()->toArray()) !!}</td>
+                                                <td>{{ $user->AddedByData->person_name }}</td>
                                                 @can('user-status')
                                                 <td>
                                                     <label class="switch">

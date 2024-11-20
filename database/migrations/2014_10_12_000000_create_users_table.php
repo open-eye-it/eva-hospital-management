@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('person_name')->index();
             $table->integer('contactno');
-            $table->string('address');
+            $table->string('address')->nullable();
             $table->biginteger('added_by');
             $table->biginteger('updated_by');
             $table->integer('user_status')->defaultt(1)->comment('0-disable,1-enable');

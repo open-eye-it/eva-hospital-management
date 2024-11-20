@@ -44,7 +44,7 @@
                                 </div>
                                 <div class="card-body">
                                     <!--begin: Datatable-->
-                                    <table class="table table-bordered table-striped scrollable_table_custom" id="">
+                                    <table class="table table-bordered scrollable_table_custom" id="">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
@@ -123,7 +123,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <table class="table table-striped" id="viewDetail">
+                <table class="table" id="viewDetail">
 
                 </table>
             </div>
@@ -143,7 +143,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <table class="table table-striped" id="statusDetail">
+                <table class="table" id="statusDetail">
                     <div class="form-group">
                         <label for="">Satatus</label>
                         <select name="ip_status_val" id="ip_status_val" class="form-control" onchange="changeStatusVal(this.value)">
@@ -242,7 +242,7 @@
                         </div>
                         <input type="hidden" id="ic_id" name="ic_id" value="">
                         <button class="btn btn-primary" id="addNewCharge">Add</button>
-                        <table class="table table-striped scrollable_table_custom">
+                        <table class="table scrollable_table_custom">
                             <thead>
                                 <tr>
                                     <th>Charge ID</th>
@@ -292,7 +292,7 @@
                         </div>
                         <input type="hidden" id="ipl_id" name="ipl_id" value="">
                         <button class="btn btn-primary" id="addNewPayment">Add</button>
-                        <table class="table table-striped scrollable_table_custom">
+                        <table class="table scrollable_table_custom">
                             <thead>
                                 <tr>
                                     <th>Receipt No</th>

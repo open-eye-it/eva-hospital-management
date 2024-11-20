@@ -47,7 +47,7 @@
                                 </div>
                                 <div class="card-body">
                                     <!--begin: Datatable-->
-                                    <table class="table table-bordered table-striped scrollable_table_custom">
+                                    <table class="table table-bordered scrollable_table_custom">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
@@ -155,7 +155,7 @@
                         <button id="addAdditionalCharge" class="btn btn-primary">Add <i class="la la-plus"></i></button>
                     </div>
                 </div>
-                <table class="table table-striped">
+                <table class="table">
                     <thead>
                         <tr>
                             <th>Sr. No.</th>

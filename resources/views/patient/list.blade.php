@@ -123,7 +123,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <table class="table table-striped" id="viewDetail">
+                <table class="table" id="viewDetail">
 
                 </table>
             </div>

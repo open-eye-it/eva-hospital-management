@@ -60,7 +60,7 @@
                 </div>
                 <div class="card-body">
                     <!--begin: Datatable-->
-                    <table class="table table-bordered table-striped scrollable_table_custom" id="">
+                    <table class="table table-bordered scrollable_table_custom" id="">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -112,7 +112,7 @@
                 </div>
                 <div class="card-body">
                     <!--begin: Datatable-->
-                    <table class="table table-bordered table-striped scrollable_table_custom" id="">
+                    <table class="table table-bordered scrollable_table_custom" id="">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -166,7 +166,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <table class="table table-striped" id="statusDetail">
+                <table class="table" id="statusDetail">
                     <div class="form-group">
                         <label for="">Satatus</label>
                         <select name="ap_status_val" id="ap_status_val" class="form-control" onchange="OPDChangeStatusVal(this.value)">
@@ -206,7 +206,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <table class="table table-striped" id="ipdBillAmountViewDetail">
+                <table class="table" id="ipdBillAmountViewDetail">
 
                 </table>
             </div>
@@ -226,7 +226,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <table class="table table-striped" id="operativeNoteViewDetail">
+                <table class="table" id="operativeNoteViewDetail">
 
                 </table>
             </div>
@@ -246,7 +246,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <table class="table table-striped" id="prescribeViewDetail">
+                <table class="table" id="prescribeViewDetail">
 
                 </table>
             </div>

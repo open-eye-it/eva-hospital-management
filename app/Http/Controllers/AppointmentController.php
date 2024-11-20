@@ -182,7 +182,7 @@ class AppointmentController extends MainController
             $updated_by = $data->UpdatedByData->person_name;
             $data1['updated_by_user'] = $updated_by;
             $data1['patient_name'] = $data->patientData->pa_name;
-            $data1['doctor_name'] = $data->doctorData->pa_name;
+            $data1['doctor_name'] = $data->doctorData->person_name;
             $data1['ap_date'] = date('d M Y', strtotime($data->ap_date));
             return $this->getSuccessResult($data1, 'Appointment detail found', true);
         } else {

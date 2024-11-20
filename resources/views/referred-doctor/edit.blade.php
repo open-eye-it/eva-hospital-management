@@ -25,8 +25,8 @@
                                         <div class="row">
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label>Doctor Name <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" placeholder="Doctor Name" name="rd_name" id="rd_name" value="{{ $data->rd_name }}" />
+                                                    <label>Doctor/Other Name <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" placeholder="Doctor/Other Name" name="rd_name" id="rd_name" value="{{ $data->rd_name }}" />
                                                     <span class="text-danger" id="rd_nameErr"></span>
                                                 </div>
                                             </div>

@@ -226,7 +226,7 @@ PROVISIONAL DIAGNOSIS : zxcas
                                                 <button type="button" class="btn btn-primary mr-2" id="addBtn" onclick="addMedicine('{{ base64_encode($data->ap_id) }}')">Add</button>
                                             </div>
                                             <div class="col-12">
-                                                <table class="table table-striped">
+                                                <table class="table">
                                                     <thead>
                                                         <tr>
                                                             <th>Medicine Name</th>
@@ -293,7 +293,7 @@ PROVISIONAL DIAGNOSIS : zxcas
                 </button>
             </div>
             <div class="modal-body">
-                <table class="table table-striped">
+                <table class="table">
                     <thead>
                         <tr>
                             <th>Date</th>

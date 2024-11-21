@@ -24,6 +24,7 @@ class PatientController extends MainController
     {
         $input = $request->all();
         $searchData['search_text']  = isset($input['search_text']) ? $input['search_text'] : '';
+        $searchData['date']         = isset($input['date']) ? $input['date'] : '';
         $list = $this->patient->getList($searchData);
         return view('patient.list', compact('list', 'searchData'));
     }

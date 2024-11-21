@@ -18,7 +18,7 @@
                                     <div class="row">
                                         <div class="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
                                             <label>Search Doctor/Other Name</label>
-                                            <input type="text" class="form-control" placeholder="Search Doctor Name" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
+                                            <input type="text" class="form-control" placeholder="Search Doctor/Other Name" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
                                         </div>
                                         <div class="col-12 form-group">
                                             <button class="btn btn-primary" type="submit">Search</button>

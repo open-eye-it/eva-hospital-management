@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 15, 2024 at 04:24 AM
+-- Generation Time: Nov 27, 2024 at 06:57 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.1.17
 
@@ -76,7 +76,7 @@ INSERT INTO `appointments` (`id`, `ap_id`, `pa_id`, `ap_added_by`, `ap_updated_b
 (9, 9247888596, 5981076475, 3507097541, 3507097541, '5\'4\'\'', '70', '121', 6636406942, '2024-08-04', 'asdqwe1', 'new', '500', '760', 'cash', NULL, 'pending', NULL, NULL, NULL, NULL, NULL, NULL, 'no', NULL, NULL, 'no', 'no', '2024-08-04 05:03:37', '2024-08-04 05:37:44'),
 (10, 9881264608, 3197211687, 8022048049, 8022048049, '5\'3\'\'', '67', '120', 8022048049, '2024-08-04', 'asdqwe1', 'old', '200', '150', 'cash', NULL, 'pending', NULL, NULL, NULL, NULL, NULL, NULL, 'no', NULL, NULL, 'no', 'no', '2024-08-04 09:34:44', '2024-08-04 09:41:35'),
 (13, 5745563744, 5981076475, 9622814060, 9622814060, NULL, NULL, NULL, 8022048049, '2024-08-12', 'asdqwe', 'emergency', '700', '0', 'cash', NULL, 'pending', '', NULL, NULL, NULL, NULL, NULL, 'no', NULL, NULL, 'no', 'no', '2024-08-12 15:56:21', '2024-08-12 16:02:43'),
-(19, 8435299711, 5981076475, 9622814060, 9622814060, '5\'3\'\'', '56', '120', 8022048049, '2024-08-15', 'asdqwe', 'new', '500', '0', NULL, NULL, 'pending', NULL, NULL, NULL, NULL, NULL, NULL, 'no', NULL, NULL, 'no', 'no', '2024-08-14 01:52:41', '2024-08-14 01:52:41');
+(19, 8435299711, 5981076475, 9622814060, 9622814060, '5\'3\'\'', '56', '120', 8022048049, '2024-08-15', 'asdqwe', 'new', '500', '250', NULL, NULL, 'pending', NULL, NULL, NULL, NULL, NULL, NULL, 'no', NULL, NULL, 'no', 'no', '2024-08-14 01:52:41', '2024-11-27 16:05:54');
 
 -- --------------------------------------------------------
 
@@ -133,7 +133,9 @@ INSERT INTO `appointment_additional_charges` (`id`, `apac_id`, `ap_id`, `apac_ad
 (29, 2266385308, 9247888596, 3507097541, 'sugar report', '2', '130', '260', '2024-08-04 05:37:27', '2024-08-04 05:37:27'),
 (30, 9115168396, 9247888596, 3507097541, 'blood report', '1', '350', '350', '2024-08-04 05:37:44', '2024-08-04 05:37:44'),
 (31, 1780065192, 9881264608, 8022048049, 'sugar report', '1', '150', '150', '2024-08-04 09:41:35', '2024-08-04 09:41:35'),
-(34, 9576559398, 6627154988, 9622814060, 'x-ray', '2', '150', '300', '2024-08-05 14:31:29', '2024-08-05 14:31:29');
+(34, 9576559398, 6627154988, 9622814060, 'x-ray', '2', '150', '300', '2024-08-05 14:31:29', '2024-08-05 14:31:29'),
+(36, 5527263502, 8435299711, 9622814060, 'qw 12', '1', '50', '50', '2024-11-20 14:33:55', '2024-11-20 14:33:55'),
+(37, 5260281963, 8435299711, 9622814060, 'asd123', '2', '100', '200', '2024-11-27 16:05:54', '2024-11-27 16:05:54');
 
 -- --------------------------------------------------------
 
@@ -284,8 +286,8 @@ CREATE TABLE `ipd_details` (
 --
 
 INSERT INTO `ipd_details` (`id`, `ipd_id`, `ipd_added_by`, `ipd_updated_by`, `pa_id`, `ipd_admit_date`, `ipd_doctor`, `ipd_surgery_date`, `ipd_surgery_text`, `rm_id`, `ipd_status`, `ipd_discharge_date`, `ipd_follow_up_date`, `ipd_follow_up_note`, `ipd_cancel_reason`, `ipd_diagnosis`, `ipd_investigations`, `ipd_treatment_given`, `ipd_treatment_discharge`, `ipd_operation_medicine`, `ipd_operation_medicine_date`, `ipd_bill_amount`, `ipd_received_amount`, `ipd_mediclaim`, `ipd_is_foc`, `created_at`, `updated_at`) VALUES
-(1, 1288742033, 9622814060, 9622814060, 8059577479, '2024-07-20', 8022048049, '2024-07-22', 'asd qwe', 7012967793, 'admit', NULL, NULL, NULL, '', '', '', '', '', NULL, NULL, '70000', '0', 'no', 'no', '2024-07-06 05:21:48', '2024-08-03 09:38:37'),
-(2, 7418463651, 9622814060, 9622814060, 1945164148, '2024-07-20', 6636406942, '2024-07-20', 'asd qwe', 4560129688, 'discharged', '2024-07-23', '2024-08-01', NULL, '', 'asd', 'qwe', 'zxc', 'asqwzx', '[{\"medicine_id\":7691745383,\"medicine_val\":\"1\"},{\"medicine_id\":2543858207,\"medicine_val\":\"2\"},{\"medicine_id\":8996985293,\"medicine_val\":\"3\"}]', '2024-07-07', '15000', '530', 'no', 'no', '2024-07-06 05:22:13', '2024-08-04 11:05:15'),
+(1, 1288742033, 9622814060, 9622814060, 8059577479, '2024-11-27', 8022048049, '2024-07-22', 'asd qwe', 7012967793, 'admit', NULL, NULL, NULL, '', '', '', '', '', NULL, NULL, '70000', '0', 'no', 'no', '2024-07-06 05:21:48', '2024-08-03 09:38:37'),
+(2, 7418463651, 9622814060, 9622814060, 1945164148, '2024-11-27', 6636406942, '2024-07-20', 'asd qwe', 4560129688, 'discharged', '2024-07-23', '2024-08-01', NULL, '', 'asd', 'qwe', 'zxc', 'asqwzx', '[{\"medicine_id\":7691745383,\"medicine_val\":\"1\"},{\"medicine_id\":2543858207,\"medicine_val\":\"2\"},{\"medicine_id\":8996985293,\"medicine_val\":\"3\"}]', '2024-07-07', '15000', '530', 'no', 'no', '2024-07-06 05:22:13', '2024-08-04 11:05:15'),
 (4, 3245365631, 9622814060, 9622814060, 8823312118, '2024-07-27', 8022048049, '2024-07-31', 'appendix', 8735526459, 'admit', NULL, NULL, NULL, '', '', '', '', '', '[{\"medicine_id\":7691745383,\"medicine_val\":\"3\"},{\"medicine_id\":2543858207,\"medicine_val\":\"3\"}]', '2024-07-27', '16000', '5000', 'no', 'no', '2024-07-27 04:30:31', '2024-08-06 14:39:40'),
 (5, 1576522958, 3507097541, 8022048049, 3197211687, '2024-08-04', 8022048049, '2024-08-15', 'appendix', 4867399090, 'admit', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '0', 'no', 'no', '2024-08-04 05:54:20', '2024-08-04 08:59:29'),
 (6, 7326186155, 3507097541, 3507097541, 5981076475, '2024-08-04', 6636406942, '2024-08-13', 'appendix', 5671800060, 'admit', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '0', 'no', 'no', '2024-08-04 05:54:50', '2024-08-04 05:54:50'),
@@ -470,8 +472,12 @@ INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
 (1, 'App\\Models\\User', 1),
 (2, 'App\\Models\\User', 3),
 (2, 'App\\Models\\User', 4),
+(2, 'App\\Models\\User', 8),
+(2, 'App\\Models\\User', 11),
 (3, 'App\\Models\\User', 2),
 (3, 'App\\Models\\User', 5),
+(4, 'App\\Models\\User', 9),
+(4, 'App\\Models\\User', 10),
 (5, 'App\\Models\\User', 7);
 
 -- --------------------------------------------------------
@@ -650,7 +656,7 @@ CREATE TABLE `password_reset_tokens` (
 
 CREATE TABLE `patients` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `pa_id` bigint(20) NOT NULL,
+  `pa_id` text NOT NULL,
   `pa_added_by` bigint(20) NOT NULL COMMENT 'user table id user_id',
   `pa_updated_by` bigint(20) NOT NULL COMMENT 'user table id user_id',
   `pa_name` varchar(255) NOT NULL,
@@ -690,25 +696,26 @@ CREATE TABLE `patients` (
 --
 
 INSERT INTO `patients` (`id`, `pa_id`, `pa_added_by`, `pa_updated_by`, `pa_name`, `pa_contact_no`, `pa_alt_contact_no`, `pa_email`, `pa_address`, `pa_city`, `pa_pincode`, `pa_state`, `pa_dob`, `pa_age`, `pa_gender`, `pa_marital_status`, `pa_occupation`, `pa_last_monestrual_period`, `pa_pregnancy_no`, `pa_miscarriages_no`, `pa_abortion_no`, `pa_children_no`, `pa_photo`, `pa_tobacco`, `pa_smoking`, `pa_alcohol`, `pa_medical_history`, `pa_family_medical_history`, `pa_referred_by`, `pa_referred_doctor`, `pa_referred_text`, `pa_status`, `created_at`, `updated_at`) VALUES
-(1, 1929125286, 9622814060, 9622814060, 'Abhay Luva', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2018-01-01', '6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2024-06-25 06:55:53', '2024-06-25 06:55:53'),
-(2, 6900526422, 9622814060, 9622814060, 'Abhay Luva', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2017-01-01', '7', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2024-06-25 07:06:17', '2024-06-25 07:06:17'),
-(3, 6687313469, 9622814060, 9622814060, 'Abhay Luva', NULL, NULL, 'asd@gmail.com', NULL, NULL, NULL, NULL, '2019-12-31', '4', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2024-06-25 07:34:18', '2024-06-25 07:34:18'),
-(4, 9331608184, 9622814060, 9622814060, 'Abhay Luva', '1234567890', NULL, NULL, NULL, NULL, NULL, NULL, '2019-12-31', '4', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2024-06-25 07:34:55', '2024-06-25 07:34:55'),
-(5, 2866803113, 9622814060, 9622814060, 'Abhay Luva', NULL, '1234567890', NULL, NULL, NULL, NULL, NULL, '2019-12-31', '4', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2024-06-25 07:35:48', '2024-06-25 07:35:48'),
-(6, 7605637159, 9622814060, 9622814060, 'Abhay Luva', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2020-01-25', '4', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2024-06-25 07:36:35', '2024-06-25 07:36:35'),
-(7, 7800965725, 9622814060, 9622814060, 'Abhay Luva', NULL, NULL, 'asd1@gmail.com', NULL, NULL, NULL, NULL, '2019-12-31', '4', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2024-06-25 07:36:53', '2024-06-26 07:43:24'),
-(8, 6625798458, 9622814060, 9622814060, 'Ab Lov', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2008-01-01', '16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'doctor', 'Ab Lov', NULL, 1, '2024-06-27 23:21:27', '2024-06-27 23:21:27'),
-(9, 2575834800, 9622814060, 9622814060, 'ab', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2005-01-01', '19', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'doctor', 'ab', NULL, 1, '2024-06-27 23:23:02', '2024-06-27 23:23:02'),
-(10, 2926564244, 9622814060, 8022048049, 'asd', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2021-12-28', '2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'doctor', 'Ab Lov', NULL, 1, '2024-06-27 23:25:35', '2024-08-06 02:27:18'),
-(11, 4151464738, 9622814060, 9622814060, 'asd', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2021-01-05', '3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '[\"4151464738-6068944068.png\"]', NULL, NULL, NULL, NULL, NULL, 'doctor', 'Ab Lov', NULL, 1, '2024-06-27 23:26:49', '2024-06-27 23:26:49'),
-(12, 8561981100, 9622814060, 9622814060, 'Ab Luva', '1234567891', '1234567891', 'asd2@gmail.com', 'b-4, anand nagar, dwarkadhish society', 'upleta', '360490', 'gujarat', '1997-01-01', '27', 'male', 'married', 'IT Employee', 'asd', '1', '1', '0', '0', '[\"8561981100-3018767396.jpg\"]', 'no', 'occational', 'regular', 'yes, corona sergery', 'yes, corona hospitality', 'other', NULL, 'as dqwq 1', 1, '2024-06-27 23:33:01', '2024-07-01 02:15:23'),
-(13, 1945164148, 9622814060, 9622814060, 'asd', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2021-01-05', '3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '[\"1945164148-4916246574.jpg\"]', NULL, NULL, NULL, NULL, NULL, 'other', NULL, 'asd qwe', 1, '2024-06-28 01:08:14', '2024-06-28 01:30:35'),
-(14, 8059577479, 9622814060, 9622814060, 'asd 123', NULL, NULL, NULL, 'b-4, anand nagar, dwarkadhish society', 'upleta', '360490', 'gujarat', '2012-01-05', '12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '[\"[\\\"[\\\\\\\"\\\\\\\"]\\\"]\"]', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2024-06-28 05:33:02', '2024-07-06 11:45:43'),
-(15, 8823312118, 9622814060, 9622814060, 'Janak Soni', '1234567894', NULL, 'janaka@gmail.com', 'asd qwe zxc', 'gandhinagar', '123456', 'gujarat', '2012-12-31', '11', 'male', 'married', 'IT Employee', NULL, NULL, NULL, NULL, NULL, '[\"\"]', NULL, NULL, NULL, NULL, NULL, 'doctor', 'Ab Side', NULL, 1, '2024-07-07 06:19:53', '2024-07-07 06:21:45'),
-(16, 6007062775, 9622814060, 9622814060, 'patient 1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1987-12-28', '36', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '[\"[\\\"[\\\\\\\"\\\\\\\"]\\\"]\"]', NULL, NULL, NULL, NULL, NULL, 'other', NULL, 'ab aca', 1, '2024-07-09 15:54:45', '2024-07-09 15:55:25'),
-(17, 8029440359, 9622814060, 9622814060, 'patient 2', '1234567890', '1234567890', 'asd@gmail.com', NULL, NULL, NULL, NULL, '2003-01-01', '21', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '[\"[\\\"[\\\\\\\"\\\\\\\"]\\\"]\"]', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2024-07-09 16:00:37', '2024-07-09 16:01:15'),
-(18, 3197211687, 3507097541, 3507097541, 'Bijal Patel', '12345679890', NULL, 'bijal@gmail.com', 'b-4, drwarkadhish, west gate', 'ahmedabad', '360005', 'gujarat', '1987-01-01', '37', 'female', 'married', 'IT Employee', NULL, NULL, NULL, NULL, NULL, '[\"3197211687-9089431884.png\"]', 'no', 'no', 'occational', 'no', 'no', 'doctor', 'Raj Mehta', NULL, 1, '2024-08-04 04:57:55', '2024-08-04 04:57:55'),
-(19, 5981076475, 3507097541, 8022048049, 'Khyaati Parekh', '1234567890', NULL, 'khyati@gmail.com', 'b-4, anand nagar, dwarkadhish society', NULL, NULL, NULL, '1991-01-01', '33', 'female', NULL, 'IT Employee', NULL, NULL, NULL, NULL, NULL, '[\"5981076475-1084817721.png\"]', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2024-08-04 04:59:09', '2024-08-06 02:23:16');
+(1, '1929125286', 9622814060, 9622814060, 'Abhay Luva', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2018-01-01', '6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2024-06-25 06:55:53', '2024-06-25 06:55:53'),
+(2, '6900526422', 9622814060, 9622814060, 'Abhay Luva', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2017-01-01', '7', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2024-06-25 07:06:17', '2024-06-25 07:06:17'),
+(3, '6687313469', 9622814060, 9622814060, 'Abhay Luva', NULL, NULL, 'asd@gmail.com', NULL, NULL, NULL, NULL, '2019-12-31', '4', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2024-06-25 07:34:18', '2024-06-25 07:34:18'),
+(4, '9331608184', 9622814060, 9622814060, 'Abhay Luva', '1234567890', NULL, NULL, NULL, NULL, NULL, NULL, '2019-12-31', '4', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2024-06-25 07:34:55', '2024-06-25 07:34:55'),
+(5, '2866803113', 9622814060, 9622814060, 'Abhay Luva', NULL, '1234567890', NULL, NULL, NULL, NULL, NULL, '2019-12-31', '4', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2024-06-25 07:35:48', '2024-06-25 07:35:48'),
+(6, '7605637159', 9622814060, 9622814060, 'Abhay Luva', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2020-01-25', '4', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2024-06-25 07:36:35', '2024-06-25 07:36:35'),
+(7, '7800965725', 9622814060, 9622814060, 'Abhay Luva', NULL, NULL, 'asd1@gmail.com', NULL, NULL, NULL, NULL, '2019-12-31', '4', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2024-06-25 07:36:53', '2024-06-26 07:43:24'),
+(8, '6625798458', 9622814060, 9622814060, 'Ab Lov', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2008-01-01', '16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'doctor', 'Ab Lov', NULL, 1, '2024-06-27 23:21:27', '2024-06-27 23:21:27'),
+(9, '2575834800', 9622814060, 9622814060, 'ab', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2005-01-01', '19', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'doctor', 'ab', NULL, 1, '2024-06-27 23:23:02', '2024-06-27 23:23:02'),
+(10, '2926564244', 9622814060, 8022048049, 'asd', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2021-12-28', '2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'doctor', 'Ab Lov', NULL, 1, '2024-06-27 23:25:35', '2024-08-06 02:27:18'),
+(11, '4151464738', 9622814060, 9622814060, 'asd', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2021-01-05', '3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '[\"4151464738-6068944068.png\"]', NULL, NULL, NULL, NULL, NULL, 'doctor', 'Ab Lov', NULL, 1, '2024-06-27 23:26:49', '2024-06-27 23:26:49'),
+(12, '8561981100', 9622814060, 9622814060, 'Ab Luva', '1234567891', '1234567891', 'asd2@gmail.com', 'b-4, anand nagar, dwarkadhish society', 'upleta', '360490', 'gujarat', '1997-01-01', '27', 'male', 'married', 'IT Employee', 'asd', '1', '1', '0', '0', '[\"8561981100-3018767396.jpg\"]', 'no', 'occational', 'regular', 'yes, corona sergery', 'yes, corona hospitality', 'other', NULL, 'as dqwq 1', 1, '2024-06-27 23:33:01', '2024-07-01 02:15:23'),
+(13, '1945164148', 9622814060, 9622814060, 'asd', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2021-01-05', '3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '[\"1945164148-4916246574.jpg\"]', NULL, NULL, NULL, NULL, NULL, 'other', NULL, 'asd qwe', 1, '2024-06-28 01:08:14', '2024-06-28 01:30:35'),
+(14, '8059577479', 9622814060, 9622814060, 'asd 123', NULL, NULL, NULL, 'b-4, anand nagar, dwarkadhish society', 'upleta', '360490', 'gujarat', '2012-01-05', '12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '[\"[\\\"[\\\\\\\"\\\\\\\"]\\\"]\"]', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2024-06-28 05:33:02', '2024-07-06 11:45:43'),
+(15, '8823312118', 9622814060, 9622814060, 'Janak Soni', '1234567894', NULL, 'janaka@gmail.com', 'asd qwe zxc', 'gandhinagar', '123456', 'gujarat', '2012-12-31', '11', 'male', 'married', 'IT Employee', NULL, NULL, NULL, NULL, NULL, '[\"\"]', NULL, NULL, NULL, NULL, NULL, 'doctor', 'Ab Side', NULL, 1, '2024-07-07 06:19:53', '2024-07-07 06:21:45'),
+(16, '6007062775', 9622814060, 9622814060, 'patient 1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1987-12-28', '36', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '[\"[\\\"[\\\\\\\"\\\\\\\"]\\\"]\"]', NULL, NULL, NULL, NULL, NULL, 'other', NULL, 'ab aca', 1, '2024-07-09 15:54:45', '2024-07-09 15:55:25'),
+(17, '8029440359', 9622814060, 9622814060, 'patient 2', '1234567890', '1234567890', 'asd@gmail.com', NULL, NULL, NULL, NULL, '2003-01-01', '21', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '[\"[\\\"[\\\\\\\"\\\\\\\"]\\\"]\"]', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2024-07-09 16:00:37', '2024-07-09 16:01:15'),
+(18, '3197211687', 3507097541, 3507097541, 'Bijal Patel', '12345679890', NULL, 'bijal@gmail.com', 'b-4, drwarkadhish, west gate', 'ahmedabad', '360005', 'gujarat', '1987-01-01', '37', 'female', 'married', 'IT Employee', NULL, NULL, NULL, NULL, NULL, '[\"3197211687-9089431884.png\"]', 'no', 'no', 'occational', 'no', 'no', 'doctor', 'Raj Mehta', NULL, 1, '2024-08-04 04:57:55', '2024-08-04 04:57:55'),
+(19, '5981076475', 3507097541, 8022048049, 'Khyaati Parekh', '1234567890', NULL, 'khyati@gmail.com', 'b-4, anand nagar, dwarkadhish society', NULL, NULL, NULL, '1991-01-01', '33', 'female', NULL, 'IT Employee', NULL, NULL, NULL, NULL, NULL, '[\"5981076475-1084817721.png\"]', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2024-08-04 04:59:09', '2024-08-06 02:23:16'),
+(24, 'EVA202411271', 9622814060, 9622814060, 'test patient 1', '1234567890', '1234567890', 'testpatient1@gmail.com', 'asd sdasd asdsd asd asd as', 'upleta', '360490', 'gujarat', '2020-01-01', '4', 'male', 'married', 'IT Employee', 'asd sd', '1', '1', '0', '0', '[\"\"]', 'no', 'occational', 'occational', 'as sds d', 'asd asd s ds', 'other', NULL, 'as dqwq', 1, '2024-11-27 17:55:04', '2024-11-27 17:55:04');
 
 -- --------------------------------------------------------
 
@@ -852,7 +859,9 @@ INSERT INTO `referred_doctors` (`id`, `rd_id`, `rd_added_by`, `rd_updated_by`, `
 (9, 6882550336, 9622814060, 9622814060, 'asd wqe', '2024-07-07 06:07:54', '2024-07-07 06:07:54'),
 (10, 1702802074, 9622814060, 9622814060, 'Ab Side', '2024-07-07 06:19:53', '2024-07-07 06:19:53'),
 (11, 5877398144, 9622814060, 9622814060, 'axa', '2024-07-09 15:54:45', '2024-07-09 15:54:45'),
-(12, 3457506543, 9622814060, 9622814060, 'ab aca', '2024-07-09 15:55:07', '2024-07-09 15:55:07');
+(12, 3457506543, 9622814060, 9622814060, 'ab aca', '2024-07-09 15:55:07', '2024-07-09 15:55:07'),
+(13, 6818228222, 9622814060, 9622814060, 'as dqwq 1', '2024-11-27 15:30:59', '2024-11-27 15:30:59'),
+(14, 4186257664, 9622814060, 9622814060, 'as dqwq', '2024-11-27 17:53:41', '2024-11-27 17:53:41');
 
 -- --------------------------------------------------------
 
@@ -1121,8 +1130,8 @@ CREATE TABLE `users` (
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) NOT NULL,
   `person_name` varchar(255) NOT NULL,
-  `contactno` int(11) NOT NULL,
-  `address` varchar(255) NOT NULL,
+  `contactno` text NOT NULL,
+  `address` varchar(255) DEFAULT NULL,
   `added_by` bigint(20) NOT NULL,
   `updated_by` bigint(20) NOT NULL,
   `user_status` int(11) NOT NULL DEFAULT 1 COMMENT '0-disable,1-enable',
@@ -1137,12 +1146,16 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `user_id`, `name`, `email`, `email_verified_at`, `password`, `person_name`, `contactno`, `address`, `added_by`, `updated_by`, `user_status`, `show_to_doctor_list`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 9622814060, 'super_admin', 'superadmin@gmail.com', '2024-06-17 06:27:21', '$2y$12$.OnlOXKQC.UlJqRQc2n5Hue9evXhVsxA8nYW2t6fBPnJ/OR/r2eeW', 'Super Admin', 1234567890, 'EVA hospital, Ahmedabad', 9622814060, 9622814060, 1, 1, '94XD3e6fImcsnL6D6GgoVTKiR1jytsFYa9ufMB7TvZPfcUzExF1ZC86moXIL', '2024-06-17 06:27:21', '2024-07-27 07:52:16'),
-(2, 5962819849, 'abhay_luva', 'ablov@gmail.com', NULL, '$2y$12$uJN2Ddjob97F7vqw2ufkROYVoNYa1JNOVEb4QYX3xpoS3Wuu8bsgG', 'Abhay Luva', 1245784251, 'dwarkadhish so, anand nagar, beind vrajwihar, rajkot', 9622814060, 9622814060, 1, 1, NULL, '2024-06-18 03:29:40', '2024-06-28 06:09:51'),
-(3, 8022048049, 'haresh_bhai', 'hr@gmail.com', NULL, '$2y$12$lxNz9YPwZN6lJpCdg4Q3reDnW4xDdaC6ZIBvNJzerSDKgKdJEguH2', 'Haresh Bhai', 1245784251, 'asasds sas adsd', 5962819849, 9622814060, 1, 1, NULL, '2024-06-18 03:47:03', '2024-06-28 06:08:36'),
-(4, 6636406942, 'raj', 'raj@gmail.com', NULL, '$2y$12$jmAFeQGPaIgM.DhK.dGrM.sVk7ODQ4ufKVqKXpzJ7DCwRRYokVtyG', 'Raj Bhai', 1234567890, 'asd as dasdasda', 9622814060, 9622814060, 1, 1, NULL, '2024-06-19 04:20:03', '2024-06-28 06:09:42'),
-(5, 7308573809, 'pankit', 'pk@gmail.com', NULL, '$2y$12$k.pdzDXoH5nfTQVLUUG6HOFla1y7M8f4E5nI25KbySMhhPdeKqyWa', 'pankit', 1234567890, 'asd qwe zxc', 9622814060, 9622814060, 1, 1, NULL, '2024-06-28 06:09:26', '2024-06-28 06:09:26'),
-(7, 3507097541, 'akshar_shah', 'akshar@gmail.com', NULL, '$2y$12$d1vYivDld.c2lnc/zA2da.8Ob4./8z7cFuThQCcvDjOMrYTU1vC7G', 'Akshar Shah', 1234567890, 'as dsdasdsdadasd asdasd asdas', 9622814060, 9622814060, 1, 1, NULL, '2024-08-04 04:45:34', '2024-08-04 04:45:34');
+(1, 9622814060, 'super_admin', 'superadmin@gmail.com', '2024-06-17 06:27:21', '$2y$12$.OnlOXKQC.UlJqRQc2n5Hue9evXhVsxA8nYW2t6fBPnJ/OR/r2eeW', 'Super Admin', '1234567890', 'EVA hospital, Ahmedabad', 9622814060, 9622814060, 1, 1, '94XD3e6fImcsnL6D6GgoVTKiR1jytsFYa9ufMB7TvZPfcUzExF1ZC86moXIL', '2024-06-17 06:27:21', '2024-07-27 07:52:16'),
+(2, 5962819849, 'abhay_luva', 'ablov@gmail.com', NULL, '$2y$12$uJN2Ddjob97F7vqw2ufkROYVoNYa1JNOVEb4QYX3xpoS3Wuu8bsgG', 'Abhay Luva', '1245784251', 'dwarkadhish so, anand nagar, beind vrajwihar, rajkot', 9622814060, 9622814060, 1, 1, NULL, '2024-06-18 03:29:40', '2024-06-28 06:09:51'),
+(3, 8022048049, 'haresh_bhai', 'hr@gmail.com', NULL, '$2y$12$lxNz9YPwZN6lJpCdg4Q3reDnW4xDdaC6ZIBvNJzerSDKgKdJEguH2', 'Haresh Bhai', '1245784251', 'asasds sas adsd', 5962819849, 9622814060, 1, 1, NULL, '2024-06-18 03:47:03', '2024-06-28 06:08:36'),
+(4, 6636406942, 'raj', 'raj@gmail.com', NULL, '$2y$12$jmAFeQGPaIgM.DhK.dGrM.sVk7ODQ4ufKVqKXpzJ7DCwRRYokVtyG', 'Raj Bhai', '1234567890', 'asd as dasdasda', 9622814060, 9622814060, 1, 1, NULL, '2024-06-19 04:20:03', '2024-06-28 06:09:42'),
+(5, 7308573809, 'pankit', 'pk@gmail.com', NULL, '$2y$12$k.pdzDXoH5nfTQVLUUG6HOFla1y7M8f4E5nI25KbySMhhPdeKqyWa', 'pankit', '1234567890', 'asd qwe zxc', 9622814060, 9622814060, 1, 1, NULL, '2024-06-28 06:09:26', '2024-06-28 06:09:26'),
+(7, 3507097541, 'akshar_shah', 'akshar@gmail.com', NULL, '$2y$12$d1vYivDld.c2lnc/zA2da.8Ob4./8z7cFuThQCcvDjOMrYTU1vC7G', 'Akshar Shah', '1234567890', 'as dsdasdsdadasd asdasd asdas', 9622814060, 9622814060, 1, 1, NULL, '2024-08-04 04:45:34', '2024-08-04 04:45:34'),
+(8, 9152073037, 'doctor', 'doctor@gmail.com', NULL, '$2y$12$9OyjS6ykE9OAbkyubZt7sOOZhdmDsMVwDxUtgJQs49ngYHKwvKsiy', 'Doctor Name', '1234567890', 'as d asd asd a', 9622814060, 9622814060, 1, 1, NULL, '2024-11-20 14:01:16', '2024-11-20 14:01:16'),
+(9, 6922981237, 'accountant', 'accountant@gmail.com', NULL, '$2y$12$B6okHNHuD5WNOuN5Z/oWKuVXreWqM3iISLpfvqywMgt37tlq9Xlw.', 'acc', '1234567890', 'asd asd asd sd', 9622814060, 9622814060, 1, 1, NULL, '2024-11-20 14:07:11', '2024-11-20 14:07:11'),
+(10, 7639639325, 'acc', 'accountant1@gmail.com', NULL, '$2y$12$MeGPw0c0/1s60VX3rIUMuORYMd9fJNNGOmiRwizZFqyVvNm1eyiK2', 'acc 1', '1245784251', NULL, 9622814060, 9622814060, 1, 1, NULL, '2024-11-20 14:09:03', '2024-11-20 14:09:03'),
+(11, 2037845628, 'test user 1', 'testuser1@gmail.com', NULL, '$2y$12$AVq1MPtZ..oVFqX/TeUs1e4vECiH8HongF6rX8xFa1ykg5xN.uIKq', 'test user 1', '9252412513', NULL, 9622814060, 9622814060, 1, 1, NULL, '2024-11-27 17:24:17', '2024-11-27 17:24:17');
 
 -- --------------------------------------------------------
 
@@ -1334,7 +1347,7 @@ ALTER TABLE `password_reset_tokens`
 --
 ALTER TABLE `patients`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `patients_pa_id_index` (`pa_id`),
+  ADD KEY `patients_pa_id_index` (`pa_id`(768)),
   ADD KEY `patients_pa_name_index` (`pa_name`),
   ADD KEY `patients_pa_contact_no_index` (`pa_contact_no`),
   ADD KEY `patients_pa_alt_contact_no_index` (`pa_alt_contact_no`),
@@ -1425,7 +1438,7 @@ ALTER TABLE `appointments`
 -- AUTO_INCREMENT for table `appointment_additional_charges`
 --
 ALTER TABLE `appointment_additional_charges`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `appointment_medicines`
@@ -1509,7 +1522,7 @@ ALTER TABLE `operation_medicines`
 -- AUTO_INCREMENT for table `patients`
 --
 ALTER TABLE `patients`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `permissions`
@@ -1527,7 +1540,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `referred_doctors`
 --
 ALTER TABLE `referred_doctors`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `roles`
@@ -1551,7 +1564,7 @@ ALTER TABLE `trainees`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `visiting_fees`

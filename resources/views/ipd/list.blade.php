@@ -26,6 +26,18 @@
                                                 <input type='text' name="admit_date_range" id="admit_date_range" class="form-control" placeholder="Select date range" value="{{ $searchData['admit_date_range'] }}" />
                                             </div>
                                         </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
+                                            <label for="">Status</label>
+                                            <select name="ipd_status" id="ipd_status" class="form-control" onchange="changeStatusVal(this.value)">
+                                                <option value="">-Select-</option>
+                                                <option value="admit" {{ ($searchData['ipd_status'] == 'admit') ? 'selected' : '' }}>Admitted</option>
+                                                <option value="discharged" {{ ($searchData['ipd_status'] == 'discharged') ? 'selected' : '' }}>Discharge</option>
+                                                <option value="cancelled" {{ ($searchData['ipd_status'] == 'cancelled') ? 'selected' : '' }}>Cancel</option>
+                                                <option value="all" {{ ($searchData['ipd_status'] == '') ? 'selected' : '' }}>All</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <div class="col-12 form-group">
                                             <button class="btn btn-primary" type="submit">Search</button>
                                             <a class="btn btn-danger" href="{{ route('ipd.list') }}">Resst</a>
@@ -94,7 +106,7 @@
                                                     @else
                                                     @php $statusClass = 'btn-danger'; @endphp
                                                     @endif
-                                                    <span class="btn {{ $statusClass }}" id="status_{{ $ipd->ipd_id }}" onclick="statusModal('{{ base64_encode($ipd->ipd_id) }}')">{{ ucfirst($ipd->ipd_status) }}</span>
+                                                    <span class="btn {{ $statusClass }}" id="status_{{ $ipd->ipd_id }}" onclick="statusModal('{{ base64_encode($ipd->ipd_id) }}')">{{ ($ipd->ipd_status == 'admit') ? 'Admitted' : ucfirst($ipd->ipd_status) }}</span>
                                                 </td>
                                                 @endcan
                                                 @can('ipd-opd-history')
@@ -204,10 +216,10 @@
             <div class="modal-body">
                 <table class="table" id="statusDetail">
                     <div class="form-group">
-                        <label for="">Satatus</label>
+                        <label for="">Status</label>
                         <select name="ip_status_val" id="ip_status_val" class="form-control" onchange="changeStatusVal(this.value)">
                             <option value="">-Select-</option>
-                            <option value="admit">Admit</option>
+                            <option value="admit">Admitted</option>
                             <option value="discharged">Discharge</option>
                             <option value="cancelled">Cancel</option>
                         </select>

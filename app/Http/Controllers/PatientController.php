@@ -80,7 +80,7 @@ class PatientController extends MainController
 
         $insert = $this->patient->insertData($input);
         if (isset($insert->pa_id)) {
-            return $this->getSuccessResult([], $input['pa_name'] . ' added as Patient', true);
+            return $this->getSuccessResult(['pa_id' => $insert->pa_id], $input['pa_name'] . ' added as Patient', true);
         } else {
             return $this->getErrorMessage($input['pa_name'] . ' not added as patient, something is wrong.');
         }
@@ -204,7 +204,16 @@ class PatientController extends MainController
 
     public function getUniqueID()
     {
-        $pa_id = $this->randomString(10, 'number');
+        //$pa_id = 'EVA' . date('Ymd') . $this->randomString(10, 'number');
+        //$check = $this->patient->singlData($pa_id);
+        $format = 'EVA' . date('Ymd');
+        $pa_id = '';
+        $patientCount = $this->patient->getList(['patient_id_start_month_year' => $format], false)->count();
+        if ($patientCount > 0) {
+            $pa_id = $format . ($patientCount + 1);
+        } else {
+            $pa_id = $format . '1';
+        }
         $check = $this->patient->singlData($pa_id);
         if (!empty($check)) {
             $this->getUniqueID();

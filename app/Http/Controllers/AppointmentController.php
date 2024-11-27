@@ -50,19 +50,24 @@ class AppointmentController extends MainController
         $searchData['appointment_date_range']  = isset($input['appointment_date_range']) ? $input['appointment_date_range'] : date('Y-m-d') . ' - ' . date('Y-m-d');
         $searchData['doctor']  = isset($input['doctor']) ? $input['doctor'] : '';
         $searchData['case_type']  = isset($input['case_type']) ? $input['case_type'] : '';
+        $searchData['ap_status']  = isset($input['ap_status']) ? $input['ap_status'] : 'pending';
         $list = $this->appointment->getList($searchData);
         return view('appointment.list', compact('list', 'searchData', 'patientList', 'doctors', 'visitingFees'));
     }
 
     /* appointment create */
-    public function create()
+    public function create(Request $request)
     {
+        $input = $request->all();
+        $pa_id = isset($input['patient']) ? $input['patient'] : '';
+        $pa_id = base64_decode($pa_id);
+
         $patientList = $this->patient->patientActiveList();
         $doctorList = User::select('user_id', 'person_name')->role('doctor')->where('user_status', 1)->orderBy('id', 'asc')->get()->toArray();
         $assDoctorList = User::select('user_id', 'person_name')->role('assistant_doctor')->where('user_status', 1)->orderBy('id', 'asc')->get()->toArray();
         $doctors = array_merge($doctorList, $assDoctorList);
         $visitingFees = $this->visiting_fee->getList();
-        return view('appointment.create', compact('patientList', 'doctors', 'visitingFees'));
+        return view('appointment.create', compact('patientList', 'doctors', 'visitingFees', 'pa_id'));
     }
 
     /* appointment store */

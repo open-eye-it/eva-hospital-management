@@ -30,7 +30,7 @@
                                                         <option value="">Select</option>
                                                         @if(!empty($patientList))
                                                         @foreach($patientList as $list)
-                                                        <option value="{{ $list->pa_id }}">{{ $list->pa_name }} - {{ $list->pa_id }}</option>
+                                                        <option value="{{ $list->pa_id }}" {{ ($pa_id == $list->pa_id) ? 'selected' : '' }}>{{ $list->pa_name }} - {{ $list->pa_id }}</option>
                                                         @endforeach
                                                         @endif
                                                     </select>

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('person_name')->index();
-            $table->integer('contactno');
+            $table->text('contactno');
             $table->string('address')->nullable();
             $table->biginteger('added_by');
             $table->biginteger('updated_by');

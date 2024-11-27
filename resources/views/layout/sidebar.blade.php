@@ -386,7 +386,7 @@
 							<i class="icon-2x flaticon-user"></i>
 							<!--end::Svg Icon-->
 						</span>
-						<span class="menu-text">Categories</span>
+						<span class="menu-text">User Categories</span>
 						<i class="menu-arrow"></i>
 					</a>
 					<div class="menu-submenu">

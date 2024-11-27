@@ -338,7 +338,7 @@
                     $('#createBtn').removeClass('spinner spinner-white spinner-right');
                     $('#createBtn').attr('disabled', false);
                     if(res.response === true){
-                        sweetAlertSuccess(res.message, 3000, "{{ route('patient.list') }}");
+                        sweetAlertSuccess(res.message, 3000, "{{ route('appointment.create') }}?patient="+btoa(res.data['pa_id']));
                     }else{
                         sweetAlertError(res.message, 3000); 
                     }

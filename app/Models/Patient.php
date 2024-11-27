@@ -113,6 +113,7 @@ class Patient extends Model
         $search_text    = isset($filterdata['search_text']) ? $filterdata['search_text'] : '';
         $created_at    = isset($filterdata['created_at']) ? $filterdata['created_at'] : '';
         $date = isset($filterdata['date']) ? $filterdata['date'] : '';
+        $patient_id_start_month_year = isset($filterdata['patient_id_start_month_year']) ? $filterdata['patient_id_start_month_year'] : '';
         if (isset($search_text) && $search_text != '') {
             $data->where('pa_id', 'LIKE', '%' . $search_text . '%');
             $data->orWhere('pa_name', 'LIKE', '%' . $search_text . '%');
@@ -126,6 +127,9 @@ class Patient extends Model
         }
         if (isset($date) && $date != '') {
             $data->whereDate('created_at', '=', $date);
+        }
+        if (isset($patient_id_start_month_year) && $patient_id_start_month_year != '') {
+            $data->where('pa_id', 'like', $patient_id_start_month_year . '%');
         }
     }
 

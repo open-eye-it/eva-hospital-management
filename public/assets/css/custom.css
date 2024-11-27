@@ -222,3 +222,7 @@ label{
 textarea{
     border: 1px solid gray !important;
 }
+
+.dashboard a{
+    text-decoration: underline;
+}

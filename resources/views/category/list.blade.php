@@ -1,6 +1,6 @@
 @extends('layout.master');
-@section('title', 'Category - List')
-@section('breadcrumb-module', 'Category')
+@section('title', 'User Category - List')
+@section('breadcrumb-module', 'User Category')
 @section('page-content')
 <!--begin::Row-->
 <div class="row">

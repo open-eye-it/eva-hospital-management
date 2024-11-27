@@ -59,6 +59,15 @@
                                                 @endif
                                             </select>
                                         </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
+                                            <label for="patient">Status</label>
+                                            <select class="form-control" name="ap_status" id="ap_status" onchange="changeFee(this.value)">
+                                                <option value="">Select</option>
+                                                <option value="pending" {{ ($searchData['ap_status'] == 'pending') ? 'selected' : '' }}>Pending</option>
+                                                <option value="completed" {{ ($searchData['ap_status'] == 'completed') ? 'selected' : '' }}>Completed</option>
+                                                <option value="cancelled" {{ ($searchData['ap_status'] == 'cancelled') ? 'selected' : '' }}>Cancelled</option>
+                                            </select>
+                                        </div>
                                         <div class="col-12 form-group">
                                             <button class="btn btn-primary" type="submit">Search</button>
                                             <a class="btn btn-danger" href="{{ route('appointment.list') }}">Resst</a>

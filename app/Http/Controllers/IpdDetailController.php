@@ -39,6 +39,7 @@ class IpdDetailController extends MainController
         $input = $request->all();
         $searchData['search_text']      = isset($input['search_text']) ? $input['search_text'] : '';
         $searchData['admit_date_range'] = isset($input['admit_date_range']) ? $input['admit_date_range'] : date('Y-m-d') . ' - ' . date('Y-m-d');
+        $searchData['ipd_status']       = (isset($input['ipd_status']) && $input['ipd_status'] == 'all') ? '' : (isset($input['ipd_status']) ? $input['ipd_status'] : 'admit');
         $list = $this->ipd->getList($searchData);
         return view('ipd.list', compact('list', 'searchData'));
     }

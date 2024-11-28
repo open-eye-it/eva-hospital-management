@@ -85,7 +85,7 @@
                                                 @can('account-detail-opd-additional-charge')
                                                 <td>
 
-                                                    <i title="Additiona Charge" class="icon-2x flaticon flaticon-add-circular-button cursor_pointer" onclick="additionalChargeShow('{{ base64_encode($appointment->ap_id) }}', '{{ json_encode($searchData) }}')"></i>
+                                                    <i title="Additional Charge" class="icon-2x flaticon flaticon-add-circular-button cursor_pointer" onclick="additionalChargeShow('{{ base64_encode($appointment->ap_id) }}', '{{ json_encode($searchData) }}')"></i>
                                                 </td>
                                                 @endcan
                                             </tr>
@@ -175,8 +175,11 @@
 </div>
 <script>
     function additionalChargeShow(ap_id, queryData) {
+        let url = "{{ route('opd-account-detail.additional-charge.list', ['ap_id' => ':ap_id', 'queryData' => ':queryData']) }}";
+        url = url.replace(':ap_id', ap_id);
+        url = url.replace(':queryData', queryData);
         $.ajax({
-            url: "{{ route('opd-account-detail.additional-charge.list', '') }}" + "/" + ap_id,
+            url: url,
             method: "GET",
             success: function(res) {
                 if (res.response === true) {
@@ -229,7 +232,7 @@
                         <td>' + data.data.apac_qty + '</td> \
                         <td>' + data.data.apac_charge + '</td> \
                         <td>' + data.data.apac_final_charge + '</td> \
-                        <td><i title="Remove" class="la la-trash icon-3x cursor_pointer" onclick="removerCharge(' + data.data.apac_id + ')"></i></td> < \
+                        <td><i title="Remove" class="la la-trash icon-3x cursor_pointer" onclick="removerCharge(' + data.data.apac_id + ', ' + ap_id + ', ' + queryData + ')"></i></td> < \
                         tr > ';
                         $('#allAdditionalCharge').prepend(tableRow);
                         $('#total_fees_amount').text(data.total_final);
@@ -253,9 +256,12 @@
     }
 
     /* Remove Charge */
-    function removerCharge(apac_id) {
+    function removerCharge(apac_id, ap_id) {
+        let url = "{{ route('opd-account-detail.additional-charge.remove', ['apac_id' => ':apac_id', 'ap_id' => ':ap_id']) }}";
+        url = url.replace(':apac_id', apac_id);
+        url = url.replace(':ap_id', ap_id);
         $.ajax({
-            url: "{{ route('opd-account-detail.additional-charge.remove', '') }}" + "/" + btoa(apac_id),
+            url: url,
             method: "GET",
             success: function(res) {
                 if (res.response == true) {

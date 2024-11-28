@@ -191,9 +191,9 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
     /* Appointment Account Detail */
     Route::prefix('opd-account-detail')->name('opd-account-detail.')->group(function () {
         Route::get('/', [OPDAccountDetailController::class, 'index'])->name('list')->middleware(['role_or_permission:account-detail-opd-read']);
-        Route::get('additional_charge/list/{ap_id}', [OPDAccountDetailController::class, 'additionalChargeList'])->name('additional-charge.list')->middleware(['role_or_permission:appointment-additional-charge|account-detail-opd-additional-charge']);
+        Route::get('additional_charge/list/{ap_id}/{queryData}', [OPDAccountDetailController::class, 'additionalChargeList'])->name('additional-charge.list')->middleware(['role_or_permission:appointment-additional-charge|account-detail-opd-additional-charge']);
         Route::get('additional-charge/store', [OPDAccountDetailController::class, 'additionalChargeStore'])->name('additional-charge.store');
-        Route::get('additional-charge/remove/{apac_id}', [OPDAccountDetailController::class, 'additionalChargeRemove'])->name('additional-charge.remove');
+        Route::get('additional-charge/remove/{apac_id}/{ap_id}', [OPDAccountDetailController::class, 'additionalChargeRemove'])->name('additional-charge.remove');
     });
     /* IPD Detail */
     Route::prefix('ipd')->group(function () {

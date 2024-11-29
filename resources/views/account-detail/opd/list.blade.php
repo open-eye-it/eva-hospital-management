@@ -232,9 +232,8 @@
                         <td>' + data.data.apac_qty + '</td> \
                         <td>' + data.data.apac_charge + '</td> \
                         <td>' + data.data.apac_final_charge + '</td> \
-                        <td><i title="Remove" class="la la-trash icon-3x cursor_pointer" onclick="removerCharge(' + data.data.apac_id + ', ' + ap_id + ', ' + queryData + ')"></i></td> < \
-                        tr > ';
-                        $('#allAdditionalCharge').prepend(tableRow);
+                        <td><i title="Remove" class="la la-trash icon-3x cursor_pointer" onclick="removerCharge(' + data.data.apac_id + ', ' + ap_id + ', ' + btoa(queryData) + ')"></i></td> <\tr > ';
+                        $('#allAdditionalCharge').prepend(data.tableRow);
                         $('#total_fees_amount').text(data.total_final);
                         $('#app_row_additional_charge_' + atob(ap_id)).text(data.appointment_row_additional_charge);
 
@@ -256,16 +255,21 @@
     }
 
     /* Remove Charge */
-    function removerCharge(apac_id, ap_id) {
-        let url = "{{ route('opd-account-detail.additional-charge.remove', ['apac_id' => ':apac_id', 'ap_id' => ':ap_id']) }}";
+    function removerCharge(apac_id, ap_id, queryData) {
+        let url = "{{ route('opd-account-detail.additional-charge.remove', ['apac_id' => ':apac_id', 'ap_id' => ':ap_id', 'queryData' => ':queryData']) }}";
         url = url.replace(':apac_id', apac_id);
         url = url.replace(':ap_id', ap_id);
+        url = url.replace(':queryData', queryData);
         $.ajax({
             url: url,
             method: "GET",
             success: function(res) {
+                console.log(res);
                 if (res.response == true) {
+                    let data = res.data;
                     $('#row_' + apac_id).remove();
+                    $('#total_fees_amount').text(data.total_final);
+                    $('#app_row_additional_charge_' + atob(ap_id)).text(data.appointment_row_additional_charge);
                 } else {
                     sweetAlertError(res.message, 3000);
                 }

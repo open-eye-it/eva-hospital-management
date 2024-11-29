@@ -28,7 +28,24 @@ class IPDAccountDetailControoller extends MainController
         $searchData['search_text']      = isset($input['search_text']) ? $input['search_text'] : '';
         $searchData['admit_date_range'] = isset($input['admit_date_range']) ? $input['admit_date_range'] : date('Y-m-d') . ' - ' . date('Y-m-d');
         $list = $this->ipd->getList($searchData);
-        return view('account-detail.ipd.list', compact('list', 'searchData'));
+
+        $total_fees = $this->totalBillAmount($searchData);
+        $total_received_fees = $this->totalReceivedAmount($searchData);
+        return view('account-detail.ipd.list', compact('list', 'searchData', 'total_fees', 'total_received_fees'));
+    }
+
+    /* Total of Charge */
+    public function totalBillAmount($searchData)
+    {
+        $total_fees = $this->ipd->totalBillAmount($searchData);
+        return $total_fees;
+    }
+
+    /* Total of Received Charge */
+    public function totalReceivedAmount($searchData)
+    {
+        $total_fees = $this->ipd->totalReceivedAmount($searchData);
+        return $total_fees;
     }
 
     /* Single IPD bill detail */

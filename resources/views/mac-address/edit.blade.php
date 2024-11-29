@@ -1,6 +1,6 @@
 @extends('layout.master');
-@section('title', 'Mac Address - Update')
-@section('breadcrumb-module', 'Mac Address')
+@section('title', 'System IP Address - Update')
+@section('breadcrumb-module', 'System IP Address')
 @section('page-content')
 <!--begin::Row-->
 <div class="row">
@@ -32,8 +32,8 @@
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label>Mac Address <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" placeholder="Mac Address" name="ma_address" id="ma_address" value="{{ $data->ma_address }}" />
+                                                    <label>IP Address <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" placeholder="IP Address" name="ma_address" id="ma_address" value="{{ $data->ma_address }}" />
                                                     <span class="text-danger" id="ma_addressErr"></span>
                                                 </div>
                                             </div>
@@ -75,7 +75,7 @@
             timeoutID('ma_pc_nameErr', 3000);
             scrollTop('ma_pc_nameErr');
         }else if(ma_address == ''){
-            $('#ma_addressErr').text('Please enter mac address');
+            $('#ma_addressErr').text('Please enter ip address');
             timeoutID('ma_addressErr', 3000);
             scrollTop('ma_addressErr');
         }else{

@@ -54,10 +54,11 @@ class OPDAccountDetailController extends MainController
         $ap_id = base64_decode($ap_id);
         $list = $this->additional_charge->getAppointmentAdditionalChargeList($ap_id);
         if (count($list->toArray()) > 0) {
-            $tableRow = '';
-            foreach ($list as $charge) {
-                $tableRow .= '<tr id="row_' . $charge->apac_id . '"><td>' . $charge->apac_id . '</td><td>' . $charge->apac_desc . '</td><td>' . $charge->apac_qty . '</td><td>' . $charge->apac_charge . '</td><td>' . $charge->apac_final_charge . '</td><td><i title="Remove" class="la la-trash icon-3x cursor_pointer" onclick="removerCharge(' . $charge->apac_id . ', ' . base64_encode($ap_id) . ', ' . (string)json_encode($queryData) . ')"></i></td></tr>';
-            }
+            // $tableRow = '';
+            // foreach ($list as $charge) {
+            //     $tableRow .= '<tr id="row_' . $charge->apac_id . '"><td>' . $charge->apac_id . '</td><td>' . $charge->apac_desc . '</td><td>' . $charge->apac_qty . '</td><td>' . $charge->apac_charge . '</td><td>' . $charge->apac_final_charge . '</td><td><i title="Remove" class="la la-trash icon-3x cursor_pointer" onclick="removerCharge(' . $charge->apac_id . ', ' . base64_encode($ap_id) . ', ' . base64_encode($queryData) . ')"></i></td></tr>';
+            // }
+            $tableRow = view('account-detail.opd.additional-charge-table', compact('list', 'ap_id', 'queryData'))->render();
 
             return $this->getSuccessResult($tableRow, 'Additional Charge list found', true);
         } else {
@@ -75,8 +76,7 @@ class OPDAccountDetailController extends MainController
         $input['apac_added_by']     = Auth::user()->user_id;
 
         $query = json_decode($input['query']);
-
-        unset($input['query']);
+        //unset($input['query']);
 
         $insert = $this->additional_charge->insertData($input);
         if (isset($insert->apac_id)) {
@@ -95,11 +95,13 @@ class OPDAccountDetailController extends MainController
             $appointment_row_additional_charge = $this->additional_charge->appointmentFinalChargesTotal($input['ap_id']);
 
             $data = $this->additional_charge->singlData($insert->apac_id);
-
+            $queryData = $input['query'];
+            $tableRow = view('account-detail.opd.additional-charge-single-row', compact('data', 'queryData'))->render();
             $finalData = [
                 'data'        => $data,
                 'total_final' => $total_final,
-                'appointment_row_additional_charge' => $appointment_row_additional_charge
+                'appointment_row_additional_charge' => $appointment_row_additional_charge,
+                'tableRow' => $tableRow
             ];
             return $this->getSuccessResult($finalData, 'Additional Charge added', true);
         } else {
@@ -107,13 +109,31 @@ class OPDAccountDetailController extends MainController
         }
     }
 
-    public function additionalChargeRemove($apac_id, $ap_id)
+    public function additionalChargeRemove($apac_id, $ap_id, $queryData)
     {
-        $apac_id = base64_decode($apac_id);
+        $apac_id = $apac_id;
         $ap_id   = base64_decode($ap_id);
         $delete = $this->additional_charge->deleteData($apac_id);
         if ($delete) {
-            return $this->getSuccessResult([], 'Additional charge removed', true);
+            $allCharge = $this->additional_charge->appointmentFinalChargesTotal($ap_id);
+            $this->appointment->updateData(['ap_additional_charge' => $allCharge], $ap_id);
+
+            $inputSearch = json_decode($queryData);
+            $searchData['search_text']            = isset($inputSearch->search_text) ? $inputSearch->search_text : '';
+            $searchData['appointment_date_range'] = isset($inputSearch->appointment_date_range) ? $inputSearch->appointment_date_range : '';
+            $total_fees                           = $this->totalFees($searchData);
+            $total_additional_fees                = $this->totalAdditionalFees($searchData);
+            $total_final                          = $total_fees + $total_additional_fees;
+
+            $data = $this->additional_charge->singlData($apac_id);
+            $appointment_row_additional_charge = $this->additional_charge->appointmentFinalChargesTotal($ap_id);
+            $finalData = [
+                'data'        => $data,
+                'total_final' => $total_final,
+                'appointment_row_additional_charge' => $appointment_row_additional_charge
+            ];
+
+            return $this->getSuccessResult($finalData, 'Additional charge removed', true);
         } else {
             return $this->getErrorMessage('Additional charge not removed, something is wrong.');
         }

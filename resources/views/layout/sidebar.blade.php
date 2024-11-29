@@ -348,7 +348,7 @@
 							<i class="icon-2x la la-server"></i>
 							<!--end::Svg Icon-->
 						</span>
-						<span class="menu-text">Mac Address</span>
+						<span class="menu-text">System IP Address</span>
 						<i class="menu-arrow"></i>
 					</a>
 					<div class="menu-submenu">

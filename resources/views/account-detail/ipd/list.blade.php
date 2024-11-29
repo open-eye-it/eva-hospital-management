@@ -34,6 +34,14 @@
                                     </div>
                                 </form>
                             </div>
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                    <h3>Total Fees: <span id="total_fees_amount">{{ $total_fees }}</span></h3>
+                                </div>
+                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                    <h3>Total Received Fees: <span id="total_received_fees_amount">{{ $total_received_fees }}</span></h3>
+                                </div>
+                            </div>
                             <!--begin::Card-->
                             <div class="card card-custom gutter-b">
                                 <div class="card-header flex-wrap py-2">

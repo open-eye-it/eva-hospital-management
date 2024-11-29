@@ -1,6 +1,6 @@
 @extends('layout.master');
-@section('title', 'Mac Address - List')
-@section('breadcrumb-module', 'Mac Address')
+@section('title', 'System IP Address - List')
+@section('breadcrumb-module', 'System IP Address')
 @section('page-content')
 <!--begin::Row-->
 <div class="row">

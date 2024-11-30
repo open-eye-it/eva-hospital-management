@@ -80,7 +80,7 @@
                                                 <td>{{ $ipd->patientData->pa_contact_no }}</td>
                                                 <td>{{ ($ipd->ipd_mediclaim == 'yes') ? 'Yes' : 'No' }}</td>
                                                 <td id="billAmountShow_{{ $ipd->ipd_id }}">{{ $ipd->ipd_bill_amount }}</td>
-                                                <td>{{ $ipd->ipd_received_amount }}</td>
+                                                <td id="billReceivedAmountShow_{{ $ipd->ipd_id }}">{{ $ipd->ipd_received_amount }}</td>
                                                 <td>{{ date('d M Y', strtotime($ipd->ipd_admit_date)) }}</td>
                                                 <td>{{ ($ipd->ipd_discharge_date != null) ? date('d M Y', strtotime($ipd->ipd_discharge_date)) : '' }}</td>
                                                 <td>{{ ($ipd->ipd_discharge_date != null) ? 'Yes' : 'No' }}</td>
@@ -324,6 +324,8 @@
     </div>
 </div>
 <script>
+    var filterData = "{{ $searchDataEncoded }}";
+
     /* Export IPD Details */
     function exportIPD() {
         let search_text = $('#search_text').val();
@@ -514,7 +516,7 @@
             timeoutID('ipl_amountErr', 3000);
             scrollTop('ipl_amount');
         } else {
-            let query = "ipl_paid_by=" + ipl_paid_by + "&ipl_received_by=" + ipl_received_by + "&ipl_amount=" + ipl_amount + "&ipl_desc=" + ipl_desc + "&ipl_id=" + ipl_id;
+            let query = "ipl_paid_by=" + ipl_paid_by + "&ipl_received_by=" + ipl_received_by + "&ipl_amount=" + ipl_amount + "&ipl_desc=" + ipl_desc + "&ipl_id=" + ipl_id + '&filterData=' + filterData;
             $.ajax({
                 url: "{{ route('ipd-acount-detail.payment.add', '') }}" + "/" + ipd_id + "?" + query,
                 method: "GET",
@@ -522,17 +524,17 @@
                     if (res.response == true) {
                         let data = res.data;
                         if (ipl_id == '') {
-                            let chargeRow = '<tr id="row_' + data.ipl_id + '"> \
-                                <td>' + data.ipl_id + '</td> \
-                                <td>' + data.ipl_received_date + '</td> \
-                                <td>' + data.ipl_amount + '</td> \
-                                <td>' + data.ipl_received_by + '</td> \
-                                <td>' + data.ipl_desc + '</td> \
-                                <td>' + data.ipl_paid_by + '</td> \
+                            let chargeRow = '<tr id="row_' + data.iplData.ipl_id + '"> \
+                                <td>' + data.iplData.ipl_id + '</td> \
+                                <td>' + data.iplData.ipl_received_date + '</td> \
+                                <td>' + data.iplData.ipl_amount + '</td> \
+                                <td>' + data.iplData.ipl_received_by + '</td> \
+                                <td>' + data.iplData.ipl_desc + '</td> \
+                                <td>' + data.iplData.ipl_paid_by + '</td> \
                                 <td> \
-                                    <i class="la la-edit icon-3x cursor_pointer" onclick="editPayment(' + data.ipl_id + ', ' + data.ipd_id + ')"></i> \
-                                    <i class="la la-trash icon-3x cursor_pointer" onclick="removePayment(' + data.ipl_id + ', ' + data.ipd_id + ')"></i> \
-                                    <i class="flaticon flaticon2-print icon-3x cursor_pointer" onclick="printReceipt(' + data.ipl_id + ', ' + data.ipd_id + ')"></i> \
+                                    <i class="la la-edit icon-3x cursor_pointer" onclick="editPayment(' + data.iplData.ipl_id + ', ' + data.iplData.ipd_id + ')"></i> \
+                                    <i class="la la-trash icon-3x cursor_pointer" onclick="removePayment(' + data.iplData.ipl_id + ', ' + data.iplData.ipd_id + ')"></i> \
+                                    <i class="flaticon flaticon2-print icon-3x cursor_pointer" onclick="printReceipt(' + data.iplData.ipl_id + ', ' + data.iplData.ipd_id + ')"></i> \
                                 </td> \
                             </tr>';
                             $('#paymentDetail').append(chargeRow);
@@ -542,20 +544,23 @@
                             $('#ipl_desc').val('');
                             $('#ipl_id').val('');
                         } else {
-                            $('#row_' + data.ipl_id + ' td').eq(0).html(data.ipl_id);
-                            $('#row_' + data.ipl_id + ' td').eq(1).html(data.ipl_received_date);
-                            $('#row_' + data.ipl_id + ' td').eq(2).html(data.ipl_amount);
-                            $('#row_' + data.ipl_id + ' td').eq(3).html(data.ipl_received_by);
-                            $('#row_' + data.ipl_id + ' td').eq(4).html(data.ipl_desc);
-                            $('#row_' + data.ipl_id + ' td').eq(5).html(data.ipl_paid_by);
+                            $('#row_' + data.iplData.ipl_id + ' td').eq(0).html(data.iplData.ipl_id);
+                            $('#row_' + data.iplData.ipl_id + ' td').eq(1).html(data.iplData.ipl_received_date);
+                            $('#row_' + data.iplData.ipl_id + ' td').eq(2).html(data.iplData.ipl_amount);
+                            $('#row_' + data.iplData.ipl_id + ' td').eq(3).html(data.iplData.ipl_received_by);
+                            $('#row_' + data.iplData.ipl_id + ' td').eq(4).html(data.iplData.ipl_desc);
+                            $('#row_' + data.iplData.ipl_id + ' td').eq(5).html(data.iplData.ipl_paid_by);
                             $('#ipl_paid_by').val('');
                             $('#ipl_received_by').val('');
                             $('#ipl_amount').val('');
                             $('#ipl_desc').val('');
                             $('#ipl_id').val('');
                         }
-                        receivedPayment(data.ipd_id);
+                        receivedPayment(data.iplData.ipd_id);
                         $('#addNewPayment').text('Add');
+
+                        $('#total_fees_amount').text(data.total_fees);
+                        $('#total_received_fees_amount').text(data.total_received_fees);
                     } else {
                         sweetAlertError(res.message, 3000);
                     }
@@ -569,15 +574,18 @@
     }
     /* Remove Payment */
     function removePayment(ipl_id) {
+        let query = 'filterData=' + filterData;
         $.ajax({
-            url: "{{ route('ipd-acount-detail.payment.remove', '') }}" + "/" + btoa(ipl_id),
+            url: "{{ route('ipd-acount-detail.payment.remove', '') }}" + "/" + btoa(ipl_id) + '?' + query,
             method: "GET",
             success: function(res) {
                 if (res.response == true) {
                     let data = res.data;
                     $('#row_' + ipl_id).remove();
                     console.log(data);
-                    receivedPayment(data.ipd_id);
+                    $('#total_fees_amount').text(data.total_fees);
+                    $('#total_received_fees_amount').text(data.total_received_fees);
+                    receivedPayment(data.iplData.ipd_id);
                 } else {
                     sweetAlertError(res.message, 3000);
                 }
@@ -638,6 +646,7 @@
                 if (res.response == true) {
                     let data = res.data;
                     $('#receivedAmount').text(data.ipd_received_amount);
+                    $('#billReceivedAmountShow_' + ipd_id).text(data.ipd_received_amount);
                 } else {
                     sweetAlertError(res.message, 3000);
                 }

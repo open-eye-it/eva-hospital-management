@@ -27,11 +27,12 @@ class IPDAccountDetailControoller extends MainController
         $input = $request->all();
         $searchData['search_text']      = isset($input['search_text']) ? $input['search_text'] : '';
         $searchData['admit_date_range'] = isset($input['admit_date_range']) ? $input['admit_date_range'] : date('Y-m-d') . ' - ' . date('Y-m-d');
+        $searchDataEncoded = base64_encode(json_encode($searchData));
         $list = $this->ipd->getList($searchData);
 
         $total_fees = $this->totalBillAmount($searchData);
         $total_received_fees = $this->totalReceivedAmount($searchData);
-        return view('account-detail.ipd.list', compact('list', 'searchData', 'total_fees', 'total_received_fees'));
+        return view('account-detail.ipd.list', compact('list', 'searchData', 'searchDataEncoded', 'total_fees', 'total_received_fees'));
     }
 
     /* Total of Charge */
@@ -123,6 +124,7 @@ class IPDAccountDetailControoller extends MainController
         $input = $request->query();
         $login_user_id = Auth::user()->user_id;
         $ipdData = $this->ipd->singleDataByColumn(['ipd_id' => $ipd_id]);
+        $filterData = (array)json_decode(base64_decode($input['filterData']));
         $data = [
             'ipd_id' => $ipd_id,
             'ipl_added_by' => $login_user_id,
@@ -139,7 +141,16 @@ class IPDAccountDetailControoller extends MainController
                 $ipd_received_amount = $ipdData->ipd_received_amount;
                 $ipd_received_amount = $ipd_received_amount + $input['ipl_amount'];
                 $ipdUpdate = $this->ipd->updateData(['ipd_received_amount' => $ipd_received_amount], $ipd_id);
-                return $this->getSuccessResult($iplData, 'IPD payment added', true);
+
+                $total_fees = $this->totalBillAmount($filterData);
+                $total_received_fees = $this->totalReceivedAmount($filterData);
+
+                $finalData = [
+                    'total_fees' => $total_fees,
+                    'total_received_fees' => $total_received_fees,
+                    'iplData' => $iplData
+                ];
+                return $this->getSuccessResult($finalData, 'IPD payment added', true);
             } else {
                 return $this->getErrorMessage('IPD payment not added, please try again.');
             }
@@ -153,6 +164,16 @@ class IPDAccountDetailControoller extends MainController
             if ($update == 1) {
                 $ipdUpdate = $this->ipd->updateData(['ipd_received_amount' => $ipd_received_amount], $ipd_id);
                 $charge = $this->ipd_payment->singlData($input['ipl_id']);
+
+                $total_fees = $this->totalBillAmount($filterData);
+                $total_received_fees = $this->totalReceivedAmount($filterData);
+
+                $finalData = [
+                    'total_fees' => $total_fees,
+                    'total_received_fees' => $total_received_fees,
+                    'iplData' => $charge
+                ];
+
                 return $this->getSuccessResult($charge, 'IPD payment updated', true);
             } else {
                 return $this->getErrorMessage('IPD payment not updated, please try again.');
@@ -161,8 +182,10 @@ class IPDAccountDetailControoller extends MainController
     }
 
     /* Ipd Payment Remove */
-    public function payment_remove($ipl_id)
+    public function payment_remove(Request $request, $ipl_id)
     {
+        $input = $request->all();
+        $filterData = (array)json_decode(base64_decode($input['filterData']));
         $ipl_id = base64_decode($ipl_id);
         $iplData = $this->ipd_payment->singlData($ipl_id);
         $data['ipd_id'] = $iplData->ipd_id;
@@ -173,7 +196,17 @@ class IPDAccountDetailControoller extends MainController
             $ipdUpdate = $this->ipd->updateData(['ipd_received_amount' => $ipd_received_amount], $iplData->ipd_id);
             /* Remove Payment */
             $remove = $this->ipd_payment->deleteData($ipl_id);
-            return $this->getSuccessResult($data, 'IPD payment removed', true);
+
+            $total_fees = $this->totalBillAmount($filterData);
+            $total_received_fees = $this->totalReceivedAmount($filterData);
+
+            $finalData = [
+                'total_fees' => $total_fees,
+                'total_received_fees' => $total_received_fees,
+                'iplData' => $data
+            ];
+
+            return $this->getSuccessResult($finalData, 'IPD payment removed', true);
         } else {
             return $this->getErrorMessage('IPD payment not removed, please try again.');
         }

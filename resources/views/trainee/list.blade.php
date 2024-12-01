@@ -71,8 +71,8 @@
                                                 <td>{{ $trainee->tr_real_id }}</td>
                                                 <td>{{ $trainee->tr_name }}</td>
                                                 <td>{{ $trainee->tr_contact_no }}</td>
-                                                <td>{{ $trainee->tr_start_date }}</td>
-                                                <td>{{ $trainee->tr_end_date }}</td>
+                                                <td>{{ date('d M Y', strtotime($trainee->tr_start_date)) }}</td>
+                                                <td>{{ date('d M Y', strtotime($trainee->tr_end_date)) }}</td>
                                                 <td>{{ $trainee->AddedByData->person_name }}</td>
                                                 @can('trainee-status')
                                                 <td>
@@ -295,11 +295,11 @@
                     </tr> \
                     <tr> \
                         <th>Start Date</th> \
-                        <td>' + data.tr_start_date + '</td> \
+                        <td>' + moment(data.tr_start_date).format('DD MMM YYYY') + '</td> \
                     </tr> \
                     <tr> \
                         <th>End Date</th> \
-                        <td>' + data.tr_end_date + '</td> \
+                        <td>' + moment(data.tr_end_date).format('DD MMM YYYY') + '</td> \
                     </tr> \
                     <tr> \
                         <th>Total Amount</th> \

@@ -39,6 +39,26 @@
                             @endif
                         </select>
                     </div>
+                    <div class="col-lg-2 col-md-2 col-sm-3 col-6 form-group">
+                        <label for="patient">OPD Status</label>
+                        <select class="form-control" name="ap_status" id="ap_status" onchange="changeFee(this.value)">
+                            <option value="">Select</option>
+                            <option value="pending" {{ ($filterData['ap_status'] == 'pending') ? 'selected' : '' }}>Pending</option>
+                            <option value="completed" {{ ($filterData['ap_status'] == 'completed') ? 'selected' : '' }}>Completed</option>
+                            <option value="cancelled" {{ ($filterData['ap_status'] == 'cancelled') ? 'selected' : '' }}>Cancelled</option>
+                            <option value="all" {{ ($filterData['ap_status'] == '') ? 'selected' : '' }}>All</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-3 col-6 form-group">
+                        <label for="">IPD Status</label>
+                        <select name="ipd_status" id="ipd_status" class="form-control" onchange="changeStatusVal(this.value)">
+                            <option value="">-Select-</option>
+                            <option value="admit" {{ ($filterData['ipd_status'] == 'admit') ? 'selected' : '' }}>Admitted</option>
+                            <option value="discharged" {{ ($filterData['ipd_status'] == 'discharged') ? 'selected' : '' }}>Discharge</option>
+                            <option value="cancelled" {{ ($filterData['ipd_status'] == 'cancelled') ? 'selected' : '' }}>Cancel</option>
+                            <option value="all" {{ ($filterData['ipd_status'] == '') ? 'selected' : '' }}>All</option>
+                        </select>
+                    </div>
                     <div class="col-lg-4 col-md-4 col-12 form-group mb-0 pt-lg-4 mt-lg-4 pt-md-4 mt-md-4">
                         <button class="btn btn-primary" type="submit">Search</button>
                         <a class="btn btn-danger" href="{{ route('doctor_opd_ipd.list') }}">Resst</a>
@@ -612,7 +632,7 @@
             }
         });
     });
-    
+
     /* Operative not print */
     $('body').on('click', '#operativeNotPrint', function() {
         let ipd_id = $(this).data('id');

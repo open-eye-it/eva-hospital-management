@@ -6,7 +6,6 @@
 <div class="row">
     <div class="col-lg-12 col-xxl-12">
         <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
-
             <!--begin::Entry-->
             <div class="d-flex flex-column-fluid">
                 <!--begin::Container-->
@@ -64,7 +63,7 @@
                                                 <td>{{ $patient->pa_id }}</td>
                                                 <td>{{ $patient->pa_name }}</td>
                                                 <td>{{ $patient->pa_contact_no }}</td>
-                                                <td>{{ $patient->pa_dob }}</td>
+                                                <td>{{ date('d M Y', strtotime($patient->pa_dob)) }}</td>
                                                 <td>{{ $patient->pa_city }}</td>
                                                 <td>{{ $patient->pa_state }}</td>
                                                 <td>{{ $patient->AddedByData->person_name }}</td>
@@ -195,7 +194,7 @@
                         <th>State</th> \
                         <td>' + $.trim(data.pa_state) + '</td> \
                         <th>DOB</th> \
-                        <td>' + $.trim(data.pa_dob) + '</td> \
+                        <td>' + moment($.trim(data.pa_dob)).format('DD MMM YYYY') + '</td> \
                     </tr> \
                     <tr> \
                         <th>Age</th> \

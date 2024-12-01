@@ -19,7 +19,7 @@
         <p>after successful Hands on Training in Minimal Access Surgery</p>
         <p>from <strong>Eva Endoscopy Training Institute</strong> attached to</p>
         <p><strong>Eva Women's Hospital, Ahmedabad, India,</strong></p>
-        <p>from <strong>{{ $data->tr_start_date }}</strong> to <strong>{{ $data->tr_end_date }}</strong> under the guidance of </p>
+        <p>from <strong>{{ date('d M Y', strtotime($data->tr_start_date)) }}</strong> to <strong>{{ date('d M Y', strtotime($data->tr_end_date)) }}</strong> under the guidance of </p>
         <p><strong>Dr. Dipak Limbachiya, Consultant Gynaecologist,</strong></p>
         <p><strong>Endoscopist, and Laparoscopic Gynaec-Onco Surgeon.</strong></p>
         <p style="margin-top:50px;"></p>

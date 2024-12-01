@@ -79,6 +79,7 @@ class IpdDetail extends Model
         $admit_date_range = isset($filterdata['admit_date_range']) ? $filterdata['admit_date_range'] : '';
         $follow_up_date_range = isset($filterdata['follow_up_date_range']) ? $filterdata['follow_up_date_range'] : '';
         $ipd_doctor    = isset($filterdata['ipd_doctor']) ? $filterdata['ipd_doctor'] : '';
+        $doctor = isset($filterdata['doctor']) ? $filterdata['doctor'] : '';
         if (isset($search_text) && $search_text != '') {
             $data->where('ipd_id', $search_text);
         }
@@ -102,6 +103,9 @@ class IpdDetail extends Model
         }
         if (isset($ipd_doctor) && $ipd_doctor != '') {
             $data->where('ipd_doctor', $ipd_doctor);
+        }
+        if (isset($doctor) && $doctor != '') {
+            $data->where('ipd_doctor', $doctor);
         }
     }
 

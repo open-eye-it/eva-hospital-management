@@ -80,6 +80,7 @@
 <script src="assets/js/pages/crud/forms/widgets/bootstrap-daterangepicker.js"></script>
 <script src="assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js"></script>
 <script src="assets/js/pages/crud/datatables/basic/scrollable.js"></script>
+<script src="assets/js/moment.js"></script>
 <!--end::Page Scripts-->
 <script src="assets/js/custom.js"></script>
 <script src="assets/js/pages/features/miscellaneous/sweetalert2.js"></script>

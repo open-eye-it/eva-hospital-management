@@ -19,9 +19,9 @@
                     <div class="d-flex flex-column mr-2">
                         <i class="icon-2x flaticon-calendar-2 text-white"></i>
                         @role('doctor')
-                        <a href="{{ route('doctor_opd_ipd.list') }}" class="text-decoration-underline text-white font-size-h1 font-weight-bolder mt-4">OPD</a>
+                        <a href="{{ route('doctor_opd_ipd.list') }}?appointment_date_range={{ date('Y-m-d') }}+-+{{ date('Y-m-d') }}" class="text-decoration-underline text-white font-size-h1 font-weight-bolder mt-4">OPD</a>
                         @else
-                        <a href="{{ route('appointment.list') }}" class="text-white font-size-h1 font-weight-bolder mt-4">OPD</a>
+                        <a href="{{ route('appointment.list') }}?appointment_date_range={{ date('Y-m-d') }}+-+{{ date('Y-m-d') }}" class="text-white font-size-h1 font-weight-bolder mt-4">OPD</a>
                         @endrole
                         <span class="text-white font-size-h6 font-weight-bold mt-2">Today OPD</span>
                     </div>
@@ -39,9 +39,9 @@
                     <div class="d-flex flex-column mr-2">
                         <i class="icon-3x la la-bed text-white"></i>
                         @role('doctor')
-                        <a href="{{ route('doctor_opd_ipd.list') }}" class="text-white font-size-h1 font-weight-bolder mt-4">IPD</a>
+                        <a href="{{ route('doctor_opd_ipd.list').'?admit_date_range='.date('Y-m-d').'+-+'.date('Y-m-d') }}" class="text-white font-size-h1 font-weight-bolder mt-4">IPD</a>
                         @else
-                        <a href="{{ route('ipd.list') }}" class="text-white font-size-h1 font-weight-bolder mt-4">IPD</a>
+                        <a href="{{ route('ipd.list').'?admit_date_range='.date('Y-m-d').'+-+'.date('Y-m-d') }}" class="text-white font-size-h1 font-weight-bolder mt-4">IPD</a>
                         @endrole
                         <span class="text-white font-size-h6 font-weight-bold mt-2">Today IPD</span>
                     </div>
@@ -74,7 +74,7 @@
                 <div class="d-flex align-items-center justify-content-between card-spacer flex-grow-1">
                     <div class="d-flex flex-column mr-2">
                         <i class="icon-2x flaticon-calendar-2 text-white"></i>
-                        <a href="{{ route('appointment.list') }}?appointment_date_range=2020-01-01+-+{{ date('Y-m-d') }}" class="text-white font-size-h1 font-weight-bolder mt-4">OPD</a>
+                        <a href="{{ route('appointment.list') }}" class="text-white font-size-h1 font-weight-bolder mt-4">OPD</a>
                         <span class="text-white font-size-h6 font-weight-bold mt-2">All OPD</span>
                     </div>
                     <span class="symbol symbol-light-danger symbol-70">
@@ -90,7 +90,7 @@
                 <div class="d-flex align-items-center justify-content-between card-spacer flex-grow-1">
                     <div class="d-flex flex-column mr-2">
                         <i class="icon-3x la la-bed text-white"></i>
-                        <a href="{{ route('ipd.list') }}?admit_date_range=2020-01-01+-+{{ date('Y-m-d') }}" class="text-white font-size-h1 font-weight-bolder mt-4">IPD</a>
+                        <a href="{{ route('ipd.list') }}" class="text-white font-size-h1 font-weight-bolder mt-4">IPD</a>
                         <span class="text-white font-size-h6 font-weight-bold mt-2">All IPD</span>
                     </div>
                     <span class="symbol symbol-light-success symbol-70">

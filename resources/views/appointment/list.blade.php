@@ -120,7 +120,7 @@
                                             <tr>
                                                 <td>{{ $list->firstItem() + $key }}</td>
                                                 <td>{{ $appointment->ap_id }}</td>
-                                                <td>{{ $appointment->ap_date }}</td>
+                                                <td>{{ date('d M Y',strtotime($appointment->ap_date)) }}</td>
                                                 <td>{{ $appointment->ap_case_type }}</td>
                                                 <td>{{ $appointment->pa_id }}</td>
                                                 <td>{{ $appointment->patientData->pa_name }}</td>
@@ -508,7 +508,7 @@
 
     function additionalChargeShow(ap_id, queryData) {
         $.ajax({
-            url: "{{ route('opd-account-detail.additional-charge.list', '') }}" + "/" + ap_id,
+            url: "{{ route('opd-account-detail.additional-charge.list', '') }}" + "/" + ap_id + "/" + queryData,
             method: "GET",
             success: function(res) {
                 if (res.response === true) {
@@ -551,7 +551,9 @@
                 url: "{{ route('opd-account-detail.additional-charge.store') }}" + '?' + query,
                 method: "GET",
                 success: function(res) {
+                    console.log('ok');
                     console.log(res);
+                    let blankText = "";
                     $('#addAdditionalCharge').removeClass('spinner spinner-white spinner-right');
                     $('#addAdditionalCharge').attr('disabled', false);
                     if (res.response === true) {
@@ -562,8 +564,9 @@
                         <td>' + data.data.apac_qty + '</td> \
                         <td>' + data.data.apac_charge + '</td> \
                         <td>' + data.data.apac_final_charge + '</td> \
+                        <td><i title="Remove" class="la la-trash icon-3x cursor_pointer" onclick="removerCharge(' + data.data.apac_id + ', ' + btoa(data.data.ap_id) + ', ' + blankText + ')"></i></td> \
                         </tr>';
-                        $('#allAdditionalCharge').prepend(tableRow);
+                        $('#allAdditionalCharge').prepend(data.tableRow);
                         $('#total_fees_amount').text(data.total_final);
                         $('#app_row_additional_charge_' + atob(ap_id)).text(data.appointment_row_additional_charge);
 
@@ -582,6 +585,31 @@
                 }
             });
         }
+    }
+
+    /* Remove Charge */
+    function removerCharge(apac_id, ap_id, queryData) {
+        let url = "{{ route('opd-account-detail.additional-charge.remove', ['apac_id' => ':apac_id', 'ap_id' => ':ap_id', 'queryData' => ':queryData']) }}";
+        url = url.replace(':apac_id', apac_id);
+        url = url.replace(':ap_id', ap_id);
+        url = url.replace(':queryData', queryData);
+        $.ajax({
+            url: url,
+            method: "GET",
+            success: function(res) {
+                console.log(res);
+                if (res.response == true) {
+                    let data = res.data;
+                    $('#row_' + apac_id).remove();
+                } else {
+                    sweetAlertError(res.message, 3000);
+                }
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
     }
 </script>
 @endsection

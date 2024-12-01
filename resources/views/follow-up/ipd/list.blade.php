@@ -90,7 +90,7 @@
                                                 <td>{{ $ipd->patientData->pa_contact_no }}</td>
                                                 <td>{{ date('d M Y', strtotime($ipd->ipd_surgery_date)) }}</td>
                                                 <td>{{ $ipd->ipd_surgery_text }}</td>
-                                                <td>{{ $ipd->ipd_follow_up_date }}</td>
+                                                <td>{{ date('d M Y', strtotime($ipd->ipd_follow_up_date)) }}</td>
                                                 <!-- <td id="billAmountShow_{{ $ipd->ipd_id }}">{{ $ipd->ipd_bill_amount }}</td>
                                                 <td>{{ $ipd->ipd_received_amount }}</td> -->
                                                 @can('follow-up-ipd-opd-history')

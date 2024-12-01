@@ -38,6 +38,8 @@ class AppointmentController extends MainController
     /* appointment list show */
     public function index(Request $request)
     {
+        $userLogin = Auth::user();
+        $userRole = $userLogin->roles->pluck('id')[0];
         $input = $request->all();
         $patientList = $this->patient->getList();
         $doctorList = User::select('user_id', 'person_name')->role('doctor')->where('user_status', 1)->orderBy('id', 'asc')->get()->toArray();
@@ -47,8 +49,9 @@ class AppointmentController extends MainController
 
         $searchData['search_text']  = isset($input['search_text']) ? $input['search_text'] : '';
         $searchData['patient']  = isset($input['patient']) ? $input['patient'] : '';
-        $searchData['appointment_date_range']  = isset($input['appointment_date_range']) ? $input['appointment_date_range'] : date('Y-m-d') . ' - ' . date('Y-m-d');
-        $searchData['doctor']  = isset($input['doctor']) ? $input['doctor'] : '';
+        // $searchData['appointment_date_range']  = isset($input['appointment_date_range']) ? $input['appointment_date_range'] : date('Y-m-d') . ' - ' . date('Y-m-d');
+        $searchData['appointment_date_range']  = isset($input['appointment_date_range']) ? $input['appointment_date_range'] : '';
+        $searchData['doctor']  = isset($input['doctor']) ? $input['doctor'] : (($userRole == 2) ? $userLogin->user_id : '');
         $searchData['case_type']  = isset($input['case_type']) ? $input['case_type'] : '';
         $searchData['ap_status']  = isset($input['ap_status']) ? $input['ap_status'] : 'pending';
         $list = $this->appointment->getList($searchData);

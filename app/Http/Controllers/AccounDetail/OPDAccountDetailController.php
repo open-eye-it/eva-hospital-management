@@ -49,7 +49,7 @@ class OPDAccountDetailController extends MainController
     }
 
     /* Additional charge list for appointment */
-    public function additionalChargeList(Request $request, $ap_id, $queryData)
+    public function additionalChargeList(Request $request, $ap_id, $queryData = '')
     {
         $ap_id = base64_decode($ap_id);
         $list = $this->additional_charge->getAppointmentAdditionalChargeList($ap_id);

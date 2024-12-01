@@ -27,6 +27,17 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
+                                            <label for="patient">Doctor</label>
+                                            <select name="ipd_doctor" id="ipd_doctor" class="form-control">
+                                                <option value="">Select</option>
+                                                @if(!empty($doctors))
+                                                @foreach($doctors as $doctor)
+                                                <option value="{{ $doctor['user_id'] }}" {{ ($doctor['user_id'] == $searchData['ipd_doctor']) ? 'selected' : '' }}>{{ $doctor['person_name'] }}</option>
+                                                @endforeach
+                                                @endif
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
                                             <label for="">Status</label>
                                             <select name="ipd_status" id="ipd_status" class="form-control" onchange="changeStatusVal(this.value)">
                                                 <option value="">-Select-</option>

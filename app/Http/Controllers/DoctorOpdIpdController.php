@@ -41,6 +41,8 @@ class DoctorOpdIpdController extends MainController
         /* IPD Fitler Data */
         $filterData['ipd_doctor'] = $user->user_id;
         $filterData['admit_date_range'] = isset($input['date_range']) ? $input['date_range'] : date('Y-m-d') . ' - ' . date('Y-m-d');
+        $filterData['ap_status'] = (isset($input['ipd_status']) && $input['ap_status'] == 'all') ? '' : (isset($input['ap_status']) ? $input['ap_status'] : 'pending');
+        $filterData['ipd_status'] = (isset($input['ipd_status']) && $input['ipd_status'] == 'all') ? '' : (isset($input['ipd_status']) ? $input['ipd_status'] : 'admit');
         /* OPD List */
         $app_lists = $this->appointment->getList($filterData);
         /* IPD List */

@@ -36,12 +36,21 @@ class IpdDetailController extends MainController
 
     public function index(Request $request)
     {
+        $userLogin = Auth::user();
+        $userRole = $userLogin->roles->pluck('id')[0];
         $input = $request->all();
         $searchData['search_text']      = isset($input['search_text']) ? $input['search_text'] : '';
-        $searchData['admit_date_range'] = isset($input['admit_date_range']) ? $input['admit_date_range'] : date('Y-m-d') . ' - ' . date('Y-m-d');
+        // $searchData['admit_date_range'] = isset($input['admit_date_range']) ? $input['admit_date_range'] : date('Y-m-d') . ' - ' . date('Y-m-d');
+        $searchData['admit_date_range'] = isset($input['admit_date_range']) ? $input['admit_date_range'] : '';
         $searchData['ipd_status']       = (isset($input['ipd_status']) && $input['ipd_status'] == 'all') ? '' : (isset($input['ipd_status']) ? $input['ipd_status'] : 'admit');
+        $searchData['ipd_doctor']  = isset($input['ipd_doctor']) ? $input['ipd_doctor'] : (($userRole == 2) ? $userLogin->user_id : '');
+
+        $doctorList = User::select('user_id', 'person_name')->role('doctor')->where('user_status', 1)->orderBy('id', 'asc')->get()->toArray();
+        $assDoctorList = User::select('user_id', 'person_name')->role('assistant_doctor')->where('user_status', 1)->orderBy('id', 'asc')->get()->toArray();
+        $doctors = array_merge($doctorList, $assDoctorList);
+
         $list = $this->ipd->getList($searchData);
-        return view('ipd.list', compact('list', 'searchData'));
+        return view('ipd.list', compact('list', 'searchData', 'doctors'));
     }
 
     /* Export IPD Detail */

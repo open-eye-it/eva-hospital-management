@@ -74,10 +74,10 @@
                                             <button type="button" class="btn btn-info" onclick="exportAppointment()"><i class="fa fa-file-export"></i> Export</button>
                                             @php
                                             $filterDataRangeArr = explode(' - ', $searchData['appointment_date_range']);
-
                                             @endphp
                                             <a class="btn btn-primary" href="{{ route('appointment.list', ['appointment_date_range' => date('Y-m-d', strtotime($filterDataRangeArr[0].' -1 day')).' - '.date('Y-m-d', strtotime($filterDataRangeArr[0].' -1 day'))]) }}"><i class="fa fa-arrow-left"></i> Previous Day</a>
                                             <a class="btn btn-primary" href="{{ route('appointment.list', ['appointment_date_range' => date('Y-m-d', strtotime($filterDataRangeArr[0].' +1 day')).' - '.date('Y-m-d', strtotime($filterDataRangeArr[0].' +1 day'))]) }}">Next Day <i class="fa fa-arrow-right"></i></a>
+                                            <a class="btn btn-primary float-right" href="{{ route('appointment.create') }}">Add <i class="fa fa-plus"></i></a>
                                         </div>
                                     </div>
                                 </form>

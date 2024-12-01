@@ -53,6 +53,7 @@
                                             <button class="btn btn-primary" type="submit">Search</button>
                                             <a class="btn btn-danger" href="{{ route('ipd.list') }}">Resst</a>
                                             <button type="button" class="btn btn-info" onclick="exportIPD()"><i class="fa fa-file-export"></i> Export</button>
+                                            <a class="btn btn-primary float-right" href="{{ route('ipd.create') }}">Add <i class="fa fa-plus"></i></a>
                                         </div>
                                     </div>
                                 </form>

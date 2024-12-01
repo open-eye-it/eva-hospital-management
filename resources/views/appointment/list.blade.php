@@ -102,6 +102,7 @@
                                                 <th>Patient ID</th>
                                                 <th>Patient Name</th>
                                                 <th>Doctor</th>
+                                                <th>Referred By</th>
                                                 <th>Has Madiclaim</th>
                                                 @can('appointment-status')
                                                 <th>Status</th>
@@ -125,6 +126,7 @@
                                                 <td>{{ $appointment->pa_id }}</td>
                                                 <td>{{ $appointment->patientData->pa_name }}</td>
                                                 <td>{{ $appointment->doctorData->person_name }}</td>
+                                                <td>{{ $appointment?->patientData?->pa_referred_doctor }}</td>
                                                 <td>{{ ($appointment->ap_pament_mode == 'mediclaim') ? 'Yes' : 'No' }}</td>
                                                 @can('appointment-status')
                                                 <td>

@@ -58,7 +58,17 @@
 				</li>
 				@endif
 				@can('patient-read')
-				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'patient') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+				<li class="menu-item {{ (Request::segment(1) == 'patient') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true">
+					<a href="{{ route('patient.list') }}" class="menu-link">
+						<span class="svg-icon menu-icon">
+							<!--begin::Svg Icon | path:assets/media/svg/icons/Design/Layers.svg-->
+							<i class="icon-2x flaticon-user-settings"></i>
+							<!--end::Svg Icon-->
+						</span>
+						<span class="menu-text">Patient</span>
+					</a>
+				</li>
+				<!-- <li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'patient') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
 					<a href="javascript:;" class="menu-link menu-toggle">
 						<span class="svg-icon menu-icon">
 							<i class="icon-2x flaticon-user-settings"></i>
@@ -91,7 +101,7 @@
 							@endcan
 						</ul>
 					</div>
-				</li>
+				</li> -->
 				@endcan
 				@can('appointment-read')
 				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'appointment') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">

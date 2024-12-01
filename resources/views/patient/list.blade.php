@@ -22,6 +22,7 @@
                                         <div class="col-12 form-group">
                                             <button class="btn btn-primary" type="submit">Search</button>
                                             <a class="btn btn-danger" href="{{ route('patient.list') }}">Resst</a>
+                                            <a class="btn btn-primary float-right" href="{{ route('patient.create') }}">Add <i class="fa fa-plus"></i></a>
                                         </div>
                                     </div>
                                 </form>

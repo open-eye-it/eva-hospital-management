@@ -2,7 +2,7 @@
 	<!--begin::Brand-->
 	<div class="brand flex-column-auto" id="kt_brand">
 		<!--begin::Logo-->
-		<a href="index.html" class="brand-logo">
+		<a href="{{ route('dashboard') }}" class="brand-logo">
 			<img alt="Logo" src="assets/eva/img/logo/eva-logo-1.png" class="max-h-50px" />
 		</a>
 		<!--end::Logo-->

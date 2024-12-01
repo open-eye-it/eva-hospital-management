@@ -40,7 +40,7 @@
 				<div class="login-form text-center p-7 position-relative overflow-hidden">
 					<!--begin::Login Header-->
 					<div class="d-flex flex-center mb-15">
-						<a href="#">
+						<a href="">
 							<img src="assets/eva/img/logo/eva-logo.png" class="max-h-150px" alt="" />
 						</a>
 					</div>

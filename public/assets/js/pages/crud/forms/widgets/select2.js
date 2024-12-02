@@ -9,24 +9,35 @@ var KTSelect2 = function() {
     var demos = function() {
         //Room Selection
         $('#rm_id_search, #rm_id_search').select2({
-            placeholder: 'Select Room'
+            placeholder: 'Room'
         });
         //Apppointment Prescribe Medicine Filter
         $('#gm_prescribe_id, #gm_prescribe_id').select2({
-            placeholder: 'Select Medicine'
+            placeholder: 'Medicine'
         });
         //Apppointment Doctor Filter
-        $('#doctor, #doctor').select2({
-            placeholder: 'Select Patient'
+        $('#doctor, #ipd_doctor').select2({
+            placeholder: 'Doctor'
         });
         //Apppointment Patient Selection
         $('#ap_pa_search, #ap_pa_search').select2({
-            placeholder: 'Select Patient'
+            placeholder: 'Patient'
         });
         //Apppointment Doctor Selection
         $('#ap_doctor_search, #ap_doctor_search').select2({
-            placeholder: 'Select Patient'
+            placeholder: 'Patient'
         });
+        /* Case Type Selection */
+        $('#case_type').select2({
+			placeholder: "Case Type"
+		});
+        /* Patient Selection */
+		$('#patient').select2({
+			placeholder: "Patient"
+		});
+        $('#ap_status, #ipd_status').select2({
+			placeholder: "Status"
+		});
         // basic
         $('#kt_select2_1, #kt_select2_1_validate').select2({
             placeholder: 'Select a state'

@@ -277,6 +277,40 @@
 					<div class="menu-submenu">
 						<i class="menu-arrow"></i>
 						<ul class="menu-subnav">
+							@can('general-medicine-read')
+							<li class="menu-item {{ (Request::segment(1) == 'medicine' && Request::segment(2) == 'general-medicine') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+								<a href="{{ route('general-medicine.list') }}" class="menu-link">
+									<i class="menu-bullet menu-bullet-dot">
+										<span></span>
+									</i>
+									<span class="menu-text">General Medicine</span>
+								</a>
+							</li>
+							@endcan
+							@can('operation-medicine-read')
+							<li class="menu-item {{ (Request::segment(1) == 'medicine' && Request::segment(2) == 'operation-medicine') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+								<a href="{{ route('operation-medicine.list') }}" class="menu-link">
+									<i class="menu-bullet menu-bullet-dot">
+										<span></span>
+									</i>
+									<span class="menu-text">Operation Medicine</span>
+								</a>
+							</li>
+							@endcan
+						</ul>
+					</div>
+				</li>
+				<!-- <li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'medicine') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+					<a href="javascript:;" class="menu-link menu-toggle">
+						<span class="svg-icon menu-icon">
+							<i class="icon-2x la la-tablets"></i>
+						</span>
+						<span class="menu-text">Medicine</span>
+						<i class="menu-arrow"></i>
+					</a>
+					<div class="menu-submenu">
+						<i class="menu-arrow"></i>
+						<ul class="menu-subnav">
 							<li class="menu-item menu-item-parent" aria-haspopup="true">
 								<span class="menu-link">
 									<span class="menu-text">Medicine</span>
@@ -356,7 +390,7 @@
 							@endcan
 						</ul>
 					</div>
-				</li>
+				</li> -->
 				@endif
 				@if(auth()->user()->can('category-read') || auth()->user()->can('user-read') || auth()->user()->can('visiting-fee-read') || auth()->user()->can('trainee-read') || auth()->user()->can('room-read') || auth()->user()->can('referred-doctor-read'))
 				<li class="menu-section">

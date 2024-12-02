@@ -49,6 +49,7 @@ class AppointmentController extends MainController
 
         $searchData['search_text']  = isset($input['search_text']) ? $input['search_text'] : '';
         $searchData['patient']  = isset($input['patient']) ? $input['patient'] : '';
+        $searchData['patient_id_phone_number'] = isset($input['patient_id_phone_number']) ? $input['patient_id_phone_number'] : '';
         // $searchData['appointment_date_range']  = isset($input['appointment_date_range']) ? $input['appointment_date_range'] : date('Y-m-d') . ' - ' . date('Y-m-d');
         $searchData['appointment_date_range']  = isset($input['appointment_date_range']) ? $input['appointment_date_range'] : '';
         $searchData['doctor']  = isset($input['doctor']) ? $input['doctor'] : (($userRole == 2) ? $userLogin->user_id : '');

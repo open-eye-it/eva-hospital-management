@@ -21,6 +21,10 @@
                                             <input type="text" class="form-control" placeholder="Search Appointment ID" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
                                         </div>
                                         <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
+                                            <label for="search_text">Patient ID or Phone Number</label>
+                                            <input type="text" class="form-control" placeholder="Patient ID or Phone Number" name="patient_id_phone_number" id="patient_id_phone_number" value="{{ $searchData['patient_id_phone_number'] }}">
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
                                             <label for="patient">Patient</label>
                                             <select name="patient" id="patient" class="form-control">
                                                 <option value="">Select</option>

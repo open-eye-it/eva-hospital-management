@@ -79,14 +79,15 @@ class Appointment extends Model
 
     public function FilterData($data, $filterdata)
     {
-        $search_text            = isset($filterdata['search_text']) ? $filterdata['search_text'] : '';
-        $patient                = isset($filterdata['patient']) ? $filterdata['patient'] : '';
-        $appointment_date_range = isset($filterdata['appointment_date_range']) ? $filterdata['appointment_date_range'] : '';
-        $doctor               = isset($filterdata['doctor']) ? $filterdata['doctor'] : '';
-        $case_type            = isset($filterdata['case_type']) ? $filterdata['case_type'] : '';
-        $follow_up_date_range = isset($filterdata['follow_up_date_range']) ? $filterdata['follow_up_date_range'] : '';
-        $ap_doctor            = isset($filterdata['ap_doctor']) ? $filterdata['ap_doctor'] : '';
-        $ap_status            = isset($filterdata['ap_status']) ? $filterdata['ap_status'] : '';
+        $search_text             = isset($filterdata['search_text']) ? $filterdata['search_text'] : '';
+        $patient                 = isset($filterdata['patient']) ? $filterdata['patient'] : '';
+        $appointment_date_range  = isset($filterdata['appointment_date_range']) ? $filterdata['appointment_date_range'] : '';
+        $doctor                  = isset($filterdata['doctor']) ? $filterdata['doctor'] : '';
+        $case_type               = isset($filterdata['case_type']) ? $filterdata['case_type'] : '';
+        $follow_up_date_range    = isset($filterdata['follow_up_date_range']) ? $filterdata['follow_up_date_range'] : '';
+        $ap_doctor               = isset($filterdata['ap_doctor']) ? $filterdata['ap_doctor'] : '';
+        $ap_status               = isset($filterdata['ap_status']) ? $filterdata['ap_status'] : '';
+        $patient_id_phone_number = isset($filterdata['patient_id_phone_number']) ? $filterdata['patient_id_phone_number'] : '';
         if (isset($search_text) && $search_text != '') {
             $data->where(function ($query) use ($search_text) {
                 $query->where('ap_id', 'LIKE', '%' . $search_text . '%')->orWhere('pa_id', 'LIKE', '%' . $search_text . '%');
@@ -118,6 +119,13 @@ class Appointment extends Model
         }
         if (isset($ap_status) && $ap_status != '') {
             $data->where('ap_status', $ap_status);
+        }
+        if (isset($patient_id_phone_number) && $patient_id_phone_number != '') {
+            $data->whereHas('patientData', function ($query) use ($patient_id_phone_number) {
+                $query->where('pa_id', $patient_id_phone_number);
+                $query->orWhere('pa_contact_no', $patient_id_phone_number);
+                $query->orWhere('pa_alt_contact_no', $patient_id_phone_number);
+            });
         }
     }
 

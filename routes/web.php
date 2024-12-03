@@ -21,6 +21,7 @@ use App\Http\Controllers\AccounDetail\OPDAccountDetailController;
 use App\Http\Controllers\IpdDetailController;
 use App\Http\Controllers\AccounDetail\IPDAccountDetailControoller;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\BalanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -229,6 +230,12 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
         Route::get('payment/single/{ipl_id}', [IPDAccountDetailControoller::class, 'payment_single'])->name('payment.single');
         Route::get('print_receipt/{ipl_id}/{ipd_id}', [IPDAccountDetailControoller::class, 'print_receipt'])->name('payment.receipt.print');
         Route::get('print_bill/{ipd_id}', [IPDAccountDetailControoller::class, 'print_bill'])->name('payment.bill.print')->middleware(['role_or_permission:account-detail-ipd-print-bill']);
+    });
+
+    /* Balance */
+    Route::prefix('balance')->name('balance')->group(function () {
+        Route::get('opd', [BalanceController::class, 'OPDBalance'])->name('.opd');
+        Route::get('ipd', [BalanceController::class, 'IPDBalance'])->name('.ipd');
     });
 
     Route::prefix('notification')->name('notification.')->group(function () {

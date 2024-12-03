@@ -260,6 +260,40 @@
 						</ul>
 					</div>
 				</li>
+				<li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'balance') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+					<a href="javascript:;" class="menu-link menu-toggle">
+						<span class="svg-icon menu-icon">
+							<i class="icon-2x la la-money-bill-wave"></i>
+						</span>
+						<span class="menu-text">Balance</span>
+						<i class="menu-arrow"></i>
+					</a>
+					<div class="menu-submenu">
+						<i class="menu-arrow"></i>
+						<ul class="menu-subnav">
+							@can('account-detail-opd-read')
+							<li class="menu-item {{ (Request::segment(1) == 'balance' && Request::segment(2) == 'opd') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+								<a href="{{ route('balance.opd') }}" class="menu-link">
+									<i class="menu-bullet menu-bullet-dot">
+										<span></span>
+									</i>
+									<span class="menu-text">OPD</span>
+								</a>
+							</li>
+							@endcan
+							@can('account-detail-ipd-read')
+							<li class="menu-item {{ (Request::segment(1) == 'balance' && Request::segment(2) == 'ipd') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+								<a href="{{ route('balance.ipd') }}" class="menu-link">
+									<i class="menu-bullet menu-bullet-dot">
+										<span></span>
+									</i>
+									<span class="menu-text">IPD</span>
+								</a>
+							</li>
+							@endcan
+						</ul>
+					</div>
+				</li>
 				@endif
 				@if(auth()->user()->can('general-medicine-read') || auth()->user()->can('operation-medicine-read'))
 				<li class="menu-section">

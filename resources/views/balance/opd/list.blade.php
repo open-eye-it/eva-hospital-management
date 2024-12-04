@@ -33,36 +33,48 @@
                                     </div>
                                 </form>
                             </div> -->
-                            <!--begin::Card-->
-                            <div class="card card-custom gutter-b">
-                                <div class="card-header flex-wrap py-2">
-                                    <div class="card-title">
-                                        <h3 class="card-label">Account Detail
-                                        </h3>
-                                    </div>
-                                </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-3">
+                            <div class="card card-custom bg-danger card-stretch gutter-b">
                                 <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-lg-4">
-                                            <h3>Total Fees: <span id="total_fees_amount">{{ $opd_total_fees + $opd_total_additional_fees }}</span></h3>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <h3>Total Cash: <span id="total_fees_cash">{{ $opd_total_cash + $opd_total_additional_cash }}</span></h3>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <h3>Total Card: <span id="total_fees_card">{{ $opd_total_card + $opd_total_additional_card }}</span></h3>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <h3>Total Mediclaim: <span id="total_fees_mediclaim">{{ $opd_total_mediclaim + $opd_total_additional_mediclaim }}</span></h3>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <h3>Total Corporate: <span id="total_fees_corporate">{{ $opd_total_corporate + $opd_total_additional_corporate }}</span></h3>
-                                        </div>
-                                    </div>
+                                    <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 d-block">{{ $opd_total_fees + $opd_total_additional_fees }}</span>
+                                    <h2 class="font-weight-bold text-white">Total Fees</h2>
                                 </div>
                             </div>
-
-                            <!--end::Card-->
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="card card-custom bg-primary card-stretch gutter-b">
+                                <div class="card-body">
+                                    <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 d-block">{{ $opd_total_cash + $opd_total_additional_cash }}</span>
+                                    <h2 class="font-weight-bold text-white">Total Cash</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="card card-custom bg-info card-stretch gutter-b">
+                                <div class="card-body">
+                                    <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 d-block">{{ $opd_total_card + $opd_total_additional_card }}</span>
+                                    <h2 class="font-weight-bold text-white">Total Card</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="card card-custom bg-dark card-stretch gutter-b">
+                                <div class="card-body">
+                                    <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 d-block">{{ $opd_total_mediclaim + $opd_total_additional_mediclaim }}</span>
+                                    <h2 class="font-weight-bold text-white">Total Mediclaim</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="card card-custom bg-warning card-stretch gutter-b">
+                                <div class="card-body">
+                                    <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 d-block">{{ $opd_total_corporate + $opd_total_additional_corporate }}</span>
+                                    <h2 class="font-weight-bold text-white">Total Corporate</h2>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

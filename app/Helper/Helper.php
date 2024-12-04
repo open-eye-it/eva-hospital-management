@@ -110,23 +110,65 @@ function numberToWord($num = '')
         $num    = str_replace(array(',', ' '), '', trim($num));
 
         $list1  = array(
-            '', 'one', 'two', 'three', 'four', 'five', 'six', 'seven',
-            'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen',
-            'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'
+            '',
+            'one',
+            'two',
+            'three',
+            'four',
+            'five',
+            'six',
+            'seven',
+            'eight',
+            'nine',
+            'ten',
+            'eleven',
+            'twelve',
+            'thirteen',
+            'fourteen',
+            'fifteen',
+            'sixteen',
+            'seventeen',
+            'eighteen',
+            'nineteen'
         );
 
         $list2  = array(
-            '', 'ten', 'twenty', 'thirty', 'forty', 'fifty', 'sixty',
-            'seventy', 'eighty', 'ninety', 'hundred'
+            '',
+            'ten',
+            'twenty',
+            'thirty',
+            'forty',
+            'fifty',
+            'sixty',
+            'seventy',
+            'eighty',
+            'ninety',
+            'hundred'
         );
 
         $list3  = array(
-            '', 'thousand', 'million', 'billion', 'trillion',
-            'quadrillion', 'quintillion', 'sextillion', 'septillion',
-            'octillion', 'nonillion', 'decillion', 'undecillion',
-            'duodecillion', 'tredecillion', 'quattuordecillion',
-            'quindecillion', 'sexdecillion', 'septendecillion',
-            'octodecillion', 'novemdecillion', 'vigintillion'
+            '',
+            'thousand',
+            'million',
+            'billion',
+            'trillion',
+            'quadrillion',
+            'quintillion',
+            'sextillion',
+            'septillion',
+            'octillion',
+            'nonillion',
+            'decillion',
+            'undecillion',
+            'duodecillion',
+            'tredecillion',
+            'quattuordecillion',
+            'quindecillion',
+            'sexdecillion',
+            'septendecillion',
+            'octodecillion',
+            'novemdecillion',
+            'vigintillion'
         );
 
         $num_length = strlen($num);
@@ -174,16 +216,34 @@ function numberToWord($num = '')
 function displaywords($number)
 {
     $words = array(
-        '0' => '', '1' => 'one', '2' => 'two',
-        '3' => 'three', '4' => 'four', '5' => 'five', '6' => 'six',
-        '7' => 'seven', '8' => 'eight', '9' => 'nine',
-        '10' => 'ten', '11' => 'eleven', '12' => 'twelve',
-        '13' => 'thirteen', '14' => 'fourteen',
-        '15' => 'fifteen', '16' => 'sixteen', '17' => 'seventeen',
-        '18' => 'eighteen', '19' => 'nineteen', '20' => 'twenty',
-        '30' => 'thirty', '40' => 'forty', '50' => 'fifty',
-        '60' => 'sixty', '70' => 'seventy',
-        '80' => 'eighty', '90' => 'ninety'
+        '0' => '',
+        '1' => 'one',
+        '2' => 'two',
+        '3' => 'three',
+        '4' => 'four',
+        '5' => 'five',
+        '6' => 'six',
+        '7' => 'seven',
+        '8' => 'eight',
+        '9' => 'nine',
+        '10' => 'ten',
+        '11' => 'eleven',
+        '12' => 'twelve',
+        '13' => 'thirteen',
+        '14' => 'fourteen',
+        '15' => 'fifteen',
+        '16' => 'sixteen',
+        '17' => 'seventeen',
+        '18' => 'eighteen',
+        '19' => 'nineteen',
+        '20' => 'twenty',
+        '30' => 'thirty',
+        '40' => 'forty',
+        '50' => 'fifty',
+        '60' => 'sixty',
+        '70' => 'seventy',
+        '80' => 'eighty',
+        '90' => 'ninety'
     );
     $digits = array('', '', 'hundred', 'thousand', 'lakh', 'crore');
 

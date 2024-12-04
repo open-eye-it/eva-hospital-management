@@ -290,6 +290,18 @@
                             <span class="text-danger" id="apac_chargeErr"></span>
                         </div>
                     </div>
+                    <div class="col-lg-6 col-md-6 col-12">
+                        <div class="form-group">
+                            <label for="apac_payment_mode">Mode of Payment <span class="text-danger">*</span></label>
+                            <select class="form-control" name="apac_payment_mode" id="apac_payment_mode" onchange="changePaymnt(this.value)">
+                                <option value="">Select</option>
+                                @foreach(PaymentMode() as $paymentType)
+                                <option value="{{ $paymentType['ap_payment_mode'] }}">{{ ucfirst($paymentType['ap_payment_mode']) }}</option>
+                                @endforeach
+                            </select>
+                            <span class="text-danger" id="apac_payment_modeErr"></span>
+                        </div>
+                    </div>
                     <div class="col-12">
                         <button id="addAdditionalCharge" class="btn btn-primary">Add <i class="la la-plus"></i></button>
                     </div>
@@ -302,6 +314,7 @@
                             <th>QTY</th>
                             <th>Charge</th>
                             <th>Total Charge</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody id="allAdditionalCharge">
@@ -537,6 +550,7 @@
         let apac_desc = $('#apac_desc').val();
         let apac_qty = $('#apac_qty').val();
         let apac_charge = $('#apac_charge').val();
+        let apac_payment_mode = $('#apac_payment_mode').val();
         if (apac_desc == '') {
             $('#apac_descErr').text('Please enter description');
             timeoutID('apac_descErr', 3000);
@@ -549,10 +563,14 @@
             $('#apac_chargeErr').text('Please enter additional charge');
             timeoutID('apac_chargeErr', 3000);
             scrollTop('apac_chargeErr');
+        } else if (apac_payment_mode == '') {
+            $('#apac_payment_modeErr').text('Please select paymetn mode');
+            timeoutID('apac_payment_modeErr', 3000);
+            scrollTop('apac_payment_modeErr');
         } else {
             $('#addAdditionalCharge').addClass('spinner spinner-white spinner-right');
             $('#addAdditionalCharge').attr('disabled', true);
-            let query = 'ap_id=' + ap_id + '&apac_desc=' + apac_desc + '&apac_qty=' + apac_qty + '&apac_charge=' + apac_charge + '&query=' + queryData;
+            let query = 'ap_id=' + ap_id + '&apac_desc=' + apac_desc + '&apac_qty=' + apac_qty + '&apac_charge=' + apac_charge + '&apac_payment_mode=' + apac_payment_mode + '&query=' + queryData;
             $.ajax({
                 url: "{{ route('opd-account-detail.additional-charge.store') }}" + '?' + query,
                 method: "GET",

@@ -38,10 +38,14 @@ class IpdPaymentList extends Model
 
     public function FilterData($data, $filterdata)
     {
-        $ipd_id = isset($filterdata['ipd_id']) ? $filterdata['ipd_id'] : '';
+        $ipd_id          = isset($filterdata['ipd_id']) ? $filterdata['ipd_id'] : '';
+        $ipl_received_by = isset($filterdata['ipl_received_by']) ? $filterdata['ipl_received_by'] : '';
 
         if (isset($ipd_id) && $ipd_id != '') {
             $data->where('ipd_id', $ipd_id);
+        }
+        if (isset($ipl_received_by) && $ipl_received_by != '') {
+            $data->where('ipl_received_by', $ipl_received_by);
         }
     }
 

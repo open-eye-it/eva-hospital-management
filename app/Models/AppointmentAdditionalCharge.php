@@ -16,7 +16,8 @@ class AppointmentAdditionalCharge extends Model
         'apac_desc',
         'apac_qty',
         'apac_charge',
-        'apac_final_charge'
+        'apac_final_charge',
+        'apac_payment_mode'
     ];
 
     public function insertData($data)
@@ -42,5 +43,23 @@ class AppointmentAdditionalCharge extends Model
     public function appointmentFinalChargesTotal($ap_id)
     {
         return static::where('ap_id', $ap_id)->get()->SUM('apac_final_charge');
+    }
+
+    public function getAllData($filterdata, $order_by = ['created_at', 'desc'])
+    {
+        $data = static::select('*');
+        $this->FilterData($data, $filterdata);
+        $data->orderBy($order_by[0], $order_by[1]);
+        $output = $data->get();
+        return $output;
+    }
+
+    public function FilterData($data, $filterdata)
+    {
+        $apac_payment_mode         = isset($filterdata['apac_payment_mode']) ? $filterdata['apac_payment_mode'] : '';
+
+        if (isset($apac_payment_mode) && $apac_payment_mode != '') {
+            $data->where('apac_payment_mode', $apac_payment_mode);
+        }
     }
 }

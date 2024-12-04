@@ -88,6 +88,7 @@ class Appointment extends Model
         $ap_doctor               = isset($filterdata['ap_doctor']) ? $filterdata['ap_doctor'] : '';
         $ap_status               = isset($filterdata['ap_status']) ? $filterdata['ap_status'] : '';
         $patient_id_phone_number = isset($filterdata['patient_id_phone_number']) ? $filterdata['patient_id_phone_number'] : '';
+        $ap_payment_mode         = isset($filterdata['ap_payment_mode']) ? $filterdata['ap_payment_mode'] : '';
         if (isset($search_text) && $search_text != '') {
             $data->where(function ($query) use ($search_text) {
                 $query->where('ap_id', 'LIKE', '%' . $search_text . '%')->orWhere('pa_id', 'LIKE', '%' . $search_text . '%');
@@ -126,6 +127,9 @@ class Appointment extends Model
                 $query->orWhere('pa_contact_no', $patient_id_phone_number);
                 $query->orWhere('pa_alt_contact_no', $patient_id_phone_number);
             });
+        }
+        if (isset($ap_payment_mode) && $ap_payment_mode != '') {
+            $data->where('ap_payment_mode', $ap_payment_mode);
         }
     }
 

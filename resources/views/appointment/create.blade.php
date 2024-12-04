@@ -109,18 +109,19 @@
                                                         <option value="no">No</option>
                                                         <option value="yes">Yes</option>
                                                     </select>
-                                                    <span class="text-danger" id="ap_cate_typeErr"></span>
+                                                    <span class="text-danger" id="ap_is_workshopErr"></span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label for="ap_payment_mode">Mode of Payment</label>
+                                                    <label for="ap_payment_mode">Mode of Payment <span class="text-danger">*</span></label>
                                                     <select class="form-control" name="ap_payment_mode" id="ap_payment_mode" onchange="changePaymnt(this.value)">
                                                         <option value="">Select</option>
                                                         @foreach(PaymentMode() as $paymentType)
                                                         <option value="{{ $paymentType['ap_payment_mode'] }}">{{ ucfirst($paymentType['ap_payment_mode']) }}</option>
                                                         @endforeach
                                                     </select>
+                                                    <span class="text-danger" id="ap_payment_modeErr"></span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12 d-none" id="payment_detail_box">
@@ -225,6 +226,14 @@
             $('#ap_cate_typeErr').text('Please select cate type');
             timeoutID('ap_cate_typeErr', 3000);
             scrollTop('ap_cate_typeErr');
+        }else if(ap_is_workshop == ''){
+            $('#ap_is_workshopErr').text('Please select worksop');
+            timeoutID('ap_is_workshopErr', 3000);
+            scrollTop('ap_is_workshopErr');
+        }else if(ap_payment_mode == ''){
+            $('#ap_payment_modeErr').text('Please select mode of payment');
+            timeoutID('ap_payment_modeErr', 3000);
+            scrollTop('ap_payment_modeErr');
         }else{
             $('#createBtn').addClass('spinner spinner-white spinner-right');
             $('#createBtn').attr('disabled', true);

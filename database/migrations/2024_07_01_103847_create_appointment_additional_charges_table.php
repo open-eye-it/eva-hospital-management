@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('apac_qty');
             $table->string('apac_charge')->comment('single quantity charge');
             $table->string('apac_final_charge')->comment('charge muliply with quantity');
+            $table->string('apac_payment_mode')->default('cash');
             $table->timestamps();
         });
     }

@@ -15,18 +15,21 @@ use App\Models\IpdOperativeNote;
 use App\Models\OperationMedicine;
 use App\Models\Appointment;
 use App\Models\Notification;
+use App\Models\IpdDocument;
 
 use App\Exports\IPDDetailExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Validator;
 
 class IpdDetailController extends MainController
 {
-    public $patient, $room, $ipd, $ipd_note, $operation_medicine, $appointment, $notification;
+    public $patient, $room, $ipd_doc, $ipd, $ipd_note, $operation_medicine, $appointment, $notification;
     public function __construct()
     {
         parent::__construct();
         $this->patient = new Patient;
         $this->room = new Room;
+        $this->ipd_doc = new IpdDocument;
         $this->ipd = new IpdDetail;
         $this->ipd_note = new IpdOperativeNote;
         $this->operation_medicine = new OperationMedicine;
@@ -170,6 +173,53 @@ class IpdDetailController extends MainController
             }
         } else {
             return $this->getErrorMessage('Patient already exist.');
+        }
+    }
+
+    public function ipdDocView($ipd_id)
+    {
+        $ipd_id = base64_decode($ipd_id);
+        $data = $this->ipd->singlData($ipd_id);
+        if (!empty($data)) {
+            $docList = $this->ipd_doc->getList(['ipd_id' => $ipd_id], false, 0, ['created_at', 'desc']);
+            $view = view('ipd.ipd_doc_table_row_list', compact('docList'))->render();
+            return $this->getSuccessResult($view, 'IPD document detail found', true);
+        } else {
+            return $this->getErrorMessage('IPD detail not found');
+        }
+    }
+
+    public function ipdDocSend(Request $request)
+    {
+        $input = $request->all();
+        $ipd_id = base64_decode($input['ipd_id_doc']);
+
+        $file = '';
+        if ($request->hasFile('ipd_doc')) {
+            $file = UploadCustomeImage($request->file('ipd_doc'), $ipd_id . '-' . $this->randomString(10, 'number'));
+        }
+        $data = [
+            'ipd_id' => $ipd_id,
+            'ipd_doc_name' => $input['ipd_doc_name'],
+            'ipd_doc' => json_encode([$file])
+        ];
+        $insert = $this->ipd_doc->insertData($data);
+        if ($insert->id) {
+            $docData = $this->ipd_doc->singlData($insert->id);
+            $view = view('ipd.ipd_doc_table_row', compact('docData'))->render();
+            return $this->getSuccessResult($view, 'Document upload', true);
+        } else {
+            return $this->getErrorMessage('Document not uploaded, please try again');
+        }
+    }
+
+    public function ipdDocRemove($id)
+    {
+        $delete = $this->ipd_doc->deleteData($id);
+        if ($delete) {
+            return $this->getSuccessResult([], 'Document delete', true);
+        } else {
+            return $this->getErrorMessage('Document not delete, please try again');
         }
     }
 

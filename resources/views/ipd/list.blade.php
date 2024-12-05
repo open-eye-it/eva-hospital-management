@@ -158,6 +158,7 @@
                                                                 @can('ipd-detail-print')
                                                                 <li class="nav-item"><span class="nav-link" id="IPDPrint" data-id="{{ base64_encode($ipd->ipd_id) }}" title="IPD Detail"><i class="flaticon flaticon2-print icon-3x cursor_pointer"></i></span></li>
                                                                 @endcan
+                                                                <li class="nav-item"><span class="nav-link" id="IPDDocument" data-id="{{ base64_encode($ipd->ipd_id) }}" title="IPD Documents"><i class="flaticon flaticon-file icon-3x cursor_pointer"></i></span></li>
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -278,6 +279,51 @@
                     <div>
                         <button class="btn btn-primary" id="statusButton">Submit</button>
                     </div>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="ipdDocViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">IPD Document</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" enc-type="multipart/form-data" id="submitDocument">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-12col-xs-12">
+                            <label for="patient_name">Document Name</label>
+                            <input type="text" class="form-control" name="ipd_doc_name" id="ipd_doc_name" value="" placeholder="Document Name" />
+                            <span class="text-danger" id="ipd_doc_name_err"></span>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12col-xs-12">
+                            <label for="patient_name">Document File</label>
+                            <input type="file" class="form-control" name="ipd_doc" id="ipd_doc" value="" placeholder="Document" />
+                            <span class="text-danger" id="ipd_doc_err"></span>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12col-xs-12">
+                            <input type="hidden" id="ipd_id_doc" name="ipd_id_doc" value="">
+                            <button type="submit" id="docAdd" class="btn btn-primary mt-4">Add <i class="la la-plus"></i></button>
+                        </div>
+                    </div>
+                </form>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>File</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ipdDocData"></tbody>
                 </table>
             </div>
             <div class="modal-footer">
@@ -608,6 +654,79 @@
                     $('#status_' + atob(ipd_id)).text(addText);
                     sweetAlertSuccess(res.message, 3000);
                     $('#statusModal').modal('hide');
+                } else {
+                    sweetAlertError(res.message, 3000);
+                }
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    }
+
+    /* IPD Document */
+    $('body').on('click', '#IPDDocument', function() {
+        let ipd_id = $(this).data('id');
+        $.ajax({
+            url: "{{ route('ipd.doc.view', '') }}" + "/" + ipd_id,
+            method: "GET",
+            success: function(res) {
+                console.log(res);
+                $('#ipd_id_doc').val(ipd_id);
+                $('#ipdDocData').html(res.data);
+                $('#ipdDocViewModal').modal('show');
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    });
+
+    $('#submitDocument').on('submit', function(e) {
+        e.preventDefault();
+        let name = $('#ipd_doc_name').val();
+        let file = $('#ipd_doc').val();
+        if (name == '') {
+            $('#ipd_doc_name_err').text('Please enter doc name');
+        } else if (file == '') {
+            $('#ipd_doc_err').text('Please select document');
+        } else {
+            let formData = new FormData(this);
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                },
+                url: "{{ route('ipd.doc.send') }}",
+                method: 'POST',
+                data: new FormData(this),
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: (res) => {
+                    if (res.response == true) {
+                        $('#ipdDocData').prepend(res.data);
+                    } else {
+                        sweetAlertError(res.message, 3000);
+                    }
+                },
+                error: function(r) {
+                    let res = r.responseJSON;
+                    sweetAlertError(res.message, 3000);
+                }
+            });
+        }
+    });
+
+    function removerDoc(id) {
+        $.ajax({
+            url: "{{ route('ipd.doc.remove') }}/" + id,
+            method: "GET",
+            success: function(res) {
+                console.log(res);
+                if (res.response == true) {
+                    $('#doc_row_' + id).remove();
                 } else {
                     sweetAlertError(res.message, 3000);
                 }

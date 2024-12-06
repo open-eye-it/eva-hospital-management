@@ -78,6 +78,9 @@ class CategoryController extends MainController
             return redirect()->route('category.list')->with('error', 'Category not found.');
         }
         $permission = Permission::get();
+        // echo "<pre>";
+        // print_r($permission->toArray());
+        // die;
         return view('category.edit', compact('roleData', 'permission'));
     }
 

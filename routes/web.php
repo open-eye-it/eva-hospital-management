@@ -238,8 +238,8 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
 
     /* Balance */
     Route::prefix('balance')->name('balance')->group(function () {
-        Route::get('opd', [BalanceController::class, 'OPDBalance'])->name('.opd');
-        Route::get('ipd', [BalanceController::class, 'IPDBalance'])->name('.ipd');
+        Route::get('opd', [BalanceController::class, 'OPDBalance'])->name('.opd')->middleware(['role_or_permission:balance-read']);;
+        Route::get('ipd', [BalanceController::class, 'IPDBalance'])->name('.ipd')->middleware(['role_or_permission:balance-read']);;
     });
 
     Route::prefix('notification')->name('notification.')->group(function () {

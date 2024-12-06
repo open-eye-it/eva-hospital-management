@@ -20,6 +20,7 @@ use App\Models\IpdDocument;
 use App\Exports\IPDDetailExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class IpdDetailController extends MainController
 {
@@ -215,12 +216,27 @@ class IpdDetailController extends MainController
 
     public function ipdDocRemove($id)
     {
+        $data = $this->ipd_doc->singlData($id);
+        $file = $data->ipd_doc;
         $delete = $this->ipd_doc->deleteData($id);
         if ($delete) {
+            ImageRemove($file);
             return $this->getSuccessResult([], 'Document delete', true);
         } else {
             return $this->getErrorMessage('Document not delete, please try again');
         }
+    }
+
+    public function ipdDocDownload($id)
+    {
+        $id = base64_decode($id);
+        $data = $this->ipd_doc->singlData($id);
+        $docArr = json_decode($data->ipd_doc);
+        //$path = Storage::disk('public')->path($docArr[0]);
+        $path = base_path('/') . 'storage/app/public/' . $docArr[0];
+        Storage::disk('local')->put($docArr[0], file_get_contents($path));
+        Storage::path($docArr[0]);
+        return response()->download($path);
     }
 
     public function view($ipd_id)

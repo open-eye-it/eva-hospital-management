@@ -206,6 +206,7 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
         Route::get('doc/view/{ipd_id}', [IpdDetailController::class, 'ipdDocView'])->name('ipd.doc.view');
         Route::post('doc/send', [IpdDetailController::class, 'ipdDocSend'])->name('ipd.doc.send');
         Route::get('doc/remove/{id?}', [IpdDetailController::class, 'ipdDocRemove'])->name('ipd.doc.remove');
+        Route::get('doc/download/{id?}', [IpdDetailController::class, 'ipdDocDownload'])->name('ipd.doc.download');
         Route::get('view/{ipd_id}', [IpdDetailController::class, 'view'])->name('ipd.view')->middleware(['role_or_permission:ipd-status|ipd-full-view|ipd-bill-amount']);
         Route::get('status/{string_val}', [IpdDetailController::class, 'status'])->name('ipd.status')->middleware(['role_or_permission:ipd-status']);
         Route::get('bill_amount_update/{ipd_id}', [IpdDetailController::class, 'BillAmountUpdate'])->name('ipd.bill_amount.update')->middleware(['role_or_permission:ipd-bill-amount']);

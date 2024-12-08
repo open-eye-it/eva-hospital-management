@@ -38,14 +38,21 @@ class IpdPaymentList extends Model
 
     public function FilterData($data, $filterdata)
     {
-        $ipd_id          = isset($filterdata['ipd_id']) ? $filterdata['ipd_id'] : '';
-        $ipl_received_by = isset($filterdata['ipl_received_by']) ? $filterdata['ipl_received_by'] : '';
+        $ipd_id           = isset($filterdata['ipd_id']) ? $filterdata['ipd_id'] : '';
+        $ipl_received_by  = isset($filterdata['ipl_received_by']) ? $filterdata['ipl_received_by'] : '';
+        $admit_date_range = isset($filterdata['admit_date_range']) ? $filterdata['admit_date_range'] : '';
 
         if (isset($ipd_id) && $ipd_id != '') {
             $data->where('ipd_id', $ipd_id);
         }
         if (isset($ipl_received_by) && $ipl_received_by != '') {
             $data->where('ipl_received_by', $ipl_received_by);
+        }
+        if (isset($admit_date_range) && $admit_date_range != '') {
+            $dateArr = explode(' - ', $admit_date_range);
+            $dateArr[0] = date('Y-m-d', strtotime($dateArr[0]));
+            $dateArr[1] = date('Y-m-d', strtotime($dateArr[1]));
+            $data->whereBetween("created_at", $dateArr);
         }
     }
 

@@ -105,6 +105,7 @@
                                                     @can('trainee-certificate')
                                                     <a href="{{ route('trainee.certificate.pdf', base64_encode($trainee->tr_id)) }}" title="Certificate"><i class="la la-certificate icon-3x"></i></a>
                                                     @endcan
+                                                    <span id="traineePaymentView" data-id="{{ base64_encode($trainee->tr_id) }}" title="Trainee Payment"><i class="flaticon flaticon-add-circular-button icon-3x cursor_pointer"></i></span>
                                                 </td>
                                                 @endif
                                             </tr>
@@ -177,6 +178,55 @@
             </div>
             <div class="modal-footer">
                 <button type="button" id="statusBtn" class="btn btn-primary font-weight-bold">Update</button>
+                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="traineePaymentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Trainee Payment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <div class="form-group">
+                            <label for="tpl_desc">Description <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="tpl_desc" id="tpl_desc" value="">
+                            <span class="text-danger" id="tpl_descErr"></span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <div class="form-group">
+                            <label for="tpl_amount">Amount <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="tpl_amount" id="tpl_amount" value="">
+                            <span class="text-danger" id="tpl_amountErr"></span>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <button id="addAdditionalCharge" class="btn btn-primary">Add <i class="la la-plus"></i></button>
+                    </div>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th>Payment</th>
+                            <th>Created At</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="traineePaymentCharge">
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
                 <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -343,6 +393,101 @@
             }
         });
     })
+
+    $('body').on('click', '#traineePaymentView', function(event) {
+        let tr_id = $(this).data('id');
+        $.ajax({
+            url: "{{ route('trainee.payment.view', '') }}" + "/" + tr_id,
+            method: "GET",
+            success: function(res) {
+                console.log(res);
+                if (res.response === true) {
+                    $('#traineePaymentCharge').html(res.data);
+                    $('#traineePaymentModal').modal('show');
+                    $('#addAdditionalCharge').attr("onclick", "addNewCharge('" + tr_id + "')");
+                } else {
+                    sweetAlertError(res.message, 3000);
+                }
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    });
+
+    function addNewCharge(tr_id) {
+        let tpl_desc = $('#tpl_desc').val();
+        let tpl_amount = $('#tpl_amount').val();
+        if (tpl_desc == '') {
+            $('#tpl_descErr').text('Please enter description');
+            timeoutID('tpl_descErr', 3000);
+            scrollTop('tpl_descErr');
+        } else if (tpl_amount == '') {
+            $('#tpl_amountErr').text('Please enter amount');
+            timeoutID('tpl_amountErr', 3000);
+            scrollTop('tpl_amountErr');
+        } else {
+            $('#addAdditionalCharge').addClass('spinner spinner-white spinner-right');
+            $('#addAdditionalCharge').attr('disabled', true);
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                },
+                url: "{{ route('trainee.payment.store') }}",
+                method: "POST",
+                data: {
+                    tr_id: tr_id,
+                    tpl_desc: tpl_desc,
+                    tpl_amount: tpl_amount
+                },
+                success: function(res) {
+                    console.log(res);
+                    let blankText = "";
+                    $('#addAdditionalCharge').removeClass('spinner spinner-white spinner-right');
+                    $('#addAdditionalCharge').attr('disabled', false);
+                    if (res.response === true) {
+                        $('#traineePaymentCharge').prepend(res.data);
+
+                        $('#tpl_desc').val('');
+                        $('#tpl_amount').val('');
+                    } else {
+                        sweetAlertError(res.message, 3000);
+                    }
+                },
+                error: function(r) {
+                    $('#addAdditionalCharge').removeClass('spinner spinner-white spinner-right');
+                    $('#addAdditionalCharge').attr('disabled', false);
+                    let res = r.responseJSON;
+                    sweetAlertError(res.message, 3000);
+                }
+            });
+        }
+    }
+
+    /* Remove Charge */
+    function removerCharge(tpl_id, tr_id) {
+        let url = "{{ route('trainee.payment.remove', ['tpl_id' => ':tpl_id', 'tr_id' => ':tr_id']) }}";
+        url = url.replace(':tpl_id', tpl_id);
+        url = url.replace(':tr_id', tr_id);
+        $.ajax({
+            url: url,
+            method: "GET",
+            success: function(res) {
+                console.log(res);
+                if (res.response == true) {
+                    let data = res.data;
+                    $('#row_' + atob(tpl_id)).remove();
+                } else {
+                    sweetAlertError(res.message, 3000);
+                }
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    }
 
     function downloadFile(fileName) {
         let urlPath = "{{ route('trainee.file.download', '') }}" + '/' + btoa(fileName);

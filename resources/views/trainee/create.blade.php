@@ -65,13 +65,13 @@
                                                     <span class="text-danger" id="tr_total_amountErr"></span>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-12">
+                                            <!-- <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
                                                     <label>Paid Amount</label>
                                                     <input type="number" class="form-control" placeholder="Paid Amount" name="tr_paid_amount" id="tr_paid_amount" />
                                                     <span class="text-danger" id="tr_paid_amountErr"></span>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
                                                     <label>Is Advance Received? <span class="text-danger">*</span></label>
@@ -92,6 +92,13 @@
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
+                                                    <label>Documents</label>
+                                                    <input type="file" class="form-control" name="tr_documents[]" id="tr_documents" multiple>
+                                                    <span class="text-danger" id="tr_documentsErr"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
                                                     <label>Address <span class="text-danger">*</span></label>
                                                     <textarea name="tr_address" id="tr_address" class="form-control" cols="30" rows="10"></textarea>
                                                     <span class="text-danger" id="tr_addressErr"></span>
@@ -101,13 +108,6 @@
                                                 <div class="form-group">
                                                     <label>Remarks</label>
                                                     <textarea name="tr_remarks" id="tr_remarks" class="form-control" cols="30" rows="10"></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6 col-md-6 col-12">
-                                                <div class="form-group">
-                                                    <label>Documents</label>
-                                                    <input type="file" class="form-control" name="tr_documents[]" id="tr_documents" multiple>
-                                                    <span class="text-danger" id="tr_documentsErr"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -211,7 +211,7 @@
             timeoutID('tr_addressErr', 3000);
             scrollTop('tr_addressErr');
         }else if(fileValidation === true){
-            $('#tr_documentsErr').text('Please enter trainee address');
+            $('#tr_documentsErr').text('Accept only jpg, jpgeg, png file');
             timeoutID('tr_documentsErr', 3000);
             scrollTop('tr_documentsErr');
         }

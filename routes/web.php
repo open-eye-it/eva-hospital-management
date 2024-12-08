@@ -107,6 +107,9 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
         Route::get('status/{tr_id}', [TraineeController::class, 'status'])->name('trainee.status')->middleware(['role_or_permission:trainee-status']);
         Route::get('download/{file}', [TraineeController::class, 'downloadFile'])->name('trainee.file.download')->middleware(['role_or_permission:trainee-read']);
         Route::get('certificate/{tr_id}', [TraineeController::class, 'certificatePDF'])->name('trainee.certificate.pdf')->middleware(['role_or_permission:trainee-certificate']);
+        Route::get('payment/view/{tr_id}', [TraineeController::class, 'traineePaymentView'])->name('trainee.payment.view');
+        Route::post('payment/store', [TraineeController::class, 'traineePaymentStore'])->name('trainee.payment.store');
+        Route::get('payment/remove/{tpl_id}/{tr_id}', [TraineeController::class, 'traineePaymentRemove'])->name('trainee.payment.remove');
     });
     /* Hospital Rooms with building, floor, ward, bed */
     Route::prefix('room')->group(function () {

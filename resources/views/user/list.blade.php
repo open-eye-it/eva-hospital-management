@@ -16,7 +16,7 @@
                             <div class="card card-custom gutter-b p-5">
                                 <form action="{{ route('user.list') }}">
                                     <div class="row">
-                                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
                                             <label>Search Name, Email, Person Name</label>
                                             <input type="text" class="form-control" placeholder="Search Name, Email, Person Name" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
                                         </div>

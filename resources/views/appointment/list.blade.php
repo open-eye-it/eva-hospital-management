@@ -94,14 +94,14 @@
                                         </h3>
                                     </div>
                                 </div>
-                                <div class="card-body overflow_visible">
+                                <div class="card-body">
                                     <!--begin: Datatable-->
-                                    <table class="table table-bordered scrollable_table_custom" id="">
+                                    <table class="table table-bordered table-separate table-head-custom table-checkable scrollable_table_custom" id="">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
                                                 <th>Appointment ID</th>
-                                                <th>Date</th>
+                                                <th class="min-w-100px">Date</th>
                                                 <th>Case Type</th>
                                                 <th>Patient ID</th>
                                                 <th>Patient Name</th>

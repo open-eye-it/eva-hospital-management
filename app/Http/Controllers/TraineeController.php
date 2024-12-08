@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\Trainee;
+use App\Models\TraineePaymentList;
 
 use Illuminate\Support\Facades\Storage;
 
@@ -15,10 +16,12 @@ use PDF;
 
 class TraineeController extends MainController
 {
+    public $trainee, $trainee_payment_model;
     public function __construct()
     {
         parent::__construct();
         $this->trainee = new Trainee();
+        $this->trainee_payment_model = new TraineePaymentList;
     }
 
     public function index(Request $request)
@@ -64,7 +67,7 @@ class TraineeController extends MainController
             'tr_start_date' => $input['tr_start_date'],
             'tr_end_date' => $input['tr_end_date'],
             'tr_total_amount' => $input['tr_total_amount'],
-            'tr_paid_amount' => $input['tr_paid_amount'],
+            //'tr_paid_amount' => $input['tr_paid_amount'],
             'tr_is_advance_received' => $input['tr_is_advance_received'],
             'tr_advance_received_date' => $input['tr_advance_received_date'],
             'tr_remarks' => (string)$input['tr_remarks'],
@@ -135,7 +138,7 @@ class TraineeController extends MainController
                 'tr_start_date' => $input['tr_start_date'],
                 'tr_end_date' => $input['tr_end_date'],
                 'tr_total_amount' => $input['tr_total_amount'],
-                'tr_paid_amount' => $input['tr_paid_amount'],
+                //'tr_paid_amount' => $input['tr_paid_amount'],
                 'tr_is_advance_received' => $input['tr_is_advance_received'],
                 'tr_advance_received_date' => $input['tr_advance_received_date'],
                 'tr_remarks' => (string)$input['tr_remarks'],
@@ -208,6 +211,50 @@ class TraineeController extends MainController
         }
     }
 
+    public function traineePaymentView($tr_id)
+    {
+        $tr_id = base64_decode($tr_id);
+        $paymentList = $this->trainee_payment_model->getAllData(['tr_id' => $tr_id]);
+        $tableRow = view('trainee.payment_list', compact('paymentList'))->render();
+        return $this->getSuccessResult($tableRow, 'Trainee Payment', true);
+    }
+
+    public function traineePaymentStore(Request $request)
+    {
+        $input = $request->all();
+        $input['tr_id']             = base64_decode($input['tr_id']);
+        $input['tpl_id']           = $this->getTraineePaymentUniqueId();
+        $input['tpl_added_by']     = Auth::user()->user_id;
+
+        $inserData = $this->trainee_payment_model->insertData($input);
+        if ($inserData->tpl_id) {
+            $trineedData = $this->trainee->singlTrainee($input['tr_id']);
+            $tr_paid_amount = $trineedData->tr_paid_amount + $input['tpl_amount'];
+            $update = $this->trainee->updateTrainee(['tr_paid_amount' => $tr_paid_amount], $input['tr_id']);
+            $row = view('trainee.payment_row', compact('inserData'))->render();
+            return $this->getSuccessResult($row, 'Payment added', true);
+        } else {
+            return $this->getErrorMessage('Payment not added, something is wrong.');
+        }
+    }
+
+    public function traineePaymentRemove($tpl_id, $tr_id)
+    {
+        $tpl_id = base64_decode($tpl_id);
+        $tr_id = base64_decode($tr_id);
+        $paymentData = $this->trainee_payment_model->singlData($tpl_id);
+        $tpl_amount = $paymentData->tpl_amount;
+        $removeData = $this->trainee_payment_model->deleteData($tpl_id);
+        if ($removeData) {
+            $trineedData = $this->trainee->singlTrainee($tr_id);
+            $tr_paid_amount = $trineedData->tr_paid_amount - $tpl_amount;
+            $update = $this->trainee->updateTrainee(['tr_paid_amount' => $tr_paid_amount], $tr_id);
+            return $this->getSuccessResult('', 'Payment remove', true);
+        } else {
+            return $this->getErrorMessage('Payment not removed, something is wrong.');
+        }
+    }
+
     public function traineedID()
     {
         $tr_real_id = date('YmdH') . $this->randomString(6, 'number');
@@ -227,6 +274,17 @@ class TraineeController extends MainController
             $this->getUniqueID();
         } else {
             return $tr_id;
+        }
+    }
+
+    public function getTraineePaymentUniqueId()
+    {
+        $tpl_id = $this->randomString(10, 'number');
+        $check = $this->trainee_payment_model->singlData($tpl_id);
+        if (!empty($check)) {
+            $this->getTraineePaymentUniqueId();
+        } else {
+            return $tpl_id;
         }
     }
 }

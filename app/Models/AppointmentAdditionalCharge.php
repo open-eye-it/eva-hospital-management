@@ -56,10 +56,17 @@ class AppointmentAdditionalCharge extends Model
 
     public function FilterData($data, $filterdata)
     {
-        $apac_payment_mode         = isset($filterdata['apac_payment_mode']) ? $filterdata['apac_payment_mode'] : '';
+        $apac_payment_mode = isset($filterdata['apac_payment_mode']) ? $filterdata['apac_payment_mode'] : '';
+        $appointment_date_range  = isset($filterdata['appointment_date_range']) ? $filterdata['appointment_date_range'] : '';
 
         if (isset($apac_payment_mode) && $apac_payment_mode != '') {
             $data->where('apac_payment_mode', $apac_payment_mode);
+        }
+        if (isset($appointment_date_range) && $appointment_date_range != '') {
+            $dateArr = explode(' - ', $appointment_date_range);
+            $dateArr[0] = date('Y-m-d', strtotime($dateArr[0]));
+            $dateArr[1] = date('Y-m-d', strtotime($dateArr[1]));
+            $data->whereBetween("created_at", $dateArr);
         }
     }
 }

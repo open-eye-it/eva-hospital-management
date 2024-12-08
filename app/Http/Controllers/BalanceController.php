@@ -29,21 +29,34 @@ class BalanceController extends MainController
     {
         $input = $request->query();
         $searchData['search_text']             = isset($input['search_text']) ? $input['search_text'] : '';
-        $searchData['appointment_date_range']  = isset($input['appointment_date_range']) ? $input['appointment_date_range'] : '';
+        $searchData['appointment_date_range']  = isset($input['date_range']) ? $input['date_range'] : '';
         $opd_total_fees = $this->totalFees($searchData);
-        $opd_total_additional_fees = $this->totalAdditionalFees($searchData);
+        //$opd_total_additional_fees = $this->totalAdditionalFees($searchData);
+        $opd_total_additional_fees = $this->appointment_model->getAllData($searchData)->sum('ap_charge');
 
-        $opd_total_cash = $this->appointment_model->getAllData(['ap_payment_mode' => 'cash'])->sum('ap_charge');
-        $opd_total_additional_cash = $this->additonal_change_model->getAllData(['apac_payment_mode' => 'cash'])->sum('apac_final_charge');
+        $cashFilter = $searchData;
+        $cashFilter['ap_payment_mode'] = 'cash';
+        $cashFilter['apac_payment_mode'] = 'cash';
+        $opd_total_cash = $this->appointment_model->getAllData($cashFilter)->sum('ap_charge');
+        $opd_total_additional_cash = $this->additonal_change_model->getAllData($cashFilter)->sum('apac_final_charge');
 
-        $opd_total_card = $this->appointment_model->getAllData(['ap_payment_mode' => 'card'])->sum('ap_charge');
-        $opd_total_additional_card = $this->additonal_change_model->getAllData(['apac_payment_mode' => 'card'])->sum('apac_final_charge');
+        $cardFilter = $searchData;
+        $cardFilter['ap_payment_mode'] = 'card';
+        $cardFilter['apac_payment_mode'] = 'card';
+        $opd_total_card = $this->appointment_model->getAllData($cardFilter)->sum('ap_charge');
+        $opd_total_additional_card = $this->additonal_change_model->getAllData($cardFilter)->sum('apac_final_charge');
 
-        $opd_total_mediclaim = $this->appointment_model->getAllData(['ap_payment_mode' => 'mediclaim'])->sum('ap_charge');
-        $opd_total_additional_mediclaim = $this->additonal_change_model->getAllData(['apac_payment_mode' => 'mediclaim'])->sum('apac_final_charge');
+        $mediclaimFilter = $searchData;
+        $mediclaimFilter['ap_payment_mode'] = 'mediclaim';
+        $mediclaimFilter['apac_payment_mode'] = 'mediclaim';
+        $opd_total_mediclaim = $this->appointment_model->getAllData($mediclaimFilter)->sum('ap_charge');
+        $opd_total_additional_mediclaim = $this->additonal_change_model->getAllData($mediclaimFilter)->sum('apac_final_charge');
 
-        $opd_total_corporate = $this->appointment_model->getAllData(['ap_payment_mode' => 'corporate'])->sum('ap_charge');
-        $opd_total_additional_corporate = $this->additonal_change_model->getAllData(['apac_payment_mode' => 'corporate'])->sum('apac_final_charge');
+        $corporateFilter = $searchData;
+        $corporateFilter['ap_payment_mode'] = 'corporate';
+        $corporateFilter['apac_payment_mode'] = 'corporate';
+        $opd_total_corporate = $this->appointment_model->getAllData($corporateFilter)->sum('ap_charge');
+        $opd_total_additional_corporate = $this->additonal_change_model->getAllData($corporateFilter)->sum('apac_final_charge');
 
         return view('balance.opd.list', compact('searchData', 'opd_total_fees', 'opd_total_additional_fees', 'opd_total_cash', 'opd_total_additional_cash', 'opd_total_card', 'opd_total_additional_card', 'opd_total_mediclaim', 'opd_total_additional_mediclaim', 'opd_total_corporate', 'opd_total_additional_corporate'));
     }
@@ -68,13 +81,20 @@ class BalanceController extends MainController
     {
         $input = $request->query();
         $searchData['search_text']      = isset($input['search_text']) ? $input['search_text'] : '';
-        $searchData['admit_date_range'] = isset($input['admit_date_range']) ? $input['admit_date_range'] : '';
+        $searchData['admit_date_range'] = isset($input['date_range']) ? $input['date_range'] : '';
         $total_fees = $this->totalBillAmount($searchData);
-        $total_received_fees = $this->totalReceivedAmount($searchData);
+        //$total_received_fees = $this->totalReceivedAmount($searchData);
+        $total_received_fees = $this->ipd_payment_model->getList($searchData)->sum('ipl_amount');
 
-        $ipd_total_cash = $this->ipd_payment_model->getList(['ipl_received_by' => 'cash'])->sum('ipl_amount');
-        $ipd_total_cheque = $this->ipd_payment_model->getList(['ipl_received_by' => 'cheque'])->sum('ipl_amount');
-        $ipd_total_card = $this->ipd_payment_model->getList(['ipl_received_by' => 'card'])->sum('ipl_amount');
+        $cashFilter = $searchData;
+        $cashFilter['ipl_received_by'] = 'cash';
+        $ipd_total_cash = $this->ipd_payment_model->getList($cashFilter)->sum('ipl_amount');
+        $chequeFilter = $searchData;
+        $chequeFilter['ipl_received_by'] = 'cheque';
+        $ipd_total_cheque = $this->ipd_payment_model->getList($chequeFilter)->sum('ipl_amount');
+        $cardFilter = $searchData;
+        $cardFilter['ipl_received_by'] = 'card';
+        $ipd_total_card = $this->ipd_payment_model->getList($cardFilter)->sum('ipl_amount');
 
         return view('balance.ipd.list', compact('searchData', 'total_fees', 'total_received_fees', 'ipd_total_cash', 'ipd_total_cheque', 'ipd_total_card'));
     }

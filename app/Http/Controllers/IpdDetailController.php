@@ -97,6 +97,7 @@ class IpdDetailController extends MainController
                 $input['ipd_id'] = $this->getUniqueID();
                 $input['ipd_added_by'] = $login_user_id;
                 $input['ipd_updated_by'] = $login_user_id;
+                $input['ipd_discount'] = 0;
                 $insert = $this->ipd->insertData($input);
                 if (isset($insert->ipd_id)) {
                     $notificationData = [

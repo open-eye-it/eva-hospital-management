@@ -332,6 +332,7 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <i title="Print Bill" class="flaticon flaticon2-print icon-3x cursor_pointer" id="printBillInModal"></i>
                 <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -405,6 +406,7 @@
 
                     $('#billAmountViewModal').modal('show');
                     $('#ipd_id').val(ipd_id);
+                    $('#printBillInModal').attr('onclick', 'printIPDBill("' + atob(ipd_id) + '")');
                 } else {
                     sweetAlertError(res.message, 3000);
                 }

@@ -71,8 +71,7 @@ class IPDAccountDetailControoller extends MainController
     {
         $input = $request->all();
         $input['ipd_id'] = base64_decode($input['ipd_id']);
-
-        $update = $this->ipd->updateData(['ipd_discount', $input['ipd_discount']], ['ipd_id' => $input['ipd_id']]);
+        $update = $this->ipd->updateData(['ipd_discount' => $input['ipd_discount']], $input['ipd_id']);
         if ($update) {
             return $this->getSuccessResult([], 'Discount updated.', true);
         } else {

@@ -13,27 +13,26 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-12">
-                            <!-- <div class="card card-custom gutter-b p-5">
-                                <form action="{{ route('ipd-acount-detail.list') }}">
+                            <div class="card card-custom gutter-b p-5">
+                                <form action="{{ route('balance.ipd') }}">
                                     <div class="row">
-                                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
+                                        <!-- <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
                                             <label for="search_text">Search IPD ID</label>
                                             <input type="text" class="form-control" placeholder="Search IPD ID" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
-                                        </div>
+                                        </div> -->
                                         <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
-                                            <label for="appointment_date">Admit Date</label>
+                                            <label for="appointment_date">IPD Date</label>
                                             <div class='input-group' id='appointment_date_range'>
-                                                <input type='text' name="admit_date_range" id="admit_date_range" class="form-control" placeholder="Select date range" value="{{ $searchData['admit_date_range'] }}" />
+                                                <input type='text' name="date_range" id="date_range" class="form-control" placeholder="Select date range" value="{{ $searchData['admit_date_range'] }}" />
                                             </div>
                                         </div>
                                         <div class="col-12 form-group">
                                             <button class="btn btn-primary" type="submit">Search</button>
-                                            <a class="btn btn-danger" href="{{ route('ipd.list') }}">Resst</a>
-                                            <button type="button" class="btn btn-info" onclick="exportIPD()"><i class="fa fa-file-export"></i> Export</button>
+                                            <a class="btn btn-danger" href="{{ route('balance.ipd') }}">Resst</a>
                                         </div>
                                     </div>
                                 </form>
-                            </div> -->
+                            </div>
                         </div>
                     </div>
                     <div class="row">

@@ -106,6 +106,12 @@ class PermissionSeeder extends Seeder
                 'section'      => 'trainee',
             ],
             [
+                'name'         => 'trainee-payment',
+                'display_name' => 'Payment Trainee',
+                'guard_name'   => 'web',
+                'section'      => 'trainee',
+            ],
+            [
                 'name'         => 'room-read',
                 'display_name' => 'Read Room',
                 'guard_name'   => 'web',
@@ -416,6 +422,12 @@ class PermissionSeeder extends Seeder
                 'display_name' => 'Bill Amount iPD Account Detail',
                 'guard_name'   => 'web',
                 'section'      => 'account-detail-ipd'
+            ],
+            [
+                'name'         => 'balance-read',
+                'display_name' => 'Balance Show',
+                'guard_name'   => 'web',
+                'section'      => 'balance'
             ]
         ];
 

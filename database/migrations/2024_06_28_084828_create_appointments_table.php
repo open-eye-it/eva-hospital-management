@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('ap_id')->index();
-            $table->bigInteger('pa_id')->index();
+            $table->string('pa_id')->index();
             $table->bigInteger('ap_added_by');
             $table->bigInteger('ap_updated_by');
             $table->string('ap_height')->nullable();

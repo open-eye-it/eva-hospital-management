@@ -16,7 +16,7 @@ return new class extends Migration
             $table->bigInteger('ipd_id');
             $table->bigInteger('ipd_added_by');
             $table->bigInteger('ipd_updated_by');
-            $table->bigInteger('pa_id')->index();
+            $table->string('pa_id')->index();
             $table->date('ipd_admit_date')->index();
             $table->bigInteger('ipd_doctor')->comment('user id of doctor');
             $table->date('ipd_surgery_date')->nullable();

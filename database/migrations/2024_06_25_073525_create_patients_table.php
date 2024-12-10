@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('patients', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('pa_id')->index();
+            $table->string('pa_id')->index();
             $table->bigInteger('pa_added_by')->comment('user table id user_id');
             $table->bigInteger('pa_updated_by')->comment('user table id user_id');
             $table->string('pa_name')->index();

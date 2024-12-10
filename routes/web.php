@@ -161,6 +161,7 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
         Route::post('update/{pa_id}', [PatientController::class, 'update'])->name('patient.update')->middleware(['role_or_permission:patient-update']);
         Route::get('status/{pa_id}', [PatientController::class, 'status'])->name('patient.status')->middleware(['role_or_permission:patient-status']);
         Route::get('view/{pa_id}', [PatientController::class, 'view'])->name('patient.view')->middleware(['role_or_permission:patient-read']);
+        Route::get('print/{pa_id}', [PatientController::class, 'printPatient'])->name('patient.print');
     });
     /* Appointment Detail */
     Route::prefix('appointment')->group(function () {

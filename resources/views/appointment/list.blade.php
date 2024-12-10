@@ -96,7 +96,7 @@
                                 </div>
                                 <div class="card-body">
                                     <!--begin: Datatable-->
-                                    <table class="table table-bordered table-separate table-head-custom table-checkable scrollable_table_custom" id="">
+                                    <table class="table table-bordered table-separate scrollable_table_custom" id="">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>

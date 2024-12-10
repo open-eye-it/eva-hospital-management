@@ -148,9 +148,9 @@
                                                     <label>Photo</label>
                                                     <input type="file" class="form-control" placeholder="Photo" name="pa_photo" id="pa_photo" value="{{ $data->pa_photo }}" />
                                                 </div>
-                                                @if(!empty($data->pa_photo))
-                                                <img src="{{ ImagePath($data->pa_photo) }}" class="img-fluid" />
-                                                @endif
+
+                                                <img src="{{ ImagePath($data->pa_photo) }}" class="img-fluid" width="100px" />
+
                                             </div>
                                             <div class="col-12">
                                                 <h4>Do you consume any of below?</h4>

@@ -232,4 +232,11 @@ class PatientController extends MainController
             return $rd_id;
         }
     }
+
+    public function printPatient($pa_id)
+    {
+        $pa_id = base64_decode($pa_id);
+        $patientData = $this->patient->singlData($pa_id);
+        return response()->view('patient.detail-print', compact('patientData'));
+    }
 }

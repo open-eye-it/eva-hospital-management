@@ -46,7 +46,7 @@
                                 </div>
                                 <div class="card-body">
                                     <!--begin: Datatable-->
-                                    <table class="table table-bordered table-separate table-head-custom table-checkable scrollable_table_custom">
+                                    <table class="table table-bordered table-hover scrollable_table_custom">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>

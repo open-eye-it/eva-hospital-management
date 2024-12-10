@@ -61,7 +61,7 @@
                                                 <td>{{ $list->firstItem() + $key }}</td>
                                                 <td>{{ $user->person_name }}</td>
                                                 <td>{{ $user->name }}</td>
-                                                <td>{!! implode('|', $user->getRoleNames()->toArray()) !!}</td>
+                                                <td>{!! implode('|', $user->getRoleDisplayNames()->toArray()) !!}</td>
                                                 <td>{{ $user->AddedByData->person_name }}</td>
                                                 @can('user-status')
                                                 <td>

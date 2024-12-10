@@ -6,7 +6,6 @@
 <div class="row">
     <div class="col-lg-12 col-xxl-12">
         <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
-
             <!--begin::Entry-->
             <div class="d-flex flex-column-fluid">
                 <!--begin::Container-->
@@ -47,7 +46,7 @@
                                 </div>
                                 <div class="card-body">
                                     <!--begin: Datatable-->
-                                    <table class="table table-bordered scrollable_table_custom">
+                                    <table class="table table-bordered table-hover scrollable_table_custom" id="">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
@@ -96,7 +95,7 @@
                                             @endforeach
                                             @else
                                             <tr>
-                                                <td colspan="4">Record not found</td>
+                                                <td colspan="10">Record not found</td>
                                             </tr>
                                             @endif
                                         </tbody>
@@ -304,23 +303,6 @@
         let query = '?search_text=' + search_text + '&follow_up_date_range=' + follow_up_date_range;
         window.location.href = "{{ route('follow-up.export') }}" + query;
     }
-
-    // $('body').on('click', '#billView', function(event) {
-    //     let ap_id = $(this).data('id');
-    //     $.ajax({
-    //         url: "{{ route('appointment.bill_print', '') }}" + "/" + ap_id,
-    //         method: "GET",
-    //         success: function(res) {
-    //             console.log(res);
-    //             printData(res);
-    //         },
-    //         error: function(r) {
-    //             console.log(r);
-    //             let res = r.responseJSON;
-    //             sweetAlertError(res.message, 3000);
-    //         }
-    //     });
-    // });
 
     /* OPD Note Show */
     $('body').on('click', '#OPDNote', function() {

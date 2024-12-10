@@ -706,6 +706,22 @@
 					</div>
 				</li> -->
 				@endcan
+				<li class="menu-item {{ (Request::segment(1) == 'profile') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true">
+					<a href="{{ route('profile') }}" class="menu-link">
+						<span class="svg-icon menu-icon">
+							<i class="icon-2x flaticon-profile-1"></i>
+						</span>
+						<span class="menu-text">Profile</span>
+					</a>
+				</li>
+				<li class="menu-item {{ (Request::segment(1) == 'signout') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true">
+					<a href="{{ route('signout') }}" class="menu-link">
+						<span class="svg-icon menu-icon">
+							<i class="icon-2x flaticon-logout"></i>
+						</span>
+						<span class="menu-text">Sign Out</span>
+					</a>
+				</li>
 			</ul>
 			<!--end::Menu Nav-->
 		</div>

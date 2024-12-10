@@ -261,6 +261,20 @@
                             </thead>
                             <tbody id="chargeDetail"></tbody>
                         </table>
+                        <div class="row pt-2">
+                            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12 col-12">
+                                <div class="form-group">
+                                    <label for="">Discount</label>
+                                    <input type="number" class="form-control" id="ipd_discount" name="ipd_discount">
+                                    <span class="text-danger" id="ipd_discountErr"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-12">
+                                <div class="form-group pt-4 mt-4">
+                                    <button class="btn btn-primary" id="updateDiscount">Update</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-lg-7 col-md-6 col-sm-12 col-xs-12 col-12 pt-4">
                         <h4 class="text-center"><strong>Payment Received Details</strong></h4>
@@ -387,6 +401,7 @@
                     $('#addNewPayment').attr("onclick", "addPayment('" + ipd_id + "')");
                     $('#paymentDetail').html(paymentRow);
 
+                    $('#ipd_discount').val(ipdData.ipd_discount);
 
                     $('#billAmountViewModal').modal('show');
                     $('#ipd_id').val(ipd_id);
@@ -400,6 +415,34 @@
             }
         });
     })
+    /* Update Discount */
+    $('#updateDiscount').click(function() {
+        let ipd_discount = $('#ipd_discount').val();
+        let ipd_id = $('#ipd_id').val();
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': "{{ csrf_token() }}"
+            },
+            url: "{{ route('ipd-acount-detail.bill-discount-update') }}",
+            method: "POST",
+            data: {
+                ipd_id: ipd_id,
+                ipd_discount: ipd_discount
+            },
+            success: function(res) {
+                console.log(res);
+                if (res.response == true) {
+                    sweetAlertSuccess(res.message, 3000);
+                } else {
+                    sweetAlertError(res.message, 3000);
+                }
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    });
     /* Add Charge */
     function addCharge(ipd_id) {
         let ic_text = $('#ic_text').val();

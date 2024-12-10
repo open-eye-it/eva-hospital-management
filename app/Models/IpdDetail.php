@@ -32,8 +32,9 @@ class IpdDetail extends Model
         'ipd_operation_medicine_date',
         'ipd_bill_amount',
         'ipd_received_amount',
+        'ipd_discount',
         'ipd_mediclaim',
-        'ipd_is_foc'
+        'ipd_is_foc',
     ];
 
 

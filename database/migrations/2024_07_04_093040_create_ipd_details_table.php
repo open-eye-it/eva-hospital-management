@@ -25,8 +25,20 @@ return new class extends Migration
             $table->string('ipd_status')->default('admit')->comment('admit/discharge/cancel');
             $table->date('ipd_discharge_date')->nullable()->comment('when status discharge');
             $table->string('ipd_cancel_reason')->nullable();
+            $table->date('ipd_follow_up_date')->nullable();
+            $table->text('ipd_follow_up_note')->nullable();
+            $table->string('ipd_cancel_reason')->nullable();
+            $table->string('ipd_diagnosis')->nullable();
+            $table->string('ipd_investigations')->nullable();
+            $table->text('ipd_treatment_given')->nullable();
+            $table->text('ipd_treatment_discharge')->nullable();
+            $table->longText('ipd_operation_medicine')->nullable();
+            $table->date('ipd_operation_medicine_date')->nullable();
             $table->string('ipd_bill_amount')->default(0);
             $table->string('ipd_received_amount')->default(0);
+            $table->string('ipd_discount')->default(0);
+            $table->string('ipd_mediclaim');
+            $table->string('ipd_is_foc');
             $table->timestamps();
         });
     }

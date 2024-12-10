@@ -229,6 +229,7 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
     Route::prefix('ipd-account-detail')->name('ipd-acount-detail.')->group(function () {
         Route::get('list', [IPDAccountDetailControoller::class, 'index'])->name('list')->middleware(['role_or_permission:account-detail-ipd-read']);
         Route::get('bill-detail/{ipd_id}', [IPDAccountDetailControoller::class, 'bill_detail'])->name('bill-detail')->middleware(['role_or_permission:account-detail-ipd-bill-amount']);
+        Route::post('bill-detail/discount-update', [IPDAccountDetailControoller::class, 'discount_update'])->name('bill-discount-update')->middleware(['role_or_permission:account-detail-ipd-bill-amount']);
         Route::get('charge/add/{ipd_id}', [IPDAccountDetailControoller::class, 'charge_add'])->name('charge.add');
         Route::get('charge/remove/{ic_id}', [IPDAccountDetailControoller::class, 'charge_remove'])->name('charge.remove');
         Route::get('charge/single/{ic_id}', [IPDAccountDetailControoller::class, 'charge_single'])->name('charge.single');

@@ -170,6 +170,10 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
         Route::get('list', [AppointmentController::class, 'index'])->name('appointment.list')->middleware(['role_or_permission:appointment-read']);
         Route::get('edit/{ap_id}', [AppointmentController::class, 'edit'])->name('appointment.edit')->middleware(['role_or_permission:appointment-edit']);
         Route::post('update/{ap_id}', [AppointmentController::class, 'update'])->name('appointment.update')->middleware(['role_or_permission:appointment-edit']);
+        Route::get('doc/view/{ap_id}', [AppointmentController::class, 'appointmentDocView'])->name('appointment.doc.view');
+        Route::post('doc/send', [AppointmentController::class, 'appointmentDocSend'])->name('appointment.doc.send');
+        Route::get('doc/remove/{id?}', [AppointmentController::class, 'appointmentDocRemove'])->name('appointment.doc.remove');
+        Route::get('doc/download/{id?}', [AppointmentController::class, 'appointmentDocDownload'])->name('appointment.doc.download');
         Route::get('status/{string_val}', [AppointmentController::class, 'status'])->name('appointment.status')->middleware(['role_or_permission:appointment-status']);
         Route::get('view/{ap_id}', [AppointmentController::class, 'view'])->name('appointment.view')->middleware(['role_or_permission:appointment-full-view|follow-up-opd-notes']);
         Route::get('prescribe/{ap_id}', [AppointmentController::class, 'prescribe'])->name('appointment.prescribe')->middleware(['role_or_permission:appointment-prescription']);

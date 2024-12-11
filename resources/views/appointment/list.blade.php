@@ -168,6 +168,7 @@
                                                                 @can('appointment-additional-charge')
                                                                 <li class="nav-item"><span class="nav-link" title="Additional Charge"><i title="Additiona Charge" class="flaticon flaticon-add-circular-button icon-3x cursor_pointer px-1" onclick="additionalChargeShow('{{ base64_encode($appointment->ap_id) }}', '{{ json_encode($searchData) }}')"></i></span></li>
                                                                 @endcan
+                                                                <li class="nav-item"><span class="nav-link" id="AppointmentDocument" data-id="{{ base64_encode($appointment->ap_id) }}" title="Appointment Documents"><i class="flaticon flaticon-file icon-3x cursor_pointer"></i></span></li>
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -200,6 +201,51 @@
     </div>
 </div>
 <!--end::Row-->
+<div class="modal fade" id="appointmentDocViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Appointment Document</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" enc-type="multipart/form-data" id="submitDocument">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-12col-xs-12">
+                            <label for="patient_name">Document Name</label>
+                            <input type="text" class="form-control" name="ap_doc_name" id="ap_doc_name" value="" placeholder="Document Name" />
+                            <span class="text-danger" id="ap_doc_name_err"></span>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12col-xs-12">
+                            <label for="patient_name">Document File</label>
+                            <input type="file" class="form-control" name="ap_doc" id="ap_doc" value="" placeholder="Document" />
+                            <span class="text-danger" id="ap_doc_err"></span>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12col-xs-12">
+                            <input type="hidden" id="ap_id_doc" name="ap_id_doc" value="">
+                            <button type="submit" id="docAdd" class="btn btn-primary mt-4">Add <i class="la la-plus"></i></button>
+                        </div>
+                    </div>
+                </form>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>File</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="appointmentDocData"></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="fullViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -625,6 +671,79 @@
                 if (res.response == true) {
                     let data = res.data;
                     $('#row_' + apac_id).remove();
+                } else {
+                    sweetAlertError(res.message, 3000);
+                }
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    }
+
+    /* Appointment Document */
+    $('body').on('click', '#AppointmentDocument', function() {
+        let ap_id = $(this).data('id');
+        $.ajax({
+            url: "{{ route('appointment.doc.view', '') }}" + "/" + ap_id,
+            method: "GET",
+            success: function(res) {
+                console.log(res);
+                $('#ap_id_doc').val(ap_id);
+                $('#appointmentDocData').html(res.data);
+                $('#appointmentDocViewModal').modal('show');
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    });
+
+    $('#submitDocument').on('submit', function(e) {
+        e.preventDefault();
+        let name = $('#ap_doc_name').val();
+        let file = $('#ap_doc').val();
+        if (name == '') {
+            $('#ap_doc_name_err').text('Please enter doc name');
+        } else if (file == '') {
+            $('#ipdap_doc_err').text('Please select document');
+        } else {
+            let formData = new FormData(this);
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                },
+                url: "{{ route('appointment.doc.send') }}",
+                method: 'POST',
+                data: new FormData(this),
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: (res) => {
+                    if (res.response == true) {
+                        $('#appointmentDocData').prepend(res.data);
+                    } else {
+                        sweetAlertError(res.message, 3000);
+                    }
+                },
+                error: function(r) {
+                    let res = r.responseJSON;
+                    sweetAlertError(res.message, 3000);
+                }
+            });
+        }
+    });
+
+    function removerDoc(id) {
+        $.ajax({
+            url: "{{ route('appointment.doc.remove') }}/" + id,
+            method: "GET",
+            success: function(res) {
+                console.log(res);
+                if (res.response == true) {
+                    $('#doc_row_' + id).remove();
                 } else {
                     sweetAlertError(res.message, 3000);
                 }

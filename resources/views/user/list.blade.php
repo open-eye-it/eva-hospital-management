@@ -61,24 +61,28 @@
                                                 <td>{{ $list->firstItem() + $key }}</td>
                                                 <td>{{ $user->person_name }}</td>
                                                 <td>{{ $user->name }}</td>
-                                                <td>{!! implode('|', $user->getRoleDisplayNames()->toArray()) !!}</td>
+                                                <td>{{ implode('|', $user->getRoleDisplayNames()->toArray()) }}</td>
                                                 <td>{{ $user->AddedByData->person_name }}</td>
                                                 @can('user-status')
                                                 <td>
+                                                    @if($user->getRoleNames()[0] != 'admin')
                                                     <label class="switch">
                                                         <input type="checkbox" class="updateStatus" data-id="{{ base64_encode($user->user_id) }}" {{ ($user->user_status==1)?'checked':'' }}>
                                                         <span class="slider round"></span>
                                                     </label>
+                                                    @endif
                                                 </td>
                                                 @endcan
                                                 @if(auth()->user()->can('user-read') || auth()->user()->can('user-update'))
                                                 <td>
+                                                    @if($user->getRoleNames()[0] != 'admin')
                                                     @can('user-update')
                                                     <a href="{{ route('user.edit', base64_encode($user->user_id)) }}" title="Edit"><i class="la la-edit icon-3x"></i></a>
                                                     @endcan
                                                     @can('user-read')
                                                     <span id="fullView" data-id="{{ base64_encode($user->user_id) }}" title="Full View"><i class="la la-eye icon-3x cursor_pointer"></i></span>
                                                     @endcan
+                                                    @endif
                                                 </td>
                                                 @endif
                                             </tr>

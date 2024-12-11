@@ -1,7 +1,7 @@
 <tr id="doc_row_{{ $docData->id }}">
-    <td>{{ $docData->ipd_doc_name }}</td>
+    <td>{{ $docData->ap_doc_name }}</td>
     <td>
-        <a href="{{ route('ipd.doc.download', ['id' => base64_encode($docData->id)]) }}" download>{{ json_decode($docData->ipd_doc)[0] }}</a>
+        <a href="{{ route('appointment.doc.download', ['id' => base64_encode($docData->id)]) }}" download>{{ json_decode($docData->ap_doc)[0] }}</a>
     </td>
     <td>
         <i title="Remove" class="la la-trash icon-3x cursor_pointer" onclick="removerDoc('{{ $docData->id }}')"></i>

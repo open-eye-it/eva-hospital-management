@@ -66,8 +66,12 @@ class IpdDetailController extends MainController
         return Excel::download(new IPDDetailExport($input), $fileName);
     }
 
-    public function create()
+    public function create(Request $request)
     {
+        $input = $request->all();
+        $pa_id = isset($input['patient']) ? $input['patient'] : '';
+        $pa_id = base64_decode($pa_id);
+
         $admitPatientList = $this->ipd->admitPatient()->toArray();
         $admitPatientArr = [];
         if (!empty($admitPatientList)) {
@@ -81,7 +85,7 @@ class IpdDetailController extends MainController
         $doctors = array_merge($doctorList, $assDoctorList);
         $roomList = $this->room->getList(['rm_status' => 1, 'rm_busy' => 0]);
         $roomList = $this->room->getListforIPD(['rm_status' => 1, 'rm_busy' => 0]);
-        return view('ipd.create', compact('patientList', 'doctors', 'roomList'));
+        return view('ipd.create', compact('pa_id', 'patientList', 'doctors', 'roomList'));
     }
 
     public function store(Request $request)

@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
+use App\Models\IpdDetail;
+
 class Patient extends Model
 {
     use HasFactory;
@@ -142,5 +144,10 @@ class Patient extends Model
     public function UpdatedByData()
     {
         return $this->hasOne(User::class, 'user_id', 'pa_updated_by');
+    }
+
+    public function ipdAdmit()
+    {
+        return $this->hasOne(IpdDetail::class, 'pa_id', 'pa_id')->where('ipd_status', 'admit');
     }
 }

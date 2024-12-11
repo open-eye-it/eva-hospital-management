@@ -37,7 +37,7 @@
                                 </div>
                                 <div class="card-body">
                                     <!--begin: Datatable-->
-                                    <table class="table table-bordered table-hover scrollable_table_custom" id="">
+                                    <table class="table table-bordered table-separate scrollable_table_custom" id="">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
@@ -78,13 +78,27 @@
                                                 @endcan
                                                 @if(auth()->user()->can('patient-read') || auth()->user()->can('patient-update'))
                                                 <td>
-                                                    @can('patient-update')
-                                                    <a href="{{ route('patient.edit', base64_encode($patient->pa_id)) }}" title="Edit"><i class="la la-edit icon-3x"></i></a>
-                                                    @endcan
-                                                    @can('patient-read')
-                                                    <span id="fullView" data-id="{{ base64_encode($patient->pa_id) }}" title="Full View"><i class="la la-eye icon-3x cursor_pointer"></i></span>
-                                                    @endcan
-                                                    <i title="Print Bill" class="flaticon flaticon2-print icon-3x cursor_pointer" id="printPatientModal" onclick="printPatientBill('{{ base64_encode($patient->pa_id) }}')"></i>
+                                                    <div class="dropdown dropdown-inline">
+                                                        <a href="javascript:;" class="btn btn-sm btn-clean btn-icon" data-toggle="dropdown" aria-expanded="false"> <i class="ki ki-bold-more-hor icon-3x"></i> </a>
+                                                        <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                                            <ul class="nav nav-hoverable">
+                                                                @can('patient-update')
+                                                                <li class="nav-item"><a class="nav-link" href="{{ route('patient.edit', base64_encode($patient->pa_id)) }}" title="Edit"><i class="la la-edit icon-3x"></i></a></li>
+                                                                @endcan
+                                                                @can('patient-read')
+                                                                <li class="nav-item"><span class="nav-link" id="fullView" data-id="{{ base64_encode($patient->pa_id) }}" title="Full View"><i class="la la-eye icon-3x cursor_pointer"></i></span></li>
+                                                                @endcan
+
+                                                                <li class="nav-item"><i title="Print Patient" class="flaticon flaticon2-print icon-3x cursor_pointer nav-link" id="printPatientModal" onclick="printPatientBill('{{ base64_encode($patient->pa_id) }}')"></i></li>
+                                                                @can('appointment-create')
+                                                                <li class="nav-item"><a class="nav-link" href="{{ route('appointment.create').'?patient='.base64_encode($patient->pa_id) }}"><i title="Book Appointment" class="flaticon-calendar-2 icon-3x cursor_pointer"></i></a></li>
+                                                                @endcan
+                                                                @if(empty($patient->ipdAdmit))
+                                                                <li class="nav-item"><a class="nav-link" href="{{ route('ipd.create').'?patient='.base64_encode($patient->pa_id) }}"><i title="Book IPD" class="la la-bed icon-3x cursor_pointer"></i></a></li>
+                                                                @endif
+                                                            </ul>
+                                                        </div>
+                                                    </div>
                                                 </td>
                                                 @endif
                                             </tr>

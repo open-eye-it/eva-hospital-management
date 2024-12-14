@@ -21,6 +21,7 @@ class ReferredDoctorController extends MainController
     {
         $input = $request->all();
         $searchData['search_text']  = isset($input['search_text']) ? $input['search_text'] : '';
+        $searchData['patient_date_range']  = isset($input['patient_date_range']) ? $input['patient_date_range'] : '';
         $list = $this->doctor->getList($searchData);
         return view('referred-doctor.list', compact('list', 'searchData'));
     }

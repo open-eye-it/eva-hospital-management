@@ -26,6 +26,15 @@ var KTBootstrapDaterangepicker = function () {
         }, function(start, end, label) {
             $('#admit_date_range_filter .form-control').val( start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
         });
+
+        // IPD Admit DataFilter
+        $('#patient_date_range').daterangepicker({
+            buttonClasses: ' btn',
+            applyClass: 'btn-primary',
+            cancelClass: 'btn-secondary',
+        }, function(start, end, label) {
+            $('#patient_date_range .form-control').val( start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
+        });
         
         // minimum setup
         $('#kt_daterangepicker_1, #kt_daterangepicker_1_modal').daterangepicker({

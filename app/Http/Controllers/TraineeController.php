@@ -255,6 +255,12 @@ class TraineeController extends MainController
         }
     }
 
+    public function paymentReceipt($tpl_id){
+        $tpl_id = base64_decode($tpl_id);
+        $paymentData = $this->trainee_payment_model->singlData($tpl_id);
+        return response()->view('trainee.receipt-print', compact('paymentData'));
+    }
+
     public function traineedID()
     {
         $tr_real_id = date('YmdH') . $this->randomString(6, 'number');

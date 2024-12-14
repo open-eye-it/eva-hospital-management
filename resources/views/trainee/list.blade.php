@@ -500,5 +500,39 @@
             }
         });
     }
+
+    function printReceipt(tpl_id){
+        let url = "{{ route('trainee.payment.receipt', ['tpl_id' => ':tpl_id']) }}";
+        url = url.replace(':tpl_id', tpl_id);
+        $.ajax({
+            url: url,
+            method: "GET",
+            success: function(res) {console.log(res);
+                //printData(res);
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    }
+
+    /* Print Data */
+    function printData(data) {
+        $('<iframe>', {
+                name: 'myiframe',
+                class: 'printFrame'
+            })
+            .appendTo('body')
+            .contents().find('body')
+            .append(data);
+
+        window.frames['myiframe'].focus();
+        window.frames['myiframe'].print();
+
+        setTimeout(() => {
+            $(".printFrame").remove();
+        }, 1000);
+    };
 </script>
 @endsection

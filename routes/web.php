@@ -110,6 +110,7 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
         Route::get('payment/view/{tr_id}', [TraineeController::class, 'traineePaymentView'])->name('trainee.payment.view');
         Route::post('payment/store', [TraineeController::class, 'traineePaymentStore'])->name('trainee.payment.store');
         Route::get('payment/remove/{tpl_id}/{tr_id}', [TraineeController::class, 'traineePaymentRemove'])->name('trainee.payment.remove');
+        Route::get('receipt/{tpl_id}', [TraineeController::class, 'paymentReceipt'])->name('trainee.payment.receipt');
     });
     /* Hospital Rooms with building, floor, ward, bed */
     Route::prefix('room')->group(function () {

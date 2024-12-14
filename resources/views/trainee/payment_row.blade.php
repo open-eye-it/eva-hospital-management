@@ -4,6 +4,6 @@
     <td>{{ date('d M Y', strtotime($inserData->created_at)) }}</td>
     <td>
         <i title="Remove" class="la la-trash icon-3x cursor_pointer" onclick="removerCharge('{{ base64_encode($inserData->tpl_id) }}', '{{ base64_encode($inserData->tr_id) }}')"></i>
-        <i title="Print Receipt" class="flaticon flaticon2-print icon-3x cursor_pointer" onclick="printReceipt('{{ base64_encode($inserDat->tpl_id) }}')"></i>
+        <i title="Print Receipt" class="flaticon flaticon2-print icon-3x cursor_pointer" onclick="printReceipt('{{ base64_encode($inserData->tpl_id) }}')"></i>
     </td>
 </tr>

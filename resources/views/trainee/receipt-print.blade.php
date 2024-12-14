@@ -11,21 +11,18 @@
         <h3 style="margin-bottom:0px; padding-bottom:0px;">
             Receipt No: {{ $paymentData->tpl_id }}
         </h3>
-        <!-- <h3 style="margin-top:10px; padding-top:0px;">
-            {{ $data['type_of_surgery'] }}
-        </h3> -->
         <p>Received with thanks from</p>
-        <p>Mrs/Ms <strong>{{ $paymentData?->traineeData?->tr_nme }}</strong></p>
+        <p>Mrs/Ms <strong>{{ $paymentData?->traineeData?->tr_name }}</strong></p>
+        <p>You have provide a payment of <strong>{{ $paymentData->tpl_desc }}</strong></p>
         <p>a sum of Rupees <strong>{{ displaywords($paymentData->tpl_amount) }}</strong></p>
-        <!-- <p>received Cash / Cheque / DD No. <strong>{{ $data['received_by'] }}</strong></p> -->
         <p>For Bill No <strong>{{ $paymentData->tpl_id }}</strong> Bill Amoun (Rs.) <strong>{{ $paymentData->tpl_amount }}</strong></p>
-        <p>Patient's Name <strong>{{ $data['patient_name'] }}</strong></p>
-        <p>D.O.A <strong>{{ $data['admit_date'] }}</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; D.O.D <strong>{{ $data['discharge_date'] }}</strong></p>
+        
+        <p>Training from <strong>{{ date('d M Y', strtotime($paymentData?->traineeData?->tr_start_date)) }}</strong> to <strong>{{ date('d M Y', strtotime($paymentData?->traineeData?->tr_end_date)) }}</strong></p>
         <p style="margin-top:50px;"></p>
         <table style="margin-left:20px; padding-right:40px; width:100%; font-style: normal;">
             <tr>
                 <td>
-                    <Strong>Date: {{ date('d M Y', strtotime($data['current_date'])) }}</Strong>
+                    <Strong>Date: {{ date('d M Y') }}</Strong>
                 </td>
                 <td>
 

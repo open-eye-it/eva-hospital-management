@@ -170,6 +170,7 @@ class TraineeController extends MainController
             $data1['tr_added_by'] = $added_by;
             $updated_by = $data->UpdatedByData->person_name;
             $data1['tr_updated_by'] = $updated_by;
+            $data1['paid_amount_final'] = $data->traineePaymentListSum();
             return $this->getSuccessResult($data1, 'Trainee detail found', true);
         } else {
             return $this->getErrorMessage('Trainee detail not found');

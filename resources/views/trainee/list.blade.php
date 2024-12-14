@@ -357,8 +357,8 @@
                         <td>' + data.tr_total_amount + '</td> \
                     </tr> \
                     <tr> \
-                        <th>Paid Amount</th> \
-                        <td>' + data.tr_paid_amount + '</td> \
+                        <th>Received Amount</th> \
+                        <td>' + data.paid_amount_final + '</td> \
                     </tr> \
                     <tr> \
                         <th>Is Advance Received?</th> \
@@ -400,7 +400,6 @@
             url: "{{ route('trainee.payment.view', '') }}" + "/" + tr_id,
             method: "GET",
             success: function(res) {
-                console.log(res);
                 if (res.response === true) {
                     $('#traineePaymentCharge').html(res.data);
                     $('#traineePaymentModal').modal('show');
@@ -442,7 +441,6 @@
                     tpl_amount: tpl_amount
                 },
                 success: function(res) {
-                    console.log(res);
                     let blankText = "";
                     $('#addAdditionalCharge').removeClass('spinner spinner-white spinner-right');
                     $('#addAdditionalCharge').attr('disabled', false);
@@ -474,7 +472,6 @@
             url: url,
             method: "GET",
             success: function(res) {
-                console.log(res);
                 if (res.response == true) {
                     let data = res.data;
                     $('#row_' + atob(tpl_id)).remove();
@@ -496,7 +493,7 @@
             url: urlPath,
             method: "GET",
             success: function(res) {
-                console.log(res);
+                //console.log(res);
             }
         });
     }
@@ -507,8 +504,8 @@
         $.ajax({
             url: url,
             method: "GET",
-            success: function(res) {console.log(res);
-                //printData(res);
+            success: function(res) {
+                printData(res);
             },
             error: function(r) {
                 let res = r.responseJSON;

@@ -138,6 +138,9 @@ class PatientController extends MainController
                 'rd_updated_by'   => $login_user_id,
                 'rd_name'         => $rd_name,
             ];
+            if ($input['pa_referred_doctor'] == '' && $input['pa_referred_text'] != '') {
+                $input['pa_referred_doctor'] = $input['pa_referred_text'];
+            }
             $insert = $this->referred_doctor->insertData($data);
         }
         /* End::If Referred Doctor Not exist then create it */

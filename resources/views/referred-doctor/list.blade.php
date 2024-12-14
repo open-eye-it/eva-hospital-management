@@ -23,7 +23,7 @@
                                         <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
                                             <label for="patient_date">Patient Count Range</label>
                                             <div class='input-group' id='patient_date_range'>
-                                                <input type='text' name="patient_date_range" class="form-control" readonly="readonly" placeholder="Select date range" value="" />
+                                                <input type='text' name="patient_date_range" class="form-control" readonly="readonly" placeholder="Select date range" value="{{ $searchData['patient_date_range'] }}" />
                                             </div>
                                         </div>
                                         <div class="col-12 form-group">
@@ -62,7 +62,24 @@
                                             <tr>
                                                 <td>{{ $list->firstItem() + $key }}</td>
                                                 <td>{{ $referred_doctor->rd_name }}</td>
-                                                <td>{{ $referred_doctor?->patientCount() }}</td>
+                                                @if($searchData['patient_date_range'] == '')
+                                                <td>{{ $referred_doctor?->patientData()->count() }}</td>
+                                                @else
+                                                @php
+                                                    $patients = $referred_doctor?->patientData;
+                                                    $count = 0;
+                                                    foreach ($patients as $patient) {
+                                                    $dateArr = explode(' - ', $searchData['patient_date_range']);
+                                                    $dateArr[0] = date('Y-m-d', strtotime($dateArr[0]));
+                                                    $dateArr[1] = date('Y-m-d', strtotime($dateArr[1]));
+
+                                                        if (date('Y-m-d', strtotime($patient->created_at)) >= $dateArr[0] && date('Y-m-d', strtotime($patient->created_at)) <= $dateArr[1]) {
+                                                            $count +=1;
+                                                        }
+                                                    }
+                                                @endphp
+                                                <td>{{ $count }}</td>
+                                                @endif
                                                 <td>{{ $referred_doctor->AddedByData->person_name }}</td>
                                                 @can('referred-doctor-update')
                                                 <td>

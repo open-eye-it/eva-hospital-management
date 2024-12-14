@@ -37,6 +37,7 @@ class ReferredDoctor extends Model
     {
         $data = static::select('*');
         $this->FilterData($data, $filterData);
+        $data->with('patientData');
         $data->orderBy($order_by[0], $order_by[1]);
         if ($paginate === true) :
             $output = $data->paginate((int)$limit);
@@ -65,14 +66,14 @@ class ReferredDoctor extends Model
             $data->where('rd_name', 'LIKE', '%' . $search_text . '%');
         }
         if ($patient_date_range != '') {
-            $data->whereHas('patientCount', function (Builder $query) use ($patient_date_range) {
-                echo $patient_date_range;
-                die;
-                // $dateArr = explode(' - ', $patient_date_range);
-                // $dateArr[0] = date('Y-m-d', strtotime($dateArr[0]));
-                // $dateArr[1] = date('Y-m-d', strtotime($dateArr[1]));
-                // $query->whereDate('created_at', '>=', $dateArr[0]);
-                // $query->whereDate('created_at', '<=', $dateArr[1]);
+            $data->whereHas('patientData', function (Builder $query) use ($patient_date_range) {
+                // echo $patient_date_range;
+                // die;
+                $dateArr = explode(' - ', $patient_date_range);
+                $dateArr[0] = date('Y-m-d', strtotime($dateArr[0]));
+                $dateArr[1] = date('Y-m-d', strtotime($dateArr[1]));
+                $query->whereDate('created_at', '>=', $dateArr[0]);
+                $query->whereDate('created_at', '<=', $dateArr[1]);
             });
         }
     }
@@ -91,5 +92,10 @@ class ReferredDoctor extends Model
     public function patientCount()
     {
         return $this->hasMany(Patient::class, 'pa_referred_doctor', 'rd_name')->count();
+    }
+
+    public function patientData()
+    {
+        return $this->hasMany(Patient::class, 'pa_referred_doctor', 'rd_name');
     }
 }

@@ -23,6 +23,24 @@ class ReferredDoctorController extends MainController
         $searchData['search_text']  = isset($input['search_text']) ? $input['search_text'] : '';
         $searchData['patient_date_range']  = isset($input['patient_date_range']) ? $input['patient_date_range'] : '';
         $list = $this->doctor->getList($searchData);
+        // foreach ($list as $patientData) {
+        //     echo "<pre>";
+        //     $patients = $patientData->patientData;
+        //     $count = 0;
+        //     foreach ($patients as $patient) {
+        //         $dateArr = explode(' - ', $searchData['patient_date_range']);
+        //         $dateArr[0] = date('Y-m-d', strtotime($dateArr[0]));
+        //         $dateArr[1] = date('Y-m-d', strtotime($dateArr[1]));
+
+        //         if (date('Y-m-d', strtotime($patient->created_at)) >= $dateArr[0] && date('Y-m-d', strtotime($patient->created_at)) <= $dateArr[1]) {
+        //             $count += 1;
+        //         }
+        //     }
+        // }
+        // die;
+        // echo "<pre>";
+        // print_r($list);
+        // die;
         return view('referred-doctor.list', compact('list', 'searchData'));
     }
 

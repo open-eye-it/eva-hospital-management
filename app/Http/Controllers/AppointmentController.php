@@ -178,8 +178,14 @@ class AppointmentController extends MainController
         $ap_id = base64_decode($input['ap_id_doc']);
 
         $file = '';
+
+        $fileName = $request->ap_doc->getClientOriginalName();
+        $filteNameArr = explode('.', $fileName);
+        $fileNameFinal = $filteNameArr[0].'-'.$this->randomString(7, 'number');
+        $fileNameFinal = str_replace(' ', '-', $fileNameFinal);
         if ($request->hasFile('ap_doc')) {
-            $file = UploadCustomeImage($request->file('ap_doc'), $ap_id . '-' . $this->randomString(10, 'number'));
+            // $file = UploadCustomeImage($request->file('ap_doc'), $ap_id . '-' . $this->randomString(10, 'number'));
+            $file = UploadCustomeImage($request->file('ap_doc'), $fileNameFinal);
         }
         $data = [
             'ap_id' => $ap_id,

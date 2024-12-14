@@ -329,7 +329,7 @@
                         let filepath = window.location.origin + '/storage/app/public/';
                         for (let i = 0; i < fileArr.length; i++) {
                             // fileList += '<p class="btn btn-primary" onclick="downloadFile(`' + fileArr[i] + '`)">' + fileArr[i] + '</p>';
-                            fileList += '<a title="download" class="btn btn-primary mt-4" download href="{{ route("trainee.file.download", "") }}/' + btoa(fileArr[i]) + '">' + fileArr[i] + ' <i class="fa fa-download"></i></a>';
+                            fileList += '<div><a title="download" class="btn btn-primary mt-4" download href="{{ route("trainee.file.download", "") }}/' + btoa(fileArr[i]) + '">' + fileArr[i] + ' <i class="fa fa-download"></i></a></div>';
                         }
                     }
                     let view = '<tr> \

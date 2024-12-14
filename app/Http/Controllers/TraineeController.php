@@ -50,8 +50,13 @@ class TraineeController extends MainController
         $file_data = [];
         if ($request->hasFile('tr_documents')) {
             foreach ($request->file('tr_documents') as $file) {
+                $fileName = $file->getClientOriginalName();
+                $filteNameArr = explode('.', $fileName);
+                $fileNameFinal = $filteNameArr[0].'-'.$this->randomString(7, 'number');
+                $fileNameFinal = str_replace(' ', '-', $fileNameFinal);
 
-                $file = UploadCustomeImage($file, $tr_real_id . '-' . $this->randomString(10, 'number'));
+                // $file = UploadCustomeImage($file, $tr_real_id . '-' . $this->randomString(10, 'number'));
+                $file = UploadCustomeImage($file, $fileNameFinal);
                 $file_data[] = $file;
             }
         }
@@ -107,8 +112,13 @@ class TraineeController extends MainController
             $file_data = [];
             if ($request->hasFile('tr_documents')) {
                 foreach ($request->file('tr_documents') as $file) {
+                    $fileName = $file->getClientOriginalName();
+                    $filteNameArr = explode('.', $fileName);
+                    $fileNameFinal = $filteNameArr[0].'-'.$this->randomString(7, 'number');
+                    $fileNameFinal = str_replace(' ', '-', $fileNameFinal);
 
-                    $file = UploadCustomeImage($file, $data->tr_real_id . '-' . $this->randomString(10, 'number'));
+                    // $file = UploadCustomeImage($file, $data->tr_real_id . '-' . $this->randomString(10, 'number'));
+                    $file = UploadCustomeImage($file, $fileNameFinal);
                     $file_data[] = $file;
                 }
             }

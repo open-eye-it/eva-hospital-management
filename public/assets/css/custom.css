@@ -230,3 +230,10 @@ textarea{
 .min-w-100px{
     min-width: 100px;
 }
+
+.header-fixed.subheader-fixed .subheader{
+    top:0px;
+}
+.header-fixed.subheader-fixed.subheader-enabled .wrapper{
+    padding-top:50px !important;
+}

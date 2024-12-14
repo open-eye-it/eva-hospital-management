@@ -201,8 +201,14 @@ class IpdDetailController extends MainController
         $ipd_id = base64_decode($input['ipd_id_doc']);
 
         $file = '';
+
+        $fileName = $request->ipd_doc->getClientOriginalName();
+        $filteNameArr = explode('.', $fileName);
+        $fileNameFinal = $filteNameArr[0].'-'.$this->randomString(7, 'number');
+        $fileNameFinal = str_replace(' ', '-', $fileNameFinal);
         if ($request->hasFile('ipd_doc')) {
-            $file = UploadCustomeImage($request->file('ipd_doc'), $ipd_id . '-' . $this->randomString(10, 'number'));
+            //$file = UploadCustomeImage($request->file('ipd_doc'), $ipd_id . '-' . $this->randomString(10, 'number'));
+            $file = UploadCustomeImage($request->file('ipd_doc'), $fileNameFinal);
         }
         $data = [
             'ipd_id' => $ipd_id,

@@ -102,7 +102,7 @@
                                                 <td>{{ $list->firstItem() + $key }}</td>
                                                 <td>{{ $ipd->ipd_id }}</td>
                                                 <td>{{ date('d M Y', strtotime($ipd->ipd_admit_date)) }}</td>
-                                                <td>{{ $ipd->roomData->rm_building.'-'.$ipd->roomData->rm_floor.'-'.$ipd->roomData->rm_ward.'-'.$ipd->roomData->rm_no }}</td>
+                                                <td>{{ $ipd?->roomData?->rm_building.'-'.$ipd?->roomData?->rm_floor.'-'.$ipd?->roomData?->rm_ward.'-'.$ipd?->roomData?->rm_no }}</td>
                                                 <td>{{ $ipd->pa_id }}</td>
                                                 <td>{{ $ipd->patientData->pa_name }}</td>
                                                 <td>{{ $ipd->patientData->pa_age }}</td>

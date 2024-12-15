@@ -179,11 +179,11 @@ class AppointmentController extends MainController
 
         $file = '';
 
-        $fileName = $request->ap_doc->getClientOriginalName();
-        $filteNameArr = explode('.', $fileName);
-        $fileNameFinal = $filteNameArr[0].'-'.$this->randomString(7, 'number');
-        $fileNameFinal = str_replace(' ', '-', $fileNameFinal);
         if ($request->hasFile('ap_doc')) {
+            $fileName = $request->ap_doc->getClientOriginalName();
+            $filteNameArr = explode('.', $fileName);
+            $fileNameFinal = $filteNameArr[0].'-'.$this->randomString(7, 'number');
+            $fileNameFinal = str_replace(' ', '-', $fileNameFinal);
             // $file = UploadCustomeImage($request->file('ap_doc'), $ap_id . '-' . $this->randomString(10, 'number'));
             $file = UploadCustomeImage($request->file('ap_doc'), $fileNameFinal);
         }

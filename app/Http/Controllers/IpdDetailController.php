@@ -202,11 +202,11 @@ class IpdDetailController extends MainController
 
         $file = '';
 
-        $fileName = $request->ipd_doc->getClientOriginalName();
-        $filteNameArr = explode('.', $fileName);
-        $fileNameFinal = $filteNameArr[0].'-'.$this->randomString(7, 'number');
-        $fileNameFinal = str_replace(' ', '-', $fileNameFinal);
         if ($request->hasFile('ipd_doc')) {
+            $fileName = $request->ipd_doc->getClientOriginalName();
+            $filteNameArr = explode('.', $fileName);
+            $fileNameFinal = $filteNameArr[0].'-'.$this->randomString(7, 'number');
+            $fileNameFinal = str_replace(' ', '-', $fileNameFinal);
             //$file = UploadCustomeImage($request->file('ipd_doc'), $ipd_id . '-' . $this->randomString(10, 'number'));
             $file = UploadCustomeImage($request->file('ipd_doc'), $fileNameFinal);
         }

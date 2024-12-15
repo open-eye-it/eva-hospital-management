@@ -132,29 +132,29 @@
                                                         echo $data->ap_other_detail;
                                                         }else{
                                                             echo 'MENSTRUAL HISTORY
-- LMP : asd
+- LMP
 - CYCLES : REGULAR / IRREGULAR
-- NO. OF DAYS : qwe
-- LASTING FOR : zxc
+- NO. OF DAYS
+- LASTING FOR
 - BLOOD FLOW : AVERAGE / NORMAL / HEAVY
 - CLOTS : Yes / No
-- DYSMENNORHAGIA : asdqwe
+- DYSMENNORHAGIA
 
-OBSTETRIC HISTORY : qwezxc
+OBSTETRIC HISTORY
 
-PERSONAL HISTORY : zxcasd
+PERSONAL HISTORY
 
-PAST HISTORY : asqw
+PAST HISTORY
 
-FAMILY HISTORY : qwzx
+FAMILY HISTORY
 
-EXAMINATION : zxas
+EXAMINATION
 
 INVESTIGATIONS
-- USG : asdqw
-- CT/MRI : qwezx
+- USG
+- CT/MRI
 
-PROVISIONAL DIAGNOSIS : zxcas
+PROVISIONAL DIAGNOSIS
 ';
                                                         } @endphp</textarea>
                                                 </div>

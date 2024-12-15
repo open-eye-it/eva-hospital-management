@@ -17,7 +17,7 @@ return new class extends Migration
             $table->bigInteger('om_added_by');
             $table->bigInteger('om_updated_by');
             $table->string('om_name')->index();
-            $table->string('om_company_name')->index();
+            $table->string('om_company_name')->nullable()->index();
             $table->text('om_description')->nullable();
             $table->integer('om_status')->default(1)->comment('1-active, 0-disable');
             $table->timestamps();

@@ -171,7 +171,7 @@ PROVISIONAL DIAGNOSIS
                                         <div class="row">
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label for="gm_prescribe_id">Medicine</label>
+                                                    <label for="gm_prescribe_id">Medicine <span class="text-danger">*</span></label>
                                                     <select class="form-control" name="gm_id" id="gm_prescribe_id">
                                                         <option value="">Select</option>
                                                         @if(!empty($generalMedicines))
@@ -185,14 +185,16 @@ PROVISIONAL DIAGNOSIS
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label for="am_days">No of Days</label>
-                                                    <input type="text" class="form-control" value="" name="am_days" id="am_days">
+                                                    <label for="am_days">No of Days <span class="text-danger">*</span></label>
+                                                    <input type="number" class="form-control" value="" name="am_days" id="am_days">
+                                                    <span class="text-danger" id="am_daysErr"></span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label for="am_timing">Timing</label>
+                                                    <label for="am_timing">Timing <span class="text-danger">*</span></label>
                                                     <input type="text" class="form-control" value="" name="am_timing" id="am_timing">
+                                                    <span class="text-danger" id="am_timingErr"></span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
@@ -388,6 +390,14 @@ PROVISIONAL DIAGNOSIS
             $('#gm_idErr').text('Please select medicine');
             timeoutID('gm_idErr', 3000);
             scrollTop('gm_idErr');
+        }else if(am_days == ''){
+            $('#am_daysErr').text('Please fillup days');
+            timeoutID('am_daysErr', 3000);
+            scrollTop('am_daysErr');
+        }else if(am_timing == ''){
+            $('#am_timingErr').text('Please fillup timing');
+            timeoutID('am_timingErr', 3000);
+            scrollTop('am_timingErr');
         }else{
             $('#addBtn').addClass('spinner spinner-white spinner-right');
             $('#addBtn').attr('disabled', true);
@@ -400,6 +410,7 @@ PROVISIONAL DIAGNOSIS
                     $('#addBtn').attr('disabled', false);
                     if(res.response === true){
                         let data = res.data;
+                        
                         let tableData = '<tr id="table_row_'+data.am_id+'"> \
                         <td>'+data.medicine_name+'</td> \
                         <td>'+data.am_days+'</td> \

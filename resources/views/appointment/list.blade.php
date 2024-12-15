@@ -53,8 +53,8 @@
                                             </select>
                                         </div>
                                         <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
-                                            <label for="patient">Case Type</label>
-                                            <select class="form-control" name="case_type" id="case_type" onchange="changeFee(this.value)">
+                                            <label for="case_type">Case Type</label>
+                                            <select class="form-control" name="case_type" id="case_type1" onchange="changeFee(this.value)">
                                                 <option value="">Select</option>
                                                 @if(!empty($visitingFees))
                                                 @foreach($visitingFees as $fee)
@@ -65,7 +65,7 @@
                                         </div>
                                         <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
                                             <label for="patient">Status</label>
-                                            <select class="form-control" name="ap_status" id="ap_status" onchange="changeFee(this.value)">
+                                            <select class="form-control" name="ap_status" id="ap_status1" onchange="changeFee(this.value)">
                                                 <option value="">Select</option>
                                                 <option value="pending" {{ ($searchData['ap_status'] == 'pending') ? 'selected' : '' }}>Pending</option>
                                                 <option value="completed" {{ ($searchData['ap_status'] == 'completed') ? 'selected' : '' }}>Completed</option>
@@ -515,7 +515,7 @@
         let patient = $('#patient').val();
         let appointment_date_range = $('#appointment_date_range_filter').val();
         let doctor = $('#doctor').val();
-        let case_type = $('#case_type').val();
+        let case_type = $('#case_type1').val();
         let query = '?search_text=' + search_text + '&patient=' + patient + '&appointment_date_range=' + appointment_date_range + '&doctor=' + doctor + '&case_type=' + case_type;
         window.location.href = "{{ route('appointment.export') }}" + query;
     }

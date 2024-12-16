@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\IpdDetail;
 use App\Models\IpdCharge;
 use App\Models\IpdPaymentList;
+use App\Models\Patient;
 
 class IPDAccountDetailControoller extends MainController
 {
@@ -20,6 +21,7 @@ class IPDAccountDetailControoller extends MainController
         $this->ipd = new IpdDetail;
         $this->ipd_charge = new IpdCharge;
         $this->ipd_payment = new IpdPaymentList;
+        $this->patient_model = new Patient;
     }
 
     public function index(Request $request)
@@ -57,10 +59,12 @@ class IPDAccountDetailControoller extends MainController
         $chargeList = $this->ipd_charge->getList($filterData, false)->toArray();
         $paymentList = $this->ipd_payment->getList($filterData, false)->toArray();
         $ipdData = $this->ipd->singlData($ipd_id);
+        $patientData = $this->patient_model->singlData($ipdData->pa_id);
 
         $data['ipdData'] = $ipdData;
         $data['chargeList'] = $chargeList;
         $data['paymentList'] = $paymentList;
+        $data['patientData'] = $patientData;
 
 
         return $this->getSuccessResult($data, 'Charge Detail', true);

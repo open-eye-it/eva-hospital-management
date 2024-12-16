@@ -81,9 +81,12 @@
                                                     $status = 'Pending';
                                                     $status_class = 'label-light-info';
                                                     if($trainee->tr_status == 2){
+                                                    $status = 'On Going';
+                                                    $status_class = 'label-light-info';
+                                                    }else if($trainee->tr_status == 3){
                                                     $status = 'Completed';
                                                     $status_class = 'label-light-success';
-                                                    }else if($trainee->tr_status == 3){
+                                                    }else if($trainee->tr_status == 4){
                                                     $status = 'Cancelled';
                                                     $status_class = 'label-light-danger';
                                                     }else{
@@ -247,14 +250,19 @@
                         option += '<option value="1">Pending</option>';
                     }
                     if (data.tr_status == 2) {
-                        option += '<option value="2" selected>Completed</option>';
+                        option += '<option value="2" selected>On Going</option>';
                     } else {
-                        option += '<option value="2">Completed</option>';
+                        option += '<option value="2">On Going</option>';
                     }
                     if (data.tr_status == 3) {
-                        option += '<option value="3" selected>Cancelled</option>';
+                        option += '<option value="3" selected>Completed</option>';
                     } else {
-                        option += '<option value="3">Cancelled</option>';
+                        option += '<option value="3">Completed</option>';
+                    }
+                    if (data.tr_status == 4) {
+                        option += '<option value="4" selected>Cancelled</option>';
+                    } else {
+                        option += '<option value="4">Cancelled</option>';
                     }
                     $('#tr_status').html(option);
                     $('#tr_reason_cancel').text(data.tr_reason_cancel);
@@ -285,9 +293,12 @@
                     let statusText = 'Pending';
                     let statusClass = 'label-light-primary';
                     if (tr_status == 2) {
+                        statusText = 'On Going';
+                        statusClass = 'label-light-info';
+                    } else if (tr_status == 3) {
                         statusText = 'Completed';
                         statusClass = 'label-light-success';
-                    } else if (tr_status == 3) {
+                    } else if (tr_status == 4) {
                         statusText = 'Cancelled';
                         statusClass = 'label-light-danger';
                     } else {
@@ -296,6 +307,7 @@
                     }
                     $('#updateStatus_' + atob(tr_id)).text(statusText);
                     $('#updateStatus_' + atob(tr_id)).removeClass('label-light-primary');
+                    $('#updateStatus_' + atob(tr_id)).removeClass('label-light-info');
                     $('#updateStatus_' + atob(tr_id)).removeClass('label-light-success');
                     $('#updateStatus_' + atob(tr_id)).removeClass('label-light-danger');
                     $('#updateStatus_' + atob(tr_id)).addClass(statusClass);

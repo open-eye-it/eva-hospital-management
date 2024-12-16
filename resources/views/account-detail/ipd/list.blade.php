@@ -222,9 +222,9 @@
             </div>
             <div class="modal-body" id="billAmountViewDetail">
                 <div class="row">
-                    <div class="col-lg-2 col-md-3 col-sm-12 col-xs-12"><strong>IPD ID: </strong>123456</div>
-                    <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12"><strong>Patient Name: </strong>Abhay Luva</div>
-                    <div class="col-lg-7 col-md-5 col-sm-12 col-xs-12"><strong>Bill Date: </strong>19 July 2024</div>
+                    <div class="col-lg-2 col-md-3 col-sm-12 col-xs-12"><strong>IPD ID: </strong> <span id="ipdIdShow"></span></div>
+                    <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12"><strong>Patient Name: </strong> <span id="ipdPatientNameShow"></span></div>
+                    <div class="col-lg-7 col-md-5 col-sm-12 col-xs-12"><strong>IPD Date: </strong><span id="ipd_admit_date_format"></span></div>
                     <div class="col-lg-2 col-md-3 col-sm-12 col-xs-12"><strong>Bill Amount: </strong><span id="billAmount">18000</span> Rs.</div>
                     <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12"><strong>Received Amount: </strong><span id="receivedAmount">18000</span> Rs.</div>
                 </div>
@@ -354,13 +354,23 @@
         $.ajax({
             url: "{{ route('ipd-acount-detail.bill-detail', '') }}" + "/" + ipd_id,
             method: "GET",
-            success: function(res) {
+            success: function(res) {console.log(res);
                 $('#billAmountViewModal').modal('show');
                 if (res.response === true) {
                     let data = res.data;
                     let ipdData = res.data.ipdData;
                     let chargeList = res.data.chargeList;
+                    let patientData = res.data.patientData;
                     let chargeRow = '';
+
+                    $('#ipdIdShow').text(ipdData.ipd_id);
+                    $('#ipdPatientNameShow').text(patientData.pa_name);
+
+                    let monthName = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+                    var mydate = new Date(ipdData.ipd_admit_date);console.log(ipdData.ipd_admit_date);
+                    let ipd_admit_date_format = mydate.getDate()+' '+monthName[mydate.getMonth()-1]+' '+mydate.getFullYear();
+                    $('#ipd_admit_date_format').text(ipd_admit_date_format)
+
                     $('#billAmount').text(ipdData.ipd_bill_amount);
                     $('#receivedAmount').text(ipdData.ipd_received_amount);
                     if (chargeList.length > 0) {

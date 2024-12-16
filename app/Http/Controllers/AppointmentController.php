@@ -340,18 +340,59 @@ class AppointmentController extends MainController
     public function appointmentMedicineStore(Request $request)
     {
         $query = $request->query();
-        $query['ap_id'] = base64_decode($query['ap_id']);
         $am_id = $this->getAppointmentMedicineID();
+        $login_user_id = Auth::user()->user_id;
+        
+        $data['am_id'] = $am_id;
+        $data['ap_id'] = base64_decode($query['ap_id']);
+        $data['am_added_by'] = $login_user_id;
+        $data['am_days'] = $query['am_days'];
+        $data['am_timing'] = $query['am_timing'];
+        $data['am_morning'] = $query['am_morning'];
+        $data['am_afternoon'] = $query['am_afternoon'];
+        $data['am_evening'] = $query['am_evening'];
+
+        if($query['gm_id_original'] == ''){
+            $gm_id = $this->getUserID();
+            $data1 = [
+                'gm_id'           => $gm_id,
+                'gm_added_by'     => $login_user_id,
+                'gm_updated_by'   => $login_user_id,
+                'gm_name'         => $query['gm_id'],
+                'gm_company_name' => '',
+                'gm_description' => '',
+            ];
+            $insertGeneralMedicine = $this->general_medicine->insertGeneralMedicine($data1);
+            $data['gm_id'] = $insertGeneralMedicine->gm_id;
+        }else{
+            $data['gm_id'] = $query['gm_id_original'];
+        }
+        
+
+        $query['ap_id'] = base64_decode($query['ap_id']);
+        
         $query['am_id'] = $am_id;
         $login_user_id = Auth::user()->user_id;
         $query['am_added_by'] = $login_user_id;
-        $insert = $this->appointment_medicine->insertData($query);
+        $insert = $this->appointment_medicine->insertData($data);
         if (isset($insert->am_id)) {
             $data = $this->appointment_medicine->singlData($insert->am_id);
             $data['medicine_name'] = $data->medicineData->gm_name . ' (' . $data->medicineData->gm_company_name . ')';
             return $this->getSuccessResult($data, 'Appointment Medicine added', true);
         } else {
             return $this->getErrorMessage('Appointment Medicine not added, something is wrong.');
+        }
+    }
+
+    /* Search General Medicine List */
+    public function searchGenerlMedicineList($rgm_name)
+    {
+        $rgm_name = base64_decode($rgm_name);
+        $list = $this->general_medicine->getSearchList($rgm_name);
+        if (!empty($list)) {
+            return $this->getSuccessResult($list, ' General medicine found', true);
+        } else {
+            return $this->getErrorMessage('Search text not found.');
         }
     }
 
@@ -416,6 +457,17 @@ class AppointmentController extends MainController
             $this->getAppointmentMedicineID();
         } else {
             return $am_id;
+        }
+    }
+
+    public function getUserID()
+    {
+        $gm_id = $this->randomString(10, 'number');
+        $check = $this->general_medicine->singlGeneralMedicine($gm_id);
+        if (!empty($check)) {
+            $this->getUserID();
+        } else {
+            return $gm_id;
         }
     }
 }

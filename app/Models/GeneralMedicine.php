@@ -44,6 +44,11 @@ class GeneralMedicine extends Model
         return $output;
     }
 
+    public function getSearchList($gm_name)
+    {
+        return static::select('gm_id', 'gm_name')->where('gm_name', 'LIKE', '%' . $gm_name . '%')->orderBy('gm_name', 'ASC')->get();
+    }
+
     public function getActiveList()
     {
         return static::where('gm_status', 1)->orderBy('id', 'DESC')->get();

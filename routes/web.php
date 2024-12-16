@@ -181,6 +181,7 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
         Route::post('prescribe/store/{ap_id}', [AppointmentController::class, 'prescribe_store'])->name('appointment.prescribe.store')->middleware(['role_or_permission:appointment-prescription']);
         Route::get('prescribe/medicine/store', [AppointmentController::class, 'appointmentMedicineStore'])->name('appointment.medicine.store');
         Route::get('prescribe/medicine/remove/{am_id}', [AppointmentController::class, 'appointmentMedicineRemove'])->name('appointment.medicine.remove');
+        Route::get('prescribe/medicine/serch/{gm_name}', [AppointmentController::class, 'searchGenerlMedicineList'])->name('appointment.prescribe-medicine.search.list');
         Route::get('patient_all_appointment/{pa_id}', [AppointmentController::class, 'patientAllAppointment'])->name('appointment.all_poointment');
         Route::get('export', [AppointmentController::class, 'export'])->name('appointment.export');
         Route::get('bill_print/{ap_id}', [AppointmentController::class, 'bill_print'])->name('appointment.bill_print')->middleware(['role_or_permission:appointment-bill-print']);

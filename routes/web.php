@@ -231,6 +231,9 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
         Route::get('ipd_history/{pa_id}', [IpdDetailController::class, 'IpdHistory'])->name('ipd.ipd_history')->middleware(['role_or_permission:follow-up-ipd-ipd-history|ipd-ipd-history']);
         Route::get('export', [IpdDetailController::class, 'export'])->name('ipd.export');
         Route::get('note_update/{ipd_id}', [IpdDetailController::class, 'note_update'])->name('ipd.note.update');
+        Route::get('indoor_sheet/list/{ipd_id}', [IpdDetailController::class, 'IndoorSheetList'])->name('ipd.indoor_sheet.list');
+        Route::post('indoor_sheet/findings/create', [IpdDetailController::class, 'IndoorSheetFindingsCreate'])->name('ipd.indoor_sheet.findings.add');
+        Route::get('indoor_sheet/findings/remove/{is_id}', [IpdDetailController::class, 'IndoorSheetFindingsRemove'])->name('ipd.indoor_sheet.findings.remove');
     });
     /* IPD Account Detail */
     Route::prefix('ipd-account-detail')->name('ipd-acount-detail.')->group(function () {

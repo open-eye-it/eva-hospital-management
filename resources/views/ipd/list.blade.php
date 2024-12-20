@@ -159,6 +159,7 @@
                                                                 <li class="nav-item"><span class="nav-link" id="IPDPrint" data-id="{{ base64_encode($ipd->ipd_id) }}" title="IPD Detail"><i class="flaticon flaticon2-print icon-3x cursor_pointer"></i></span></li>
                                                                 @endcan
                                                                 <li class="nav-item"><span class="nav-link" id="IPDDocument" data-id="{{ base64_encode($ipd->ipd_id) }}" title="IPD Documents"><i class="flaticon flaticon-file icon-3x cursor_pointer"></i></span></li>
+                                                                <li class="nav-item"><span class="nav-link" id="IndoorSheet" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Indoor Sheet"><i class="flaticon flaticon-file icon-3x cursor_pointer"></i></span></li>
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -197,6 +198,57 @@
     </div>
 </div>
 <!--end::Row-->
+<div class="modal fade" id="IndoorSheetModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Indoor Sheet</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" enc-type="multipart/form-data" id="submitDocument">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                            <strong>Patient Name:</strong> Abhay
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                            <strong>Type of surgery:</strong> Abhay
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                            <strong>Date:</strong> {{ Date('d M Y') }}
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <label for="patient_name">Findings</label>
+                            <input type="text" class="form-control" name="is_findings" id="is_findings" value="" placeholder="Findings" />
+                            <span class="text-danger" id="is_findings_err"></span>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            <input type="hidden" id="" name="" value="">
+                            <button type="submit" id="IndoorSheetAdd" class="btn btn-primary mt-4">Add <i class="la la-plus"></i></button>
+                        </div>
+                    </div>
+                </form>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Findings</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="isDataTable"></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="fullViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -299,17 +351,17 @@
             <div class="modal-body">
                 <form method="POST" enc-type="multipart/form-data" id="submitDocument">
                     <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-12col-xs-12">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                             <label for="patient_name">Document Name</label>
                             <input type="text" class="form-control" name="ipd_doc_name" id="ipd_doc_name" value="" placeholder="Document Name" />
                             <span class="text-danger" id="ipd_doc_name_err"></span>
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12col-xs-12">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                             <label for="patient_name">Document File</label>
                             <input type="file" class="form-control" name="ipd_doc" id="ipd_doc" value="" placeholder="Document" />
                             <span class="text-danger" id="ipd_doc_err"></span>
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12col-xs-12">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                             <input type="hidden" id="ipd_id_doc" name="ipd_id_doc" value="">
                             <button type="submit" id="docAdd" class="btn btn-primary mt-4">Add <i class="la la-plus"></i></button>
                         </div>
@@ -474,6 +526,89 @@
     </div>
 </div>
 <script>
+    /* Start:: Indoor Sheet */
+    $('body').on('click', '#IndoorSheet', function(event) {
+        $('#IndoorSheetModal').modal('show');
+        let ipd_id = $(this).data('id');
+        $.ajax({
+            url:"{{ route('ipd.indoor_sheet.list', '') }}/"+ipd_id,
+            method:"GET",
+            success:function(res){
+                $('#IndoorSheetAdd').attr('onclick', "addFindings('"+ipd_id+"')");
+                if(res.response == true){
+                    $('#isDataTable').append(res.data.html);
+                }
+            },
+            error:function(r){
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    });
+    function addFindings(ipd_id){
+        let is_findings = $('#is_findings').val();
+        if(is_findings == ''){
+            scrollTop('is_findings');
+            $('#is_findings_err').text('Please enter findings');
+            timeoutID('is_findings_err', 3000);
+        }else{
+            $('#IndoorSheetAdd').addClass('spinner spinner-white spinner-right');
+            $('#IndoorSheetAdd').attr('disabled', true);
+            $.ajax({
+                headers:{
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                url:"{{ route('ipd.indoor_sheet.findings.add') }}",
+                method:"POST",
+                data:{
+                    ipd_id: ipd_id,
+                    is_findings: is_findings
+                },
+                success:function(res){
+                    if(res.response == true){
+                        $('#is_findings').val('');
+                        $('#isDataTable').append(res.data.html);
+                    }else{
+                        sweetAlertError(res.message, 3000);    
+                    }
+                    $('#IndoorSheetAdd').removeClass('spinner spinner-white spinner-right');
+                    $('#IndoorSheetAdd').attr('disabled', false);
+                },
+                error:function(r){
+                    let res = r.responseJSON;
+                    sweetAlertError(res.message, 3000);
+                    $('#IndoorSheetAdd').removeClass('spinner spinner-white spinner-right');
+                    $('#IndoorSheetAdd').attr('disabled', false);
+                }
+            });
+        }
+    }
+    function removerFindings(is_id){
+        $.ajax({
+            headers:{
+                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            },
+            url:"{{ route('ipd.indoor_sheet.findings.remove', '') }}/"+is_id,
+            method:"GET",
+            success:function(res){
+                if(res.response == true){
+                    if(res.response == true){
+                        $('#is_row_'+atob(is_id)).remove();
+                    }else{
+                        sweetAlertError(res.message, 3000);    
+                    }
+                }else{
+                    sweetAlertError(res.message, 3000);
+                }
+            },
+            error:function(r){
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    }
+    /* End:: Indoor Sheet */
+
     /* Export IPD Details */
     function exportIPD() {
         let search_text = $('#search_text').val();
@@ -672,7 +807,6 @@
             url: "{{ route('ipd.doc.view', '') }}" + "/" + ipd_id,
             method: "GET",
             success: function(res) {
-                console.log(res);
                 $('#ipd_id_doc').val(ipd_id);
                 $('#ipdDocData').html(res.data);
                 $('#ipdDocViewModal').modal('show');
@@ -724,7 +858,6 @@
             url: "{{ route('ipd.doc.remove') }}/" + id,
             method: "GET",
             success: function(res) {
-                console.log(res);
                 if (res.response == true) {
                     $('#doc_row_' + id).remove();
                 } else {
@@ -872,7 +1005,6 @@
             url: "{{ route('ipd.operation_medicine.print', '') }}" + "/" + ipd_id,
             method: "GET",
             success: function(res) {
-                console.log(res);
                 printData(res);
             },
             error: function(r) {

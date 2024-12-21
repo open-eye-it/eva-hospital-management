@@ -77,7 +77,7 @@ class CategoryController extends MainController
         if (is_null($roleData)) {
             return redirect()->route('category.list')->with('error', 'Category not found.');
         }
-        $permission = Permission::get();
+        $permission = Permission::orderBy('section')->get();
         // echo "<pre>";
         // print_r($permission->toArray());
         // die;

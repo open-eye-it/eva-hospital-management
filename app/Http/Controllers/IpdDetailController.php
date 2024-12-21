@@ -734,6 +734,62 @@ class IpdDetailController extends MainController
         }
     }
 
+    public function ExaminationSheetList($ipd_id){
+        $ipd_id = base64_decode($ipd_id);
+        $ipdDetail = $this->ipd->singlData($ipd_id);
+        $indoorSheeList = $this->indoor_sheet->getList(['ipd_id' => $ipd_id], false, 0, ['created_at', 'asc']);
+        if (count($indoorSheeList->toArray()) > 0) {
+            $view = view('ipd.examination-sheet.list', compact('indoorSheeList'))->render();
+            $data = [
+                'html' => $view,
+                'ipdDetail' => $ipdDetail,
+                'patientName' => $ipdDetail?->patientData?->pa_name
+            ];
+            return $this->getSuccessResult($data, 'Findings found.', true);
+        } else {
+            $data = [
+                'html' => ''
+            ];
+            return $this->getSuccessResult($data, 'Findings not available.', true);
+        }
+    }
+
+    public function ExaminationSheetMedicineList($is_id){
+        $is_id = base64_decode($is_id);
+        $indoorSheeList = $this->indoor_sheet_medicine->getList(['is_id' => $is_id], false, 0, ['created_at', 'asc']);
+        if (count($indoorSheeList->toArray()) > 0) {
+            $view = view('ipd.examination-sheet.medicine.list', compact('indoorSheeList'))->render();
+            $data = [
+                'html' => $view
+            ];
+            return $this->getSuccessResult($data, 'Recommendations found.', true);
+        } else {
+            $data = [
+                'html' => ''
+            ];
+            return $this->getSuccessResult($data, 'Recommendations not available.', true);
+        }
+    }
+
+    public function ExaminationSheetMedicineUpdte(Request $request){
+        $input = $request->all();
+        $userLogin = Auth::user();
+        foreach($input['exm_id'] as $key => $ism_id){
+            $getISMData = $this->indoor_sheet_medicine->singlDataByWhere(['ism_id' => $ism_id]);
+            $ism_checked_by = null;
+            if($input['exm_checked'][$key] == 1){
+                $ism_checked_by = $userLogin->user_id;
+            }
+            
+            if(($getISMData->ism_checked_by != NULL || $getISMData->ism_checked_by != '') && $ism_checked_by == 0){
+                $update = $this->indoor_sheet_medicine->updateData(['ism_checked_by' => '', 'ism_checked_time' => date('H:i:s')], $ism_id);
+            }else if(($getISMData->ism_checked_by == NULL || $getISMData->ism_checked_by == '') && $ism_checked_by != 0){
+                $update = $this->indoor_sheet_medicine->updateData(['ism_checked_by' => $userLogin->user_id, 'ism_checked_time' => date('H:i:s')], $ism_id);
+            }
+        }
+        return $this->getSuccessResult([], 'Recommendations updated.', true);
+    }
+
     public function getUniqueID()
     {
         $ipd_id = $this->randomString(10, 'number');

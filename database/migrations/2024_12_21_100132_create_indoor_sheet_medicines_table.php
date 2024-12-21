@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('ism_recommendation');
             $table->text('ism_added_by');
             $table->text('ism_checked_by')->nullable();
+            $table->time('ism_checked_time')->nullable();
             $table->timestamps();
         });
     }

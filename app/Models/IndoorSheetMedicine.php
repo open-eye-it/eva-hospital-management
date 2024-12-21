@@ -13,7 +13,8 @@ class IndoorSheetMedicine extends Model
         'is_id',
         'ism_recommendation',
         'ism_added_by',
-        'ism_checked_by'
+        'ism_checked_by',
+        'ism_checked_time'
     ];
 
     public function insertData($data)
@@ -70,6 +71,9 @@ class IndoorSheetMedicine extends Model
     /* Start:: Relationship */
     public function AddedByUser(){
         return $this->belongsTo(User::class, 'ism_added_by', 'user_id');
+    }
+    public function checkedByUser(){
+        return $this->belongsTo(User::class, 'ism_checked_by', 'user_id');
     }
     /* End:: Relationship */
 }

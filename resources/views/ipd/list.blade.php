@@ -158,8 +158,15 @@
                                                                 @can('ipd-detail-print')
                                                                 <li class="nav-item"><span class="nav-link" id="IPDPrint" data-id="{{ base64_encode($ipd->ipd_id) }}" title="IPD Detail"><i class="flaticon flaticon2-print icon-3x cursor_pointer"></i></span></li>
                                                                 @endcan
+                                                                @can('ipd-documents')
                                                                 <li class="nav-item"><span class="nav-link" id="IPDDocument" data-id="{{ base64_encode($ipd->ipd_id) }}" title="IPD Documents"><i class="flaticon flaticon-file icon-3x cursor_pointer"></i></span></li>
+                                                                @endcan
+                                                                @can('ipd-indoor-sheet')
                                                                 <li class="nav-item"><span class="nav-link" id="IndoorSheet" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Indoor Sheet"><i class="flaticon flaticon2-sheet icon-3x cursor_pointer"></i></span></li>
+                                                                @endcan
+                                                                @can('ipd-examination-sheet')
+                                                                <li class="nav-item"><span class="nav-link" id="exSheet" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Examination Sheet"><i class="flaticon flaticon2-document icon-3x cursor_pointer"></i></span></li>
+                                                                @endcan
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -261,10 +268,71 @@
                         <tr>
                             <th>Recommendation</th>
                             <th>Added By</th>
+                            <th>Checked By</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody id="ismDataTable"></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="exSheetModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Examination Sheet</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body max-h-500 overflow-auto">
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <strong>Patient Name:</strong> <span id="exSheetPatient"></span>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <strong>Type of surgery:</strong> <span id="exSheetSurgery"></span>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <strong>Date:</strong> {{ Date('d M Y') }}
+                    </div>
+                </div>
+                <h4 class="mt-4">Findings</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Findings</th>
+                            <th>Added By</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="exDataTable"></tbody>
+                </table>
+                <hr>
+                <div class="row d-none" id="exRecommendationMoadl">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <h4>Recommendation</h4>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <button class="btn btn-primary float-right" onclick="UpdateExaminationMeicine()">Update <i class="la la-plus icon-3x cursor_pointer"></i></button>
+                    </div>
+                </div>
+                <table class="table d-none" id="exRecommendationMoad2">
+                    <thead>
+                        <tr>
+                            <th>Recommendation</th>
+                            <th>Added By</th>
+                            <th>Checked By</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="exmDataTable"></tbody>
                 </table>
             </div>
             <div class="modal-footer">
@@ -758,6 +826,88 @@
         });
     }
     /* End:: Indoor Sheet Medicine */
+    /* Start:: Examination Sheet */
+    $('body').on('click', '#exSheet', function(event) {
+        $('#exSheetModal').modal('show');
+        let ipd_id = $(this).data('id');
+        $.ajax({
+            url:"{{ route('ipd.examination_sheet.list', '') }}/"+ipd_id,
+            method:"GET",
+            success:function(res){
+                if(res.response == true){
+                    $('#exSheetPatient').text(res?.data?.patientName);
+                    $('#exSheetSurgery').text(res?.data?.ipdDetail?.ipd_surgery_text);
+                    $('#exDataTable').html(res?.data?.html);
+                }
+            },
+            error:function(r){
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    });
+
+    function showExaminationRecommenadtion(is_id){
+        $('#exRecommendationMoadl').removeClass('d-none');
+        $('#exRecommendationMoad2').removeClass('d-none');
+        $('#exDataTable tr').removeClass('bg-primary text-white');
+        $('#exDataTable tr i').removeClass('text-white');
+        $('#exs_row_'+atob(is_id)).addClass('bg-primary text-white');
+        $('#exs_row_'+atob(is_id)+' i').addClass('text-white');
+        $.ajax({
+            url:"{{ route('ipd.examination_sheet.medicine.list', '') }}/"+is_id,
+            method:"GET",
+            success: function(res){
+                console.log(res);
+                if(res.response == true){
+                    $('#exmDataTable').html(res?.data?.html);
+                }
+            },
+            error: function(r){
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    }
+
+    function UpdateExaminationMeicine(){
+        let exm_id = [];
+        $('input[name="exm_id[]"]').each(function(){
+            exm_id.push($(this).val());
+        });
+        let exm_checked = [];
+        $('input[name="exm_checked[]"]').each(function(){
+            if($(this).prop('checked') == true){
+                exm_checked.push(1);
+            }else{
+                exm_checked.push(0);
+            }
+        });
+        $.ajax({
+            headers:{
+                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            },
+            url:"{{ route('ipd.examination_sheet.medicine.update') }}",
+            method:"POST",
+            data:{
+                exm_id:exm_id,
+                exm_checked:exm_checked
+            },
+            success: function(res){
+                console.log(res);
+                // if(res.response == true){
+                //     $('#exmDataTable').html(res?.data?.html);
+                // }
+                sweetAlertSuccess(res.message, 3000);
+            },
+            error: function(r){
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+        
+    }
+    /* End:: Examination Sheet */
 
     /* Export IPD Details */
     function exportIPD() {

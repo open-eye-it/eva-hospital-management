@@ -237,3 +237,7 @@ textarea{
 .header-fixed.subheader-fixed.subheader-enabled .wrapper{
     padding-top:50px !important;
 }
+
+.max-h-500{
+    max-height: 500px;
+}

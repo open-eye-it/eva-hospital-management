@@ -159,7 +159,7 @@
                                                                 <li class="nav-item"><span class="nav-link" id="IPDPrint" data-id="{{ base64_encode($ipd->ipd_id) }}" title="IPD Detail"><i class="flaticon flaticon2-print icon-3x cursor_pointer"></i></span></li>
                                                                 @endcan
                                                                 <li class="nav-item"><span class="nav-link" id="IPDDocument" data-id="{{ base64_encode($ipd->ipd_id) }}" title="IPD Documents"><i class="flaticon flaticon-file icon-3x cursor_pointer"></i></span></li>
-                                                                <li class="nav-item"><span class="nav-link" id="IndoorSheet" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Indoor Sheet"><i class="flaticon flaticon-file icon-3x cursor_pointer"></i></span></li>
+                                                                <li class="nav-item"><span class="nav-link" id="IndoorSheet" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Indoor Sheet"><i class="flaticon flaticon2-sheet icon-3x cursor_pointer"></i></span></li>
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -207,14 +207,14 @@
                     <i aria-hidden="true" class="ki ki-close"></i>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body max-h-500 overflow-auto">
                 <form method="POST" enc-type="multipart/form-data" id="submitDocument">
                     <div class="row">
                         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                            <strong>Patient Name:</strong> Abhay
+                            <strong>Patient Name:</strong> <span id="IndoorSheetPatient"></span>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                            <strong>Type of surgery:</strong> Abhay
+                            <strong>Type of surgery:</strong> <span id="IndoorSheetSurgery"></span>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                             <strong>Date:</strong> {{ Date('d M Y') }}
@@ -227,7 +227,7 @@
                             <span class="text-danger" id="is_findings_err"></span>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                            <input type="hidden" id="" name="" value="">
+                            <input type="hidden" id="is_id" name="is_id" value="">
                             <button type="submit" id="IndoorSheetAdd" class="btn btn-primary mt-4">Add <i class="la la-plus"></i></button>
                         </div>
                     </div>
@@ -237,10 +237,34 @@
                         <tr>
                             <th>Date</th>
                             <th>Findings</th>
+                            <th>Added By</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody id="isDataTable"></tbody>
+                </table>
+                <hr>
+                <div class="row d-none" id="recommendationMoadl1">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <label for="patient_name">Recommendation</label>
+                        <input type="text" class="form-control" name="ism_recommendation" id="ism_recommendation" value="" placeholder="Recommendation" />
+                        <span class="text-danger" id="ism_recommendation_err"></span>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 mt-4">
+                        <input type="hidden" id="is_id1" name="is_id1" value="">
+                        <input type="hidden" id="ism_id" name="ism_id" value="">
+                        <button id="IndoorSheetMedicineAdd" class="btn btn-primary mt-4">Add <i class="la la-plus"></i></button>
+                    </div>
+                </div>
+                <table class="table d-none" id="recommendationMoadl2">
+                    <thead>
+                        <tr>
+                            <th>Recommendation</th>
+                            <th>Added By</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ismDataTable"></tbody>
                 </table>
             </div>
             <div class="modal-footer">
@@ -536,7 +560,9 @@
             success:function(res){
                 $('#IndoorSheetAdd').attr('onclick', "addFindings('"+ipd_id+"')");
                 if(res.response == true){
-                    $('#isDataTable').append(res.data.html);
+                    $('#IndoorSheetPatient').text(res?.data?.patientName);
+                    $('#IndoorSheetSurgery').text(res?.data?.ipdDetail?.ipd_surgery_text);
+                    $('#isDataTable').html(res?.data?.html);
                 }
             },
             error:function(r){
@@ -546,6 +572,7 @@
         });
     });
     function addFindings(ipd_id){
+        let is_id = $('#is_id').val();
         let is_findings = $('#is_findings').val();
         if(is_findings == ''){
             scrollTop('is_findings');
@@ -562,12 +589,21 @@
                 method:"POST",
                 data:{
                     ipd_id: ipd_id,
+                    is_id: is_id,
                     is_findings: is_findings
                 },
-                success:function(res){
+                success:function(res){console.log(res);
                     if(res.response == true){
-                        $('#is_findings').val('');
-                        $('#isDataTable').append(res.data.html);
+                        if(is_id == ''){
+                            $('#is_findings').val('');
+                            $('#isDataTable').append(res.data.html);
+                        }else{
+                            $('#is_id').val('');
+                            $('#is_findings').val('');
+                            $('#is_row_'+is_id+' td:nth-child(2)').text(is_findings);
+                        }
+                        $('#IndoorSheetAdd').html('Add <i class="la la-plus"></i>');
+                        sweetAlertSuccess(res.message, 3000);
                     }else{
                         sweetAlertError(res.message, 3000);    
                     }
@@ -582,6 +618,13 @@
                 }
             });
         }
+    }
+    function editFindings(is_id){
+        let is_id1 = atob(is_id);
+        let findings = $('#is_row_'+is_id1+' td:nth-child(2)').text();
+        $('#is_findings').val(findings);
+        $('#is_id').val(is_id1);
+        $('#IndoorSheetAdd').html('Update <i class="la la-plus"></i>');
     }
     function removerFindings(is_id){
         $.ajax({
@@ -608,6 +651,113 @@
         });
     }
     /* End:: Indoor Sheet */
+    /* Start:: Indoor Sheet Medicine */
+    function showRecommenadtion(is_id){
+        $('#recommendationMoadl1').removeClass('d-none');
+        $('#recommendationMoadl2').removeClass('d-none');
+        $('#isDataTable tr').removeClass('bg-primary text-white');
+        $('#isDataTable tr i').removeClass('text-white');
+        $('#is_row_'+atob(is_id)).addClass('bg-primary text-white');
+        $('#is_row_'+atob(is_id)+' i').addClass('text-white');
+        let is_id1 = atob(is_id);
+        $('#is_id1').val(is_id1);
+        $.ajax({
+            url:"{{ route('ipd.indoor_sheet.medicine.list', '') }}/"+is_id,
+            method:"GET",
+            success: function(res){
+                console.log(res);
+                $('#IndoorSheetMedicineAdd').attr('onclick', "addRecommendation('"+is_id+"')");
+                if(res.response == true){
+                    $('#ismDataTable').html(res?.data?.html);
+                }
+            },
+            error: function(r){
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    }
+    function addRecommendation(is_id){
+        let ism_id = $('#ism_id').val();
+        let ism_recommendation = $('#ism_recommendation').val();
+        if(ism_recommendation == ''){
+            scrollTop('ism_recommendation');
+            $('#ism_recommendation_err').text('Please enter recommendation');
+            timeoutID('ism_recommendation_err', 3000);
+        }else{
+            $('#IndoorSheetMedicineAdd').addClass('spinner spinner-white spinner-right');
+            $('#IndoorSheetMedicineAdd').attr('disabled', true);
+            $.ajax({
+                headers:{
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                url:"{{ route('ipd.indoor_sheet.medicine.add') }}",
+                method:"POST",
+                data:{
+                    is_id: is_id,
+                    ism_id: ism_id,
+                    ism_recommendation: ism_recommendation
+                },
+                success:function(res){
+                    if(res.response == true){
+                        if(ism_id == ''){
+                            $('#ism_recommendation').val('');
+                            $('#ismDataTable').append(res.data.html);
+                        }else{
+                            $('#ism_id').val('');
+                            $('#ism_recommendation').val('');
+                            $('#ism_row_'+ism_id+' td:nth-child(1)').text(ism_recommendation);
+                        }
+                        $('#IndoorSheetMedicineAdd').html('Add <i class="la la-plus"></i>');
+                        sweetAlertSuccess(res.message, 3000);
+                    }else{
+                        sweetAlertError(res.message, 3000);    
+                    }
+                    $('#IndoorSheetMedicineAdd').removeClass('spinner spinner-white spinner-right');
+                    $('#IndoorSheetMedicineAdd').attr('disabled', false);
+                },
+                error:function(r){
+                    let res = r.responseJSON;
+                    sweetAlertError(res.message, 3000);
+                    $('#IndoorSheetMedicineAdd').removeClass('spinner spinner-white spinner-right');
+                    $('#IndoorSheetMedicineAdd').attr('disabled', false);
+                }
+            });
+        }
+    }
+    function editRecommendation(ism_id){
+        let ism_id1 = atob(ism_id);
+        let recommendation = $('#ism_row_'+ism_id1+' td:nth-child(1)').text();
+        console.log(recommendation);
+        $('#ism_recommendation').val(recommendation);
+        $('#ism_id').val(ism_id1);
+        $('#IndoorSheetMedicineAdd').html('Update <i class="la la-plus"></i>');
+    }
+    function removeRecommendation(ism_id){
+        $.ajax({
+            headers:{
+                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            },
+            url:"{{ route('ipd.indoor_sheet.medicine.remove', '') }}/"+ism_id,
+            method:"GET",
+            success:function(res){
+                if(res.response == true){
+                    if(res.response == true){
+                        $('#ism_row_'+atob(ism_id)).remove();
+                    }else{
+                        sweetAlertError(res.message, 3000);    
+                    }
+                }else{
+                    sweetAlertError(res.message, 3000);
+                }
+            },
+            error:function(r){
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    }
+    /* End:: Indoor Sheet Medicine */
 
     /* Export IPD Details */
     function exportIPD() {

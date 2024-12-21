@@ -4,18 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use app\Models\User;
 
-class IndoorSheet extends Model
+class IndoorSheetMedicine extends Model
 {
     use HasFactory;
-
     protected $fillable = [
+        'ism_id',
         'is_id',
-        'ipd_id',
-        'is_added_by',
-        'is_date',
-        'is_findings'
+        'ism_recommendation',
+        'ism_added_by',
+        'ism_checked_by'
     ];
 
     public function insertData($data)
@@ -49,29 +47,29 @@ class IndoorSheet extends Model
 
     public function FilterData($data, $filterdata)
     {
+        $ism_id  = isset($filterdata['ism_id']) ? $filterdata['ism_id'] : '';
         $is_id  = isset($filterdata['is_id']) ? $filterdata['is_id'] : '';
-        $ipd_id = isset($filterdata['ipd_id']) ? $filterdata['ipd_id'] : '';
+        if (isset($ism_id) && $ism_id != '') {
+            $data->where('ism_id', $ism_id);
+        }
         if (isset($is_id) && $is_id != '') {
             $data->where('is_id', $is_id);
         }
-        if (isset($ipd_id) && $ipd_id != '') {
-            $data->where('ipd_id', $ipd_id);
-        }
     }
 
-    public function updateData($data, $is_id)
+    public function updateData($data, $ism_id)
     {
-        return static::where('is_id', $is_id)->update(\Arr::only($data, $this->fillable));
+        return static::where('ism_id', $ism_id)->update(\Arr::only($data, $this->fillable));
     }
 
-    public function deleteData($is_id)
+    public function deleteData($ism_id)
     {
-        return static::where('is_id', $is_id)->delete();
+        return static::where('ism_id', $ism_id)->delete();
     }
 
     /* Start:: Relationship */
     public function AddedByUser(){
-        return $this->belongsTo(User::class, 'is_added_by', 'user_id');
+        return $this->belongsTo(User::class, 'ism_added_by', 'user_id');
     }
     /* End:: Relationship */
 }

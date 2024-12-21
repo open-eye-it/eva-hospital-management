@@ -1,0 +1,8 @@
+<tr id="is_row_{{ $insertData->is_id }}">
+    <td>{{ $insertData->ism_recommendation }}</td>
+    <td>{{ $insertData?->AddedByUser?->person_name }}</td>
+    <td>
+    <i title="Edit" class="la la-edit icon-3x cursor_pointer" onclick="editRecommendation('{{ base64_encode($insertData->ism_id) }}')"></i>
+    <i title="Remove" class="la la-trash icon-3x cursor_pointer" onclick="removeRecommendation('{{ base64_encode($insertData->ism_id) }}')"></i>
+    </td>
+</tr>

@@ -18,6 +18,7 @@ use App\Models\Notification;
 use App\Models\IpdDocument;
 use App\Models\IndoorSheet;
 use App\Models\IndoorSheetMedicine;
+use App\Models\IndoorSheetMedicineExamination;
 
 use App\Exports\IPDDetailExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -26,7 +27,7 @@ use Illuminate\Support\Facades\Storage;
 
 class IpdDetailController extends MainController
 {
-    public $patient, $room, $ipd_doc, $ipd, $ipd_note, $operation_medicine, $appointment, $notification, $indoor_sheet, $indoor_sheet_medicine;
+    public $patient, $room, $ipd_doc, $ipd, $ipd_note, $operation_medicine, $appointment, $notification, $indoor_sheet, $indoor_sheet_medicine, $indoor_sheet_medicine_examination;
     public function __construct()
     {
         parent::__construct();
@@ -40,6 +41,7 @@ class IpdDetailController extends MainController
         $this->notification = new Notification;
         $this->indoor_sheet = new IndoorSheet;
         $this->indoor_sheet_medicine = new IndoorSheetMedicine;
+        $this->indoor_sheet_medicine_examination = new IndoorSheetMedicineExamination;
     }
 
     public function index(Request $request)
@@ -623,7 +625,9 @@ class IpdDetailController extends MainController
             return $this->getSuccessResult($data, 'Findings found.', true);
         } else {
             $data = [
-                'html' => ''
+                'html' => '',
+                'ipdDetail' => $ipdDetail,
+                'patientName' => $ipdDetail?->patientData?->pa_name
             ];
             return $this->getSuccessResult($data, 'Findings not available.', true);
         }
@@ -633,8 +637,8 @@ class IpdDetailController extends MainController
         $input = $request->all();
         $userLogin = Auth::user();
         if($input['is_id'] == ''){
-            $checkDate = $this->indoor_sheet->singlDataByWhere(['ipd_id' => base64_decode($input['ipd_id']), 'is_date' => date('Y-m-d')]);
-            if(empty($checkDate)){
+            // $checkDate = $this->indoor_sheet->singlDataByWhere(['ipd_id' => base64_decode($input['ipd_id']), 'is_date' => date('Y-m-d')]);
+            // if(empty($checkDate)){
                 $data = [
                     'is_id' => $this->getIndoorSheetUniqueID(),
                     'ipd_id' => base64_decode($input['ipd_id']),
@@ -652,9 +656,9 @@ class IpdDetailController extends MainController
                 }else{
                     return $this->getErrorMessage('Finding not added, pleaase try again.', false);
                 }
-            }else{
-                return $this->getErrorMessage('Today finding already added.', false);
-            }
+            // }else{
+            //     return $this->getErrorMessage('Today finding already added.', false);
+            // }
         }else{
             $data = [
                 'ipd_id' => base64_decode($input['ipd_id']),
@@ -757,10 +761,13 @@ class IpdDetailController extends MainController
     public function ExaminationSheetMedicineList($is_id){
         $is_id = base64_decode($is_id);
         $indoorSheeList = $this->indoor_sheet_medicine->getList(['is_id' => $is_id], false, 0, ['created_at', 'asc']);
+        $examintionList = $this->indoor_sheet_medicine_examination->getList(['is_id' => $is_id], false, 0, ['created_at', 'asc']);
         if (count($indoorSheeList->toArray()) > 0) {
             $view = view('ipd.examination-sheet.medicine.list', compact('indoorSheeList'))->render();
+            $view1 = view('ipd.examination-sheet.medicine1.list', compact('examintionList'))->render();
             $data = [
-                'html' => $view
+                'html' => $view,
+                'html1' => $view1
             ];
             return $this->getSuccessResult($data, 'Recommendations found.', true);
         } else {
@@ -771,23 +778,34 @@ class IpdDetailController extends MainController
         }
     }
 
-    public function ExaminationSheetMedicineUpdte(Request $request){
+    public function ExaminationSheetMedicineAdd(Request $request){
         $input = $request->all();
         $userLogin = Auth::user();
-        foreach($input['exm_id'] as $key => $ism_id){
-            $getISMData = $this->indoor_sheet_medicine->singlDataByWhere(['ism_id' => $ism_id]);
-            $ism_checked_by = null;
-            if($input['exm_checked'][$key] == 1){
-                $ism_checked_by = $userLogin->user_id;
-            }
-            
-            if(($getISMData->ism_checked_by != NULL || $getISMData->ism_checked_by != '') && $ism_checked_by == 0){
-                $update = $this->indoor_sheet_medicine->updateData(['ism_checked_by' => '', 'ism_checked_time' => date('H:i:s')], $ism_id);
-            }else if(($getISMData->ism_checked_by == NULL || $getISMData->ism_checked_by == '') && $ism_checked_by != 0){
-                $update = $this->indoor_sheet_medicine->updateData(['ism_checked_by' => $userLogin->user_id, 'ism_checked_time' => date('H:i:s')], $ism_id);
+        $view = '';
+        foreach($input['exm_checked'] as $key => $exm_checked){
+            if($exm_checked == 1){
+                $data = [
+                    'isme_id' => $this->getIndoorSheetMedicineExaminationUniqueID(),
+                    'is_id' => $input['is_id'][$key],
+                    'ism_recommendation' => $input['exm_id'][$key],
+                    'isme_given_datetime' => date('Y-m-d H:i:s', strtotime($input['isme_given_datetime'][$key])),
+                    'isme_created_datetime' => date('Y-m-d H:i:s'),
+                    'remark' => $input['remark'][$key],
+                    'isme_added_by' => $userLogin->user_id
+                ];
+                $insertData = $this->indoor_sheet_medicine_examination->insertData($data);
+                $view1 = view('ipd.examination-sheet.medicine1.single-isme', compact('insertData'))->render();
+                $view .= $view1;
             }
         }
-        return $this->getSuccessResult([], 'Recommendations updated.', true);
+        if($view != ''){
+            $data = [
+                'html' => $view
+            ];
+            return $this->getSuccessResult($data, 'Recommendations added.', true);
+        }else{
+            return $this->getErrorMessage('Recommendation not selected, pleaase try again.', false);
+        }
     }
 
     public function getUniqueID()
@@ -831,6 +849,17 @@ class IpdDetailController extends MainController
             $this->getIndoorSheetMedicineUniqueID();
         } else {
             return $ism_id;
+        }
+    }
+
+    public function getIndoorSheetMedicineExaminationUniqueID()
+    {
+        $isme_id = $this->randomString(10, 'number');
+        $check = $this->indoor_sheet_medicine_examination->singlData($isme_id);
+        if (!empty($check)) {
+            $this->getIndoorSheetMedicineExaminationUniqueID();
+        } else {
+            return $isme_id;
         }
     }
 

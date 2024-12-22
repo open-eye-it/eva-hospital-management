@@ -230,7 +230,8 @@
                     <div class="row mt-4">
                         <div class="col-12">
                             <label for="patient_name">Findings</label>
-                            <input type="text" class="form-control" name="is_findings" id="is_findings" value="" placeholder="Findings" />
+                            <!-- <input type="text" class="form-control" name="is_findings" id="is_findings" value="" placeholder="Findings" /> -->
+                            <textarea class="form-control" rows="3" name="is_findings" id="is_findings"></textarea>
                             <span class="text-danger" id="is_findings_err"></span>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -268,7 +269,6 @@
                         <tr>
                             <th>Recommendation</th>
                             <th>Added By</th>
-                            <th>Checked By</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -320,7 +320,7 @@
                         <h4>Recommendation</h4>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                        <button class="btn btn-primary float-right" onclick="UpdateExaminationMeicine()">Update <i class="la la-plus icon-3x cursor_pointer"></i></button>
+                        <button class="btn btn-primary float-right" id="esmRecommendationBtn" onclick="AddExaminationMeicine()">Add <i class="la la-plus icon-3x cursor_pointer"></i></button>
                     </div>
                 </div>
                 <table class="table d-none" id="exRecommendationMoad2">
@@ -328,11 +328,32 @@
                         <tr>
                             <th>Recommendation</th>
                             <th>Added By</th>
-                            <th>Checked By</th>
+                            <th>Date Time</th>
+                            <th>Remark</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody id="exmDataTable"></tbody>
+                </table>
+                <hr>
+                <div class="row d-none" id="examinationModall">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <h4>Exmination</h4>
+                    </div>
+                </div>
+                <table class="table d-none" id="examinationModal2">
+                    <thead>
+                        <tr>
+                            <th>Findings</th>
+                            <th>Recomendation</th>
+                            <th>Date Time</th>
+                            <th>Created At</th>
+                            <th>Remark</th>
+                            <th>Added By</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="exm1DataTable"></tbody>
                 </table>
             </div>
             <div class="modal-footer">
@@ -795,6 +816,7 @@
     }
     function editRecommendation(ism_id){
         let ism_id1 = atob(ism_id);
+        console.log(ism_id1);
         let recommendation = $('#ism_row_'+ism_id1+' td:nth-child(1)').text();
         console.log(recommendation);
         $('#ism_recommendation').val(recommendation);
@@ -850,6 +872,8 @@
     function showExaminationRecommenadtion(is_id){
         $('#exRecommendationMoadl').removeClass('d-none');
         $('#exRecommendationMoad2').removeClass('d-none');
+        $('#examinationModall').removeClass('d-none');
+        $('#examinationModal2').removeClass('d-none');
         $('#exDataTable tr').removeClass('bg-primary text-white');
         $('#exDataTable tr i').removeClass('text-white');
         $('#exs_row_'+atob(is_id)).addClass('bg-primary text-white');
@@ -861,6 +885,7 @@
                 console.log(res);
                 if(res.response == true){
                     $('#exmDataTable').html(res?.data?.html);
+                    $('#exm1DataTable').html(res?.data?.html1);
                 }
             },
             error: function(r){
@@ -870,10 +895,14 @@
         });
     }
 
-    function UpdateExaminationMeicine(){
+    function AddExaminationMeicine(){
         let exm_id = [];
         $('input[name="exm_id[]"]').each(function(){
             exm_id.push($(this).val());
+        });
+        let is_id = [];
+        $('input[name="is_id[]"]').each(function(){
+            is_id.push($(this).val());
         });
         let exm_checked = [];
         $('input[name="exm_checked[]"]').each(function(){
@@ -883,26 +912,47 @@
                 exm_checked.push(0);
             }
         });
+        let isme_given_datetime = [];
+        $('input[name="isme_given_datetime[]"]').each(function(){
+            isme_given_datetime.push($(this).val());
+        });
+        var remark = [];
+        $("textarea.remarkMessage").each(function(){
+            remark.push($(this).val());
+        })
+        $('#esmRecommendationBtn').addClass('spinner spinner-white spinner-right');
+        $('#esmRecommendationBtn').attr('disabled', true);
         $.ajax({
             headers:{
                 "X-CSRF-TOKEN": "{{ csrf_token() }}"
             },
-            url:"{{ route('ipd.examination_sheet.medicine.update') }}",
+            url:"{{ route('ipd.examination_sheet.medicine.add') }}",
             method:"POST",
             data:{
+                is_id:is_id,
                 exm_id:exm_id,
-                exm_checked:exm_checked
+                exm_checked:exm_checked,
+                remark:remark,
+                isme_given_datetime:isme_given_datetime
             },
             success: function(res){
                 console.log(res);
-                // if(res.response == true){
-                //     $('#exmDataTable').html(res?.data?.html);
-                // }
+                if(res.response == true){
+                    //$('#exmDataTable').html(res?.data?.html);
+                    $('#exm1DataTable').append(res?.data?.html);
+                    $('#exmDataTable textarea').val('');
+                    $('#exmDataTable tr td:nth-child(3) input').val('');
+                    $('#exmDataTable input[type="checkbox"]').prop('checked', false);
+                }
                 sweetAlertSuccess(res.message, 3000);
+                $('#esmRecommendationBtn').removeClass('spinner spinner-white spinner-right');
+                $('#esmRecommendationBtn').attr('disabled', false);
             },
             error: function(r){
                 let res = r.responseJSON;
                 sweetAlertError(res.message, 3000);
+                $('#esmRecommendationBtn').removeClass('spinner spinner-white spinner-right');
+                $('#esmRecommendationBtn').attr('disabled', false);
             }
         });
         

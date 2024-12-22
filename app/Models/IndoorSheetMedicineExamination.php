@@ -5,14 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class IndoorSheetMedicine extends Model
+class IndoorSheetMedicineExamination extends Model
 {
     use HasFactory;
+    
     protected $fillable = [
-        'ism_id',
+        'isme_id',
         'is_id',
         'ism_recommendation',
-        'ism_added_by'
+        'isme_given_datetime',
+        'isme_created_datetime',
+        'remark',
+        'isme_added_by'
     ];
 
     public function insertData($data)
@@ -20,9 +24,9 @@ class IndoorSheetMedicine extends Model
         return static::create(\Arr::only($data, $this->fillable));
     }
 
-    public function singlData($is_id)
+    public function singlData($isme_id)
     {
-        return static::where('is_id', $is_id)->first();
+        return static::where('isme_id', $isme_id)->first();
     }
 
     public function singlDataByWhere($where)
@@ -46,35 +50,29 @@ class IndoorSheetMedicine extends Model
 
     public function FilterData($data, $filterdata)
     {
-        $ism_id  = isset($filterdata['ism_id']) ? $filterdata['ism_id'] : '';
+        $isme_id  = isset($filterdata['isme_id']) ? $filterdata['isme_id'] : '';
         $is_id  = isset($filterdata['is_id']) ? $filterdata['is_id'] : '';
-        if (isset($ism_id) && $ism_id != '') {
-            $data->where('ism_id', $ism_id);
+        if (isset($isme_id) && $isme_id != '') {
+            $data->where('isme_id', $isme_id);
         }
         if (isset($is_id) && $is_id != '') {
             $data->where('is_id', $is_id);
         }
     }
 
-    public function updateData($data, $ism_id)
+    public function updateData($data, $isme_id)
     {
-        return static::where('ism_id', $ism_id)->update(\Arr::only($data, $this->fillable));
+        return static::where('isme_id', $isme_id)->update(\Arr::only($data, $this->fillable));
     }
 
-    public function deleteData($ism_id)
+    public function deleteData($isme_id)
     {
-        return static::where('ism_id', $ism_id)->delete();
+        return static::where('isme_id', $isme_id)->delete();
     }
 
     /* Start:: Relationship */
     public function AddedByUser(){
-        return $this->belongsTo(User::class, 'ism_added_by', 'user_id');
-    }
-    public function checkedByUser(){
-        return $this->belongsTo(User::class, 'ism_checked_by', 'user_id');
-    }
-    public function indoorSheetData(){
-        return $this->belongsTo(IndoorSheet::class, 'is_id', 'is_id');
+        return $this->belongsTo(User::class, 'isme_added_by', 'user_id');
     }
     /* End:: Relationship */
 }

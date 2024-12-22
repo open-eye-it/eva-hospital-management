@@ -11,12 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('indoor_sheet_medicines', function (Blueprint $table) {
+        Schema::create('indoor_sheet_medicine_examinations', function (Blueprint $table) {
             $table->id();
-            $table->text('ism_id');
+            $table->text('isme_id');
             $table->text('is_id');
             $table->text('ism_recommendation');
-            $table->text('ism_added_by');
+            $table->datetime('isme_given_datetime')->nullable();
+            $table->datetime('isme_created_datetime');
+            $table->text('remark')->nullable();
+            $table->text('isme_added_by')->comment('user id who has add deta');
             $table->timestamps();
         });
     }
@@ -26,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('indoor_sheet_medicines');
+        Schema::dropIfExists('indoor_sheet_medicine_examinations');
     }
 };

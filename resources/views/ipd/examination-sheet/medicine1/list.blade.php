@@ -6,6 +6,9 @@
     <td>{{ date('d M Y, h:i:s a', strtotime($data?->isme_created_datetime)) }}</td>
     <td>{{ $data?->remark }}</td>
     <td>{{ $data?->AddedByUser?->person_name }}</td>
-    <td></td>
+    <td>
+        <i title="Edit" class="la la-edit icon-3x cursor_pointer" onclick="editExamination('{{ base64_encode($data->isme_id) }}')"></i>
+        <i title="Remove" class="la la-trash icon-3x cursor_pointer" onclick="removeExamination('{{ base64_encode($data->isme_id) }}')"></i>
+    </td>
 </tr>
 @endforeach

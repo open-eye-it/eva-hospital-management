@@ -341,7 +341,20 @@
                         <h4>Exmination</h4>
                     </div>
                 </div>
-                <table class="table d-none" id="examinationModal2">
+                <div class="row d-none" id="examinationModal2">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 form-group">
+                        <label for="isme_given_datetime1">Date Time</label>
+                        <input type="datetime-local" name="isme_given_datetime1" id="isme_given_datetime1" class="form-control" value="">
+                    </div>
+                    <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 form-group">
+                        <label for="ramerakData1">Remark</label>
+                        <textarea name="ramerakData1" rows="5" class="remarkMessage1 form-control" id="ramerakData1" value=""></textarea>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 form-group mt-4">
+                        <button class="btn btn-primary" id="updateExaminationBtn">Update <i class="la la-plus icon-3x cursor_pointer"></i></button>
+                    </div>
+                </div>
+                <table class="table d-none" id="examinationModal3">
                     <thead>
                         <tr>
                             <th>Findings</th>
@@ -874,6 +887,7 @@
         $('#exRecommendationMoad2').removeClass('d-none');
         $('#examinationModall').removeClass('d-none');
         $('#examinationModal2').removeClass('d-none');
+        $('#examinationModal3').removeClass('d-none');
         $('#exDataTable tr').removeClass('bg-primary text-white');
         $('#exDataTable tr i').removeClass('text-white');
         $('#exs_row_'+atob(is_id)).addClass('bg-primary text-white');
@@ -956,6 +970,51 @@
             }
         });
         
+    }
+
+    function removeExamination(isme_id){
+        $.ajax({
+            url:"{{ route('ipd.examination_sheet.medicine.remove', '') }}/"+isme_id,
+            method:"GET",
+            success:function(res){
+                if(res.response == true){
+                    if(res.response == true){
+                        $('#isme_row_'+atob(isme_id)).remove();
+                    }else{
+                        sweetAlertError(res.message, 3000);    
+                    }
+                }else{
+                    sweetAlertError(res.message, 3000);
+                }
+            },
+            error:function(r){
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    }
+
+    function editExamination(isme_id){
+        let isme_id1 = atob(isme_id);
+        $.ajax({
+            url:"{{ route('ipd.examination_sheet.medicine.edit', '') }}/"+isme_id,
+            method:"GET",
+            success:function(res){console.log(res);
+                if(res.response == true){
+                    if(res.response == true){
+                        $('#isme_row_'+atob(isme_id)).remove();
+                    }else{
+                        sweetAlertError(res.message, 3000);    
+                    }
+                }else{
+                    sweetAlertError(res.message, 3000);
+                }
+            },
+            error:function(r){
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
     }
     /* End:: Examination Sheet */
 

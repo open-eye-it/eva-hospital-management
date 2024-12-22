@@ -240,6 +240,8 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
         Route::get('examination_sheet/list/{ipd_id}', [IpdDetailController::class, 'ExaminationSheetList'])->name('ipd.examination_sheet.list');
         Route::get('examination_sheet/medicine/list/{is_id}', [IpdDetailController::class, 'ExaminationSheetMedicineList'])->name('ipd.examination_sheet.medicine.list');
         Route::post('examination_sheet/medicine/add', [IpdDetailController::class, 'ExaminationSheetMedicineAdd'])->name('ipd.examination_sheet.medicine.add');
+        Route::get('examination_sheet/medicine/remove/{isme_id}', [IpdDetailController::class, 'ExaminationSheetMedicineRemove'])->name('ipd.examination_sheet.medicine.remove');
+        Route::get('examination_sheet/medicine/edit/{isme_id}', [IpdDetailController::class, 'ExaminationSheetMedicineEdit'])->name('ipd.examination_sheet.medicine.edit');
     });
     /* IPD Account Detail */
     Route::prefix('ipd-account-detail')->name('ipd-acount-detail.')->group(function () {

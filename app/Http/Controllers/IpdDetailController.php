@@ -808,6 +808,26 @@ class IpdDetailController extends MainController
         }
     }
 
+    public function ExaminationSheetMedicineRemove($isme_id){
+        $isme_id = base64_decode($isme_id);
+        $deleteData = $this->indoor_sheet_medicine_examination->deleteData($isme_id);
+        if($deleteData){
+            return $this->getSuccessResult([], 'Examination deleted.', true);
+        }else{
+            return $this->getErrorMessage('Examination not delete, pleaase try again.', false);
+        }
+    }
+
+    public function ExaminationSheetMedicineEdit($isme_id){
+        $isme_id = base64_decode($isme_id);
+        $singleData = $this->indoor_sheet_medicine_examination->singlData($isme_id);
+        if(!empty($deleteData)){
+            return $this->getSuccessResult($singleData, 'Examination dt.', true);
+        }else{
+            return $this->getErrorMessage('Examination not found, pleaase try again.', false);
+        }
+    }
+
     public function getUniqueID()
     {
         $ipd_id = $this->randomString(10, 'number');

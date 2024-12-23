@@ -344,13 +344,14 @@
                 <div class="row d-none" id="examinationModal2">
                     <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 form-group">
                         <label for="isme_given_datetime1">Date Time</label>
-                        <input type="datetime-local" name="isme_given_datetime1" id="isme_given_datetime1" class="form-control" value="">
+                        <input type="datetime-local" name="isme_given_datetime1" id="isme_given_datetime1" class="form-control" value="22-12-2024 10:37:00">
                     </div>
                     <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 form-group">
                         <label for="ramerakData1">Remark</label>
                         <textarea name="ramerakData1" rows="5" class="remarkMessage1 form-control" id="ramerakData1" value=""></textarea>
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 form-group mt-4">
+                        <input type="hidden" name="isme_id1" id="isme_id1" value="">
                         <button class="btn btn-primary" id="updateExaminationBtn">Update <i class="la la-plus icon-3x cursor_pointer"></i></button>
                     </div>
                 </div>
@@ -1000,12 +1001,11 @@
             url:"{{ route('ipd.examination_sheet.medicine.edit', '') }}/"+isme_id,
             method:"GET",
             success:function(res){console.log(res);
-                if(res.response == true){
-                    if(res.response == true){
-                        $('#isme_row_'+atob(isme_id)).remove();
-                    }else{
-                        sweetAlertError(res.message, 3000);    
-                    }
+                if(res.response == true){console.log(res.data.examinationData.remark);
+                    $('#isme_given_datetime1').val(res.data.given_date);
+                    $('#ramerakData1').val(res.data.examinationData.remark);
+                    $('#isme_id1').val(res.data.examinationData.isme_id);
+                    modalScrollTop('exSheetModal', 'ramerakData1');
                 }else{
                     sweetAlertError(res.message, 3000);
                 }
@@ -1016,6 +1016,53 @@
             }
         });
     }
+    
+    $('#updateExaminationBtn').on('click', function(){
+        let isme_id = $('#isme_id1').val();
+        if(isme_id == ''){
+            sweetAlertError('Please edit examination first', 3000);
+        }else{
+            let isme_given_datetime = $('#isme_given_datetime1').val();
+            let remark = $('#ramerakData1').val();
+            $('#updateExaminationBtn').addClass('spinner spinner-white spinner-right');
+            $('#updateExaminationBtn').attr('disabled', true);
+            $.ajax({
+                headers:{
+                    'X-CSRF-TOKEN':"{{ csrf_token() }}"
+                },
+                url:"{{ route('ipd.examination_sheet.medicine.update') }}",
+                method:"POST",
+                data:{
+                    isme_id: isme_id,
+                    isme_given_datetime: isme_given_datetime,
+                    remark: remark
+                },
+                success:function(res){
+                    if(res.response == true){console.log(res.data);
+                        $('#isme_row_'+isme_id+' td:nth-child(3)').text(res.data.datetime);
+                        $('#isme_row_'+isme_id+' td:nth-child(4)').text(res.data.isme_created_datetime);
+                        $('#isme_row_'+isme_id+' td:nth-child(5)').text(res.data.remark);
+                        $('#isme_row_'+isme_id+' td:nth-child(6)').text(res.data.added_by);
+
+                        $('#isme_given_datetime1').val('');
+                        $('#ramerakData1').val('');
+                        $('#isme_id1').val('');
+                        sweetAlertSuccess(res.message, 3000);
+                    }else{
+                        sweetAlertError(res.message, 3000);
+                    }
+                    $('#updateExaminationBtn').removeClass('spinner spinner-white spinner-right');
+                    $('#updateExaminationBtn').attr('disabled', false);
+                },
+                error:function(r){
+                    let res = r.responseJSON;
+                    sweetAlertError(res.message, 3000);
+                    $('#updateExaminationBtn').removeClass('spinner spinner-white spinner-right');
+                    $('#updateExaminationBtn').attr('disabled', false);
+                }
+            });
+        }
+    });
     /* End:: Examination Sheet */
 
     /* Export IPD Details */

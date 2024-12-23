@@ -821,10 +821,40 @@ class IpdDetailController extends MainController
     public function ExaminationSheetMedicineEdit($isme_id){
         $isme_id = base64_decode($isme_id);
         $singleData = $this->indoor_sheet_medicine_examination->singlData($isme_id);
-        if(!empty($deleteData)){
-            return $this->getSuccessResult($singleData, 'Examination dt.', true);
+        if(!empty($singleData)){
+            $date = date('Y-m-d', strtotime($singleData->isme_given_datetime));
+            $time = date('H:i', strtotime($singleData->isme_given_datetime));
+            $datetime = $date.'T'.$time;
+            $data = [
+                'examinationData' => $singleData,
+                'given_date' => $datetime
+            ];
+            return $this->getSuccessResult($data, 'Examination dt.', true);
         }else{
             return $this->getErrorMessage('Examination not found, pleaase try again.', false);
+        }
+    }
+
+    public function ExaminationSheetMedicineUpdate(Request $request){
+        $input = $request->all();
+        $userLogin = Auth::user();
+        $data = [
+            'isme_given_datetime' => date('Y-m-d H:i:s', strtotime($input['isme_given_datetime'])),
+            'remark' => $input['remark'],
+            'isme_created_datetime' => date('Y-m-d H:i:s'),
+            'isme_added_by' => $userLogin->user_id
+        ];
+        $updateData = $this->indoor_sheet_medicine_examination->updateData($data, $input['isme_id']);
+        if($updateData){
+            $data = [
+                'datetime' => date('d M Y, h:i a', strtotime($input['isme_given_datetime'])),
+                'isme_created_datetime' => date('d M Y, h:i a'),
+                'remark' => $input['remark'],
+                'added_by' => $userLogin->person_name
+            ];
+            return $this->getSuccessResult($data, 'Examination updated.', true);
+        }else{
+            return $this->getErrorMessage('Examination not updated, pleaase try again.', false);
         }
     }
 

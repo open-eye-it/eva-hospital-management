@@ -10,6 +10,13 @@ function scrollTop(id){
     }, 1000);
 }
 
+function modalScrollTop(modalId, fieldId){
+    $('#'+modalId+' .modal-body').animate({ scrollTop: $('#'+fieldId).offset().top+500 }, 500);
+    // $('#'+modalId+' .modal-body').animate({
+    //     scrollTop: $("#"+fieldId).offset().top-500
+    // }, 1000);
+}
+
 function sweetAlertSuccess(message, time=3000, route=''){
     Swal.fire({
         title: message,

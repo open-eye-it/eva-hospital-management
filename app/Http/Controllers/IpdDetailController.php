@@ -614,7 +614,7 @@ class IpdDetailController extends MainController
     public function IndoorSheetList($ipd_id){
         $ipd_id = base64_decode($ipd_id);
         $ipdDetail = $this->ipd->singlData($ipd_id);
-        $indoorSheeList = $this->indoor_sheet->getList(['ipd_id' => $ipd_id], false, 0, ['created_at', 'asc']);
+        $indoorSheeList = $this->indoor_sheet->getList(['ipd_id' => $ipd_id], false, 0, ['created_at', 'desc']);
         if (count($indoorSheeList->toArray()) > 0) {
             $view = view('ipd.indoor-sheet.list', compact('indoorSheeList'))->render();
             $data = [
@@ -682,7 +682,7 @@ class IpdDetailController extends MainController
 
     public function IndoorSheetMedicineList($is_id){
         $is_id = base64_decode($is_id);
-        $indoorSheeList = $this->indoor_sheet_medicine->getList(['is_id' => $is_id], false, 0, ['created_at', 'asc']);
+        $indoorSheeList = $this->indoor_sheet_medicine->getList(['is_id' => $is_id], false, 0, ['created_at', 'desc']);
         if (count($indoorSheeList->toArray()) > 0) {
             $view = view('ipd.indoor-sheet.medicine.list', compact('indoorSheeList'))->render();
             $data = [
@@ -741,7 +741,7 @@ class IpdDetailController extends MainController
     public function ExaminationSheetList($ipd_id){
         $ipd_id = base64_decode($ipd_id);
         $ipdDetail = $this->ipd->singlData($ipd_id);
-        $indoorSheeList = $this->indoor_sheet->getList(['ipd_id' => $ipd_id], false, 0, ['created_at', 'asc']);
+        $indoorSheeList = $this->indoor_sheet->getList(['ipd_id' => $ipd_id], false, 0, ['created_at', 'desc']);
         if (count($indoorSheeList->toArray()) > 0) {
             $view = view('ipd.examination-sheet.list', compact('indoorSheeList'))->render();
             $data = [
@@ -761,7 +761,7 @@ class IpdDetailController extends MainController
     public function ExaminationSheetMedicineList($is_id){
         $is_id = base64_decode($is_id);
         $indoorSheeList = $this->indoor_sheet_medicine->getList(['is_id' => $is_id], false, 0, ['created_at', 'asc']);
-        $examintionList = $this->indoor_sheet_medicine_examination->getList(['is_id' => $is_id], false, 0, ['created_at', 'asc']);
+        $examintionList = $this->indoor_sheet_medicine_examination->getList(['is_id' => $is_id], false, 0, ['isme_given_datetime', 'desc']);
         if (count($indoorSheeList->toArray()) > 0) {
             $view = view('ipd.examination-sheet.medicine.list', compact('indoorSheeList'))->render();
             $view1 = view('ipd.examination-sheet.medicine1.list', compact('examintionList'))->render();

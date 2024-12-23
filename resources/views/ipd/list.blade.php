@@ -210,7 +210,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Indoor Sheet</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeIndoorSheet()">
                     <i aria-hidden="true" class="ki ki-close"></i>
                 </button>
             </div>
@@ -269,24 +269,25 @@
                         <tr>
                             <th>Recommendation</th>
                             <th>Added By</th>
+                            <th>Added On</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody id="ismDataTable"></tbody>
                 </table>
             </div>
-            <div class="modal-footer">
+            <!-- <div class="modal-footer">
                 <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>
 <div class="modal fade" id="exSheetModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Examination Sheet</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeEaxminationSheet()">
                     <i aria-hidden="true" class="ki ki-close"></i>
                 </button>
             </div>
@@ -360,8 +361,8 @@
                         <tr>
                             <th>Findings</th>
                             <th>Recomendation</th>
-                            <th>Date Time</th>
-                            <th>Created At</th>
+                            <th>Attended Time</th>
+                            <th>Entry Time</th>
                             <th>Remark</th>
                             <th>Added By</th>
                             <th>Action</th>
@@ -370,9 +371,9 @@
                     <tbody id="exm1DataTable"></tbody>
                 </table>
             </div>
-            <div class="modal-footer">
+            <!-- <div class="modal-footer">
                 <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>
@@ -699,7 +700,7 @@
                     if(res.response == true){
                         if(is_id == ''){
                             $('#is_findings').val('');
-                            $('#isDataTable').append(res.data.html);
+                            $('#isDataTable').prepend(res.data.html);
                         }else{
                             $('#is_id').val('');
                             $('#is_findings').val('');
@@ -753,6 +754,12 @@
             }
         });
     }
+    function closeIndoorSheet(){
+        $('#isDataTable').html('');
+        $('#recommendationMoadl1').addClass('d-none');
+        $('#recommendationMoadl2').addClass('d-none');
+        $('#ismDataTable').html('');
+    }
     /* End:: Indoor Sheet */
     /* Start:: Indoor Sheet Medicine */
     function showRecommenadtion(is_id){
@@ -805,7 +812,7 @@
                     if(res.response == true){
                         if(ism_id == ''){
                             $('#ism_recommendation').val('');
-                            $('#ismDataTable').append(res.data.html);
+                            $('#ismDataTable').prepend(res.data.html);
                         }else{
                             $('#ism_id').val('');
                             $('#ism_recommendation').val('');
@@ -954,7 +961,7 @@
                 console.log(res);
                 if(res.response == true){
                     //$('#exmDataTable').html(res?.data?.html);
-                    $('#exm1DataTable').append(res?.data?.html);
+                    $('#exm1DataTable').prepend(res?.data?.html);
                     $('#exmDataTable textarea').val('');
                     $('#exmDataTable tr td:nth-child(3) input').val('');
                     $('#exmDataTable input[type="checkbox"]').prop('checked', false);
@@ -1063,6 +1070,17 @@
             });
         }
     });
+
+    function closeEaxminationSheet(){
+        $('#exDataTable').html('');
+        $('#exRecommendationMoadl').addClass('d-none');
+        $('#exRecommendationMoad2').addClass('d-none');
+        $('#exmDataTable').html('');
+        $('#examinationModall').addClass('d-none');
+        $('#examinationModal2').addClass('d-none');
+        $('#examinationModal3').addClass('d-none');
+        $('#exm1DataTable').html('');
+    }
     /* End:: Examination Sheet */
 
     /* Export IPD Details */

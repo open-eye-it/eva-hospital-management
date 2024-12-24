@@ -1,6 +1,6 @@
 @foreach($indoorSheeList as $data)
 <tr id="exs_row_{{ $data->is_id }}">
-    <td>{{ date('d M Y', strtotime($data->is_date)) }}</td>
+    <td>{{ date('d M Y, h:i a', strtotime($data->is_date)) }}</td>
     <td>{{ $data->is_findings }}</td>
     <td>{{ $data?->AddedByUser?->person_name }}</td>
     <td>

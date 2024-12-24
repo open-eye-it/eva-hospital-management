@@ -359,7 +359,6 @@
                 <table class="table d-none" id="examinationModal3">
                     <thead>
                         <tr>
-                            <th>Findings</th>
                             <th>Recomendation</th>
                             <th>Attended Time</th>
                             <th>Entry Time</th>

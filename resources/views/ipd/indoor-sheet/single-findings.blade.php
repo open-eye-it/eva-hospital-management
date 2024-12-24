@@ -1,5 +1,5 @@
 <tr id="is_row_{{ $insertData->is_id }}">
-    <td>{{ date('d M Y', strtotime($insertData->is_date)) }}</td>
+    <td>{{ date('d M Y, h:i a', strtotime($insertData->is_date)) }}</td>
     <td>{{ $insertData->is_findings }}</td>
     <td>{{ $insertData?->AddedByUser?->person_name }}</td>
     <td>

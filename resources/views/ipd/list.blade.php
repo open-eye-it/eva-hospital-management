@@ -215,7 +215,7 @@
                 </button>
             </div>
             <div class="modal-body max-h-500 overflow-auto">
-                <form method="POST" enc-type="multipart/form-data" id="submitDocument">
+                
                     <div class="row">
                         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                             <strong>Patient Name:</strong> <span id="IndoorSheetPatient"></span>
@@ -239,7 +239,7 @@
                             <button type="submit" id="IndoorSheetAdd" class="btn btn-primary mt-4">Add <i class="la la-plus"></i></button>
                         </div>
                     </div>
-                </form>
+                
                 <table class="table">
                     <thead>
                         <tr>
@@ -1301,6 +1301,8 @@
         } else if (file == '') {
             $('#ipd_doc_err').text('Please select document');
         } else {
+            $('#docAdd').addClass('spinner spinner-white spinner-right');
+            $('#docAdd').attr('disabled', true);
             let formData = new FormData(this);
             $.ajax({
                 headers: {
@@ -1318,10 +1320,14 @@
                     } else {
                         sweetAlertError(res.message, 3000);
                     }
+                    $('#docAdd').removeClass('spinner spinner-white spinner-right');
+                    $('#docAdd').attr('disabled', false);
                 },
                 error: function(r) {
                     let res = r.responseJSON;
                     sweetAlertError(res.message, 3000);
+                    $('#docAdd').removeClass('spinner spinner-white spinner-right');
+                    $('#docAdd').attr('disabled', false);
                 }
             });
         }

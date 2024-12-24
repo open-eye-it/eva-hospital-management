@@ -338,10 +338,11 @@
                     let fileList = '';
                     if (data.tr_documents != '' && data.tr_documents != null) {
                         let fileArr = JSON.parse(data.tr_documents);
-                        let filepath = window.location.origin + '/storage/app/public/';
                         for (let i = 0; i < fileArr.length; i++) {
+                            let filepath = window.location.origin + '/storage/'+fileArr[i];
                             // fileList += '<p class="btn btn-primary" onclick="downloadFile(`' + fileArr[i] + '`)">' + fileArr[i] + '</p>';
-                            fileList += '<div><a title="download" class="btn btn-primary mt-4" download href="{{ route("trainee.file.download", "") }}/' + btoa(fileArr[i]) + '">' + fileArr[i] + ' <i class="fa fa-download"></i></a></div>';
+                            //fileList += '<div><a title="download" class="btn btn-primary mt-4" download href="{{ route("trainee.file.download", "") }}/' + btoa(fileArr[i]) + '">' + fileArr[i] + ' <i class="fa fa-download"></i></a></div>';
+                            fileList += '<div><a target="_blank" title="download" class="btn btn-primary mt-4" href="'+filepath+'">' + fileArr[i] + ' <i class="fa fa-download"></i></a></div>';
                         }
                     }
                     let view = '<tr> \

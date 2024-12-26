@@ -330,7 +330,7 @@
     </div>
 </div>
 <div class="modal fade" id="opdHistoryViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-dialog modal-xl popup-90" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">OPD Details</h5>
@@ -340,7 +340,7 @@
             </div>
             <div class="modal-body">
                 <h4>Total Fees: <span id="opd_total_fees"></span></h4>
-                <table class="table table-bordered scrollable_table_custom">
+                <table class="table table-bordered scrollable_table_custom" id="followUpOpdppopup">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -367,7 +367,7 @@
     </div>
 </div>
 <div class="modal fade" id="ipdHistoryViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-dialog modal-xl popup-90" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">IPD Details</h5>
@@ -850,6 +850,7 @@
                     $('#opd_total_fees').text(total_fees + total_additional_fees);
                     $('#opdHistoryViewDetail').html(data);
                     $('#opdHistoryViewModal').modal('show');
+                    //$('.dataTables_wrapper').DataTable().columns.adjust().draw();
                 } else {
                     sweetAlertError(res.message, 3000);
                 }

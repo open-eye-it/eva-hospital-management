@@ -544,6 +544,7 @@ class IpdDetailController extends MainController
                     <td>' . date('d M Y', strtotime($appointment->ap_id)) . '</td>
                     <td>' . $appointment->pa_id . '</td>
                     <td>' . $appointment->patientData->pa_name . '</td>
+                    <td>' . $appointment->patientData->pa_contact_no . '</td>
                     <td>' . $appointment->ap_case_type . '</td>
                     <td>' . $is_foc . '</td>
                     <td>' . $appointment->ap_charge . '</td>

@@ -844,6 +844,15 @@
             success: function(res) {
                 console.log(res);
                 if (res.response === true) {
+                    var table = $('#followUpOpdppopup').DataTable();
+                    table.destroy();
+                    $('#followUpOpdppopup').DataTable({
+                        autoWidth: true,
+                        searching: false,   
+                        paging: false,
+                        info: false
+                    });
+
                     let data = res.data.list;
                     let total_fees = res.data.total_fees;
                     let total_additional_fees = res.data.total_additional_fees;
@@ -851,6 +860,8 @@
                     $('#opdHistoryViewDetail').html(data);
                     $('#opdHistoryViewModal').modal('show');
                     //$('.dataTables_wrapper').DataTable().columns.adjust().draw();
+                    //$('#followUpOpdppopup').DataTable({colReorder: true});
+                    
                 } else {
                     sweetAlertError(res.message, 3000);
                 }

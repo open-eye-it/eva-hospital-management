@@ -19,6 +19,7 @@ use App\Models\IpdDocument;
 use App\Models\IndoorSheet;
 use App\Models\IndoorSheetMedicine;
 use App\Models\IndoorSheetMedicineExamination;
+use App\Models\IpdCharge;
 
 use App\Exports\IPDDetailExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -27,7 +28,7 @@ use Illuminate\Support\Facades\Storage;
 
 class IpdDetailController extends MainController
 {
-    public $patient, $room, $ipd_doc, $ipd, $ipd_note, $operation_medicine, $appointment, $notification, $indoor_sheet, $indoor_sheet_medicine, $indoor_sheet_medicine_examination;
+    public $patient, $room, $ipd_doc, $ipd, $ipd_note, $ipd_charge, $operation_medicine, $appointment, $notification, $indoor_sheet, $indoor_sheet_medicine, $indoor_sheet_medicine_examination;
     public function __construct()
     {
         parent::__construct();
@@ -36,6 +37,7 @@ class IpdDetailController extends MainController
         $this->ipd_doc = new IpdDocument;
         $this->ipd = new IpdDetail;
         $this->ipd_note = new IpdOperativeNote;
+        $this->ipd_charge = new IpdCharge;
         $this->operation_medicine = new OperationMedicine;
         $this->appointment = new Appointment;
         $this->notification = new Notification;
@@ -130,6 +132,27 @@ class IpdDetailController extends MainController
                     ];
                     $this->ipd_note->insertData($ion_data);
                     $this->room->updateRoom(['rm_busy' => 1], $rm_id);
+
+                    $ipdChargeTextArr = [
+                        'OPERATION CHARGES (SURGEON CHARGES)',
+                        'THEATRE CHARGES',
+                        '3D CAMERS CHARGE',
+                        'HARMONIC INSTRUMENT CHARGE',
+                        'ANESTHESIA CHARGE DR. KAMLESH PTEL-REG. NO.G9826.',
+                        'DOCTOR CHARGE',
+                        'ROOM CHARGE (3 DAYS * 2000 RS)',
+                    ];
+                    for($i=0; $i<count($ipdChargeTextArr); $i++){
+                        $ipdChargeData = [
+                            'ipd_id' => $insert->ipd_id,
+                            'ic_id' => $this->getChargeUniqueID(),
+                            'ic_text' => $ipdChargeTextArr[$i],
+                            'ic_amount' => 0,
+                            'ic_added_by' => $login_user->user_id
+                        ];
+                        $insert = $this->ipd_charge->insertData($ipdChargeData);
+                    }
+
                     return $this->getSuccessResult([], 'IPD added', true);
                 } else {
                     return $this->getErrorMessage('IPD not added, something is wrong.');
@@ -925,6 +948,18 @@ class IpdDetailController extends MainController
             return $this->getSuccessResult($data, 'Note update.', true);
         } else {
             return $this->getErrorMessage('Note not update, something is wrong.');
+        }
+    }
+
+    /* Get IPD Charge Unique ID */
+    public function getChargeUniqueID()
+    {
+        $ic_id = $this->randomString(10, 'number');
+        $check = $this->ipd_charge->singlData($ic_id);
+        if (!empty($check)) {
+            $this->getChargeUniqueID();
+        } else {
+            return $ic_id;
         }
     }
 }

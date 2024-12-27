@@ -33,6 +33,7 @@ class IpdDetail extends Model
         'ipd_bill_amount',
         'ipd_received_amount',
         'ipd_discount',
+        'ipd_discount_approved_by',
         'ipd_mediclaim',
         'ipd_is_foc',
     ];

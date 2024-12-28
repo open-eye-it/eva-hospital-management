@@ -20,6 +20,7 @@ class Patient extends Model
         'pa_contact_no',
         'pa_alt_contact_no',
         'pa_email',
+        'pa_pan_card',
         'pa_address',
         'pa_city',
         'pa_pincode',

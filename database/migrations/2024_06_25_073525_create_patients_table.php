@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('pa_alt_contact_no')->nullable()->index();
             $table->string('pa_email')->nullable()->index();
             $table->string('pa_address')->nullable();
+            $table->string('pa_pan_card')->nullable();
             $table->string('pa_city')->nullable();
             $table->string('pa_pincode')->nullable();
             $table->string('pa_state')->nullable();

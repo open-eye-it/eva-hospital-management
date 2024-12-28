@@ -51,7 +51,7 @@ class PatientController extends MainController
         if ($request->hasFile('pa_photo')) {
             $fileName = $request->pa_photo->getClientOriginalName();
             $filteNameArr = explode('.', $fileName);
-            $fileNameFinal = $filteNameArr[0].'-'.$this->randomString(7, 'number');
+            $fileNameFinal = $filteNameArr[0] . '-' . $this->randomString(7, 'number');
             $fileNameFinal = str_replace(' ', '-', $fileNameFinal);
             //$file = UploadCustomeImage($request->file('pa_photo'), $pa_id . '-' . $this->randomString(10, 'number'));
             $file = UploadCustomeImage($request->file('pa_photo'), $fileNameFinal);
@@ -126,7 +126,7 @@ class PatientController extends MainController
         if ($request->hasFile('pa_photo')) {
             $fileName = $request->pa_photo->getClientOriginalName();
             $filteNameArr = explode('.', $fileName);
-            $fileNameFinal = $filteNameArr[0].'-'.$this->randomString(7, 'number');
+            $fileNameFinal = $filteNameArr[0] . '-' . $this->randomString(7, 'number');
             $fileNameFinal = str_replace(' ', '-', $fileNameFinal);
             // $file = UploadCustomeImage($request->file('pa_photo'), $pa_id . '-' . $this->randomString(10, 'number'));
             $file = UploadCustomeImage($request->file('pa_photo'), $fileNameFinal);

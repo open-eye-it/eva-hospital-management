@@ -215,31 +215,31 @@
                 </button>
             </div>
             <div class="modal-body max-h-500 overflow-auto">
-                
-                    <div class="row">
-                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                            <strong>Patient Name:</strong> <span id="IndoorSheetPatient"></span>
-                        </div>
-                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                            <strong>Type of surgery:</strong> <span id="IndoorSheetSurgery"></span>
-                        </div>
-                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                            <strong>Date:</strong> {{ Date('d M Y') }}
-                        </div>
+
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <strong>Patient Name:</strong> <span id="IndoorSheetPatient"></span>
                     </div>
-                    <div class="row mt-4">
-                        <div class="col-12">
-                            <label for="patient_name">Findings</label>
-                            <!-- <input type="text" class="form-control" name="is_findings" id="is_findings" value="" placeholder="Findings" /> -->
-                            <textarea class="form-control" rows="3" name="is_findings" id="is_findings"></textarea>
-                            <span class="text-danger" id="is_findings_err"></span>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                            <input type="hidden" id="is_id" name="is_id" value="">
-                            <button type="submit" id="IndoorSheetAdd" class="btn btn-primary mt-4">Add <i class="la la-plus"></i></button>
-                        </div>
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <strong>Type of surgery:</strong> <span id="IndoorSheetSurgery"></span>
                     </div>
-                
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <strong>Date:</strong> {{ Date('d M Y') }}
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <label for="patient_name">Findings</label>
+                        <!-- <input type="text" class="form-control" name="is_findings" id="is_findings" value="" placeholder="Findings" /> -->
+                        <textarea class="form-control" rows="3" name="is_findings" id="is_findings"></textarea>
+                        <span class="text-danger" id="is_findings_err"></span>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <input type="hidden" id="is_id" name="is_id" value="">
+                        <button type="submit" id="IndoorSheetAdd" class="btn btn-primary mt-4">Add <i class="la la-plus"></i></button>
+                    </div>
+                </div>
+
                 <table class="table">
                     <thead>
                         <tr>
@@ -658,62 +658,64 @@
         $('#IndoorSheetModal').modal('show');
         let ipd_id = $(this).data('id');
         $.ajax({
-            url:"{{ route('ipd.indoor_sheet.list', '') }}/"+ipd_id,
-            method:"GET",
-            success:function(res){
-                $('#IndoorSheetAdd').attr('onclick', "addFindings('"+ipd_id+"')");
-                if(res.response == true){
+            url: "{{ route('ipd.indoor_sheet.list', '') }}/" + ipd_id,
+            method: "GET",
+            success: function(res) {
+                $('#IndoorSheetAdd').attr('onclick', "addFindings('" + ipd_id + "')");
+                if (res.response == true) {
                     $('#IndoorSheetPatient').text(res?.data?.patientName);
                     $('#IndoorSheetSurgery').text(res?.data?.ipdDetail?.ipd_surgery_text);
                     $('#isDataTable').html(res?.data?.html);
                 }
             },
-            error:function(r){
+            error: function(r) {
                 let res = r.responseJSON;
                 sweetAlertError(res.message, 3000);
             }
         });
     });
-    function addFindings(ipd_id){
+
+    function addFindings(ipd_id) {
         let is_id = $('#is_id').val();
         let is_findings = $('#is_findings').val();
-        if(is_findings == ''){
+        if (is_findings == '') {
             scrollTop('is_findings');
             $('#is_findings_err').text('Please enter findings');
             timeoutID('is_findings_err', 3000);
-        }else{
+        } else {
             $('#IndoorSheetAdd').addClass('spinner spinner-white spinner-right');
             $('#IndoorSheetAdd').attr('disabled', true);
             $.ajax({
-                headers:{
+                headers: {
                     "X-CSRF-TOKEN": "{{ csrf_token() }}"
                 },
-                url:"{{ route('ipd.indoor_sheet.findings.add') }}",
-                method:"POST",
-                data:{
+                url: "{{ route('ipd.indoor_sheet.findings.add') }}",
+                method: "POST",
+                data: {
                     ipd_id: ipd_id,
                     is_id: is_id,
                     is_findings: is_findings
                 },
-                success:function(res){console.log(res);
-                    if(res.response == true){
-                        if(is_id == ''){
+                success: function(res) {
+                    console.log(res);
+                    if (res.response == true) {
+                        if (is_id == '') {
                             $('#is_findings').val('');
                             $('#isDataTable').prepend(res.data.html);
-                        }else{
+                        } else {
                             $('#is_id').val('');
                             $('#is_findings').val('');
-                            $('#is_row_'+is_id+' td:nth-child(2)').text(is_findings);
+                            $('#is_row_' + is_id + ' td:nth-child(2)').text(is_findings);
                         }
                         $('#IndoorSheetAdd').html('Add <i class="la la-plus"></i>');
                         sweetAlertSuccess(res.message, 3000);
-                    }else{
-                        sweetAlertError(res.message, 3000);    
+                    } else {
+                        sweetAlertError(res.message, 3000);
                     }
                     $('#IndoorSheetAdd').removeClass('spinner spinner-white spinner-right');
                     $('#IndoorSheetAdd').attr('disabled', false);
                 },
-                error:function(r){
+                error: function(r) {
                     let res = r.responseJSON;
                     sweetAlertError(res.message, 3000);
                     $('#IndoorSheetAdd').removeClass('spinner spinner-white spinner-right');
@@ -722,38 +724,41 @@
             });
         }
     }
-    function editFindings(is_id){
+
+    function editFindings(is_id) {
         let is_id1 = atob(is_id);
-        let findings = $('#is_row_'+is_id1+' td:nth-child(2)').text();
+        let findings = $('#is_row_' + is_id1 + ' td:nth-child(2)').text();
         $('#is_findings').val(findings);
         $('#is_id').val(is_id1);
         $('#IndoorSheetAdd').html('Update <i class="la la-plus"></i>');
     }
-    function removerFindings(is_id){
+
+    function removerFindings(is_id) {
         $.ajax({
-            headers:{
+            headers: {
                 "X-CSRF-TOKEN": "{{ csrf_token() }}"
             },
-            url:"{{ route('ipd.indoor_sheet.findings.remove', '') }}/"+is_id,
-            method:"GET",
-            success:function(res){
-                if(res.response == true){
-                    if(res.response == true){
-                        $('#is_row_'+atob(is_id)).remove();
-                    }else{
-                        sweetAlertError(res.message, 3000);    
+            url: "{{ route('ipd.indoor_sheet.findings.remove', '') }}/" + is_id,
+            method: "GET",
+            success: function(res) {
+                if (res.response == true) {
+                    if (res.response == true) {
+                        $('#is_row_' + atob(is_id)).remove();
+                    } else {
+                        sweetAlertError(res.message, 3000);
                     }
-                }else{
+                } else {
                     sweetAlertError(res.message, 3000);
                 }
             },
-            error:function(r){
+            error: function(r) {
                 let res = r.responseJSON;
                 sweetAlertError(res.message, 3000);
             }
         });
     }
-    function closeIndoorSheet(){
+
+    function closeIndoorSheet() {
         $('#isDataTable').html('');
         $('#recommendationMoadl1').addClass('d-none');
         $('#recommendationMoadl2').addClass('d-none');
@@ -761,71 +766,72 @@
     }
     /* End:: Indoor Sheet */
     /* Start:: Indoor Sheet Medicine */
-    function showRecommenadtion(is_id){
+    function showRecommenadtion(is_id) {
         $('#recommendationMoadl1').removeClass('d-none');
         $('#recommendationMoadl2').removeClass('d-none');
         $('#isDataTable tr').removeClass('bg-primary text-white');
         $('#isDataTable tr i').removeClass('text-white');
-        $('#is_row_'+atob(is_id)).addClass('bg-primary text-white');
-        $('#is_row_'+atob(is_id)+' i').addClass('text-white');
+        $('#is_row_' + atob(is_id)).addClass('bg-primary text-white');
+        $('#is_row_' + atob(is_id) + ' i').addClass('text-white');
         let is_id1 = atob(is_id);
         $('#is_id1').val(is_id1);
         $.ajax({
-            url:"{{ route('ipd.indoor_sheet.medicine.list', '') }}/"+is_id,
-            method:"GET",
-            success: function(res){
+            url: "{{ route('ipd.indoor_sheet.medicine.list', '') }}/" + is_id,
+            method: "GET",
+            success: function(res) {
                 console.log(res);
-                $('#IndoorSheetMedicineAdd').attr('onclick', "addRecommendation('"+is_id+"')");
-                if(res.response == true){
+                $('#IndoorSheetMedicineAdd').attr('onclick', "addRecommendation('" + is_id + "')");
+                if (res.response == true) {
                     $('#ismDataTable').html(res?.data?.html);
                 }
             },
-            error: function(r){
+            error: function(r) {
                 let res = r.responseJSON;
                 sweetAlertError(res.message, 3000);
             }
         });
     }
-    function addRecommendation(is_id){
+
+    function addRecommendation(is_id) {
         let ism_id = $('#ism_id').val();
         let ism_recommendation = $('#ism_recommendation').val();
-        if(ism_recommendation == ''){
+        if (ism_recommendation == '') {
             scrollTop('ism_recommendation');
             $('#ism_recommendation_err').text('Please enter recommendation');
             timeoutID('ism_recommendation_err', 3000);
-        }else{
+        } else {
             $('#IndoorSheetMedicineAdd').addClass('spinner spinner-white spinner-right');
             $('#IndoorSheetMedicineAdd').attr('disabled', true);
             $.ajax({
-                headers:{
+                headers: {
                     "X-CSRF-TOKEN": "{{ csrf_token() }}"
                 },
-                url:"{{ route('ipd.indoor_sheet.medicine.add') }}",
-                method:"POST",
-                data:{
+                url: "{{ route('ipd.indoor_sheet.medicine.add') }}",
+                method: "POST",
+                data: {
                     is_id: is_id,
                     ism_id: ism_id,
                     ism_recommendation: ism_recommendation
                 },
-                success:function(res){
-                    if(res.response == true){
-                        if(ism_id == ''){
+                success: function(res) {
+                    if (res.response == true) {
+                        if (ism_id == '') {
                             $('#ism_recommendation').val('');
                             $('#ismDataTable').prepend(res.data.html);
-                        }else{
+                        } else {
                             $('#ism_id').val('');
                             $('#ism_recommendation').val('');
-                            $('#ism_row_'+ism_id+' td:nth-child(1)').text(ism_recommendation);
+                            $('#ism_row_' + ism_id + ' td:nth-child(1)').text(ism_recommendation);
                         }
                         $('#IndoorSheetMedicineAdd').html('Add <i class="la la-plus"></i>');
                         sweetAlertSuccess(res.message, 3000);
-                    }else{
-                        sweetAlertError(res.message, 3000);    
+                    } else {
+                        sweetAlertError(res.message, 3000);
                     }
                     $('#IndoorSheetMedicineAdd').removeClass('spinner spinner-white spinner-right');
                     $('#IndoorSheetMedicineAdd').attr('disabled', false);
                 },
-                error:function(r){
+                error: function(r) {
                     let res = r.responseJSON;
                     sweetAlertError(res.message, 3000);
                     $('#IndoorSheetMedicineAdd').removeClass('spinner spinner-white spinner-right');
@@ -834,34 +840,36 @@
             });
         }
     }
-    function editRecommendation(ism_id){
+
+    function editRecommendation(ism_id) {
         let ism_id1 = atob(ism_id);
         console.log(ism_id1);
-        let recommendation = $('#ism_row_'+ism_id1+' td:nth-child(1)').text();
+        let recommendation = $('#ism_row_' + ism_id1 + ' td:nth-child(1)').text();
         console.log(recommendation);
         $('#ism_recommendation').val(recommendation);
         $('#ism_id').val(ism_id1);
         $('#IndoorSheetMedicineAdd').html('Update <i class="la la-plus"></i>');
     }
-    function removeRecommendation(ism_id){
+
+    function removeRecommendation(ism_id) {
         $.ajax({
-            headers:{
+            headers: {
                 "X-CSRF-TOKEN": "{{ csrf_token() }}"
             },
-            url:"{{ route('ipd.indoor_sheet.medicine.remove', '') }}/"+ism_id,
-            method:"GET",
-            success:function(res){
-                if(res.response == true){
-                    if(res.response == true){
-                        $('#ism_row_'+atob(ism_id)).remove();
-                    }else{
-                        sweetAlertError(res.message, 3000);    
+            url: "{{ route('ipd.indoor_sheet.medicine.remove', '') }}/" + ism_id,
+            method: "GET",
+            success: function(res) {
+                if (res.response == true) {
+                    if (res.response == true) {
+                        $('#ism_row_' + atob(ism_id)).remove();
+                    } else {
+                        sweetAlertError(res.message, 3000);
                     }
-                }else{
+                } else {
                     sweetAlertError(res.message, 3000);
                 }
             },
-            error:function(r){
+            error: function(r) {
                 let res = r.responseJSON;
                 sweetAlertError(res.message, 3000);
             }
@@ -873,23 +881,23 @@
         $('#exSheetModal').modal('show');
         let ipd_id = $(this).data('id');
         $.ajax({
-            url:"{{ route('ipd.examination_sheet.list', '') }}/"+ipd_id,
-            method:"GET",
-            success:function(res){
-                if(res.response == true){
+            url: "{{ route('ipd.examination_sheet.list', '') }}/" + ipd_id,
+            method: "GET",
+            success: function(res) {
+                if (res.response == true) {
                     $('#exSheetPatient').text(res?.data?.patientName);
                     $('#exSheetSurgery').text(res?.data?.ipdDetail?.ipd_surgery_text);
                     $('#exDataTable').html(res?.data?.html);
                 }
             },
-            error:function(r){
+            error: function(r) {
                 let res = r.responseJSON;
                 sweetAlertError(res.message, 3000);
             }
         });
     });
 
-    function showExaminationRecommenadtion(is_id){
+    function showExaminationRecommenadtion(is_id) {
         $('#exRecommendationMoadl').removeClass('d-none');
         $('#exRecommendationMoad2').removeClass('d-none');
         $('#examinationModall').removeClass('d-none');
@@ -897,68 +905,68 @@
         $('#examinationModal3').removeClass('d-none');
         $('#exDataTable tr').removeClass('bg-primary text-white');
         $('#exDataTable tr i').removeClass('text-white');
-        $('#exs_row_'+atob(is_id)).addClass('bg-primary text-white');
-        $('#exs_row_'+atob(is_id)+' i').addClass('text-white');
+        $('#exs_row_' + atob(is_id)).addClass('bg-primary text-white');
+        $('#exs_row_' + atob(is_id) + ' i').addClass('text-white');
         $.ajax({
-            url:"{{ route('ipd.examination_sheet.medicine.list', '') }}/"+is_id,
-            method:"GET",
-            success: function(res){
+            url: "{{ route('ipd.examination_sheet.medicine.list', '') }}/" + is_id,
+            method: "GET",
+            success: function(res) {
                 console.log(res);
-                if(res.response == true){
+                if (res.response == true) {
                     $('#exmDataTable').html(res?.data?.html);
                     $('#exm1DataTable').html(res?.data?.html1);
                 }
             },
-            error: function(r){
+            error: function(r) {
                 let res = r.responseJSON;
                 sweetAlertError(res.message, 3000);
             }
         });
     }
 
-    function AddExaminationMeicine(){
+    function AddExaminationMeicine() {
         let exm_id = [];
-        $('input[name="exm_id[]"]').each(function(){
+        $('input[name="exm_id[]"]').each(function() {
             exm_id.push($(this).val());
         });
         let is_id = [];
-        $('input[name="is_id[]"]').each(function(){
+        $('input[name="is_id[]"]').each(function() {
             is_id.push($(this).val());
         });
         let exm_checked = [];
-        $('input[name="exm_checked[]"]').each(function(){
-            if($(this).prop('checked') == true){
+        $('input[name="exm_checked[]"]').each(function() {
+            if ($(this).prop('checked') == true) {
                 exm_checked.push(1);
-            }else{
+            } else {
                 exm_checked.push(0);
             }
         });
         let isme_given_datetime = [];
-        $('input[name="isme_given_datetime[]"]').each(function(){
+        $('input[name="isme_given_datetime[]"]').each(function() {
             isme_given_datetime.push($(this).val());
         });
         var remark = [];
-        $("textarea.remarkMessage").each(function(){
+        $("textarea.remarkMessage").each(function() {
             remark.push($(this).val());
         })
         $('#esmRecommendationBtn').addClass('spinner spinner-white spinner-right');
         $('#esmRecommendationBtn').attr('disabled', true);
         $.ajax({
-            headers:{
+            headers: {
                 "X-CSRF-TOKEN": "{{ csrf_token() }}"
             },
-            url:"{{ route('ipd.examination_sheet.medicine.add') }}",
-            method:"POST",
-            data:{
-                is_id:is_id,
-                exm_id:exm_id,
-                exm_checked:exm_checked,
-                remark:remark,
-                isme_given_datetime:isme_given_datetime
+            url: "{{ route('ipd.examination_sheet.medicine.add') }}",
+            method: "POST",
+            data: {
+                is_id: is_id,
+                exm_id: exm_id,
+                exm_checked: exm_checked,
+                remark: remark,
+                isme_given_datetime: isme_given_datetime
             },
-            success: function(res){
+            success: function(res) {
                 console.log(res);
-                if(res.response == true){
+                if (res.response == true) {
                     //$('#exmDataTable').html(res?.data?.html);
                     $('#exm1DataTable').prepend(res?.data?.html);
                     $('#exmDataTable textarea').val('');
@@ -969,98 +977,101 @@
                 $('#esmRecommendationBtn').removeClass('spinner spinner-white spinner-right');
                 $('#esmRecommendationBtn').attr('disabled', false);
             },
-            error: function(r){
+            error: function(r) {
                 let res = r.responseJSON;
                 sweetAlertError(res.message, 3000);
                 $('#esmRecommendationBtn').removeClass('spinner spinner-white spinner-right');
                 $('#esmRecommendationBtn').attr('disabled', false);
             }
         });
-        
+
     }
 
-    function removeExamination(isme_id){
+    function removeExamination(isme_id) {
         $.ajax({
-            url:"{{ route('ipd.examination_sheet.medicine.remove', '') }}/"+isme_id,
-            method:"GET",
-            success:function(res){
-                if(res.response == true){
-                    if(res.response == true){
-                        $('#isme_row_'+atob(isme_id)).remove();
-                    }else{
-                        sweetAlertError(res.message, 3000);    
+            url: "{{ route('ipd.examination_sheet.medicine.remove', '') }}/" + isme_id,
+            method: "GET",
+            success: function(res) {
+                if (res.response == true) {
+                    if (res.response == true) {
+                        $('#isme_row_' + atob(isme_id)).remove();
+                    } else {
+                        sweetAlertError(res.message, 3000);
                     }
-                }else{
+                } else {
                     sweetAlertError(res.message, 3000);
                 }
             },
-            error:function(r){
+            error: function(r) {
                 let res = r.responseJSON;
                 sweetAlertError(res.message, 3000);
             }
         });
     }
 
-    function editExamination(isme_id){
+    function editExamination(isme_id) {
         let isme_id1 = atob(isme_id);
         $.ajax({
-            url:"{{ route('ipd.examination_sheet.medicine.edit', '') }}/"+isme_id,
-            method:"GET",
-            success:function(res){console.log(res);
-                if(res.response == true){console.log(res.data.examinationData.remark);
+            url: "{{ route('ipd.examination_sheet.medicine.edit', '') }}/" + isme_id,
+            method: "GET",
+            success: function(res) {
+                console.log(res);
+                if (res.response == true) {
+                    console.log(res.data.examinationData.remark);
                     $('#isme_given_datetime1').val(res.data.given_date);
                     $('#ramerakData1').val(res.data.examinationData.remark);
                     $('#isme_id1').val(res.data.examinationData.isme_id);
                     modalScrollTop('exSheetModal', 'ramerakData1');
-                }else{
+                } else {
                     sweetAlertError(res.message, 3000);
                 }
             },
-            error:function(r){
+            error: function(r) {
                 let res = r.responseJSON;
                 sweetAlertError(res.message, 3000);
             }
         });
     }
-    
-    $('#updateExaminationBtn').on('click', function(){
+
+    $('#updateExaminationBtn').on('click', function() {
         let isme_id = $('#isme_id1').val();
-        if(isme_id == ''){
+        if (isme_id == '') {
             sweetAlertError('Please edit examination first', 3000);
-        }else{
+        } else {
             let isme_given_datetime = $('#isme_given_datetime1').val();
             let remark = $('#ramerakData1').val();
             $('#updateExaminationBtn').addClass('spinner spinner-white spinner-right');
             $('#updateExaminationBtn').attr('disabled', true);
             $.ajax({
-                headers:{
-                    'X-CSRF-TOKEN':"{{ csrf_token() }}"
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
                 },
-                url:"{{ route('ipd.examination_sheet.medicine.update') }}",
-                method:"POST",
-                data:{
+                url: "{{ route('ipd.examination_sheet.medicine.update') }}",
+                method: "POST",
+                data: {
                     isme_id: isme_id,
                     isme_given_datetime: isme_given_datetime,
                     remark: remark
                 },
-                success:function(res){
-                    if(res.response == true){console.log(res.data);
-                        $('#isme_row_'+isme_id+' td:nth-child(3)').text(res.data.datetime);
-                        $('#isme_row_'+isme_id+' td:nth-child(4)').text(res.data.isme_created_datetime);
-                        $('#isme_row_'+isme_id+' td:nth-child(5)').text(res.data.remark);
-                        $('#isme_row_'+isme_id+' td:nth-child(6)').text(res.data.added_by);
+                success: function(res) {
+                    if (res.response == true) {
+                        console.log(res.data);
+                        $('#isme_row_' + isme_id + ' td:nth-child(3)').text(res.data.datetime);
+                        $('#isme_row_' + isme_id + ' td:nth-child(4)').text(res.data.isme_created_datetime);
+                        $('#isme_row_' + isme_id + ' td:nth-child(5)').text(res.data.remark);
+                        $('#isme_row_' + isme_id + ' td:nth-child(6)').text(res.data.added_by);
 
                         $('#isme_given_datetime1').val('');
                         $('#ramerakData1').val('');
                         $('#isme_id1').val('');
                         sweetAlertSuccess(res.message, 3000);
-                    }else{
+                    } else {
                         sweetAlertError(res.message, 3000);
                     }
                     $('#updateExaminationBtn').removeClass('spinner spinner-white spinner-right');
                     $('#updateExaminationBtn').attr('disabled', false);
                 },
-                error:function(r){
+                error: function(r) {
                     let res = r.responseJSON;
                     sweetAlertError(res.message, 3000);
                     $('#updateExaminationBtn').removeClass('spinner spinner-white spinner-right');
@@ -1070,7 +1081,7 @@
         }
     });
 
-    function closeEaxminationSheet(){
+    function closeEaxminationSheet() {
         $('#exDataTable').html('');
         $('#exRecommendationMoadl').addClass('d-none');
         $('#exRecommendationMoad2').addClass('d-none');

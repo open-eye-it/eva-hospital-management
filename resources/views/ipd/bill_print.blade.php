@@ -15,7 +15,7 @@
 </head>
 
 <body style="font-family: Arial, Helvetica, sans-serif; font-style: italic;">
-    <div style="width:100%; text-align:center; padding-top:20px; padding-bottom:20px;">
+    <div style="width:100%; text-align:center; padding-top:20px; padding-bottom:20px; margin-top:120px;">
         <h3 style="margin-bottom:0px; padding-bottom:10px;">
             IPD Final Bill
         </h3>

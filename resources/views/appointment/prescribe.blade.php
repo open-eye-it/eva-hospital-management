@@ -132,29 +132,29 @@
                                                         echo $data->ap_other_detail;
                                                         }else{
                                                             echo 'MENSTRUAL HISTORY
-- LMP : asd
+- LMP
 - CYCLES : REGULAR / IRREGULAR
-- NO. OF DAYS : qwe
-- LASTING FOR : zxc
+- NO. OF DAYS
+- LASTING FOR
 - BLOOD FLOW : AVERAGE / NORMAL / HEAVY
 - CLOTS : Yes / No
-- DYSMENNORHAGIA : asdqwe
+- DYSMENNORHAGIA
 
-OBSTETRIC HISTORY : qwezxc
+OBSTETRIC HISTORY
 
-PERSONAL HISTORY : zxcasd
+PERSONAL HISTORY
 
-PAST HISTORY : asqw
+PAST HISTORY
 
-FAMILY HISTORY : qwzx
+FAMILY HISTORY
 
-EXAMINATION : zxas
+EXAMINATION
 
 INVESTIGATIONS
-- USG : asdqw
-- CT/MRI : qwezx
+- USG
+- CT/MRI
 
-PROVISIONAL DIAGNOSIS : zxcas
+PROVISIONAL DIAGNOSIS
 ';
                                                         } @endphp</textarea>
                                                 </div>
@@ -170,8 +170,16 @@ PROVISIONAL DIAGNOSIS : zxcas
                                         <h4>Medicine Detail</h4>
                                         <div class="row">
                                             <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group search_bar">
+                                                    <label>Medicine</label>
+                                                    <input type="text" id="gm_id" name="gm_id" placeholder="Medicine" class="form-control" onkeyup="searchGeneralMedicine(this.value)" />
+                                                    <input type="hidden" name="gm_id_original" id="gm_id_original" value="">
+                                                    <ul id="search_medicine_list" class="d-none" style="z-index:999;"></ul>
+                                                </div>
+                                            </div>
+                                            <!-- <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label for="gm_prescribe_id">Medicine</label>
+                                                    <label for="gm_prescribe_id">Medicine <span class="text-danger">*</span></label>
                                                     <select class="form-control" name="gm_id" id="gm_prescribe_id">
                                                         <option value="">Select</option>
                                                         @if(!empty($generalMedicines))
@@ -182,17 +190,19 @@ PROVISIONAL DIAGNOSIS : zxcas
                                                     </select>
                                                     <span class="text-danger" id="gm_idErr"></span>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label for="am_days">No of Days</label>
-                                                    <input type="text" class="form-control" value="" name="am_days" id="am_days">
+                                                    <label for="am_days">No of Days <span class="text-danger">*</span></label>
+                                                    <input type="number" class="form-control" value="" name="am_days" id="am_days">
+                                                    <span class="text-danger" id="am_daysErr"></span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label for="am_timing">Timing</label>
+                                                    <label for="am_timing">Timing <span class="text-danger">*</span></label>
                                                     <input type="text" class="form-control" value="" name="am_timing" id="am_timing">
+                                                    <span class="text-danger" id="am_timingErr"></span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
@@ -315,6 +325,48 @@ PROVISIONAL DIAGNOSIS : zxcas
 </div>
 <!--end::Row-->
 <script>
+    function searchGeneralMedicine(text){
+        if(text != ''){
+            $.ajax({
+                url:"{{ route('appointment.prescribe-medicine.search.list', '') }}" + '/' + btoa(text),
+                method:"get",
+                success:function(res){
+                    if(res.response === true){
+                        let data = res.data;
+                        if(data.length == 0){
+                            $('#gm_id_original').val('');
+                            $('#search_medicine_list').addClass('d-none');
+                        }else{
+                            let option = '';
+                            data.map((val) => option += '<li onclick="selectGeneralMedicineName(`'+val.gm_name+'`, `'+val.gm_id+'`)">'+val.gm_name+'</li>');
+                            $('#search_medicine_list').html(option);
+                            $('#search_medicine_list').removeClass('d-none');
+                        }
+                    }else{
+                        sweetAlertError(res.message, 3000);
+                        $('#search_medicine_list').addClass('d-none');
+                    }
+                },
+                error: function(r){
+                    $('#createBtn').removeClass('spinner spinner-white spinner-right');
+                    let res = r.responseJSON;
+                    sweetAlertError(res.message, 3000);
+                    $('#search_medicine_list').addClass('d-none');
+                }
+            });
+        }else{
+            $('#search_medicine_list').html('');
+            $('#search_medicine_list').addClass('d-none');
+        }
+    }
+
+    function selectGeneralMedicineName(text, gm_id){
+        $('#gm_id').val(text);
+        $('#gm_id_original').val(gm_id);
+        $('#search_medicine_list').html('');
+        $('#search_medicine_list').addClass('d-none');
+    }
+
     function changeFee(val){
         let arr = val.split('-');
         //ap_charge
@@ -378,7 +430,8 @@ PROVISIONAL DIAGNOSIS : zxcas
 
     /* Medicine Add */
     function addMedicine(ap_id){
-        let gm_id = $('#gm_prescribe_id').val();
+        let gm_id = $('#gm_id').val();
+        let gm_id_original = $('#gm_id_original').val();
         let am_days = $('#am_days').val();
         let am_timing = $('#am_timing').val();
         let am_morning = $('#am_morning').val();
@@ -388,10 +441,18 @@ PROVISIONAL DIAGNOSIS : zxcas
             $('#gm_idErr').text('Please select medicine');
             timeoutID('gm_idErr', 3000);
             scrollTop('gm_idErr');
+        }else if(am_days == ''){
+            $('#am_daysErr').text('Please fillup days');
+            timeoutID('am_daysErr', 3000);
+            scrollTop('am_daysErr');
+        }else if(am_timing == ''){
+            $('#am_timingErr').text('Please fillup timing');
+            timeoutID('am_timingErr', 3000);
+            scrollTop('am_timingErr');
         }else{
             $('#addBtn').addClass('spinner spinner-white spinner-right');
             $('#addBtn').attr('disabled', true);
-            let data = 'ap_id='+ap_id+'&gm_id='+gm_id+'&am_days='+am_days+'&am_timing='+am_timing+'&am_morning='+am_morning+'&am_afternoon='+am_afternoon+'&am_evening='+am_evening;
+            let data = 'ap_id='+ap_id+'&gm_id='+gm_id+'&gm_id_original='+gm_id_original+'&am_days='+am_days+'&am_timing='+am_timing+'&am_morning='+am_morning+'&am_afternoon='+am_afternoon+'&am_evening='+am_evening;
             $.ajax({
                 url:"{{ route('appointment.medicine.store') }}"+'?'+data,
                 method:"get",
@@ -400,6 +461,7 @@ PROVISIONAL DIAGNOSIS : zxcas
                     $('#addBtn').attr('disabled', false);
                     if(res.response === true){
                         let data = res.data;
+                        
                         let tableData = '<tr id="table_row_'+data.am_id+'"> \
                         <td>'+data.medicine_name+'</td> \
                         <td>'+data.am_days+'</td> \
@@ -410,12 +472,12 @@ PROVISIONAL DIAGNOSIS : zxcas
                         <td><i onclick="removeMedicine('+data.am_id+')" title="Remove" class="icon-2x la la-trash cursor_pointer"></i></td> \
                         </tr>';
 
-                        $('#gm_prescribe_id').val('');
+                        $('#gm_id').val('');
                         $('#am_days').val('');
                         $('#am_timing').val('');
-                        $('#am_morning').val('');
-                        $('#am_afternoon').val('');
-                        $('#am_evening').val('');
+                        $('#am_morning').val('no');
+                        $('#am_afternoon').val('no');
+                        $('#am_evening').val('no');
 
                         $('#medicine_detail').prepend(tableData);
                         sweetAlertSuccess(res.message, 2000);

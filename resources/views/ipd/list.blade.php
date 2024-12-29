@@ -102,7 +102,7 @@
                                                 <td>{{ $list->firstItem() + $key }}</td>
                                                 <td>{{ $ipd->ipd_id }}</td>
                                                 <td>{{ date('d M Y', strtotime($ipd->ipd_admit_date)) }}</td>
-                                                <td>{{ $ipd->roomData->rm_building.'-'.$ipd->roomData->rm_floor.'-'.$ipd->roomData->rm_ward.'-'.$ipd->roomData->rm_no }}</td>
+                                                <td>{{ $ipd?->roomData?->rm_building.'-'.$ipd?->roomData?->rm_floor.'-'.$ipd?->roomData?->rm_ward.'-'.$ipd?->roomData?->rm_no }}</td>
                                                 <td>{{ $ipd->pa_id }}</td>
                                                 <td>{{ $ipd->patientData->pa_name }}</td>
                                                 <td>{{ $ipd->patientData->pa_age }}</td>
@@ -158,7 +158,15 @@
                                                                 @can('ipd-detail-print')
                                                                 <li class="nav-item"><span class="nav-link" id="IPDPrint" data-id="{{ base64_encode($ipd->ipd_id) }}" title="IPD Detail"><i class="flaticon flaticon2-print icon-3x cursor_pointer"></i></span></li>
                                                                 @endcan
+                                                                @can('ipd-documents')
                                                                 <li class="nav-item"><span class="nav-link" id="IPDDocument" data-id="{{ base64_encode($ipd->ipd_id) }}" title="IPD Documents"><i class="flaticon flaticon-file icon-3x cursor_pointer"></i></span></li>
+                                                                @endcan
+                                                                @can('ipd-indoor-sheet')
+                                                                <li class="nav-item"><span class="nav-link" id="IndoorSheet" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Indoor Sheet"><i class="flaticon flaticon2-sheet icon-3x cursor_pointer"></i></span></li>
+                                                                @endcan
+                                                                @can('ipd-examination-sheet')
+                                                                <li class="nav-item"><span class="nav-link" id="exSheet" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Examination Sheet"><i class="flaticon flaticon2-document icon-3x cursor_pointer"></i></span></li>
+                                                                @endcan
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -197,6 +205,177 @@
     </div>
 </div>
 <!--end::Row-->
+<div class="modal fade" id="IndoorSheetModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg popup-80" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Indoor Sheet</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeIndoorSheet()">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body max-h-500 overflow-auto">
+
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <strong>Patient Name:</strong> <span id="IndoorSheetPatient"></span>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <strong>Type of surgery:</strong> <span id="IndoorSheetSurgery"></span>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <strong>Date:</strong> {{ Date('d M Y') }}
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <label for="patient_name">Findings</label>
+                        <!-- <input type="text" class="form-control" name="is_findings" id="is_findings" value="" placeholder="Findings" /> -->
+                        <textarea class="form-control" rows="3" name="is_findings" id="is_findings"></textarea>
+                        <span class="text-danger" id="is_findings_err"></span>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <input type="hidden" id="is_id" name="is_id" value="">
+                        <button type="submit" id="IndoorSheetAdd" class="btn btn-primary mt-4">Add <i class="la la-plus"></i></button>
+                    </div>
+                </div>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Findings</th>
+                            <th>Added By</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="isDataTable"></tbody>
+                </table>
+                <hr>
+                <div class="row d-none" id="recommendationMoadl1">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <label for="patient_name">Recommendation</label>
+                        <input type="text" class="form-control" name="ism_recommendation" id="ism_recommendation" value="" placeholder="Recommendation" />
+                        <span class="text-danger" id="ism_recommendation_err"></span>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 mt-4">
+                        <input type="hidden" id="is_id1" name="is_id1" value="">
+                        <input type="hidden" id="ism_id" name="ism_id" value="">
+                        <button id="IndoorSheetMedicineAdd" class="btn btn-primary mt-4">Add <i class="la la-plus"></i></button>
+                    </div>
+                </div>
+                <table class="table d-none" id="recommendationMoadl2">
+                    <thead>
+                        <tr>
+                            <th>Recommendation</th>
+                            <th>Added By</th>
+                            <th>Added On</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ismDataTable"></tbody>
+                </table>
+            </div>
+            <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+            </div> -->
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="exSheetModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Examination Sheet</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeEaxminationSheet()">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body max-h-500 overflow-auto">
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <strong>Patient Name:</strong> <span id="exSheetPatient"></span>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <strong>Type of surgery:</strong> <span id="exSheetSurgery"></span>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <strong>Date:</strong> {{ Date('d M Y') }}
+                    </div>
+                </div>
+                <h4 class="mt-4">Findings</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Findings</th>
+                            <th>Added By</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="exDataTable"></tbody>
+                </table>
+                <hr>
+                <div class="row d-none" id="exRecommendationMoadl">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <h4>Recommendation</h4>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <button class="btn btn-primary float-right" id="esmRecommendationBtn" onclick="AddExaminationMeicine()">Add <i class="la la-plus icon-3x cursor_pointer"></i></button>
+                    </div>
+                </div>
+                <table class="table d-none" id="exRecommendationMoad2">
+                    <thead>
+                        <tr>
+                            <th>Recommendation</th>
+                            <th>Added By</th>
+                            <th>Date Time</th>
+                            <th>Remark</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="exmDataTable"></tbody>
+                </table>
+                <hr>
+                <div class="row d-none" id="examinationModall">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <h4>Exmination</h4>
+                    </div>
+                </div>
+                <div class="row d-none" id="examinationModal2">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 form-group">
+                        <label for="isme_given_datetime1">Date Time</label>
+                        <input type="datetime-local" name="isme_given_datetime1" id="isme_given_datetime1" class="form-control" value="22-12-2024 10:37:00">
+                    </div>
+                    <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 form-group">
+                        <label for="ramerakData1">Remark</label>
+                        <textarea name="ramerakData1" rows="5" class="remarkMessage1 form-control" id="ramerakData1" value=""></textarea>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 form-group mt-4">
+                        <input type="hidden" name="isme_id1" id="isme_id1" value="">
+                        <button class="btn btn-primary" id="updateExaminationBtn">Update <i class="la la-plus icon-3x cursor_pointer"></i></button>
+                    </div>
+                </div>
+                <table class="table d-none" id="examinationModal3">
+                    <thead>
+                        <tr>
+                            <th>Recomendation</th>
+                            <th>Attended Time</th>
+                            <th>Entry Time</th>
+                            <th>Remark</th>
+                            <th>Added By</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="exm1DataTable"></tbody>
+                </table>
+            </div>
+            <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+            </div> -->
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="fullViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -299,17 +478,17 @@
             <div class="modal-body">
                 <form method="POST" enc-type="multipart/form-data" id="submitDocument">
                     <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-12col-xs-12">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                             <label for="patient_name">Document Name</label>
                             <input type="text" class="form-control" name="ipd_doc_name" id="ipd_doc_name" value="" placeholder="Document Name" />
                             <span class="text-danger" id="ipd_doc_name_err"></span>
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12col-xs-12">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                             <label for="patient_name">Document File</label>
                             <input type="file" class="form-control" name="ipd_doc" id="ipd_doc" value="" placeholder="Document" />
                             <span class="text-danger" id="ipd_doc_err"></span>
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12col-xs-12">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                             <input type="hidden" id="ipd_id_doc" name="ipd_id_doc" value="">
                             <button type="submit" id="docAdd" class="btn btn-primary mt-4">Add <i class="la la-plus"></i></button>
                         </div>
@@ -393,7 +572,7 @@
     </div>
 </div>
 <div class="modal fade" id="opdHistoryViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-dialog modal-xl popup-90" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">OPD Details</h5>
@@ -430,7 +609,7 @@
     </div>
 </div>
 <div class="modal fade" id="ipdHistoryViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-dialog modal-xl popup-90" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">IPD Details</h5>
@@ -474,6 +653,446 @@
     </div>
 </div>
 <script>
+    /* Start:: Indoor Sheet */
+    $('body').on('click', '#IndoorSheet', function(event) {
+        $('#IndoorSheetModal').modal('show');
+        let ipd_id = $(this).data('id');
+        $.ajax({
+            url: "{{ route('ipd.indoor_sheet.list', '') }}/" + ipd_id,
+            method: "GET",
+            success: function(res) {
+                $('#IndoorSheetAdd').attr('onclick', "addFindings('" + ipd_id + "')");
+                if (res.response == true) {
+                    $('#IndoorSheetPatient').text(res?.data?.patientName);
+                    $('#IndoorSheetSurgery').text(res?.data?.ipdDetail?.ipd_surgery_text);
+                    $('#isDataTable').html(res?.data?.html);
+                }
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    });
+
+    function addFindings(ipd_id) {
+        let is_id = $('#is_id').val();
+        let is_findings = $('#is_findings').val();
+        if (is_findings == '') {
+            scrollTop('is_findings');
+            $('#is_findings_err').text('Please enter findings');
+            timeoutID('is_findings_err', 3000);
+        } else {
+            $('#IndoorSheetAdd').addClass('spinner spinner-white spinner-right');
+            $('#IndoorSheetAdd').attr('disabled', true);
+            $.ajax({
+                headers: {
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                url: "{{ route('ipd.indoor_sheet.findings.add') }}",
+                method: "POST",
+                data: {
+                    ipd_id: ipd_id,
+                    is_id: is_id,
+                    is_findings: is_findings
+                },
+                success: function(res) {
+                    console.log(res);
+                    if (res.response == true) {
+                        if (is_id == '') {
+                            $('#is_findings').val('');
+                            $('#isDataTable').prepend(res.data.html);
+                        } else {
+                            $('#is_id').val('');
+                            $('#is_findings').val('');
+                            $('#is_row_' + is_id + ' td:nth-child(2)').text(is_findings);
+                        }
+                        $('#IndoorSheetAdd').html('Add <i class="la la-plus"></i>');
+                        sweetAlertSuccess(res.message, 3000);
+                    } else {
+                        sweetAlertError(res.message, 3000);
+                    }
+                    $('#IndoorSheetAdd').removeClass('spinner spinner-white spinner-right');
+                    $('#IndoorSheetAdd').attr('disabled', false);
+                },
+                error: function(r) {
+                    let res = r.responseJSON;
+                    sweetAlertError(res.message, 3000);
+                    $('#IndoorSheetAdd').removeClass('spinner spinner-white spinner-right');
+                    $('#IndoorSheetAdd').attr('disabled', false);
+                }
+            });
+        }
+    }
+
+    function editFindings(is_id) {
+        let is_id1 = atob(is_id);
+        let findings = $('#is_row_' + is_id1 + ' td:nth-child(2)').text();
+        $('#is_findings').val(findings);
+        $('#is_id').val(is_id1);
+        $('#IndoorSheetAdd').html('Update <i class="la la-plus"></i>');
+    }
+
+    function removerFindings(is_id) {
+        $.ajax({
+            headers: {
+                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            },
+            url: "{{ route('ipd.indoor_sheet.findings.remove', '') }}/" + is_id,
+            method: "GET",
+            success: function(res) {
+                if (res.response == true) {
+                    if (res.response == true) {
+                        $('#is_row_' + atob(is_id)).remove();
+                    } else {
+                        sweetAlertError(res.message, 3000);
+                    }
+                } else {
+                    sweetAlertError(res.message, 3000);
+                }
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    }
+
+    function closeIndoorSheet() {
+        $('#isDataTable').html('');
+        $('#recommendationMoadl1').addClass('d-none');
+        $('#recommendationMoadl2').addClass('d-none');
+        $('#ismDataTable').html('');
+    }
+    /* End:: Indoor Sheet */
+    /* Start:: Indoor Sheet Medicine */
+    function showRecommenadtion(is_id) {
+        $('#recommendationMoadl1').removeClass('d-none');
+        $('#recommendationMoadl2').removeClass('d-none');
+        $('#isDataTable tr').removeClass('bg-primary text-white');
+        $('#isDataTable tr i').removeClass('text-white');
+        $('#is_row_' + atob(is_id)).addClass('bg-primary text-white');
+        $('#is_row_' + atob(is_id) + ' i').addClass('text-white');
+        let is_id1 = atob(is_id);
+        $('#is_id1').val(is_id1);
+        $.ajax({
+            url: "{{ route('ipd.indoor_sheet.medicine.list', '') }}/" + is_id,
+            method: "GET",
+            success: function(res) {
+                console.log(res);
+                $('#IndoorSheetMedicineAdd').attr('onclick', "addRecommendation('" + is_id + "')");
+                if (res.response == true) {
+                    $('#ismDataTable').html(res?.data?.html);
+                }
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    }
+
+    function addRecommendation(is_id) {
+        let ism_id = $('#ism_id').val();
+        let ism_recommendation = $('#ism_recommendation').val();
+        if (ism_recommendation == '') {
+            scrollTop('ism_recommendation');
+            $('#ism_recommendation_err').text('Please enter recommendation');
+            timeoutID('ism_recommendation_err', 3000);
+        } else {
+            $('#IndoorSheetMedicineAdd').addClass('spinner spinner-white spinner-right');
+            $('#IndoorSheetMedicineAdd').attr('disabled', true);
+            $.ajax({
+                headers: {
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                url: "{{ route('ipd.indoor_sheet.medicine.add') }}",
+                method: "POST",
+                data: {
+                    is_id: is_id,
+                    ism_id: ism_id,
+                    ism_recommendation: ism_recommendation
+                },
+                success: function(res) {
+                    if (res.response == true) {
+                        if (ism_id == '') {
+                            $('#ism_recommendation').val('');
+                            $('#ismDataTable').prepend(res.data.html);
+                        } else {
+                            $('#ism_id').val('');
+                            $('#ism_recommendation').val('');
+                            $('#ism_row_' + ism_id + ' td:nth-child(1)').text(ism_recommendation);
+                        }
+                        $('#IndoorSheetMedicineAdd').html('Add <i class="la la-plus"></i>');
+                        sweetAlertSuccess(res.message, 3000);
+                    } else {
+                        sweetAlertError(res.message, 3000);
+                    }
+                    $('#IndoorSheetMedicineAdd').removeClass('spinner spinner-white spinner-right');
+                    $('#IndoorSheetMedicineAdd').attr('disabled', false);
+                },
+                error: function(r) {
+                    let res = r.responseJSON;
+                    sweetAlertError(res.message, 3000);
+                    $('#IndoorSheetMedicineAdd').removeClass('spinner spinner-white spinner-right');
+                    $('#IndoorSheetMedicineAdd').attr('disabled', false);
+                }
+            });
+        }
+    }
+
+    function editRecommendation(ism_id) {
+        let ism_id1 = atob(ism_id);
+        console.log(ism_id1);
+        let recommendation = $('#ism_row_' + ism_id1 + ' td:nth-child(1)').text();
+        console.log(recommendation);
+        $('#ism_recommendation').val(recommendation);
+        $('#ism_id').val(ism_id1);
+        $('#IndoorSheetMedicineAdd').html('Update <i class="la la-plus"></i>');
+    }
+
+    function removeRecommendation(ism_id) {
+        $.ajax({
+            headers: {
+                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            },
+            url: "{{ route('ipd.indoor_sheet.medicine.remove', '') }}/" + ism_id,
+            method: "GET",
+            success: function(res) {
+                if (res.response == true) {
+                    if (res.response == true) {
+                        $('#ism_row_' + atob(ism_id)).remove();
+                    } else {
+                        sweetAlertError(res.message, 3000);
+                    }
+                } else {
+                    sweetAlertError(res.message, 3000);
+                }
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    }
+    /* End:: Indoor Sheet Medicine */
+    /* Start:: Examination Sheet */
+    $('body').on('click', '#exSheet', function(event) {
+        $('#exSheetModal').modal('show');
+        let ipd_id = $(this).data('id');
+        $.ajax({
+            url: "{{ route('ipd.examination_sheet.list', '') }}/" + ipd_id,
+            method: "GET",
+            success: function(res) {
+                if (res.response == true) {
+                    $('#exSheetPatient').text(res?.data?.patientName);
+                    $('#exSheetSurgery').text(res?.data?.ipdDetail?.ipd_surgery_text);
+                    $('#exDataTable').html(res?.data?.html);
+                }
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    });
+
+    function showExaminationRecommenadtion(is_id) {
+        $('#exRecommendationMoadl').removeClass('d-none');
+        $('#exRecommendationMoad2').removeClass('d-none');
+        $('#examinationModall').removeClass('d-none');
+        $('#examinationModal2').removeClass('d-none');
+        $('#examinationModal3').removeClass('d-none');
+        $('#exDataTable tr').removeClass('bg-primary text-white');
+        $('#exDataTable tr i').removeClass('text-white');
+        $('#exs_row_' + atob(is_id)).addClass('bg-primary text-white');
+        $('#exs_row_' + atob(is_id) + ' i').addClass('text-white');
+        $.ajax({
+            url: "{{ route('ipd.examination_sheet.medicine.list', '') }}/" + is_id,
+            method: "GET",
+            success: function(res) {
+                console.log(res);
+                if (res.response == true) {
+                    $('#exmDataTable').html(res?.data?.html);
+                    $('#exm1DataTable').html(res?.data?.html1);
+                }
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    }
+
+    function AddExaminationMeicine() {
+        let exm_id = [];
+        $('input[name="exm_id[]"]').each(function() {
+            exm_id.push($(this).val());
+        });
+        let is_id = [];
+        $('input[name="is_id[]"]').each(function() {
+            is_id.push($(this).val());
+        });
+        let exm_checked = [];
+        $('input[name="exm_checked[]"]').each(function() {
+            if ($(this).prop('checked') == true) {
+                exm_checked.push(1);
+            } else {
+                exm_checked.push(0);
+            }
+        });
+        let isme_given_datetime = [];
+        $('input[name="isme_given_datetime[]"]').each(function() {
+            isme_given_datetime.push($(this).val());
+        });
+        var remark = [];
+        $("textarea.remarkMessage").each(function() {
+            remark.push($(this).val());
+        })
+        $('#esmRecommendationBtn').addClass('spinner spinner-white spinner-right');
+        $('#esmRecommendationBtn').attr('disabled', true);
+        $.ajax({
+            headers: {
+                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            },
+            url: "{{ route('ipd.examination_sheet.medicine.add') }}",
+            method: "POST",
+            data: {
+                is_id: is_id,
+                exm_id: exm_id,
+                exm_checked: exm_checked,
+                remark: remark,
+                isme_given_datetime: isme_given_datetime
+            },
+            success: function(res) {
+                console.log(res);
+                if (res.response == true) {
+                    //$('#exmDataTable').html(res?.data?.html);
+                    $('#exm1DataTable').prepend(res?.data?.html);
+                    $('#exmDataTable textarea').val('');
+                    $('#exmDataTable tr td:nth-child(3) input').val('');
+                    $('#exmDataTable input[type="checkbox"]').prop('checked', false);
+                }
+                sweetAlertSuccess(res.message, 3000);
+                $('#esmRecommendationBtn').removeClass('spinner spinner-white spinner-right');
+                $('#esmRecommendationBtn').attr('disabled', false);
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+                $('#esmRecommendationBtn').removeClass('spinner spinner-white spinner-right');
+                $('#esmRecommendationBtn').attr('disabled', false);
+            }
+        });
+
+    }
+
+    function removeExamination(isme_id) {
+        $.ajax({
+            url: "{{ route('ipd.examination_sheet.medicine.remove', '') }}/" + isme_id,
+            method: "GET",
+            success: function(res) {
+                if (res.response == true) {
+                    if (res.response == true) {
+                        $('#isme_row_' + atob(isme_id)).remove();
+                    } else {
+                        sweetAlertError(res.message, 3000);
+                    }
+                } else {
+                    sweetAlertError(res.message, 3000);
+                }
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    }
+
+    function editExamination(isme_id) {
+        let isme_id1 = atob(isme_id);
+        $.ajax({
+            url: "{{ route('ipd.examination_sheet.medicine.edit', '') }}/" + isme_id,
+            method: "GET",
+            success: function(res) {
+                console.log(res);
+                if (res.response == true) {
+                    console.log(res.data.examinationData.remark);
+                    $('#isme_given_datetime1').val(res.data.given_date);
+                    $('#ramerakData1').val(res.data.examinationData.remark);
+                    $('#isme_id1').val(res.data.examinationData.isme_id);
+                    modalScrollTop('exSheetModal', 'ramerakData1');
+                } else {
+                    sweetAlertError(res.message, 3000);
+                }
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    }
+
+    $('#updateExaminationBtn').on('click', function() {
+        let isme_id = $('#isme_id1').val();
+        if (isme_id == '') {
+            sweetAlertError('Please edit examination first', 3000);
+        } else {
+            let isme_given_datetime = $('#isme_given_datetime1').val();
+            let remark = $('#ramerakData1').val();
+            $('#updateExaminationBtn').addClass('spinner spinner-white spinner-right');
+            $('#updateExaminationBtn').attr('disabled', true);
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                },
+                url: "{{ route('ipd.examination_sheet.medicine.update') }}",
+                method: "POST",
+                data: {
+                    isme_id: isme_id,
+                    isme_given_datetime: isme_given_datetime,
+                    remark: remark
+                },
+                success: function(res) {
+                    if (res.response == true) {
+                        console.log(res.data);
+                        $('#isme_row_' + isme_id + ' td:nth-child(3)').text(res.data.datetime);
+                        $('#isme_row_' + isme_id + ' td:nth-child(4)').text(res.data.isme_created_datetime);
+                        $('#isme_row_' + isme_id + ' td:nth-child(5)').text(res.data.remark);
+                        $('#isme_row_' + isme_id + ' td:nth-child(6)').text(res.data.added_by);
+
+                        $('#isme_given_datetime1').val('');
+                        $('#ramerakData1').val('');
+                        $('#isme_id1').val('');
+                        sweetAlertSuccess(res.message, 3000);
+                    } else {
+                        sweetAlertError(res.message, 3000);
+                    }
+                    $('#updateExaminationBtn').removeClass('spinner spinner-white spinner-right');
+                    $('#updateExaminationBtn').attr('disabled', false);
+                },
+                error: function(r) {
+                    let res = r.responseJSON;
+                    sweetAlertError(res.message, 3000);
+                    $('#updateExaminationBtn').removeClass('spinner spinner-white spinner-right');
+                    $('#updateExaminationBtn').attr('disabled', false);
+                }
+            });
+        }
+    });
+
+    function closeEaxminationSheet() {
+        $('#exDataTable').html('');
+        $('#exRecommendationMoadl').addClass('d-none');
+        $('#exRecommendationMoad2').addClass('d-none');
+        $('#exmDataTable').html('');
+        $('#examinationModall').addClass('d-none');
+        $('#examinationModal2').addClass('d-none');
+        $('#examinationModal3').addClass('d-none');
+        $('#exm1DataTable').html('');
+    }
+    /* End:: Examination Sheet */
+
     /* Export IPD Details */
     function exportIPD() {
         let search_text = $('#search_text').val();
@@ -672,7 +1291,6 @@
             url: "{{ route('ipd.doc.view', '') }}" + "/" + ipd_id,
             method: "GET",
             success: function(res) {
-                console.log(res);
                 $('#ipd_id_doc').val(ipd_id);
                 $('#ipdDocData').html(res.data);
                 $('#ipdDocViewModal').modal('show');
@@ -693,6 +1311,8 @@
         } else if (file == '') {
             $('#ipd_doc_err').text('Please select document');
         } else {
+            $('#docAdd').addClass('spinner spinner-white spinner-right');
+            $('#docAdd').attr('disabled', true);
             let formData = new FormData(this);
             $.ajax({
                 headers: {
@@ -710,10 +1330,14 @@
                     } else {
                         sweetAlertError(res.message, 3000);
                     }
+                    $('#docAdd').removeClass('spinner spinner-white spinner-right');
+                    $('#docAdd').attr('disabled', false);
                 },
                 error: function(r) {
                     let res = r.responseJSON;
                     sweetAlertError(res.message, 3000);
+                    $('#docAdd').removeClass('spinner spinner-white spinner-right');
+                    $('#docAdd').attr('disabled', false);
                 }
             });
         }
@@ -724,7 +1348,6 @@
             url: "{{ route('ipd.doc.remove') }}/" + id,
             method: "GET",
             success: function(res) {
-                console.log(res);
                 if (res.response == true) {
                     $('#doc_row_' + id).remove();
                 } else {
@@ -872,7 +1495,6 @@
             url: "{{ route('ipd.operation_medicine.print', '') }}" + "/" + ipd_id,
             method: "GET",
             success: function(res) {
-                console.log(res);
                 printData(res);
             },
             error: function(r) {

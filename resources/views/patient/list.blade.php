@@ -37,7 +37,7 @@
                                 </div>
                                 <div class="card-body">
                                     <!--begin: Datatable-->
-                                    <table class="table table-bordered table-hover scrollable_table_custom" id="">
+                                    <table class="table table-bordered table-separate scrollable_table_custom" id="">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
@@ -78,19 +78,34 @@
                                                 @endcan
                                                 @if(auth()->user()->can('patient-read') || auth()->user()->can('patient-update'))
                                                 <td>
-                                                    @can('patient-update')
-                                                    <a href="{{ route('patient.edit', base64_encode($patient->pa_id)) }}" title="Edit"><i class="la la-edit icon-3x"></i></a>
-                                                    @endcan
-                                                    @can('patient-read')
-                                                    <span id="fullView" data-id="{{ base64_encode($patient->pa_id) }}" title="Full View"><i class="la la-eye icon-3x cursor_pointer"></i></span>
-                                                    @endcan
+                                                    <div class="dropdown dropdown-inline">
+                                                        <a href="javascript:;" class="btn btn-sm btn-clean btn-icon" data-toggle="dropdown" aria-expanded="false"> <i class="ki ki-bold-more-hor icon-3x"></i> </a>
+                                                        <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                                            <ul class="nav nav-hoverable">
+                                                                @can('patient-update')
+                                                                <li class="nav-item"><a class="nav-link" href="{{ route('patient.edit', base64_encode($patient->pa_id)) }}" title="Edit"><i class="la la-edit icon-3x"></i></a></li>
+                                                                @endcan
+                                                                @can('patient-read')
+                                                                <li class="nav-item"><span class="nav-link" id="fullView" data-id="{{ base64_encode($patient->pa_id) }}" title="Full View"><i class="la la-eye icon-3x cursor_pointer"></i></span></li>
+                                                                @endcan
+
+                                                                <li class="nav-item"><i title="Print Patient" class="flaticon flaticon2-print icon-3x cursor_pointer nav-link" id="printPatientModal" onclick="printPatientBill('{{ base64_encode($patient->pa_id) }}')"></i></li>
+                                                                @can('appointment-create')
+                                                                <li class="nav-item"><a class="nav-link" href="{{ route('appointment.create').'?patient='.base64_encode($patient->pa_id) }}"><i title="Book Appointment" class="flaticon-calendar-2 icon-3x cursor_pointer"></i></a></li>
+                                                                @endcan
+                                                                @if(empty($patient->ipdAdmit))
+                                                                <li class="nav-item"><a class="nav-link" href="{{ route('ipd.create').'?patient='.base64_encode($patient->pa_id) }}"><i title="Book IPD" class="la la-bed icon-3x cursor_pointer"></i></a></li>
+                                                                @endif
+                                                            </ul>
+                                                        </div>
+                                                    </div>
                                                 </td>
                                                 @endif
                                             </tr>
                                             @endforeach
                                             @else
                                             <tr>
-                                                <td colspan="4">Record not found</td>
+                                                <td colspan="10">Record not found</td>
                                             </tr>
                                             @endif
                                         </tbody>
@@ -128,6 +143,7 @@
                 </table>
             </div>
             <div class="modal-footer">
+                <i title="Print Bill" class="flaticon flaticon2-print icon-3x cursor_pointer" id="printPatientModal"></i>
                 <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -167,21 +183,23 @@
                     let data = res.data;
                     let photo = '';
                     if (data.photo != '') {
-                        photo = '<img src="' + data.photo + '" class="img-fluid" />';
+                        photo = '<img src="' + data.photo + '" class="img-fluid" width="100px" />';
                     }
                     let view = '<tr> \
+                        <th>Patient ID</th> \
+                        <td>' + $.trim(data.pa_id) + '</td> \
                         <th>Patient Name</th> \
                         <td>' + $.trim(data.pa_name) + '</td> \
+                    </tr> \
+                    <tr> \
                         <th>Contact No</th> \
                         <td>' + $.trim(data.pa_contact_no) + '</td> \
-                    </tr> \
-                    <tr> \
                         <th>Alternate Contact No</th> \
                         <td>' + $.trim(data.pa_alt_contact_no) + '</td> \
-                        <th>Email</th> \
-                        <td>' + $.trim(data.pa_email) + '</td> \
                     </tr> \
                     <tr> \
+                        <th>Email</th> \
+                        <td>' + $.trim(data.pa_email) + '</td> \
                         <th>Address</th> \
                         <td colspan="3">' + $.trim(data.pa_address) + '</td> \
                     </tr> \
@@ -208,12 +226,6 @@
                         <td>' + $.trim(data.pa_marital_status) + '</td> \
                         <th>Occupation</th> \
                         <td>' + $.trim(data.pa_occupation) + '</td> \
-                    </tr> \
-                    <tr> \
-                        <th>Mode of Payment</th> \
-                        <td>' + $.trim(data.pa_payment_mode) + '</td> \
-                        <th>Payment Detail</th> \
-                        <td>' + $.trim(data.pa_payment_detail) + '</td> \
                     </tr> \
                     <tr> \
                         <th>Last Menstrual Period</th> \
@@ -259,6 +271,8 @@
 
                     $('#viewDetail').html(view);
                     $('#fullViewModal').modal('show');
+
+                    $('#printPatientModal').attr('onclick', 'printPatientBill("' + pa_id + '")');
                 } else {
                     sweetAlertError(res.message, 3000);
                 }
@@ -269,5 +283,40 @@
             }
         });
     })
+
+    /* Print Bill */
+    function printPatientBill(pa_id) {
+        let url = "{{ route('patient.print', ['pa_id' => ':pa_id']) }}";
+        url = url.replace(':pa_id', pa_id);
+        $.ajax({
+            url: url,
+            method: "GET",
+            success: function(res) {
+                printData(res);
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    }
+
+    /* Print Data */
+    function printData(data) {
+        $('<iframe>', {
+                name: 'myiframe',
+                class: 'printFrame'
+            })
+            .appendTo('body')
+            .contents().find('body')
+            .append(data);
+
+        window.frames['myiframe'].focus();
+        window.frames['myiframe'].print();
+
+        setTimeout(() => {
+            $(".printFrame").remove();
+        }, 1000);
+    };
 </script>
 @endsection

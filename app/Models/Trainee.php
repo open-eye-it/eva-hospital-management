@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class Trainee extends Model
 {
     use HasFactory;
@@ -92,5 +93,9 @@ class Trainee extends Model
     public function UpdatedByData()
     {
         return $this->hasOne(User::class, 'user_id', 'tr_updated_by');
+    }
+
+    public function traineePaymentListSum(){
+        return $this->hasMany(TraineePaymentList::class, 'tr_id', 'tr_id')->sum('tpl_amount');
     }
 }

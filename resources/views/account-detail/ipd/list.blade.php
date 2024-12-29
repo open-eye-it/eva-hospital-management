@@ -28,7 +28,7 @@
                                         </div>
                                         <div class="col-12 form-group">
                                             <button class="btn btn-primary" type="submit">Search</button>
-                                            <a class="btn btn-danger" href="{{ route('ipd.list') }}">Resst</a>
+                                            <a class="btn btn-danger" href="{{ route('ipd-acount-detail.list') }}">Resst</a>
                                             <button type="button" class="btn btn-info" onclick="exportIPD()"><i class="fa fa-file-export"></i> Export</button>
                                         </div>
                                     </div>
@@ -212,7 +212,7 @@
     </div>
 </div>
 <div class="modal fade" id="billAmountViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-dialog modal-xl popup-90" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Billing Description</h5>
@@ -222,9 +222,9 @@
             </div>
             <div class="modal-body" id="billAmountViewDetail">
                 <div class="row">
-                    <div class="col-lg-2 col-md-3 col-sm-12 col-xs-12"><strong>IPD ID: </strong>123456</div>
-                    <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12"><strong>Patient Name: </strong>Abhay Luva</div>
-                    <div class="col-lg-7 col-md-5 col-sm-12 col-xs-12"><strong>Bill Date: </strong>19 July 2024</div>
+                    <div class="col-lg-2 col-md-3 col-sm-12 col-xs-12"><strong>IPD ID: </strong> <span id="ipdIdShow"></span></div>
+                    <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12"><strong>Patient Name: </strong> <span id="ipdPatientNameShow"></span></div>
+                    <div class="col-lg-7 col-md-5 col-sm-12 col-xs-12"><strong>IPD Date: </strong><span id="ipd_admit_date_format"></span></div>
                     <div class="col-lg-2 col-md-3 col-sm-12 col-xs-12"><strong>Bill Amount: </strong><span id="billAmount">18000</span> Rs.</div>
                     <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12"><strong>Received Amount: </strong><span id="receivedAmount">18000</span> Rs.</div>
                 </div>
@@ -261,6 +261,27 @@
                             </thead>
                             <tbody id="chargeDetail"></tbody>
                         </table>
+                        <div class="row pt-2">
+                            <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 col-12">
+                                <div class="form-group">
+                                    <label for="">Discount</label>
+                                    <input type="number" class="form-control" id="ipd_discount" name="ipd_discount">
+                                    <span class="text-danger" id="ipd_discountErr"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 col-12">
+                                <div class="form-group">
+                                    <label for="">Discount Approved By</label>
+                                    <input type="text" class="form-control" id="ipd_discount_approved_by" name="ipd_discount_approved_by">
+                                    <span class="text-danger" id="ipd_discount_approved_byErr"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12 col-12">
+                                <div class="form-group pt-4 mt-4">
+                                    <button class="btn btn-primary" id="updateDiscount">Update</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-lg-7 col-md-6 col-sm-12 col-xs-12 col-12 pt-4">
                         <h4 class="text-center"><strong>Payment Received Details</strong></h4>
@@ -318,6 +339,7 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <i title="Print Bill" class="flaticon flaticon2-print icon-3x cursor_pointer" id="printBillInModal"></i>
                 <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -339,13 +361,23 @@
         $.ajax({
             url: "{{ route('ipd-acount-detail.bill-detail', '') }}" + "/" + ipd_id,
             method: "GET",
-            success: function(res) {
+            success: function(res) {console.log(res);
                 $('#billAmountViewModal').modal('show');
                 if (res.response === true) {
                     let data = res.data;
                     let ipdData = res.data.ipdData;
                     let chargeList = res.data.chargeList;
+                    let patientData = res.data.patientData;
                     let chargeRow = '';
+
+                    $('#ipdIdShow').text(ipdData.ipd_id);
+                    $('#ipdPatientNameShow').text(patientData.pa_name);
+
+                    let monthName = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+                    var mydate = new Date(ipdData.ipd_admit_date);console.log(ipdData.ipd_admit_date);
+                    let ipd_admit_date_format = mydate.getDate()+' '+monthName[mydate.getMonth()-1]+' '+mydate.getFullYear();
+                    $('#ipd_admit_date_format').text(ipd_admit_date_format)
+
                     $('#billAmount').text(ipdData.ipd_bill_amount);
                     $('#receivedAmount').text(ipdData.ipd_received_amount);
                     if (chargeList.length > 0) {
@@ -387,9 +419,12 @@
                     $('#addNewPayment').attr("onclick", "addPayment('" + ipd_id + "')");
                     $('#paymentDetail').html(paymentRow);
 
+                    $('#ipd_discount').val(ipdData.ipd_discount);
+                    $('#ipd_discount_approved_by').val(ipdData.ipd_discount_approved_by);
 
                     $('#billAmountViewModal').modal('show');
                     $('#ipd_id').val(ipd_id);
+                    $('#printBillInModal').attr('onclick', 'printIPDBill("' + atob(ipd_id) + '")');
                 } else {
                     sweetAlertError(res.message, 3000);
                 }
@@ -400,6 +435,41 @@
             }
         });
     })
+    /* Update Discount */
+    $('#updateDiscount').click(function() {
+        let ipd_discount = $('#ipd_discount').val();
+        let ipd_discount_approved_by = $('#ipd_discount_approved_by').val();
+        let ipd_id = $('#ipd_id').val();
+        if(ipd_discount_approved_by == ''){
+            $('#ipd_discount_approved_byErr').text('Please enter approved by');
+        }else{
+            $('#ipd_discount_approved_byErr').text('');
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                },
+                url: "{{ route('ipd-acount-detail.bill-discount-update') }}",
+                method: "POST",
+                data: {
+                    ipd_id: ipd_id,
+                    ipd_discount: ipd_discount,
+                    ipd_discount_approved_by: ipd_discount_approved_by
+                },
+                success: function(res) {
+                    console.log(res);
+                    if (res.response == true) {
+                        sweetAlertSuccess(res.message, 3000);
+                    } else {
+                        sweetAlertError(res.message, 3000);
+                    }
+                },
+                error: function(r) {
+                    let res = r.responseJSON;
+                    sweetAlertError(res.message, 3000);
+                }
+            });
+        }
+    });
     /* Add Charge */
     function addCharge(ipd_id) {
         let ic_text = $('#ic_text').val();

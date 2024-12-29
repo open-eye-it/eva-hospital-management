@@ -39,10 +39,10 @@
             </tr>
             <tr>
                 <th style="padding:10px; border-top:1px solid; border-bottom:1px solid; border-right:1px solid; text-align:left;" colspan="2">Paid By</th>
-                <th style="padding:10px; border-top:1px solid; border-bottom:1px solid; border-right:1px solid; text-align:left;">Received By</th>
-                <th style="padding:10px; border-top:1px solid; border-bottom:1px solid; text-align:left;">Amount (Rs.)</th>
+                <!-- <th style="padding:10px; border-top:1px solid; border-bottom:1px solid; border-right:1px solid; text-align:left;">Received By</th> -->
+                <th style="padding:10px; border-top:1px solid; border-bottom:1px solid; text-align:left;" colspan="2">Amount (Rs.)</th>
             </tr>
-            @if(!empty($iplDetail->toArray()))
+            <!-- @if(!empty($iplDetail->toArray()))
             @foreach($iplDetail as $Charge)
             <tr>
                 <td style="padding:10px; border-bottom:1px solid; border-right:1px solid;" colspan="2">{{ $Charge->ipl_paid_by }}</td>
@@ -50,23 +50,44 @@
                 <td style="padding:10px; border-bottom:1px solid;">{{ $Charge->ipl_amount }}</td>
             </tr>
             @endforeach
+            @endif -->
+            @php $received_amount = 0; @endphp
+            @if(!empty($ipdChargeList->toArray()))
+            @foreach($ipdChargeList as $Charge)
+            @php $received_amount += $Charge->ic_amount @endphp
+            <tr>
+                <td style="padding:10px; border-bottom:1px solid; border-right:1px solid;" colspan="2">{{ $Charge->ic_text }}</td>
+                <td style="padding:10px; border-bottom:1px solid;" colspan="2">{{ $Charge->ic_amount }}</td>
+            </tr>
+            @endforeach
             @endif
             <tr>
+
+                <!-- <td style="padding:10px; border-right:1px solid;" colspan="2"></td> -->
+                <th style="padding:10px; border-bottom:1px solid; border-right:1px solid; text-align:left;" colspan="2">Discount</th>
+                <td style="padding:10px; border-bottom:1px solid;" colspan="2">{{ $ipdDetail->ipd_discount }}</td>
+            </tr>
+            <tr>
+
+                <th style="padding:10px; border-bottom:1px solid; border-right:1px solid; text-align:left;" colspan="2">Received Amount</th>
+                <td style="padding:10px; border-bottom:1px solid;" colspan="2">{{ $received_amount+$ipdDetail->ipd_discount }}</td>
+            </tr>
+            <!-- <tr>
 
                 <td style="padding:10px; border-right:1px solid;" colspan="2"></td>
                 <th style="padding:10px; border-bottom:1px solid; border-right:1px solid; text-align:left;">Received Amount</th>
                 <td style="padding:10px; border-bottom:1px solid;">{{ $ipdDetail->ipd_received_amount }}</td>
-            </tr>
+            </tr> -->
             <tr>
 
-                <td style="padding:10px; border-right:1px solid;" colspan="2"></td>
-                <th style="padding:10px; border-bottom:1px solid; border-right:1px solid; text-align:left;">Bill Amount</th>
-                <td style="padding:10px; border-bottom:1px solid;">{{ $ipdDetail->ipd_bill_amount }}</td>
+                <!-- <td style="padding:10px; border-right:1px solid;" colspan="2"></td> -->
+                <th style="padding:10px; border-bottom:1px solid; border-right:1px solid; text-align:left;" colspan="2">Bill Amount</th>
+                <td style="padding:10px; border-bottom:1px solid;" colspan="2">{{ $ipdDetail->ipd_bill_amount }}</td>
             </tr>
             <tr>
-                <td colspan="3" style="padding:10px; text-align:left;"><strong>Amount In Words:</strong>
+                <td colspan="4" style="padding:10px; text-align:left;"><strong>Amount In Words:</strong>
                     @php
-                    echo numberToWord($ipdDetail->ipd_received_amount);
+                    echo numberToWord($received_amount+$ipdDetail->ipd_discount);
                     @endphp
                 </td>
             </tr>

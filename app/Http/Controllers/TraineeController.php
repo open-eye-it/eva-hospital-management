@@ -50,8 +50,13 @@ class TraineeController extends MainController
         $file_data = [];
         if ($request->hasFile('tr_documents')) {
             foreach ($request->file('tr_documents') as $file) {
+                $fileName = $file->getClientOriginalName();
+                $filteNameArr = explode('.', $fileName);
+                $fileNameFinal = $filteNameArr[0].'-'.$this->randomString(7, 'number');
+                $fileNameFinal = str_replace(' ', '-', $fileNameFinal);
 
-                $file = UploadCustomeImage($file, $tr_real_id . '-' . $this->randomString(10, 'number'));
+                // $file = UploadCustomeImage($file, $tr_real_id . '-' . $this->randomString(10, 'number'));
+                $file = UploadCustomeImage($file, $fileNameFinal);
                 $file_data[] = $file;
             }
         }
@@ -107,8 +112,13 @@ class TraineeController extends MainController
             $file_data = [];
             if ($request->hasFile('tr_documents')) {
                 foreach ($request->file('tr_documents') as $file) {
+                    $fileName = $file->getClientOriginalName();
+                    $filteNameArr = explode('.', $fileName);
+                    $fileNameFinal = $filteNameArr[0].'-'.$this->randomString(7, 'number');
+                    $fileNameFinal = str_replace(' ', '-', $fileNameFinal);
 
-                    $file = UploadCustomeImage($file, $data->tr_real_id . '-' . $this->randomString(10, 'number'));
+                    // $file = UploadCustomeImage($file, $data->tr_real_id . '-' . $this->randomString(10, 'number'));
+                    $file = UploadCustomeImage($file, $fileNameFinal);
                     $file_data[] = $file;
                 }
             }
@@ -170,6 +180,7 @@ class TraineeController extends MainController
             $data1['tr_added_by'] = $added_by;
             $updated_by = $data->UpdatedByData->person_name;
             $data1['tr_updated_by'] = $updated_by;
+            $data1['paid_amount_final'] = $data->traineePaymentListSum();
             return $this->getSuccessResult($data1, 'Trainee detail found', true);
         } else {
             return $this->getErrorMessage('Trainee detail not found');
@@ -253,6 +264,12 @@ class TraineeController extends MainController
         } else {
             return $this->getErrorMessage('Payment not removed, something is wrong.');
         }
+    }
+
+    public function paymentReceipt($tpl_id){
+        $tpl_id = base64_decode($tpl_id);
+        $paymentData = $this->trainee_payment_model->singlData($tpl_id);
+        return response()->view('trainee.receipt-print', compact('paymentData'));
     }
 
     public function traineedID()

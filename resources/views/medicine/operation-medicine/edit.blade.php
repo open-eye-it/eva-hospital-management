@@ -32,7 +32,7 @@
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label>Company Name <span class="text-danger">*</span></label>
+                                                    <label>Company Name</label>
                                                     <input type="text" class="form-control" placeholder="Company Name" name="om_company_name" id="om_company_name" value="{{ $data->om_company_name }}" />
                                                     <span class="text-danger" id="om_company_nameErr"></span>
                                                 </div>
@@ -82,11 +82,13 @@
             $('#om_nameErr').text('Please enter medicine name');
             timeoutID('om_nameErr', 3000);
             scrollTop('om_nameErr');
-        }else if(om_company_name == ''){
-            $('#om_company_nameErr').text('Please enter company name');
-            timeoutID('om_company_nameErr', 3000);
-            scrollTop('om_company_nameErr');
-        }else{
+        }
+        // else if(om_company_name == ''){
+        //     $('#om_company_nameErr').text('Please enter company name');
+        //     timeoutID('om_company_nameErr', 3000);
+        //     scrollTop('om_company_nameErr');
+        // }
+        else{
             $('#createBtn').addClass('spinner spinner-white spinner-right');
             $('#createBtn').attr('disabled', true);
             $.ajax({

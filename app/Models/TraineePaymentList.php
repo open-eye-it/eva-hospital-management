@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Trainee;
+
 class TraineePaymentList extends Model
 {
     use HasFactory;
@@ -59,5 +61,10 @@ class TraineePaymentList extends Model
             $dateArr[1] = date('Y-m-d', strtotime($dateArr[1]));
             $data->whereBetween("created_at", $dateArr);
         }
+    }
+
+    /* Start:: Relationship */
+    public function traineeData(){
+        return $this->hasOne(Trainee::class, 'tr_id', 'tr_id');
     }
 }

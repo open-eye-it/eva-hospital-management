@@ -4,30 +4,34 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\MainController;
 use Illuminate\Http\Request;
-use App\Models\Appointment;
-use App\Models\Patient;
-
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
-use App\Models\User;
-use App\Models\VisitingFee;
-use App\Models\GeneralMedicine;
-use App\Models\AppointmentMedicine;
-use App\Models\Notification;
 
 use App\Exports\AppointmentExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
+use App\Models\Appointment;
+use App\Models\Patient;
+use App\Models\User;
+use App\Models\VisitingFee;
+use App\Models\GeneralMedicine;
+use App\Models\AppointmentMedicine;
+use App\Models\Notification;
+use App\Models\AppointmentDocument;
 
 class AppointmentController extends MainController
 {
-    public $appointment, $patient, $user, $visiting_fee, $general_medicine, $appointment_medicine, $notification;
+    public $appointment, $patient, $ap_doc, $user, $visiting_fee, $general_medicine, $appointment_medicine, $notification;
     public function __construct()
     {
         parent::__construct();
         $this->appointment          = new Appointment;
         $this->patient              = new Patient;
+        $this->ap_doc               = new AppointmentDocument;
         $this->user                 = new User;
         $this->visiting_fee         = new VisitingFee;
         $this->general_medicine     = new GeneralMedicine;
@@ -155,6 +159,74 @@ class AppointmentController extends MainController
         }
     }
 
+    public function appointmentDocView($ap_id)
+    {
+        $ap_id = base64_decode($ap_id);
+        $data = $this->appointment->singlData($ap_id);
+        if (!empty($data)) {
+            $docList = $this->ap_doc->getList(['ap_id' => $ap_id], false, 0, ['created_at', 'desc']);
+            $view = view('appointment.appointment_doc_table_row_list', compact('docList'))->render();
+            return $this->getSuccessResult($view, 'Appointment document detail found', true);
+        } else {
+            return $this->getErrorMessage('Appointment detail not found');
+        }
+    }
+
+    public function appointmentDocSend(Request $request)
+    {
+        $input = $request->all();
+        $ap_id = base64_decode($input['ap_id_doc']);
+
+        $file = '';
+
+        if ($request->hasFile('ap_doc')) {
+            $fileName = $request->ap_doc->getClientOriginalName();
+            $filteNameArr = explode('.', $fileName);
+            $fileNameFinal = $filteNameArr[0].'-'.$this->randomString(7, 'number');
+            $fileNameFinal = str_replace(' ', '-', $fileNameFinal);
+            // $file = UploadCustomeImage($request->file('ap_doc'), $ap_id . '-' . $this->randomString(10, 'number'));
+            $file = UploadCustomeImage($request->file('ap_doc'), $fileNameFinal);
+        }
+        $data = [
+            'ap_id' => $ap_id,
+            'ap_doc_name' => $input['ap_doc_name'],
+            'ap_doc' => json_encode([$file])
+        ];
+        $insert = $this->ap_doc->insertData($data);
+        if ($insert->id) {
+            $docData = $this->ap_doc->singlData($insert->id);
+            $view = view('appointment.appointment_doc_table_row', compact('docData'))->render();
+            return $this->getSuccessResult($view, 'Document upload', true);
+        } else {
+            return $this->getErrorMessage('Document not uploaded, please try again');
+        }
+    }
+
+    public function appointmentDocRemove($id)
+    {
+        $data = $this->ap_doc->singlData($id);
+        $file = $data->ap_doc;
+        $delete = $this->ap_doc->deleteData($id);
+        if ($delete) {
+            ImageRemove($file);
+            return $this->getSuccessResult([], 'Document delete', true);
+        } else {
+            return $this->getErrorMessage('Document not delete, please try again');
+        }
+    }
+
+    public function appointmentDocDownload($id)
+    {
+        $id = base64_decode($id);
+        $data = $this->ap_doc->singlData($id);
+        $docArr = json_decode($data->ap_doc);
+        //$path = Storage::disk('public')->path($docArr[0]);
+        $path = base_path('/') . 'storage/app/public/' . $docArr[0];
+        Storage::disk('local')->put($docArr[0], file_get_contents($path));
+        Storage::path($docArr[0]);
+        return response()->download($path);
+    }
+
     /* appointment status change */
     public function status($string_val)
     {
@@ -268,18 +340,59 @@ class AppointmentController extends MainController
     public function appointmentMedicineStore(Request $request)
     {
         $query = $request->query();
-        $query['ap_id'] = base64_decode($query['ap_id']);
         $am_id = $this->getAppointmentMedicineID();
+        $login_user_id = Auth::user()->user_id;
+        
+        $data['am_id'] = $am_id;
+        $data['ap_id'] = base64_decode($query['ap_id']);
+        $data['am_added_by'] = $login_user_id;
+        $data['am_days'] = $query['am_days'];
+        $data['am_timing'] = $query['am_timing'];
+        $data['am_morning'] = $query['am_morning'];
+        $data['am_afternoon'] = $query['am_afternoon'];
+        $data['am_evening'] = $query['am_evening'];
+
+        if($query['gm_id_original'] == ''){
+            $gm_id = $this->getUserID();
+            $data1 = [
+                'gm_id'           => $gm_id,
+                'gm_added_by'     => $login_user_id,
+                'gm_updated_by'   => $login_user_id,
+                'gm_name'         => $query['gm_id'],
+                'gm_company_name' => '',
+                'gm_description' => '',
+            ];
+            $insertGeneralMedicine = $this->general_medicine->insertGeneralMedicine($data1);
+            $data['gm_id'] = $insertGeneralMedicine->gm_id;
+        }else{
+            $data['gm_id'] = $query['gm_id_original'];
+        }
+        
+
+        $query['ap_id'] = base64_decode($query['ap_id']);
+        
         $query['am_id'] = $am_id;
         $login_user_id = Auth::user()->user_id;
         $query['am_added_by'] = $login_user_id;
-        $insert = $this->appointment_medicine->insertData($query);
+        $insert = $this->appointment_medicine->insertData($data);
         if (isset($insert->am_id)) {
             $data = $this->appointment_medicine->singlData($insert->am_id);
             $data['medicine_name'] = $data->medicineData->gm_name . ' (' . $data->medicineData->gm_company_name . ')';
             return $this->getSuccessResult($data, 'Appointment Medicine added', true);
         } else {
             return $this->getErrorMessage('Appointment Medicine not added, something is wrong.');
+        }
+    }
+
+    /* Search General Medicine List */
+    public function searchGenerlMedicineList($rgm_name)
+    {
+        $rgm_name = base64_decode($rgm_name);
+        $list = $this->general_medicine->getSearchList($rgm_name);
+        if (!empty($list)) {
+            return $this->getSuccessResult($list, ' General medicine found', true);
+        } else {
+            return $this->getErrorMessage('Search text not found.');
         }
     }
 
@@ -344,6 +457,17 @@ class AppointmentController extends MainController
             $this->getAppointmentMedicineID();
         } else {
             return $am_id;
+        }
+    }
+
+    public function getUserID()
+    {
+        $gm_id = $this->randomString(10, 'number');
+        $check = $this->general_medicine->singlGeneralMedicine($gm_id);
+        if (!empty($check)) {
+            $this->getUserID();
+        } else {
+            return $gm_id;
         }
     }
 }

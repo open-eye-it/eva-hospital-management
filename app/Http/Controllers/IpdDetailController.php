@@ -16,6 +16,10 @@ use App\Models\OperationMedicine;
 use App\Models\Appointment;
 use App\Models\Notification;
 use App\Models\IpdDocument;
+use App\Models\IndoorSheet;
+use App\Models\IndoorSheetMedicine;
+use App\Models\IndoorSheetMedicineExamination;
+use App\Models\IpdCharge;
 
 use App\Exports\IPDDetailExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -24,7 +28,7 @@ use Illuminate\Support\Facades\Storage;
 
 class IpdDetailController extends MainController
 {
-    public $patient, $room, $ipd_doc, $ipd, $ipd_note, $operation_medicine, $appointment, $notification;
+    public $patient, $room, $ipd_doc, $ipd, $ipd_note, $ipd_charge, $operation_medicine, $appointment, $notification, $indoor_sheet, $indoor_sheet_medicine, $indoor_sheet_medicine_examination;
     public function __construct()
     {
         parent::__construct();
@@ -33,9 +37,13 @@ class IpdDetailController extends MainController
         $this->ipd_doc = new IpdDocument;
         $this->ipd = new IpdDetail;
         $this->ipd_note = new IpdOperativeNote;
+        $this->ipd_charge = new IpdCharge;
         $this->operation_medicine = new OperationMedicine;
         $this->appointment = new Appointment;
         $this->notification = new Notification;
+        $this->indoor_sheet = new IndoorSheet;
+        $this->indoor_sheet_medicine = new IndoorSheetMedicine;
+        $this->indoor_sheet_medicine_examination = new IndoorSheetMedicineExamination;
     }
 
     public function index(Request $request)
@@ -66,8 +74,12 @@ class IpdDetailController extends MainController
         return Excel::download(new IPDDetailExport($input), $fileName);
     }
 
-    public function create()
+    public function create(Request $request)
     {
+        $input = $request->all();
+        $pa_id = isset($input['patient']) ? $input['patient'] : '';
+        $pa_id = base64_decode($pa_id);
+
         $admitPatientList = $this->ipd->admitPatient()->toArray();
         $admitPatientArr = [];
         if (!empty($admitPatientList)) {
@@ -81,7 +93,7 @@ class IpdDetailController extends MainController
         $doctors = array_merge($doctorList, $assDoctorList);
         $roomList = $this->room->getList(['rm_status' => 1, 'rm_busy' => 0]);
         $roomList = $this->room->getListforIPD(['rm_status' => 1, 'rm_busy' => 0]);
-        return view('ipd.create', compact('patientList', 'doctors', 'roomList'));
+        return view('ipd.create', compact('pa_id', 'patientList', 'doctors', 'roomList'));
     }
 
     public function store(Request $request)
@@ -97,6 +109,7 @@ class IpdDetailController extends MainController
                 $input['ipd_id'] = $this->getUniqueID();
                 $input['ipd_added_by'] = $login_user_id;
                 $input['ipd_updated_by'] = $login_user_id;
+                $input['ipd_discount'] = 0;
                 $insert = $this->ipd->insertData($input);
                 if (isset($insert->ipd_id)) {
                     $notificationData = [
@@ -119,6 +132,27 @@ class IpdDetailController extends MainController
                     ];
                     $this->ipd_note->insertData($ion_data);
                     $this->room->updateRoom(['rm_busy' => 1], $rm_id);
+
+                    $ipdChargeTextArr = [
+                        'OPERATION CHARGES (SURGEON CHARGES)',
+                        'THEATRE CHARGES',
+                        '3D CAMERS CHARGE',
+                        'HARMONIC INSTRUMENT CHARGE',
+                        'ANESTHESIA CHARGE DR. KAMLESH PTEL-REG. NO.G9826.',
+                        'DOCTOR CHARGE',
+                        'ROOM CHARGE (3 DAYS * 2000 RS)',
+                    ];
+                    for ($i = 0; $i < count($ipdChargeTextArr); $i++) {
+                        $ipdChargeData = [
+                            'ipd_id' => $insert->ipd_id,
+                            'ic_id' => $this->getChargeUniqueID(),
+                            'ic_text' => $ipdChargeTextArr[$i],
+                            'ic_amount' => 0,
+                            'ic_added_by' => $login_user->user_id
+                        ];
+                        $insert = $this->ipd_charge->insertData($ipdChargeData);
+                    }
+
                     return $this->getSuccessResult([], 'IPD added', true);
                 } else {
                     return $this->getErrorMessage('IPD not added, something is wrong.');
@@ -196,8 +230,14 @@ class IpdDetailController extends MainController
         $ipd_id = base64_decode($input['ipd_id_doc']);
 
         $file = '';
+
         if ($request->hasFile('ipd_doc')) {
-            $file = UploadCustomeImage($request->file('ipd_doc'), $ipd_id . '-' . $this->randomString(10, 'number'));
+            $fileName = $request->ipd_doc->getClientOriginalName();
+            $filteNameArr = explode('.', $fileName);
+            $fileNameFinal = $filteNameArr[0] . '-' . $this->randomString(7, 'number');
+            $fileNameFinal = str_replace(' ', '-', $fileNameFinal);
+            //$file = UploadCustomeImage($request->file('ipd_doc'), $ipd_id . '-' . $this->randomString(10, 'number'));
+            $file = UploadCustomeImage($request->file('ipd_doc'), $fileNameFinal);
         }
         $data = [
             'ipd_id' => $ipd_id,
@@ -456,10 +496,20 @@ class IpdDetailController extends MainController
         $ipd_id = base64_decode($ipd_id);
         $data = $this->ipd->singlData($ipd_id);
         if (!empty($data)) {
+            $ipdCharges = $this->ipd_charge->getList(['ipd_id' => $ipd_id], false);
+
             $data1 = $data->toArray();
+            $data1['ipdCharges'] = $ipdCharges->toArray();
             $data1['patient_id'] = $data->patientData->pa_id;
             $data1['patient_name'] = $data->patientData->pa_name;
             $data1['patient_age'] = $data->patientData->pa_age;
+            $data1['pan_card'] = $data->patientData->pa_pan_card;
+            $data1['address'] = $data->patientData->pa_address;
+            $data1['city'] = $data->patientData->pa_city;
+            $data1['pincode'] = $data->patientData->pa_pincode;
+            $data1['state'] = $data->patientData->pa_state;
+            $data1['age'] = $data->patientData->pa_age;
+            $data1['gender'] = $data->patientData->pa_gender;
             $data1['ion_date'] = (is_null($data->operativNoteData->ion_date)) ? date('Y-m-d') : (string)$data->operativNoteData->ion_date;
             $data1['ion_note'] = (string)$data->operativNoteData->ion_note;
             $data1['doctor'] = $data->doctorData->person_name;
@@ -527,6 +577,7 @@ class IpdDetailController extends MainController
                     <td>' . date('d M Y', strtotime($appointment->ap_id)) . '</td>
                     <td>' . $appointment->pa_id . '</td>
                     <td>' . $appointment->patientData->pa_name . '</td>
+                    <td>' . $appointment->patientData->pa_contact_no . '</td>
                     <td>' . $appointment->ap_case_type . '</td>
                     <td>' . $is_foc . '</td>
                     <td>' . $appointment->ap_charge . '</td>
@@ -594,6 +645,265 @@ class IpdDetailController extends MainController
         }
     }
 
+    public function IndoorSheetList($ipd_id)
+    {
+        $ipd_id = base64_decode($ipd_id);
+        $ipdDetail = $this->ipd->singlData($ipd_id);
+        $indoorSheeList = $this->indoor_sheet->getList(['ipd_id' => $ipd_id], false, 0, ['created_at', 'desc']);
+        if (count($indoorSheeList->toArray()) > 0) {
+            $view = view('ipd.indoor-sheet.list', compact('indoorSheeList'))->render();
+            $data = [
+                'html' => $view,
+                'ipdDetail' => $ipdDetail,
+                'patientName' => $ipdDetail?->patientData?->pa_name
+            ];
+            return $this->getSuccessResult($data, 'Findings found.', true);
+        } else {
+            $data = [
+                'html' => '',
+                'ipdDetail' => $ipdDetail,
+                'patientName' => $ipdDetail?->patientData?->pa_name
+            ];
+            return $this->getSuccessResult($data, 'Findings not available.', true);
+        }
+    }
+
+    public function IndoorSheetFindingsCreate(Request $request)
+    {
+        $input = $request->all();
+        $userLogin = Auth::user();
+        if ($input['is_id'] == '') {
+            // $checkDate = $this->indoor_sheet->singlDataByWhere(['ipd_id' => base64_decode($input['ipd_id']), 'is_date' => date('Y-m-d')]);
+            // if(empty($checkDate)){
+            $data = [
+                'is_id' => $this->getIndoorSheetUniqueID(),
+                'ipd_id' => base64_decode($input['ipd_id']),
+                'is_added_by' => $userLogin->user_id,
+                'is_date' => date('Y-m-d'),
+                'is_findings' => $input['is_findings']
+            ];
+            $insertData = $this->indoor_sheet->insertData($data);
+            if ($insertData->is_id) {
+                $view = view('ipd.indoor-sheet.single-findings', compact('insertData'))->render();
+                $data = [
+                    'html' => $view
+                ];
+                return $this->getSuccessResult($data, 'Finding added.', true);
+            } else {
+                return $this->getErrorMessage('Finding not added, pleaase try again.', false);
+            }
+            // }else{
+            //     return $this->getErrorMessage('Today finding already added.', false);
+            // }
+        } else {
+            $data = [
+                'ipd_id' => base64_decode($input['ipd_id']),
+                'is_added_by' => $userLogin->user_id,
+                'is_findings' => $input['is_findings']
+            ];
+            $update = $this->indoor_sheet->updateData($data, $input['is_id']);
+            return $this->getSuccessResult([], 'Finding updated.', true);
+        }
+    }
+
+    public function IndoorSheetFindingsRemove($is_id)
+    {
+        $is_id = base64_decode($is_id);
+        $remove = $this->indoor_sheet->deleteData($is_id);
+        if ($remove) {
+            return $this->getSuccessResult([], 'Finding remove.', true);
+        } else {
+            return $this->getErrorMessage('Findings not removed, pleaase try again.', false);
+        }
+    }
+
+    public function IndoorSheetMedicineList($is_id)
+    {
+        $is_id = base64_decode($is_id);
+        $indoorSheeList = $this->indoor_sheet_medicine->getList(['is_id' => $is_id], false, 0, ['created_at', 'desc']);
+        if (count($indoorSheeList->toArray()) > 0) {
+            $view = view('ipd.indoor-sheet.medicine.list', compact('indoorSheeList'))->render();
+            $data = [
+                'html' => $view
+            ];
+            return $this->getSuccessResult($data, 'Recommendations found.', true);
+        } else {
+            $data = [
+                'html' => ''
+            ];
+            return $this->getSuccessResult($data, 'Recommendations not available.', true);
+        }
+    }
+
+    public function IndoorSheetMedicineCreate(Request $request)
+    {
+        $input = $request->all();
+        $userLogin = Auth::user();
+        if ($input['ism_id'] == '') {
+            $data = [
+                'ism_id' => $this->getIndoorSheetMedicineUniqueID(),
+                'is_id' => base64_decode($input['is_id']),
+                'ism_added_by' => $userLogin->user_id,
+                'ism_recommendation' => $input['ism_recommendation']
+            ];
+            $insertData = $this->indoor_sheet_medicine->insertData($data);
+            if ($insertData->is_id) {
+                $view = view('ipd.indoor-sheet.medicine.single-ism', compact('insertData'))->render();
+                $data = [
+                    'html' => $view
+                ];
+                return $this->getSuccessResult($data, 'Recommendation added.', true);
+            } else {
+                return $this->getErrorMessage('Recommendation not added, pleaase try again.', false);
+            }
+        } else {
+            $data = [
+                'is_id' => base64_decode($input['is_id']),
+                'ism_added_by' => $userLogin->user_id,
+                'ism_recommendation' => $input['ism_recommendation']
+            ];
+            $update = $this->indoor_sheet_medicine->updateData($data, $input['ism_id']);
+            return $this->getSuccessResult([], 'Recommendation updated.', true);
+        }
+    }
+
+    public function IndoorSheetMedicineRemove($ism_id)
+    {
+        $ism_id = base64_decode($ism_id);
+        $remove = $this->indoor_sheet_medicine->deleteData($ism_id);
+        if ($remove) {
+            return $this->getSuccessResult([], 'Recommendadtion remove.', true);
+        } else {
+            return $this->getErrorMessage('Recommendadtion not removed, pleaase try again.', false);
+        }
+    }
+
+    public function ExaminationSheetList($ipd_id)
+    {
+        $ipd_id = base64_decode($ipd_id);
+        $ipdDetail = $this->ipd->singlData($ipd_id);
+        $indoorSheeList = $this->indoor_sheet->getList(['ipd_id' => $ipd_id], false, 0, ['created_at', 'desc']);
+        if (count($indoorSheeList->toArray()) > 0) {
+            $view = view('ipd.examination-sheet.list', compact('indoorSheeList'))->render();
+            $data = [
+                'html' => $view,
+                'ipdDetail' => $ipdDetail,
+                'patientName' => $ipdDetail?->patientData?->pa_name
+            ];
+            return $this->getSuccessResult($data, 'Findings found.', true);
+        } else {
+            $data = [
+                'html' => ''
+            ];
+            return $this->getSuccessResult($data, 'Findings not available.', true);
+        }
+    }
+
+    public function ExaminationSheetMedicineList($is_id)
+    {
+        $is_id = base64_decode($is_id);
+        $indoorSheeList = $this->indoor_sheet_medicine->getList(['is_id' => $is_id], false, 0, ['created_at', 'asc']);
+        $examintionList = $this->indoor_sheet_medicine_examination->getList(['is_id' => $is_id], false, 0, ['isme_given_datetime', 'desc']);
+        if (count($indoorSheeList->toArray()) > 0) {
+            $view = view('ipd.examination-sheet.medicine.list', compact('indoorSheeList'))->render();
+            $view1 = view('ipd.examination-sheet.medicine1.list', compact('examintionList'))->render();
+            $data = [
+                'html' => $view,
+                'html1' => $view1
+            ];
+            return $this->getSuccessResult($data, 'Recommendations found.', true);
+        } else {
+            $data = [
+                'html' => ''
+            ];
+            return $this->getSuccessResult($data, 'Recommendations not available.', true);
+        }
+    }
+
+    public function ExaminationSheetMedicineAdd(Request $request)
+    {
+        $input = $request->all();
+        $userLogin = Auth::user();
+        $view = '';
+        foreach ($input['exm_checked'] as $key => $exm_checked) {
+            if ($exm_checked == 1) {
+                $data = [
+                    'isme_id' => $this->getIndoorSheetMedicineExaminationUniqueID(),
+                    'is_id' => $input['is_id'][$key],
+                    'ism_recommendation' => $input['exm_id'][$key],
+                    'isme_given_datetime' => date('Y-m-d H:i:s', strtotime($input['isme_given_datetime'][$key])),
+                    'isme_created_datetime' => date('Y-m-d H:i:s'),
+                    'remark' => $input['remark'][$key],
+                    'isme_added_by' => $userLogin->user_id
+                ];
+                $insertData = $this->indoor_sheet_medicine_examination->insertData($data);
+                $view1 = view('ipd.examination-sheet.medicine1.single-isme', compact('insertData'))->render();
+                $view .= $view1;
+            }
+        }
+        if ($view != '') {
+            $data = [
+                'html' => $view
+            ];
+            return $this->getSuccessResult($data, 'Recommendations added.', true);
+        } else {
+            return $this->getErrorMessage('Recommendation not selected, pleaase try again.', false);
+        }
+    }
+
+    public function ExaminationSheetMedicineRemove($isme_id)
+    {
+        $isme_id = base64_decode($isme_id);
+        $deleteData = $this->indoor_sheet_medicine_examination->deleteData($isme_id);
+        if ($deleteData) {
+            return $this->getSuccessResult([], 'Examination deleted.', true);
+        } else {
+            return $this->getErrorMessage('Examination not delete, pleaase try again.', false);
+        }
+    }
+
+    public function ExaminationSheetMedicineEdit($isme_id)
+    {
+        $isme_id = base64_decode($isme_id);
+        $singleData = $this->indoor_sheet_medicine_examination->singlData($isme_id);
+        if (!empty($singleData)) {
+            $date = date('Y-m-d', strtotime($singleData->isme_given_datetime));
+            $time = date('H:i', strtotime($singleData->isme_given_datetime));
+            $datetime = $date . 'T' . $time;
+            $data = [
+                'examinationData' => $singleData,
+                'given_date' => $datetime
+            ];
+            return $this->getSuccessResult($data, 'Examination dt.', true);
+        } else {
+            return $this->getErrorMessage('Examination not found, pleaase try again.', false);
+        }
+    }
+
+    public function ExaminationSheetMedicineUpdate(Request $request)
+    {
+        $input = $request->all();
+        $userLogin = Auth::user();
+        $data = [
+            'isme_given_datetime' => date('Y-m-d H:i:s', strtotime($input['isme_given_datetime'])),
+            'remark' => $input['remark'],
+            'isme_created_datetime' => date('Y-m-d H:i:s'),
+            'isme_added_by' => $userLogin->user_id
+        ];
+        $updateData = $this->indoor_sheet_medicine_examination->updateData($data, $input['isme_id']);
+        if ($updateData) {
+            $data = [
+                'datetime' => date('d M Y, h:i a', strtotime($input['isme_given_datetime'])),
+                'isme_created_datetime' => date('d M Y, h:i a'),
+                'remark' => $input['remark'],
+                'added_by' => $userLogin->person_name
+            ];
+            return $this->getSuccessResult($data, 'Examination updated.', true);
+        } else {
+            return $this->getErrorMessage('Examination not updated, pleaase try again.', false);
+        }
+    }
+
     public function getUniqueID()
     {
         $ipd_id = $this->randomString(10, 'number');
@@ -616,6 +926,39 @@ class IpdDetailController extends MainController
         }
     }
 
+    public function getIndoorSheetUniqueID()
+    {
+        $is_id = $this->randomString(10, 'number');
+        $check = $this->indoor_sheet->singlData($is_id);
+        if (!empty($check)) {
+            $this->getIndoorSheetUniqueID();
+        } else {
+            return $is_id;
+        }
+    }
+
+    public function getIndoorSheetMedicineUniqueID()
+    {
+        $ism_id = $this->randomString(10, 'number');
+        $check = $this->indoor_sheet_medicine->singlData($ism_id);
+        if (!empty($check)) {
+            $this->getIndoorSheetMedicineUniqueID();
+        } else {
+            return $ism_id;
+        }
+    }
+
+    public function getIndoorSheetMedicineExaminationUniqueID()
+    {
+        $isme_id = $this->randomString(10, 'number');
+        $check = $this->indoor_sheet_medicine_examination->singlData($isme_id);
+        if (!empty($check)) {
+            $this->getIndoorSheetMedicineExaminationUniqueID();
+        } else {
+            return $isme_id;
+        }
+    }
+
     /* Note Update */
     public function note_update(Request $request, $ipd_id)
     {
@@ -627,6 +970,18 @@ class IpdDetailController extends MainController
             return $this->getSuccessResult($data, 'Note update.', true);
         } else {
             return $this->getErrorMessage('Note not update, something is wrong.');
+        }
+    }
+
+    /* Get IPD Charge Unique ID */
+    public function getChargeUniqueID()
+    {
+        $ic_id = $this->randomString(10, 'number');
+        $check = $this->ipd_charge->singlData($ic_id);
+        if (!empty($check)) {
+            $this->getChargeUniqueID();
+        } else {
+            return $ic_id;
         }
     }
 }

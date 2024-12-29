@@ -75,7 +75,7 @@ function ImagePath($image = '')
         $img = $imgArr[0];
         return $storage = Storage::url($img);
     } else {
-        return '';
+        return asset('assets/media/users/blank.png');
     }
 }
 

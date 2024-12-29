@@ -72,7 +72,7 @@
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
                                                     <label for="ap_date">Appointment Date <span class="text-danger">*</span></label>
-                                                    <input type="date" class="form-control" placeholder="Appointment Date" name="ap_date" id="ap_date" value="{{ date('Y-m-d') }}" />
+                                                    <input type="date" class="form-control" placeholder="Appointment Date" name="ap_date" id="ap_date1" value="{{ date('Y-m-d') }}" />
                                                     <span class="text-danger" id="ap_dateErr"></span>
                                                 </div>
                                             </div>
@@ -203,7 +203,7 @@
         let ap_weight = $('#ap_weight').val();
         let ap_bp = $('#ap_bp').val();
         let ap_doctor = $('#ap_doctor_search').val();
-        let ap_date = $('#ap_date').val();
+        let ap_date = $('#ap_date1').val();
         let ap_book_via = $('#ap_book_via').val();
         let ap_case_type = $('#ap_case_type').val();
         let ap_charge = $('#ap_charge').val();

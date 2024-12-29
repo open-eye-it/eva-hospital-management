@@ -81,9 +81,12 @@
                                                     $status = 'Pending';
                                                     $status_class = 'label-light-info';
                                                     if($trainee->tr_status == 2){
+                                                    $status = 'On Going';
+                                                    $status_class = 'label-light-info';
+                                                    }else if($trainee->tr_status == 3){
                                                     $status = 'Completed';
                                                     $status_class = 'label-light-success';
-                                                    }else if($trainee->tr_status == 3){
+                                                    }else if($trainee->tr_status == 4){
                                                     $status = 'Cancelled';
                                                     $status_class = 'label-light-danger';
                                                     }else{
@@ -247,14 +250,19 @@
                         option += '<option value="1">Pending</option>';
                     }
                     if (data.tr_status == 2) {
-                        option += '<option value="2" selected>Completed</option>';
+                        option += '<option value="2" selected>On Going</option>';
                     } else {
-                        option += '<option value="2">Completed</option>';
+                        option += '<option value="2">On Going</option>';
                     }
                     if (data.tr_status == 3) {
-                        option += '<option value="3" selected>Cancelled</option>';
+                        option += '<option value="3" selected>Completed</option>';
                     } else {
-                        option += '<option value="3">Cancelled</option>';
+                        option += '<option value="3">Completed</option>';
+                    }
+                    if (data.tr_status == 4) {
+                        option += '<option value="4" selected>Cancelled</option>';
+                    } else {
+                        option += '<option value="4">Cancelled</option>';
                     }
                     $('#tr_status').html(option);
                     $('#tr_reason_cancel').text(data.tr_reason_cancel);
@@ -285,9 +293,12 @@
                     let statusText = 'Pending';
                     let statusClass = 'label-light-primary';
                     if (tr_status == 2) {
+                        statusText = 'On Going';
+                        statusClass = 'label-light-info';
+                    } else if (tr_status == 3) {
                         statusText = 'Completed';
                         statusClass = 'label-light-success';
-                    } else if (tr_status == 3) {
+                    } else if (tr_status == 4) {
                         statusText = 'Cancelled';
                         statusClass = 'label-light-danger';
                     } else {
@@ -296,6 +307,7 @@
                     }
                     $('#updateStatus_' + atob(tr_id)).text(statusText);
                     $('#updateStatus_' + atob(tr_id)).removeClass('label-light-primary');
+                    $('#updateStatus_' + atob(tr_id)).removeClass('label-light-info');
                     $('#updateStatus_' + atob(tr_id)).removeClass('label-light-success');
                     $('#updateStatus_' + atob(tr_id)).removeClass('label-light-danger');
                     $('#updateStatus_' + atob(tr_id)).addClass(statusClass);
@@ -326,10 +338,11 @@
                     let fileList = '';
                     if (data.tr_documents != '' && data.tr_documents != null) {
                         let fileArr = JSON.parse(data.tr_documents);
-                        let filepath = window.location.origin + '/storage/app/public/';
                         for (let i = 0; i < fileArr.length; i++) {
+                            let filepath = window.location.origin + '/storage/'+fileArr[i];
                             // fileList += '<p class="btn btn-primary" onclick="downloadFile(`' + fileArr[i] + '`)">' + fileArr[i] + '</p>';
-                            fileList += '<a title="download" class="btn btn-primary mt-4" download href="{{ route("trainee.file.download", "") }}/' + btoa(fileArr[i]) + '">' + fileArr[i] + ' <i class="fa fa-download"></i></a>';
+                            //fileList += '<div><a title="download" class="btn btn-primary mt-4" download href="{{ route("trainee.file.download", "") }}/' + btoa(fileArr[i]) + '">' + fileArr[i] + ' <i class="fa fa-download"></i></a></div>';
+                            fileList += '<div><a target="_blank" title="download" class="btn btn-primary mt-4" href="'+filepath+'">' + fileArr[i] + ' <i class="fa fa-download"></i></a></div>';
                         }
                     }
                     let view = '<tr> \
@@ -357,8 +370,8 @@
                         <td>' + data.tr_total_amount + '</td> \
                     </tr> \
                     <tr> \
-                        <th>Paid Amount</th> \
-                        <td>' + data.tr_paid_amount + '</td> \
+                        <th>Received Amount</th> \
+                        <td>' + data.paid_amount_final + '</td> \
                     </tr> \
                     <tr> \
                         <th>Is Advance Received?</th> \
@@ -400,7 +413,6 @@
             url: "{{ route('trainee.payment.view', '') }}" + "/" + tr_id,
             method: "GET",
             success: function(res) {
-                console.log(res);
                 if (res.response === true) {
                     $('#traineePaymentCharge').html(res.data);
                     $('#traineePaymentModal').modal('show');
@@ -442,7 +454,6 @@
                     tpl_amount: tpl_amount
                 },
                 success: function(res) {
-                    console.log(res);
                     let blankText = "";
                     $('#addAdditionalCharge').removeClass('spinner spinner-white spinner-right');
                     $('#addAdditionalCharge').attr('disabled', false);
@@ -474,7 +485,6 @@
             url: url,
             method: "GET",
             success: function(res) {
-                console.log(res);
                 if (res.response == true) {
                     let data = res.data;
                     $('#row_' + atob(tpl_id)).remove();
@@ -496,9 +506,43 @@
             url: urlPath,
             method: "GET",
             success: function(res) {
-                console.log(res);
+                //console.log(res);
             }
         });
     }
+
+    function printReceipt(tpl_id){
+        let url = "{{ route('trainee.payment.receipt', ['tpl_id' => ':tpl_id']) }}";
+        url = url.replace(':tpl_id', tpl_id);
+        $.ajax({
+            url: url,
+            method: "GET",
+            success: function(res) {
+                printData(res);
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    }
+
+    /* Print Data */
+    function printData(data) {
+        $('<iframe>', {
+                name: 'myiframe',
+                class: 'printFrame'
+            })
+            .appendTo('body')
+            .contents().find('body')
+            .append(data);
+
+        window.frames['myiframe'].focus();
+        window.frames['myiframe'].print();
+
+        setTimeout(() => {
+            $(".printFrame").remove();
+        }, 1000);
+    };
 </script>
 @endsection

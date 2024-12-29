@@ -28,7 +28,7 @@
                                         </div>
                                         <div class="col-12 form-group">
                                             <button class="btn btn-primary" type="submit">Search</button>
-                                            <a class="btn btn-danger" href="{{ route('ipd.list') }}">Resst</a>
+                                            <a class="btn btn-danger" href="{{ route('follow-up.ipd.list') }}">Resst</a>
                                             <button type="button" class="btn btn-info" onclick="exportIPD()"><i class="fa fa-file-export"></i> Export</button>
                                         </div>
                                     </div>
@@ -44,7 +44,7 @@
                                 </div>
                                 <div class="card-body">
                                     <!--begin: Datatable-->
-                                    <table class="table table-bordered scrollable_table_custom" id="">
+                                    <table class="table table-bordered table-hover scrollable_table_custom" id="">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
@@ -330,7 +330,7 @@
     </div>
 </div>
 <div class="modal fade" id="opdHistoryViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-dialog modal-xl popup-90" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">OPD Details</h5>
@@ -340,7 +340,7 @@
             </div>
             <div class="modal-body">
                 <h4>Total Fees: <span id="opd_total_fees"></span></h4>
-                <table class="table table-bordered scrollable_table_custom">
+                <table class="table table-bordered scrollable_table_custom" id="followUpOpdppopup">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -367,7 +367,7 @@
     </div>
 </div>
 <div class="modal fade" id="ipdHistoryViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-dialog modal-xl popup-90" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">IPD Details</h5>
@@ -844,12 +844,24 @@
             success: function(res) {
                 console.log(res);
                 if (res.response === true) {
+                    var table = $('#followUpOpdppopup').DataTable();
+                    table.destroy();
+                    $('#followUpOpdppopup').DataTable({
+                        autoWidth: true,
+                        searching: false,   
+                        paging: false,
+                        info: false
+                    });
+
                     let data = res.data.list;
                     let total_fees = res.data.total_fees;
                     let total_additional_fees = res.data.total_additional_fees;
                     $('#opd_total_fees').text(total_fees + total_additional_fees);
                     $('#opdHistoryViewDetail').html(data);
                     $('#opdHistoryViewModal').modal('show');
+                    //$('.dataTables_wrapper').DataTable().columns.adjust().draw();
+                    //$('#followUpOpdppopup').DataTable({colReorder: true});
+                    
                 } else {
                     sweetAlertError(res.message, 3000);
                 }

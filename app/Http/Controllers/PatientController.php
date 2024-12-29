@@ -47,8 +47,14 @@ class PatientController extends MainController
         $pa_id = $this->getUniqueID();
         $login_user_id = Auth::user()->user_id;
         $file = '';
+
         if ($request->hasFile('pa_photo')) {
-            $file = UploadCustomeImage($request->file('pa_photo'), $pa_id . '-' . $this->randomString(10, 'number'));
+            $fileName = $request->pa_photo->getClientOriginalName();
+            $filteNameArr = explode('.', $fileName);
+            $fileNameFinal = $filteNameArr[0] . '-' . $this->randomString(7, 'number');
+            $fileNameFinal = str_replace(' ', '-', $fileNameFinal);
+            //$file = UploadCustomeImage($request->file('pa_photo'), $pa_id . '-' . $this->randomString(10, 'number'));
+            $file = UploadCustomeImage($request->file('pa_photo'), $fileNameFinal);
         }
         if ($input['pa_referred_by'] != '') {
             /* Start::If Referred Doctor Not exist then create it */
@@ -68,6 +74,9 @@ class PatientController extends MainController
                     'rd_updated_by'   => $login_user_id,
                     'rd_name'         => $rd_name,
                 ];
+                if ($input['pa_referred_doctor'] == '' && $input['pa_referred_text'] != '') {
+                    $input['pa_referred_doctor'] = $input['pa_referred_text'];
+                }
                 $insert = $this->referred_doctor->insertData($data);
             }
             /* End::If Referred Doctor Not exist then create it */
@@ -113,8 +122,14 @@ class PatientController extends MainController
         $singleData = $this->patient->singlData($pa_id);
         $login_user_id = Auth::user()->user_id;
         $file = '';
+
         if ($request->hasFile('pa_photo')) {
-            $file = UploadCustomeImage($request->file('pa_photo'), $pa_id . '-' . $this->randomString(10, 'number'));
+            $fileName = $request->pa_photo->getClientOriginalName();
+            $filteNameArr = explode('.', $fileName);
+            $fileNameFinal = $filteNameArr[0] . '-' . $this->randomString(7, 'number');
+            $fileNameFinal = str_replace(' ', '-', $fileNameFinal);
+            // $file = UploadCustomeImage($request->file('pa_photo'), $pa_id . '-' . $this->randomString(10, 'number'));
+            $file = UploadCustomeImage($request->file('pa_photo'), $fileNameFinal);
             ImageRemove($singleData->pa_photo);
         } else {
             $file = $singleData->pa_photo;
@@ -135,6 +150,9 @@ class PatientController extends MainController
                 'rd_updated_by'   => $login_user_id,
                 'rd_name'         => $rd_name,
             ];
+            if ($input['pa_referred_doctor'] == '' && $input['pa_referred_text'] != '') {
+                $input['pa_referred_doctor'] = $input['pa_referred_text'];
+            }
             $insert = $this->referred_doctor->insertData($data);
         }
         /* End::If Referred Doctor Not exist then create it */
@@ -231,5 +249,12 @@ class PatientController extends MainController
         } else {
             return $rd_id;
         }
+    }
+
+    public function printPatient($pa_id)
+    {
+        $pa_id = base64_decode($pa_id);
+        $patientData = $this->patient->singlData($pa_id);
+        return response()->view('patient.detail-print', compact('patientData'));
     }
 }

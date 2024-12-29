@@ -110,6 +110,7 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
         Route::get('payment/view/{tr_id}', [TraineeController::class, 'traineePaymentView'])->name('trainee.payment.view');
         Route::post('payment/store', [TraineeController::class, 'traineePaymentStore'])->name('trainee.payment.store');
         Route::get('payment/remove/{tpl_id}/{tr_id}', [TraineeController::class, 'traineePaymentRemove'])->name('trainee.payment.remove');
+        Route::get('receipt/{tpl_id}', [TraineeController::class, 'paymentReceipt'])->name('trainee.payment.receipt');
     });
     /* Hospital Rooms with building, floor, ward, bed */
     Route::prefix('room')->group(function () {
@@ -161,6 +162,7 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
         Route::post('update/{pa_id}', [PatientController::class, 'update'])->name('patient.update')->middleware(['role_or_permission:patient-update']);
         Route::get('status/{pa_id}', [PatientController::class, 'status'])->name('patient.status')->middleware(['role_or_permission:patient-status']);
         Route::get('view/{pa_id}', [PatientController::class, 'view'])->name('patient.view')->middleware(['role_or_permission:patient-read']);
+        Route::get('print/{pa_id}', [PatientController::class, 'printPatient'])->name('patient.print');
     });
     /* Appointment Detail */
     Route::prefix('appointment')->group(function () {
@@ -169,12 +171,17 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
         Route::get('list', [AppointmentController::class, 'index'])->name('appointment.list')->middleware(['role_or_permission:appointment-read']);
         Route::get('edit/{ap_id}', [AppointmentController::class, 'edit'])->name('appointment.edit')->middleware(['role_or_permission:appointment-edit']);
         Route::post('update/{ap_id}', [AppointmentController::class, 'update'])->name('appointment.update')->middleware(['role_or_permission:appointment-edit']);
+        Route::get('doc/view/{ap_id}', [AppointmentController::class, 'appointmentDocView'])->name('appointment.doc.view');
+        Route::post('doc/send', [AppointmentController::class, 'appointmentDocSend'])->name('appointment.doc.send');
+        Route::get('doc/remove/{id?}', [AppointmentController::class, 'appointmentDocRemove'])->name('appointment.doc.remove');
+        Route::get('doc/download/{id?}', [AppointmentController::class, 'appointmentDocDownload'])->name('appointment.doc.download');
         Route::get('status/{string_val}', [AppointmentController::class, 'status'])->name('appointment.status')->middleware(['role_or_permission:appointment-status']);
         Route::get('view/{ap_id}', [AppointmentController::class, 'view'])->name('appointment.view')->middleware(['role_or_permission:appointment-full-view|follow-up-opd-notes']);
         Route::get('prescribe/{ap_id}', [AppointmentController::class, 'prescribe'])->name('appointment.prescribe')->middleware(['role_or_permission:appointment-prescription']);
         Route::post('prescribe/store/{ap_id}', [AppointmentController::class, 'prescribe_store'])->name('appointment.prescribe.store')->middleware(['role_or_permission:appointment-prescription']);
         Route::get('prescribe/medicine/store', [AppointmentController::class, 'appointmentMedicineStore'])->name('appointment.medicine.store');
         Route::get('prescribe/medicine/remove/{am_id}', [AppointmentController::class, 'appointmentMedicineRemove'])->name('appointment.medicine.remove');
+        Route::get('prescribe/medicine/serch/{gm_name}', [AppointmentController::class, 'searchGenerlMedicineList'])->name('appointment.prescribe-medicine.search.list');
         Route::get('patient_all_appointment/{pa_id}', [AppointmentController::class, 'patientAllAppointment'])->name('appointment.all_poointment');
         Route::get('export', [AppointmentController::class, 'export'])->name('appointment.export');
         Route::get('bill_print/{ap_id}', [AppointmentController::class, 'bill_print'])->name('appointment.bill_print')->middleware(['role_or_permission:appointment-bill-print']);
@@ -224,11 +231,24 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
         Route::get('ipd_history/{pa_id}', [IpdDetailController::class, 'IpdHistory'])->name('ipd.ipd_history')->middleware(['role_or_permission:follow-up-ipd-ipd-history|ipd-ipd-history']);
         Route::get('export', [IpdDetailController::class, 'export'])->name('ipd.export');
         Route::get('note_update/{ipd_id}', [IpdDetailController::class, 'note_update'])->name('ipd.note.update');
+        Route::get('indoor_sheet/list/{ipd_id}', [IpdDetailController::class, 'IndoorSheetList'])->name('ipd.indoor_sheet.list');
+        Route::post('indoor_sheet/findings/create', [IpdDetailController::class, 'IndoorSheetFindingsCreate'])->name('ipd.indoor_sheet.findings.add');
+        Route::get('indoor_sheet/findings/remove/{is_id}', [IpdDetailController::class, 'IndoorSheetFindingsRemove'])->name('ipd.indoor_sheet.findings.remove');
+        Route::get('indoor_sheet/medicine/list/{is_id}', [IpdDetailController::class, 'IndoorSheetMedicineList'])->name('ipd.indoor_sheet.medicine.list');
+        Route::post('indoor_sheet/medicine/create', [IpdDetailController::class, 'IndoorSheetMedicineCreate'])->name('ipd.indoor_sheet.medicine.add');
+        Route::get('indoor_sheet/medcine/remove/{ism_id}', [IpdDetailController::class, 'IndoorSheetMedicineRemove'])->name('ipd.indoor_sheet.medicine.remove');
+        Route::get('examination_sheet/list/{ipd_id}', [IpdDetailController::class, 'ExaminationSheetList'])->name('ipd.examination_sheet.list');
+        Route::get('examination_sheet/medicine/list/{is_id}', [IpdDetailController::class, 'ExaminationSheetMedicineList'])->name('ipd.examination_sheet.medicine.list');
+        Route::post('examination_sheet/medicine/add', [IpdDetailController::class, 'ExaminationSheetMedicineAdd'])->name('ipd.examination_sheet.medicine.add');
+        Route::get('examination_sheet/medicine/remove/{isme_id}', [IpdDetailController::class, 'ExaminationSheetMedicineRemove'])->name('ipd.examination_sheet.medicine.remove');
+        Route::get('examination_sheet/medicine/edit/{isme_id}', [IpdDetailController::class, 'ExaminationSheetMedicineEdit'])->name('ipd.examination_sheet.medicine.edit');
+        Route::post('examination_sheet/medicine/update', [IpdDetailController::class, 'ExaminationSheetMedicineUpdate'])->name('ipd.examination_sheet.medicine.update');
     });
     /* IPD Account Detail */
     Route::prefix('ipd-account-detail')->name('ipd-acount-detail.')->group(function () {
         Route::get('list', [IPDAccountDetailControoller::class, 'index'])->name('list')->middleware(['role_or_permission:account-detail-ipd-read']);
         Route::get('bill-detail/{ipd_id}', [IPDAccountDetailControoller::class, 'bill_detail'])->name('bill-detail')->middleware(['role_or_permission:account-detail-ipd-bill-amount']);
+        Route::post('bill-detail/discount-update', [IPDAccountDetailControoller::class, 'discount_update'])->name('bill-discount-update')->middleware(['role_or_permission:account-detail-ipd-bill-amount']);
         Route::get('charge/add/{ipd_id}', [IPDAccountDetailControoller::class, 'charge_add'])->name('charge.add');
         Route::get('charge/remove/{ic_id}', [IPDAccountDetailControoller::class, 'charge_remove'])->name('charge.remove');
         Route::get('charge/single/{ic_id}', [IPDAccountDetailControoller::class, 'charge_single'])->name('charge.single');

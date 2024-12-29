@@ -48,7 +48,7 @@ class MainController extends Controller
 
     private function getStatusOrDefault($status, $defaultStatus)
     {
-        if ($status === null) {
+        if ($status == null || $status == '') {
             return $defaultStatus;
         }
         return $status;

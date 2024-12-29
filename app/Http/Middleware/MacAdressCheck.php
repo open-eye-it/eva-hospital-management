@@ -24,10 +24,12 @@ class MacAdressCheck
         // $mac = str_replace(' Media disconnected', '', $mac);
         // $mac = trim($mac);
 
-        // $data = MacAddress::where('ma_address', $mac)->get()->first();
-        // if (empty($data)) {
-        //     return redirect()->route('access-denied');
-        // }
+        $mac = $request->ip();
+
+        $data = MacAddress::where('ma_address', $mac)->get()->first();
+        if (empty($data)) {
+            return redirect()->route('access-denied');
+        }
         return $next($request);
     }
 }

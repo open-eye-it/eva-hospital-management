@@ -5,7 +5,7 @@
     <title>Receipt</title>
 </head>
 
-<body style="font-family: Arial, Helvetica, sans-serif; font-style: italic;">
+<body style="font-family: Arial, Helvetica, saans-serif; font-style: italic;">
     <div style="border:2px solid; width:100%; text-align:center; padding-top:20px;">
         <img src="assets/eva/img/logo/eva-logo.png" style="max-width:200px;" />
         <h3 style="margin-bottom:0px; padding-bottom:0px;">

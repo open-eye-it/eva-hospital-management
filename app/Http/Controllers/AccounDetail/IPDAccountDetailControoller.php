@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\IpdDetail;
 use App\Models\IpdCharge;
 use App\Models\IpdPaymentList;
+use App\Models\Patient;
 
 class IPDAccountDetailControoller extends MainController
 {
@@ -20,6 +21,7 @@ class IPDAccountDetailControoller extends MainController
         $this->ipd = new IpdDetail;
         $this->ipd_charge = new IpdCharge;
         $this->ipd_payment = new IpdPaymentList;
+        $this->patient_model = new Patient;
     }
 
     public function index(Request $request)
@@ -57,13 +59,28 @@ class IPDAccountDetailControoller extends MainController
         $chargeList = $this->ipd_charge->getList($filterData, false)->toArray();
         $paymentList = $this->ipd_payment->getList($filterData, false)->toArray();
         $ipdData = $this->ipd->singlData($ipd_id);
+        $patientData = $this->patient_model->singlData($ipdData->pa_id);
 
         $data['ipdData'] = $ipdData;
         $data['chargeList'] = $chargeList;
         $data['paymentList'] = $paymentList;
+        $data['patientData'] = $patientData;
 
 
         return $this->getSuccessResult($data, 'Charge Detail', true);
+    }
+
+    /* Bill Discount Update */
+    public function discount_update(Request $request)
+    {
+        $input = $request->all();
+        $input['ipd_id'] = base64_decode($input['ipd_id']);
+        $update = $this->ipd->updateData(['ipd_discount' => $input['ipd_discount'], 'ipd_discount_approved_by' => $input['ipd_discount_approved_by']], $input['ipd_id']);
+        if ($update) {
+            return $this->getSuccessResult([], 'Discount updated.', true);
+        } else {
+            return $this->getErrorMessage('Discount not update, pleaase try again.');
+        }
     }
 
     /* Ipd Charge Add */
@@ -278,6 +295,7 @@ class IPDAccountDetailControoller extends MainController
 
         $ipdDetail = $this->ipd->singlData($ipd_id);
         $iplDetail = $this->ipd_payment->getList(['ipd_id' => $ipd_id]);
-        return response()->view('account-detail.ipd.bill-print', compact('ipdDetail', 'iplDetail'));
+        $ipdChargeList = $this->ipd_charge->getList(['ipd_id' => $ipd_id]);
+        return response()->view('account-detail.ipd.bill-print', compact('ipdDetail', 'iplDetail', 'ipdChargeList'));
     }
 }

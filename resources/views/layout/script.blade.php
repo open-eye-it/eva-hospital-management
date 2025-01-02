@@ -63,24 +63,24 @@
 </script>
 <!--end::Global Config-->
 <!--begin::Global Theme Bundle(used by all pages)-->
-<script src="assets/plugins/global/plugins.bundle.js"></script>
-<script src="assets/plugins/custom/prismjs/prismjs.bundle.js"></script>
-<script src="assets/js/scripts.bundle.js"></script>
+<script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
+<script src="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.js') }}"></script>
+<script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
 <!--end::Global Theme Bundle-->
 <!--begin::Page Vendors(used by this page)-->
 <!-- <script src="assets/plugins/custom/fullcalendar/fullcalendar.bundle.js"></script>
 <script src="//maps.google.com/maps/api/js?key=AIzaSyBTGnKT7dt597vo9QgeQ7BFhvSRP4eiMSM"></script>
 <script src="assets/plugins/custom/gmaps/gmaps.js"></script> -->
-<script src="assets/plugins/custom/datatables/datatables.bundle.js"></script>
+<script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
 <!--end::Page Vendors-->
 <!--begin::Page Scripts(used by this page)-->
-<script src="assets/js/pages/widgets.js"></script>
-<script src="assets/js/pages/crud/datatables/basic/basic.js"></script>
-<script src="assets/js/pages/crud/forms/widgets/select2.js"></script>
-<script src="assets/js/pages/crud/forms/widgets/bootstrap-daterangepicker.js"></script>
-<script src="assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js"></script>
-<script src="assets/js/pages/crud/datatables/basic/scrollable.js"></script>
-<script src="assets/js/moment.js"></script>
+<script src="{{ asset('assets/js/pages/widgets.js') }}"></script>
+<script src="{{ asset('assets/js/pages/crud/datatables/basic/basic.js') }}"></script>
+<script src="{{ asset('assets/js/pages/crud/forms/widgets/select2.js') }}"></script>
+<script src="{{ asset('assets/js/pages/crud/forms/widgets/bootstrap-daterangepicker.js') }}"></script>
+<script src="{{ asset('assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js') }}"></script>
+<script src="{{ asset('assets/js/pages/crud/datatables/basic/scrollable.js') }}"></script>
+<script src="{{ asset('assets/js/moment.js') }}"></script>
 <!--end::Page Scripts-->
-<script src="assets/js/custom.js"></script>
-<script src="assets/js/pages/features/miscellaneous/sweetalert2.js"></script>
+<script src="{{ asset('assets/js/custom.js') }}"></script>
+<script src="{{ asset('assets/js/pages/features/miscellaneous/sweetalert2.js') }}"></script>

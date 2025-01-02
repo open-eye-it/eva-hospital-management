@@ -13,20 +13,20 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
 	<!--end::Fonts-->
 	<!--begin::Page Custom Styles(used by this page)-->
-	<link href="assets/css/pages/login/classic/login-4.css" rel="stylesheet" type="text/css" />
+	<link href="{{ asset('assets/css/pages/login/classic/login-4.css') }}" rel="stylesheet" type="text/css" />
 	<!--end::Page Custom Styles-->
 	<!--begin::Global Theme Styles(used by all pages)-->
-	<link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-	<link href="assets/plugins/custom/prismjs/prismjs.bundle.css" rel="stylesheet" type="text/css" />
-	<link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+	<link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
+	<link href="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.css') }}" rel="stylesheet" type="text/css" />
+	<link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
 	<!--end::Global Theme Styles-->
 	<!--begin::Layout Themes(used by all pages)-->
-	<link href="assets/css/themes/layout/header/base/light.css" rel="stylesheet" type="text/css" />
-	<link href="assets/css/themes/layout/header/menu/light.css" rel="stylesheet" type="text/css" />
-	<link href="assets/css/themes/layout/brand/dark.css" rel="stylesheet" type="text/css" />
-	<link href="assets/css/themes/layout/aside/dark.css" rel="stylesheet" type="text/css" />
+	<link href="{{ asset('assets/css/themes/layout/header/base/light.css') }}" rel="stylesheet" type="text/css" />
+	<link href="{{ asset('assets/css/themes/layout/header/menu/light.css') }}" rel="stylesheet" type="text/css" />
+	<link href="{{ asset('assets/css/themes/layout/brand/dark.css') }}" rel="stylesheet" type="text/css" />
+	<link href="{{ asset('assets/css/themes/layout/aside/dark.css') }}" rel="stylesheet" type="text/css" />
 	<!--end::Layout Themes-->
-	<link rel="shortcut icon" href="assets/eva/img/logo/favicon-1.ico" />
+	<link rel="shortcut icon" href="{{ asset('assets/eva/img/logo/favicon-1.ico') }}" />
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -86,7 +86,7 @@
 	<!-- <script src="assets/js/pages/custom/login/login-general.js"></script> -->
 	<!--end::Page Scripts-->
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-	<script src="assets/js/custom.js"></script>
+	<script src="{{ asset('assets/js/custom.js') }}"></script>
 	<script>
 		$("form").submit(function(e) {
 			let username = $('#username').val();

@@ -53,10 +53,26 @@
                             </div>
                         </div>
                         <div class="col-xl-3">
+                            <div class="card card-custom bg-primary card-stretch gutter-b">
+                                <div class="card-body">
+                                    <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 d-block">{{ $opd_total_cash_pending }}</span>
+                                    <h2 class="font-weight-bold text-white">Pending Cash</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
                             <div class="card card-custom bg-info card-stretch gutter-b">
                                 <div class="card-body">
                                     <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 d-block">{{ $opd_total_card + $opd_total_additional_card }}</span>
                                     <h2 class="font-weight-bold text-white">Total Card</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="card card-custom bg-info card-stretch gutter-b">
+                                <div class="card-body">
+                                    <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 d-block">{{ $opd_total_card_pending }}</span>
+                                    <h2 class="font-weight-bold text-white">Pending Card</h2>
                                 </div>
                             </div>
                         </div>
@@ -69,10 +85,26 @@
                             </div>
                         </div>
                         <div class="col-xl-3">
+                            <div class="card card-custom bg-dark card-stretch gutter-b">
+                                <div class="card-body">
+                                    <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 d-block">{{ $opd_total_mediclaim_pending }}</span>
+                                    <h2 class="font-weight-bold text-white">Pending Mediclaim</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
                             <div class="card card-custom bg-warning card-stretch gutter-b">
                                 <div class="card-body">
                                     <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 d-block">{{ $opd_total_corporate + $opd_total_additional_corporate }}</span>
                                     <h2 class="font-weight-bold text-white">Total Corporate</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="card card-custom bg-warning card-stretch gutter-b">
+                                <div class="card-body">
+                                    <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 d-block">{{ $opd_total_corporate_pending }}</span>
+                                    <h2 class="font-weight-bold text-white">Pending Corporate</h2>
                                 </div>
                             </div>
                         </div>

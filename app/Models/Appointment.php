@@ -22,6 +22,7 @@ class Appointment extends Model
         'ap_book_via',
         'ap_case_type',
         'ap_charge',
+        'ap_charge_status',
         'ap_additional_charge',
         'ap_status',
         'ap_status_reaason',
@@ -84,6 +85,7 @@ class Appointment extends Model
         $appointment_date_range  = isset($filterdata['appointment_date_range']) ? $filterdata['appointment_date_range'] : '';
         $doctor                  = isset($filterdata['doctor']) ? $filterdata['doctor'] : '';
         $case_type               = isset($filterdata['case_type']) ? $filterdata['case_type'] : '';
+        $ap_charge_status        = isset($filterdata['ap_charge_status']) ? $filterdata['ap_charge_status'] : '';
         $follow_up_date_range    = isset($filterdata['follow_up_date_range']) ? $filterdata['follow_up_date_range'] : '';
         $ap_doctor               = isset($filterdata['ap_doctor']) ? $filterdata['ap_doctor'] : '';
         $ap_status               = isset($filterdata['ap_status']) ? $filterdata['ap_status'] : '';
@@ -108,6 +110,9 @@ class Appointment extends Model
         }
         if (isset($case_type) && $case_type != '') {
             $data->where('ap_case_type', $case_type);
+        }
+        if (isset($ap_charge_status) && $ap_charge_status != '') {
+            $data->where('ap_charge_status', $ap_charge_status);
         }
         if (isset($follow_up_date_range) && $follow_up_date_range != '') {
             $dateArr = explode(' - ', $follow_up_date_range);

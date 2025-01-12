@@ -104,6 +104,16 @@
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
+                                                    <label for="ap_case_type">Fee Status</label>
+                                                    <select class="form-control" name="ap_charge_status" id="ap_charge_status">
+                                                        <option value="pending" {{ ($data->ap_charge_status == 'pending') ? 'selected' : '' }}>Pending</option>
+                                                        <option value="paid" {{ ($data->ap_charge_status == 'paid') ? 'selected' : '' }}>Paid</option>
+                                                    </select>
+                                                    <span class="text-danger" id="ap_charge_statusErr"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
                                                     <label for="ap_case_type">Workshop Attended? <span class="text-danger">*</span></label>
                                                     <select class="form-control" name="ap_is_workshop" id="ap_is_workshop" onchange="changeIsWorkshop(this.value)">
                                                         <option value="no" {{ ($data->ap_is_workshop == 'no') ? 'selected' : '' }}>No</option>
@@ -115,7 +125,7 @@
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
                                                     <label for="ap_payment_mode">Mode of Payment <span class="text-danger">*</span></label>
-                                                    <select class="form-control" name="ap_payment_mode" id="ap_payment_mode" onchange="changeFee(this.value)">
+                                                    <select class="form-control" name="ap_payment_mode" id="ap_payment_mode" onchange="changePaymnt(this.value)">
                                                         <option value="">Select</option>
                                                         @foreach(PaymentMode() as $paymentType)
                                                         <option value="{{ $paymentType['ap_payment_mode'] }}" {{ ($paymentType['ap_payment_mode'] == $data->ap_payment_mode) ? 'selected' : '' }}>{{ ucfirst($paymentType['ap_payment_mode']) }}</option>
@@ -123,7 +133,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-12">
+                                            <div class="col-lg-6 col-md-6 col-12 {{ ($data->ap_payment_mode == 'cash' ? 'd-none' : '') }}" id="payment_detail_box">
                                                 <div class="form-group">
                                                     <label for="ap_payment_detail">Payment Detail <span class="text-danger">*</span></label>
                                                     <input type="text" class="form-control" placeholder="Payment Detail" name="ap_payment_detail" id="ap_payment_detail" value="{{ $data->ap_payment_detail }}" />
@@ -164,6 +174,31 @@
         $('#ap_charge').val(arr[1]);
     }
 
+    function changePaymnt(val){
+        $('#ap_payment_detail').val();
+        $('#ap_payment_detail').val('');
+        if(val == 'cash'){
+            $('#payment_detail_box').addClass('d-none');
+            $('#payment_detail_box input').attr('placeholder', 'Cash');
+        }else if(val == 'card'){
+            $('#payment_detail_box').removeClass('d-none');
+            $('#payment_detail_box label').text('Card Details');
+            $('#payment_detail_box input').attr('placeholder', 'Card Details');
+        }else if(val == 'upi'){
+            $('#payment_detail_box').removeClass('d-none');
+            $('#payment_detail_box label').text('Upi Details');
+            $('#payment_detail_box input').attr('placeholder', 'Upi Details');
+        }else if(val == 'mediclaim'){
+            $('#payment_detail_box').removeClass('d-none');
+            $('#payment_detail_box label').text('Mediclaim Company Name');
+            $('#payment_detail_box input').attr('placeholder', 'Mediclaim Company Name');
+        }else if(val == 'corporate'){
+            $('#payment_detail_box').removeClass('d-none');
+            $('#payment_detail_box label').text('Company Name / Other Details');
+            $('#payment_detail_box input').attr('placeholder', 'Company Name / Other Details');
+        }
+    }
+
     function changeIsWorkshop(val){
         if(val == 'yes'){
             $('#ap_charge').prop('disabled', false);
@@ -187,6 +222,7 @@
         let ap_book_via = $('#ap_book_via').val();
         let ap_case_type = $('#ap_case_type').val();
         let ap_charge = $('#ap_charge').val();
+        let ap_charge_status = $('#ap_charge_status').val();
         let ap_is_workshop = $('#ap_is_workshop').val();
         let ap_payment_mode = $('#ap_payment_mode').val();
         let ap_payment_detail = $('#ap_payment_detail').val();
@@ -215,7 +251,7 @@
                 },
                 url:"{{ route('appointment.update', base64_encode($data->ap_id)) }}",
                 method:"POST",
-                data:{pa_id:pa_id, ap_height:ap_height, ap_weight:ap_weight, ap_bp:ap_bp, ap_doctor:ap_doctor, ap_date:ap_date, ap_book_via:ap_book_via, ap_case_type:ap_case_type, ap_charge:ap_charge, ap_is_workshop:ap_is_workshop, ap_payment_mode:ap_payment_mode, ap_payment_detail:ap_payment_detail},
+                data:{pa_id:pa_id, ap_height:ap_height, ap_weight:ap_weight, ap_bp:ap_bp, ap_doctor:ap_doctor, ap_date:ap_date, ap_book_via:ap_book_via, ap_case_type:ap_case_type, ap_charge:ap_charge, ap_charge_status:ap_charge_status, ap_is_workshop:ap_is_workshop, ap_payment_mode:ap_payment_mode, ap_payment_detail:ap_payment_detail},
                 success:function(res){
                     $('#createBtn').removeClass('spinner spinner-white spinner-right');
                     $('#createBtn').attr('disabled', false);

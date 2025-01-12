@@ -58,6 +58,7 @@
                                                 <th>Case Type</th>
                                                 <th>Is FOC</th>
                                                 <th>Fee</th>
+                                                <th>Fee Status</th>
                                                 <th>Extra Charges</th>
                                                 <th>Follow Up Date</th>
                                                 <th>Decided Date of Surgery</th>
@@ -79,6 +80,7 @@
                                                 <td>{{ $appointment->ap_case_type }}</td>
                                                 <td>{{ ($appointment->ap_is_foc == 'yes') ? 'Yes' : 'No' }}</td>
                                                 <td>{{ $appointment->ap_charge }}</td>
+                                                <td>{{ ucfirst($appointment->ap_charge_status) }}</td>
                                                 <td id="app_row_additional_charge_{{ $appointment->ap_id }}">{{ $appointment->ap_additional_charge }}</td>
                                                 <td>{{ ($appointment->ap_follow_up_date != '' || !empty($appointment->ap_follow_up_date)) ? date('d M Y', strtotime($appointment->ap_follow_up_date)) : '' }}</td>
                                                 <td>{{ date('d M Y', strtotime($appointment->ap_surg_date)) }}</td>

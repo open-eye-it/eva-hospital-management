@@ -104,6 +104,16 @@
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
+                                                    <label for="ap_case_type">Fee Status</label>
+                                                    <select class="form-control" name="ap_charge_status" id="ap_charge_status">
+                                                        <option value="pending">Pending</option>
+                                                        <option value="paid">Paid</option>
+                                                    </select>
+                                                    <span class="text-danger" id="ap_charge_statusErr"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
                                                     <label for="ap_case_type">Workshop Attended? <span class="text-danger">*</span></label>
                                                     <select class="form-control" name="ap_is_workshop" id="ap_is_workshop" onchange="changeIsWorkshop(this.value)">
                                                         <option value="no">No</option>
@@ -174,6 +184,10 @@
             $('#payment_detail_box').removeClass('d-none');
             $('#payment_detail_box label').text('Card Details');
             $('#payment_detail_box input').attr('placeholder', 'Card Details');
+        }else if(val == 'upi'){
+            $('#payment_detail_box').removeClass('d-none');
+            $('#payment_detail_box label').text('Upi Details');
+            $('#payment_detail_box input').attr('placeholder', 'Upi Details');
         }else if(val == 'mediclaim'){
             $('#payment_detail_box').removeClass('d-none');
             $('#payment_detail_box label').text('Mediclaim Company Name');
@@ -207,6 +221,7 @@
         let ap_book_via = $('#ap_book_via').val();
         let ap_case_type = $('#ap_case_type').val();
         let ap_charge = $('#ap_charge').val();
+        let ap_charge_status = $('#ap_charge_status').val();
         let ap_is_workshop = $('#ap_is_workshop').val();
         let ap_payment_mode = $('#ap_payment_mode').val();
         let ap_payment_detail = $('#ap_payment_detail').val();
@@ -243,7 +258,7 @@
                 },
                 url:"{{ route('appointment.store') }}",
                 method:"POST",
-                data:{pa_id:pa_id, ap_height:ap_height, ap_weight:ap_weight, ap_bp:ap_bp, ap_doctor:ap_doctor, ap_date:ap_date, ap_book_via:ap_book_via, ap_case_type:ap_case_type, ap_charge:ap_charge, ap_is_workshop:ap_is_workshop, ap_payment_mode:ap_payment_mode, ap_payment_detail:ap_payment_detail},
+                data:{pa_id:pa_id, ap_height:ap_height, ap_weight:ap_weight, ap_bp:ap_bp, ap_doctor:ap_doctor, ap_date:ap_date, ap_book_via:ap_book_via, ap_case_type:ap_case_type, ap_charge:ap_charge, ap_charge_status:ap_charge_status, ap_is_workshop:ap_is_workshop, ap_payment_mode:ap_payment_mode, ap_payment_detail:ap_payment_detail},
                 success:function(res){console.log(res);
                     $('#createBtn').removeClass('spinner spinner-white spinner-right');
                     $('#createBtn').attr('disabled', false);

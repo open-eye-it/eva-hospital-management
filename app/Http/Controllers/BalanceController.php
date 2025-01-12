@@ -32,33 +32,73 @@ class BalanceController extends MainController
         $searchData['appointment_date_range']  = isset($input['date_range']) ? $input['date_range'] : '';
         $opd_total_fees = $this->totalFees($searchData);
         //$opd_total_additional_fees = $this->totalAdditionalFees($searchData);
-        $opd_total_additional_fees = $this->appointment_model->getAllData($searchData)->sum('ap_charge');
+        $opd_total_additional_fees = $this->appointment_model->getAllData($searchData)->sum('ap_additional_charge');
 
         $cashFilter = $searchData;
         $cashFilter['ap_payment_mode'] = 'cash';
         $cashFilter['apac_payment_mode'] = 'cash';
+        $cashFilter['ap_charge_status'] = 'paid';
         $opd_total_cash = $this->appointment_model->getAllData($cashFilter)->sum('ap_charge');
         $opd_total_additional_cash = $this->additonal_change_model->getAllData($cashFilter)->sum('apac_final_charge');
+
+        $cashPendingFilter = $searchData;
+        $cashPendingFilter['ap_payment_mode'] = 'cash';
+        $cashPendingFilter['ap_charge_status'] = 'pending';
+        $opd_total_cash_pending = $this->appointment_model->getAllData($cashPendingFilter)->sum('ap_charge');
 
         $cardFilter = $searchData;
         $cardFilter['ap_payment_mode'] = 'card';
         $cardFilter['apac_payment_mode'] = 'card';
+        $cardFilter['ap_charge_status'] = 'paid';
         $opd_total_card = $this->appointment_model->getAllData($cardFilter)->sum('ap_charge');
         $opd_total_additional_card = $this->additonal_change_model->getAllData($cardFilter)->sum('apac_final_charge');
+
+        $cardPendingFilter = $searchData;
+        $cardPendingFilter['ap_payment_mode'] = 'card';
+        $cardPendingFilter['ap_charge_status'] = 'pending';
+        $opd_total_card_pending = $this->appointment_model->getAllData($cardPendingFilter)->sum('ap_charge');
 
         $mediclaimFilter = $searchData;
         $mediclaimFilter['ap_payment_mode'] = 'mediclaim';
         $mediclaimFilter['apac_payment_mode'] = 'mediclaim';
+        $mediclaimFilter['ap_charge_status'] = 'paid';
         $opd_total_mediclaim = $this->appointment_model->getAllData($mediclaimFilter)->sum('ap_charge');
         $opd_total_additional_mediclaim = $this->additonal_change_model->getAllData($mediclaimFilter)->sum('apac_final_charge');
+
+        $mediclaimPendingFilter = $searchData;
+        $mediclaimPendingFilter['ap_payment_mode'] = 'mediclaim';
+        $mediclaimPendingFilter['ap_charge_status'] = 'pending';
+        $opd_total_mediclaim_pending = $this->appointment_model->getAllData($mediclaimPendingFilter)->sum('ap_charge');
 
         $corporateFilter = $searchData;
         $corporateFilter['ap_payment_mode'] = 'corporate';
         $corporateFilter['apac_payment_mode'] = 'corporate';
+        $corporateFilter['ap_charge_status'] = 'pending';
         $opd_total_corporate = $this->appointment_model->getAllData($corporateFilter)->sum('ap_charge');
         $opd_total_additional_corporate = $this->additonal_change_model->getAllData($corporateFilter)->sum('apac_final_charge');
 
-        return view('balance.opd.list', compact('searchData', 'opd_total_fees', 'opd_total_additional_fees', 'opd_total_cash', 'opd_total_additional_cash', 'opd_total_card', 'opd_total_additional_card', 'opd_total_mediclaim', 'opd_total_additional_mediclaim', 'opd_total_corporate', 'opd_total_additional_corporate'));
+        $corporatePendingFilter = $searchData;
+        $corporatePendingFilter['ap_payment_mode'] = 'corporate';
+        $corporatePendingFilter['ap_charge_status'] = 'paid';
+        $opd_total_corporate_pending = $this->appointment_model->getAllData($corporatePendingFilter)->sum('ap_charge');
+
+        return view('balance.opd.list', compact(
+            'searchData',
+            'opd_total_fees',
+            'opd_total_additional_fees',
+            'opd_total_cash',
+            'opd_total_additional_cash',
+            'opd_total_cash_pending',
+            'opd_total_card',
+            'opd_total_additional_card',
+            'opd_total_card_pending',
+            'opd_total_mediclaim',
+            'opd_total_additional_mediclaim',
+            'opd_total_mediclaim_pending',
+            'opd_total_corporate',
+            'opd_total_additional_corporate',
+            'opd_total_corporate_pending'
+        ));
     }
 
     /* Total of Charge */

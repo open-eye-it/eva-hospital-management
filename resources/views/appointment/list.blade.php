@@ -410,11 +410,19 @@
                         <th>Apointment booked via</th> \
                         <td>' + $.trim(data.ap_book_via) + '</td> \
                         <th>Case Type</th> \
-                        <td>' + $.trim(data.ap_case_type) + '</td> \
+                        <td>' + $.trim(data.ap_case_type).toLowerCase().replace(/^[a-z]/, function(m) {
+                        return m.toUpperCase()
+                    }) + '</td> \
                     </tr> \
                     <tr> \
                         <th>Fees</th> \
                         <td>' + $.trim(data.ap_charge) + '</td> \
+                        <th>Fee Status</th> \
+                        <td>' + $.trim(data.ap_charge_status).toLowerCase().replace(/^[a-z]/, function(m) {
+                        return m.toUpperCase()
+                    }) + '</td> \
+                    </tr> \
+                    <tr> \
                         <th>Additional Charge</th> \
                         <td>' + $.trim(data.ap_additional_charge) + '</td> \
                     </tr>';

@@ -19,29 +19,15 @@
                                     <h3 class="card-title">Update</h3>
                                 </div>
                                 <!--begin::Form-->
-                                <form method="POST" action="{{ route('general-medicine.update', $data->gm_id) }}" id="createCatefgory">
+                                <form method="POST" action="{{ route('post-medicine.update', $data->poom_id) }}" id="createCatefgory">
                                     <meta name="csrf-token" content="{{ csrf_token() }}">
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label>Medicine Name <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" placeholder="Medicine Name" name="gm_name" id="gm_name" value="{{ $data->gm_name }}" />
-                                                    <span class="text-danger" id="gm_nameErr"></span>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6 col-md-6 col-12">
-                                                <div class="form-group">
-                                                    <label>Company Name</label>
-                                                    <input type="text" class="form-control" placeholder="Company Name" name="gm_company_name" id="gm_company_name" value="{{ $data->gm_company_name }}" />
-                                                    <span class="text-danger" id="gm_company_nameErr"></span>
-                                                </div>
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="form-group">
-                                                    <label>Description</label>
-                                                    <textarea name="gm_description" id="gm_description" class="form-control" cols="30" rows="10">{{ $data->gm_description }}</textarea>
-                                                    <span class="text-danger" id="gm_company_nameErr"></span>
+                                                    <label>Recommendation <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" placeholder="Recommendation" name="recommendation" id="recommendation" value="{{ $data->recommendation }}" />
+                                                    <span class="text-danger" id="recommendationErr"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -75,13 +61,11 @@
 <script>
     $("form").submit(function(e) {
         e.preventDefault();
-        let gm_name = $('#gm_name').val();
-        let gm_company_name = $('#gm_company_name').val();
-        let gm_description = $('#gm_description').val();
-        if(gm_name == ''){
-            $('#gm_nameErr').text('Please enter medicine name');
-            timeoutID('gm_nameErr', 3000);
-            scrollTop('gm_nameErr');
+        let recommendation = $('#recommendation').val();
+        if(recommendation == ''){
+            $('#recommendationErr').text('Please enter recommendation');
+            timeoutID('recommendationErr', 3000);
+            scrollTop('recommendationErr');
         }
         // else if(gm_company_name == ''){
         //     $('#gm_company_nameErr').text('Please enter company name');
@@ -95,14 +79,14 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                url:"{{ route('general-medicine.update', base64_encode($data->gm_id)) }}",
+                url:"{{ route('post-medicine.update', base64_encode($data->poom_id)) }}",
                 method:"POST",
-                data:{gm_name:gm_name, gm_company_name:gm_company_name, gm_description:gm_description},
+                data:{recommendation:recommendation},
                 success:function(res){
                     $('#createBtn').removeClass('spinner spinner-white spinner-right');
                     $('#createBtn').attr('disabled', false);
                     if(res.response === true){
-                        sweetAlertSuccess(res.message, 3000, "{{ route('general-medicine.list') }}");
+                        sweetAlertSuccess(res.message, 3000, "{{ route('post-medicine.list') }}");
                     }else{
                         sweetAlertError(res.message, 3000); 
                     }

@@ -14,6 +14,7 @@ use App\Http\Controllers\RoomController;
 use App\Http\Controllers\ReferredDoctorController;
 use App\Http\Controllers\medicines\GeneralMedicineController;
 use App\Http\Controllers\medicines\OperationMedicineController;
+use App\Http\Controllers\medicines\PostOperativeMedicineController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\FollowUpController;
@@ -151,6 +152,15 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
             Route::get('edit/{user_id}', [OperationMedicineController::class, 'edit'])->name('operation-medicine.edit')->middleware(['role_or_permission:operation-medicine-update']);
             Route::post('update/{user_id}', [OperationMedicineController::class, 'update'])->name('operation-medicine.update')->middleware(['role_or_permission:operation-medicine-update']);
             Route::get('status/{user_id}', [OperationMedicineController::class, 'status'])->name('operation-medicine.status')->middleware(['role_or_permission:operation-medicine-status']);
+        });
+
+        Route::prefix('post-operative-medicine')->group(function () {
+            Route::get('create', [PostOperativeMedicineController::class, 'create'])->name('post-medicine.create');
+            Route::post('store', [PostOperativeMedicineController::class, 'store'])->name('post-medicine.store');
+            Route::get('list', [PostOperativeMedicineController::class, 'index'])->name('post-medicine.list');
+            Route::get('edit/{user_id}', [PostOperativeMedicineController::class, 'edit'])->name('post-medicine.edit');
+            Route::post('update/{user_id}', [PostOperativeMedicineController::class, 'update'])->name('post-medicine.update');
+            Route::get('status/{user_id}', [PostOperativeMedicineController::class, 'status'])->name('post-medicine.status');
         });
     });
     /* Patient Detail */

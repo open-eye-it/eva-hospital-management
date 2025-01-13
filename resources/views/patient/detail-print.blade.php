@@ -88,7 +88,7 @@
                                     <td style="padding:7px;"><strong>Occupation</strong></td>
                                     <td style="padding:7px;">{{ $patientData->pa_occupation }}</td>
                                 </tr>
-                                <tr>
+                                <!-- <tr>
                                     <td style="padding:7px;"><Strong>Last Menstrual Period</Strong></td>
                                     <td style="padding:7px;">{{ $patientData->pa_last_monestrual_period }}</td>
                                     <td style="padding:7px;"><strong>Number of Pregnancy</strong></td>
@@ -99,14 +99,16 @@
                                     <td style="padding:7px;">{{ $patientData->pa_miscarriages_no }}</td>
                                     <td style="padding:7px;"><strong>Number of Abortion</strong></td>
                                     <td style="padding:7px;">{{ $patientData->pa_abortion_no }}</td>
-                                </tr>
+                                </tr> -->
                                 <tr>
-                                    <td style="padding:7px;"><Strong>Number of Living Children</Strong></td>
-                                    <td style="padding:7px;">{{ $patientData->pa_children_no }}</td>
+                                    <!-- <td style="padding:7px;"><Strong>Number of Living Children</Strong></td>
+                                    <td style="padding:7px;">{{ $patientData->pa_children_no }}</td> -->
                                     <td style="padding:7px;"><strong>Photo</strong></td>
                                     <td style="padding:7px;"><img src="{{ ImagePath($patientData->pa_photo) }}" width="100px" /></td>
+                                    <td style="padding:7px;"><Strong>Referred By</Strong></td>
+                                    <td style="padding:7px;">{{ $patientData->pa_referred_by }}</td>
                                 </tr>
-                                <tr>
+                                <!-- <tr>
                                     <td style="padding:7px;" colspan="4"><Strong>Do you consume any of below?</Strong></td>
                                 </tr>
                                 <tr>
@@ -126,17 +128,19 @@
                                 <tr>
                                     <td style="padding:7px;"><Strong>Family member had any medical or surgical history?</Strong></td>
                                     <td style="padding:7px;" colspan="3">{{ $patientData->pa_family_medical_history }}</td>
-                                </tr>
+                                </tr> -->
                                 <tr>
-                                    <td style="padding:7px;"><Strong>Referred By</Strong></td>
-                                    <td style="padding:7px;">{{ $patientData->pa_referred_by }}</td>
+                                    <!-- <td style="padding:7px;"><Strong>Referred By</Strong></td>
+                                    <td style="padding:7px;">{{ $patientData->pa_referred_by }}</td> -->
                                     <td style="padding:7px;"><strong>Referred Doctor</strong></td>
                                     <td style="padding:7px;">{{ $patientData->pa_referred_doctor }}</td>
-                                </tr>
-                                <tr>
                                     <td style="padding:7px;"><Strong>Referred Name</Strong></td>
                                     <td style="padding:7px;" colspan="3">{{ $patientData->pa_referred_text }}</td>
                                 </tr>
+                                <!-- <tr>
+                                    <td style="padding:7px;"><Strong>Referred Name</Strong></td>
+                                    <td style="padding:7px;" colspan="3">{{ $patientData->pa_referred_text }}</td>
+                                </tr> -->
                             </table>
                         </div>
                     </div>

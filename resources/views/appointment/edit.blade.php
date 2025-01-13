@@ -139,6 +139,84 @@
                                                     <input type="text" class="form-control" placeholder="Payment Detail" name="ap_payment_detail" id="ap_payment_detail" value="{{ $data->ap_payment_detail }}" />
                                                 </div>
                                             </div>
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label>Last Menstrual Period</label>
+                                                    <input type="text" class="form-control" placeholder="Last Menstrual Period" name="pa_last_monestrual_period" id="pa_last_monestrual_period" value="{{ $data->pa_last_monestrual_period }}" />
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label>Number of Pregnancy</label>
+                                                    <input type="text" class="form-control" placeholder="Number of Pregnancy" name="pa_pregnancy_no" id="pa_pregnancy_no" value="{{ $data->pa_pregnancy_no }}" />
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label>Number of Miscarriages</label>
+                                                    <input type="text" class="form-control" placeholder="Number of Miscarriages" name="pa_miscarriages_no" id="pa_miscarriages_no" value="{{ $data->pa_miscarriages_no }}" />
+                                                </div>
+                                            </div>
+                                            <!-- <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label>Number of Abortion</label>
+                                                    <input type="text" class="form-control" placeholder="Number of Abortion" name="pa_abortion_no" id="pa_abortion_no" />
+                                                </div>
+                                            </div> -->
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label>Number of Living Children</label>
+                                                    <input type="text" class="form-control" placeholder="Number of Living Children" name="pa_children_no" id="pa_children_no" value="{{ $data->pa_children_no }}" />
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <h4>Do you consume any of below?</h4>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label>Tobacco</label>
+                                                    <select name="pa_tobacco" id="pa_tobacco" class="form-control">
+                                                        <option value="">-Select</option>
+                                                        <option value="no" {{ ($data->pa_tobacco == 'no') ? 'selected' : '' }}>No</option>
+                                                        <option value="occational" {{ ($data->pa_tobacco == 'occational') ? 'selected' : '' }}>Occational</option>
+                                                        <option value="regular" {{ ($data->pa_tobacco == 'regular') ? 'selected' : '' }}>Regular</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label>Smoking</label>
+                                                    <select name="pa_smoking" id="pa_smoking" class="form-control">
+                                                        <option value="">-Select</option>
+                                                        <option value="no" {{ ($data->pa_smoking == 'no') ? 'selected' : '' }}>No</option>
+                                                        <option value="occational" {{ ($data->pa_smoking == 'occational') ? 'selected' : '' }}>Occational</option>
+                                                        <option value="regular" {{ ($data->pa_smoking == 'regular') ? 'selected' : '' }}>Regular</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label>Alcohol</label>
+                                                    <select name="pa_alcohol" id="pa_alcohol" class="form-control">
+                                                        <option value="">-Select</option>
+                                                        <option value="no" {{ ($data->pa_alcohol == 'no') ? 'selected' : '' }}>No</option>
+                                                        <option value="occational" {{ ($data->pa_alcohol == 'occational') ? 'selected' : '' }}>Occational</option>
+                                                        <option value="regular" {{ ($data->pa_alcohol == 'regular') ? 'selected' : '' }}>Regular</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label>Any medical or surgical history?</label>
+                                                    <textarea name="pa_medical_history" id="pa_medical_history" class="form-control" cols="30" rows="5">{{ $data->pa_medical_history }}</textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label>Family member had any medical or surgical history?</label>
+                                                    <textarea name="pa_family_medical_history" id="pa_family_medical_history" class="form-control" cols="30" rows="5">{{ $data->pa_family_medical_history }}</textarea>
+                                                </div>
+                                            </div>
                                         </div>
                                         <!--begin: Code-->
                                         <div class="example-code mt-10">
@@ -226,6 +304,16 @@
         let ap_is_workshop = $('#ap_is_workshop').val();
         let ap_payment_mode = $('#ap_payment_mode').val();
         let ap_payment_detail = $('#ap_payment_detail').val();
+        let pa_last_monestrual_period = $('#pa_last_monestrual_period').val();
+        let pa_pregnancy_no = $('#pa_pregnancy_no').val();
+        let pa_miscarriages_no = $('#pa_miscarriages_no').val();
+        //let pa_abortion_no = $('#pa_abortion_no').val();
+        let pa_children_no = $('#pa_children_no').val();
+        let pa_tobacco = $('#pa_tobacco').val();
+        let pa_smoking = $('#pa_smoking').val();
+        let pa_alcohol = $('#pa_alcohol').val();
+        let pa_medical_history = $('#pa_medical_history').val();
+        let pa_family_medical_history = $('#pa_family_medical_history').val();
         if(pa_id == ''){
             $('#pa_idErr').text('Please select patient name');
             timeoutID('pa_idErr', 3000);
@@ -251,7 +339,31 @@
                 },
                 url:"{{ route('appointment.update', base64_encode($data->ap_id)) }}",
                 method:"POST",
-                data:{pa_id:pa_id, ap_height:ap_height, ap_weight:ap_weight, ap_bp:ap_bp, ap_doctor:ap_doctor, ap_date:ap_date, ap_book_via:ap_book_via, ap_case_type:ap_case_type, ap_charge:ap_charge, ap_charge_status:ap_charge_status, ap_is_workshop:ap_is_workshop, ap_payment_mode:ap_payment_mode, ap_payment_detail:ap_payment_detail},
+                data:{
+                    pa_id:pa_id, 
+                    ap_height:ap_height, 
+                    ap_weight:ap_weight, 
+                    ap_bp:ap_bp, 
+                    ap_doctor:ap_doctor, 
+                    ap_date:ap_date, 
+                    ap_book_via:ap_book_via, 
+                    ap_case_type:ap_case_type, 
+                    ap_charge:ap_charge, 
+                    ap_charge_status:ap_charge_status, 
+                    ap_is_workshop:ap_is_workshop, 
+                    ap_payment_mode:ap_payment_mode, 
+                    ap_payment_detail:ap_payment_detail,
+                    pa_last_monestrual_period:pa_last_monestrual_period,
+                    pa_pregnancy_no: pa_pregnancy_no,
+                    pa_miscarriages_no: pa_miscarriages_no,
+                    //pa_abortion_no: pa_abortion_no,
+                    pa_children_no: pa_children_no,
+                    pa_tobacco: pa_tobacco,
+                    pa_smoking: pa_smoking,
+                    pa_alcohol: pa_alcohol,
+                    pa_medical_history: pa_medical_history,
+                    pa_family_medical_history: pa_family_medical_history
+                },
                 success:function(res){
                     $('#createBtn').removeClass('spinner spinner-white spinner-right');
                     $('#createBtn').attr('disabled', false);

@@ -425,6 +425,39 @@
                     <tr> \
                         <th>Additional Charge</th> \
                         <td>' + $.trim(data.ap_additional_charge) + '</td> \
+                    </tr> \
+                    <tr> \
+                        <th>Last Menstrual Period</th> \
+                        <td>' + $.trim(data.pa_last_monestrual_period) + '</td> \
+                        <th>Number of Pregnancy</th> \
+                        <td>' + $.trim(data.pa_pregnancy_no) + '</td> \
+                    </tr> \
+                    <tr> \
+                        <th>Number of Miscarriages</th> \
+                        <td>' + $.trim(data.pa_miscarriages_no) + '</td> \
+                        <th>Number of Living Children</th> \
+                        <td>' + $.trim(data.pa_children_no) + '</td> \
+                    </tr> \
+                    <tr> \
+                        <th colspan="4"><h4><strong>Do you consume any of below?</strong></h4></th> \
+                    </tr> \
+                    <tr> \
+                        <th>Tobacco</th> \
+                        <td>' + $.trim(data.pa_tobacco) + '</td> \
+                        <th>Smoking</th> \
+                        <td>' + $.trim(data.pa_smoking) + '</td> \
+                    </tr> \
+                    <tr> \
+                        <th>Alcohol</th> \
+                        <td colspan="3">' + $.trim(data.pa_alcohol) + '</td> \
+                    </tr> \
+                    <tr> \
+                        <th>Any medical or surgical history?</th> \
+                        <td colspan="3">' + $.trim(data.pa_medical_history) + '</td> \
+                    </tr> \
+                    <tr> \
+                        <th>Family member had any medical or surgical history?</th> \
+                        <td colspan="3">' + $.trim(data.pa_family_medical_history) + '</td> \
                     </tr>';
 
                     $('#viewDetail').html(view);

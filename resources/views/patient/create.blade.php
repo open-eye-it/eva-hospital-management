@@ -39,8 +39,9 @@
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label>Alternate Contact No</label>
+                                                    <label>Alternate Contact No <span class="text-danger">*</span></label>
                                                     <input type="text" class="form-control" placeholder="Alternate Contact No" name="pa_alt_contact_no" id="pa_alt_contact_no" />
+                                                    <span class="text-danger" id="pa_alt_contact_noErr"></span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
@@ -57,26 +58,30 @@
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label>Address</label>
+                                                    <label>Address <span class="text-danger">*</span></label>
                                                     <input type="text" class="form-control" placeholder="Address" name="pa_address" id="pa_address" />
+                                                    <span class="text-danger" id="pa_addressErr"></span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label>City</label>
+                                                    <label>City <span class="text-danger">*</span></label>
                                                     <input type="text" class="form-control" placeholder="City" name="pa_city" id="pa_city" />
+                                                    <span class="text-danger" id="pa_cityErr"></span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label>Pin Code</label>
+                                                    <label>Pin Code <span class="text-danger">*</span></label>
                                                     <input type="text" class="form-control" placeholder="Pin Code" name="pa_pincode" id="pa_pincode" />
+                                                    <span class="text-danger" id="pa_pincodeErr"></span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label>State</label>
+                                                    <label>State <span class="text-danger">*</span></label>
                                                     <input type="text" class="form-control" placeholder="State" name="pa_state" id="pa_state" />
+                                                    <span class="text-danger" id="pa_stateErr"></span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
@@ -121,31 +126,31 @@
                                                     <input type="text" class="form-control" placeholder="Occupation" name="pa_occupation" id="pa_occupation" />
                                                 </div>
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-12">
+                                            <div class="col-lg-6 col-md-6 col-12 d-none">
                                                 <div class="form-group">
                                                     <label>Last Menstrual Period</label>
                                                     <input type="text" class="form-control" placeholder="Last Menstrual Period" name="pa_last_monestrual_period" id="pa_last_monestrual_period" />
                                                 </div>
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-12">
+                                            <div class="col-lg-6 col-md-6 col-12 d-none">
                                                 <div class="form-group">
                                                     <label>Number of Pregnancy</label>
                                                     <input type="text" class="form-control" placeholder="Number of Pregnancy" name="pa_pregnancy_no" id="pa_pregnancy_no" />
                                                 </div>
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-12">
+                                            <div class="col-lg-6 col-md-6 col-12 d-none">
                                                 <div class="form-group">
                                                     <label>Number of Miscarriages</label>
                                                     <input type="text" class="form-control" placeholder="Number of Miscarriages" name="pa_miscarriages_no" id="pa_miscarriages_no" />
                                                 </div>
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-12">
+                                            <div class="col-lg-6 col-md-6 col-12 d-none">
                                                 <div class="form-group">
                                                     <label>Number of Abortion</label>
                                                     <input type="text" class="form-control" placeholder="Number of Abortion" name="pa_abortion_no" id="pa_abortion_no" />
                                                 </div>
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-12">
+                                            <div class="col-lg-6 col-md-6 col-12 d-none">
                                                 <div class="form-group">
                                                     <label>Number of Living Children</label>
                                                     <input type="text" class="form-control" placeholder="Number of Living Children" name="pa_children_no" id="pa_children_no" />
@@ -157,10 +162,10 @@
                                                     <input type="file" class="form-control" placeholder="Photo" name="pa_photo" id="pa_photo" />
                                                 </div>
                                             </div>
-                                            <div class="col-12">
+                                            <div class="col-12 d-none">
                                                 <h4>Do you consume any of below?</h4>
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-12">
+                                            <div class="col-lg-6 col-md-6 col-12 d-none">
                                                 <div class="form-group">
                                                     <label>Tobacco</label>
                                                     <select name="pa_tobacco" id="pa_tobacco" class="form-control">
@@ -171,7 +176,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-12">
+                                            <div class="col-lg-6 col-md-6 col-12 d-none">
                                                 <div class="form-group">
                                                     <label>Smoking</label>
                                                     <select name="pa_smoking" id="pa_smoking" class="form-control">
@@ -182,7 +187,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-12">
+                                            <div class="col-lg-6 col-md-6 col-12 d-none">
                                                 <div class="form-group">
                                                     <label>Alcohol</label>
                                                     <select name="pa_alcohol" id="pa_alcohol" class="form-control">
@@ -193,13 +198,13 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-12">
+                                            <div class="col-12 d-none">
                                                 <div class="form-group">
                                                     <label>Any medical or surgical history?</label>
                                                     <textarea name="pa_medical_history" id="pa_medical_history" class="form-control" cols="30" rows="5"></textarea>
                                                 </div>
                                             </div>
-                                            <div class="col-12">
+                                            <div class="col-12 d-none">
                                                 <div class="form-group">
                                                     <label>Family member had any medical or surgical history?</label>
                                                     <textarea name="pa_family_medical_history" id="pa_family_medical_history" class="form-control" cols="30" rows="5"></textarea>
@@ -321,6 +326,11 @@
         e.preventDefault();
         let pa_name = $('#pa_name').val();
         let pa_contact_no = $('#pa_contact_no').val();
+        let pa_alt_contact_no = $('#pa_alt_contact_no').val();
+        let pa_address = $('#pa_address').val();
+        let pa_city = $('#pa_city').val();
+        let pa_pincode = $('#pa_pincode').val();
+        let pa_state = $('#pa_state').val();
         let pa_dob = $('#pa_dob').val();
         let pa_age = $('#pa_age').val();
         if(pa_name == ''){
@@ -332,6 +342,36 @@
             $('#pa_contact_noErr').text('Please enter contact no');
             timeoutID('pa_contact_noErr', 3000);
             scrollTop('pa_contact_noErr');
+        }
+        else if(pa_alt_contact_no == ''){
+            $('#pa_alt_contact_noErr').text('Please enter alternate contact no');
+            timeoutID('pa_alt_contact_noErr', 3000);
+            scrollTop('pa_alt_contact_noErr');
+        }
+        else if(pa_address == ''){
+            $('#pa_addressErr').text('Please enter address');
+            timeoutID('pa_addressErr', 3000);
+            scrollTop('pa_addressErr');
+        }
+        else if(pa_city == ''){
+            $('#pa_cityErr').text('Please enter city');
+            timeoutID('pa_cityErr', 3000);
+            scrollTop('pa_cityErr');
+        }
+        else if(pa_city == ''){
+            $('#pa_cityErr').text('Please enter city');
+            timeoutID('pa_cityErr', 3000);
+            scrollTop('pa_cityErr');
+        }
+        else if(pa_pincode == ''){
+            $('#pa_pincodeErr').text('Please enter pin code');
+            timeoutID('pa_pincodeErr', 3000);
+            scrollTop('pa_pincodeErr');
+        }
+        else if(pa_state == ''){
+            $('#pa_stateErr').text('Please enter state');
+            timeoutID('pa_stateErr', 3000);
+            scrollTop('pa_stateErr');
         }
         // else if(pa_dob == ''){
         //     $('#pa_dobErr').text('Please select patient DOB');

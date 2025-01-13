@@ -37,7 +37,17 @@ class Appointment extends Model
         'ap_is_foc',
         'ap_is_workshop',
         'ap_payment_mode',
-        'ap_payment_detail'
+        'ap_payment_detail',
+        'pa_last_monestrual_period',
+        'pa_pregnancy_no',
+        'pa_miscarriages_no',
+        //'pa_abortion_no',
+        'pa_children_no',
+        'pa_tobacco',
+        'pa_smoking',
+        'pa_alcohol',
+        'pa_medical_history',
+        'pa_family_medical_history'
     ];
 
     public function singlData($ap_id)

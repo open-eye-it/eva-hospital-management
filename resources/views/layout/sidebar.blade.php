@@ -293,7 +293,7 @@
 					</div>
 				</li>
 				@endif
-				@if(auth()->user()->can('general-medicine-read') || auth()->user()->can('operation-medicine-read'))
+				@if(auth()->user()->can('general-medicine-read') || auth()->user()->can('operation-medicine-read') || auth()->user()->can('post-operative-medicine-read'))
 				<li class="menu-section">
 					<h4 class="menu-text">Medicine</h4>
 					<i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -329,14 +329,16 @@
 								</a>
 							</li>
 							@endcan
+							@can('post-operative-medicine-read')
 							<li class="menu-item {{ (Request::segment(1) == 'medicine' && Request::segment(2) == 'post-operative-medicine') ? 'menu-item-active' : '' }}" aria-haspopup="true">
 								<a href="{{ route('post-medicine.list') }}" class="menu-link">
 									<i class="menu-bullet menu-bullet-dot">
 										<span></span>
 									</i>
-									<span class="menu-text">Post Operation Medicine</span>
+									<span class="menu-text">Post Operative Medicine</span>
 								</a>
 							</li>
+							@endcan
 						</ul>
 					</div>
 				</li>

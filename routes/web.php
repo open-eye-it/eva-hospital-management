@@ -155,12 +155,12 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
         });
 
         Route::prefix('post-operative-medicine')->group(function () {
-            Route::get('create', [PostOperativeMedicineController::class, 'create'])->name('post-medicine.create');
-            Route::post('store', [PostOperativeMedicineController::class, 'store'])->name('post-medicine.store');
-            Route::get('list', [PostOperativeMedicineController::class, 'index'])->name('post-medicine.list');
-            Route::get('edit/{user_id}', [PostOperativeMedicineController::class, 'edit'])->name('post-medicine.edit');
-            Route::post('update/{user_id}', [PostOperativeMedicineController::class, 'update'])->name('post-medicine.update');
-            Route::get('status/{user_id}', [PostOperativeMedicineController::class, 'status'])->name('post-medicine.status');
+            Route::get('create', [PostOperativeMedicineController::class, 'create'])->name('post-medicine.create')->middleware(['role_or_permission:post-operative-medicine-create']);
+            Route::post('store', [PostOperativeMedicineController::class, 'store'])->name('post-medicine.store')->middleware(['role_or_permission:post-operative-medicine-create']);
+            Route::get('list', [PostOperativeMedicineController::class, 'index'])->name('post-medicine.list')->middleware(['role_or_permission:post-operative-medicine-read']);
+            Route::get('edit/{user_id}', [PostOperativeMedicineController::class, 'edit'])->name('post-medicine.edit')->middleware(['role_or_permission:post-operative-medicine-update']);
+            Route::post('update/{user_id}', [PostOperativeMedicineController::class, 'update'])->name('post-medicine.update')->middleware(['role_or_permission:post-operative-medicine-update']);
+            Route::get('status/{user_id}', [PostOperativeMedicineController::class, 'status'])->name('post-medicine.status')->middleware(['role_or_permission:post-operative-medicine-status']);
         });
     });
     /* Patient Detail */

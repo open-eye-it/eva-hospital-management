@@ -23,7 +23,9 @@
                                         <div class="col-12 form-group">
                                             <button class="btn btn-primary" type="submit">Search</button>
                                             <a class="btn btn-danger" href="{{ route('post-medicine.list') }}">Resst</a>
+                                            @can('post-operative-medicine-create')
                                             <a class="btn btn-primary float-right" href="{{ route('post-medicine.create') }}">Add <i class="fa fa-plus"></i></a>
+                                            @endcan
                                         </div>
                                     </div>
                                 </form>
@@ -44,8 +46,12 @@
                                                 <th>ID</th>
                                                 <th>Recommendation</th>
                                                 <th>Added By</th>
+                                                @can('post-operative-medicine-status')
                                                 <th>Status</th>
+                                                @endcan
+                                                @can('post-operative-medicine-update')
                                                 <th>Actions</th>
+                                                @endcan
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -55,15 +61,19 @@
                                                 <td>{{ $list->firstItem() + $key }}</td>
                                                 <td>{{ $post_medicine->recommendation }}</td>
                                                 <td>{{ $post_medicine->AddedByData->person_name }}</td>
+                                                @can('post-operative-medicine-status')
                                                 <td>
                                                     <label class="switch">
                                                         <input type="checkbox" class="updateStatus" data-id="{{ base64_encode($post_medicine->poom_id) }}" {{ ($post_medicine->poom_status==1)?'checked':'' }}>
                                                         <span class="slider round"></span>
                                                     </label>
                                                 </td>
+                                                @endcan
+                                                @can('post-operative-medicine-update')
                                                 <td>
                                                     <a href="{{ route('post-medicine.edit', base64_encode($post_medicine->poom_id)) }}" title="Edit"><i class="la la-edit icon-3x"></i></a>
                                                 </td>
+                                                @endcan
                                             </tr>
                                             @endforeach
                                             @else

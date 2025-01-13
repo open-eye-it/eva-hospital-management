@@ -30,9 +30,15 @@ class BalanceController extends MainController
         $input = $request->query();
         $searchData['search_text']             = isset($input['search_text']) ? $input['search_text'] : '';
         $searchData['appointment_date_range']  = isset($input['date_range']) ? $input['date_range'] : '';
+        $searchData['ap_charge_status'] = 'paid';
         $opd_total_fees = $this->totalFees($searchData);
         //$opd_total_additional_fees = $this->totalAdditionalFees($searchData);
         $opd_total_additional_fees = $this->appointment_model->getAllData($searchData)->sum('ap_additional_charge');
+
+        $searchDataPending['search_text']             = isset($input['search_text']) ? $input['search_text'] : '';
+        $searchDataPending['appointment_date_range']  = isset($input['date_range']) ? $input['date_range'] : '';
+        $searchDataPending['ap_charge_status'] = 'pending';
+        $opd_total_fees_pending = $this->totalFees($searchDataPending);
 
         $cashFilter = $searchData;
         $cashFilter['ap_payment_mode'] = 'cash';
@@ -73,19 +79,20 @@ class BalanceController extends MainController
         $corporateFilter = $searchData;
         $corporateFilter['ap_payment_mode'] = 'corporate';
         $corporateFilter['apac_payment_mode'] = 'corporate';
-        $corporateFilter['ap_charge_status'] = 'pending';
+        $corporateFilter['ap_charge_status'] = 'paid';
         $opd_total_corporate = $this->appointment_model->getAllData($corporateFilter)->sum('ap_charge');
         $opd_total_additional_corporate = $this->additonal_change_model->getAllData($corporateFilter)->sum('apac_final_charge');
 
         $corporatePendingFilter = $searchData;
         $corporatePendingFilter['ap_payment_mode'] = 'corporate';
-        $corporatePendingFilter['ap_charge_status'] = 'paid';
+        $corporatePendingFilter['ap_charge_status'] = 'pending';
         $opd_total_corporate_pending = $this->appointment_model->getAllData($corporatePendingFilter)->sum('ap_charge');
 
         return view('balance.opd.list', compact(
             'searchData',
             'opd_total_fees',
             'opd_total_additional_fees',
+            'opd_total_fees_pending',
             'opd_total_cash',
             'opd_total_additional_cash',
             'opd_total_cash_pending',

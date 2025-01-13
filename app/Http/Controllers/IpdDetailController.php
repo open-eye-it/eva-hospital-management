@@ -20,6 +20,7 @@ use App\Models\IndoorSheet;
 use App\Models\IndoorSheetMedicine;
 use App\Models\IndoorSheetMedicineExamination;
 use App\Models\IpdCharge;
+use App\Models\PostOperativeMedicine;
 
 use App\Exports\IPDDetailExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -28,7 +29,7 @@ use Illuminate\Support\Facades\Storage;
 
 class IpdDetailController extends MainController
 {
-    public $patient, $room, $ipd_doc, $ipd, $ipd_note, $ipd_charge, $operation_medicine, $appointment, $notification, $indoor_sheet, $indoor_sheet_medicine, $indoor_sheet_medicine_examination;
+    public $patient, $room, $ipd_doc, $ipd, $ipd_note, $ipd_charge, $operation_medicine, $appointment, $notification, $indoor_sheet, $indoor_sheet_medicine, $indoor_sheet_medicine_examination, $post_medicine;
     public function __construct()
     {
         parent::__construct();
@@ -44,6 +45,7 @@ class IpdDetailController extends MainController
         $this->indoor_sheet = new IndoorSheet;
         $this->indoor_sheet_medicine = new IndoorSheetMedicine;
         $this->indoor_sheet_medicine_examination = new IndoorSheetMedicineExamination;
+        $this->post_medicine = new PostOperativeMedicine;
     }
 
     public function index(Request $request)
@@ -151,6 +153,33 @@ class IpdDetailController extends MainController
                             'ic_added_by' => $login_user->user_id
                         ];
                         $insert = $this->ipd_charge->insertData($ipdChargeData);
+                    }
+
+                    /* Start:: Indoor sheet Add */
+                    $indoorSheedata = [
+                        'is_id' => $this->getIndoorSheetUniqueID(),
+                        'ipd_id' => $insert->ipd_id,
+                        'is_added_by' => $login_user->user_id,
+                        'is_date' => date('Y-m-d'),
+                        'is_findings' => 'General'
+                    ];
+                    $insertIndoorSheetData = $this->indoor_sheet->insertData($indoorSheedata);
+                    /* End:: Indoor sheet Add */
+                    if ($insertIndoorSheetData->is_id) {
+                        /* Start:: Indoor sheet medicine Add */
+                        $postOperativelist = $this->post_medicine->getList([], false);
+                        if (count($postOperativelist->toArray()) > 0) {
+                            foreach ($postOperativelist as $postOperative) {
+                                $indoorSheetMedicinedata = [
+                                    'ism_id' => $this->getIndoorSheetMedicineUniqueID(),
+                                    'is_id' => $insertIndoorSheetData->is_id,
+                                    'ism_added_by' => $login_user->user_id,
+                                    'ism_recommendation' => $postOperative->recommendation
+                                ];
+                                $insertIndoorSheeMedicineData = $this->indoor_sheet_medicine->insertData($indoorSheetMedicinedata);
+                            }
+                        }
+                        /* End:: Indoor sheet medicine Add */
                     }
 
                     return $this->getSuccessResult([], 'IPD added', true);

@@ -45,6 +45,14 @@
                             </div>
                         </div>
                         <div class="col-xl-3">
+                            <div class="card card-custom bg-danger card-stretch gutter-b">
+                                <div class="card-body">
+                                    <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 d-block">{{ $opd_total_fees_pending }}</span>
+                                    <h2 class="font-weight-bold text-white">Pending Fees</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
                             <div class="card card-custom bg-primary card-stretch gutter-b">
                                 <div class="card-body">
                                     <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 d-block">{{ $opd_total_cash + $opd_total_additional_cash }}</span>

@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('ap_book_via')->nullable();
             $table->string('ap_case_type')->index()->comment('old/new/emergency');
             $table->string('ap_charge');
+            $table->string('ap_charge_status')->default('pending')->comment('pending, paid');
             $table->string('ap_additional_charge')->default(0)->comment('additional charge total');
             $table->string('ap_payment_mode')->nullable()->comment('cash/card/mediclaim/corporate');
             $table->string('ap_payment_detail')->nullable();

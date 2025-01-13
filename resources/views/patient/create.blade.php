@@ -32,8 +32,9 @@
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label>Contact No</label>
+                                                    <label>Contact No <span class="text-danger">*</span></label>
                                                     <input type="text" class="form-control" placeholder="Contact No" name="pa_contact_no" id="pa_contact_no" />
+                                                    <span class="text-danger" id="pa_contact_noErr"></span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
@@ -80,15 +81,16 @@
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label>DOB <span class="text-danger">*</span></label>
+                                                    <label>DOB</label>
                                                     <input type="date" class="form-control" placeholder="DOB" name="pa_dob" id="pa_dob" max="{{ date('Y-m-d') }}" onchange="changeDOB(this.value)" />
                                                     <span class="text-danger" id="pa_dobErr"></span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label>Age</label>
+                                                    <label>Age <span class="text-danger">*</span></label>
                                                     <input type="text" class="form-control" placeholder="Age" name="pa_age" id="pa_age" />
+                                                    <span class="text-danger" id="pa_ageErr"></span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
@@ -318,16 +320,30 @@
     $("form").submit(function(e) {
         e.preventDefault();
         let pa_name = $('#pa_name').val();
+        let pa_contact_no = $('#pa_contact_no').val();
         let pa_dob = $('#pa_dob').val();
+        let pa_age = $('#pa_age').val();
         if(pa_name == ''){
             $('#pa_nameErr').text('Please enter patient name');
             timeoutID('pa_nameErr', 3000);
             scrollTop('pa_nameErr');
-        }else if(pa_dob == ''){
-            $('#pa_dobErr').text('Please select patient DOB');
-            timeoutID('pa_dobErr', 3000);
-            scrollTop('pa_dobErr');
-        }else{
+        }
+        else if(pa_contact_no == ''){
+            $('#pa_contact_noErr').text('Please enter contact no');
+            timeoutID('pa_contact_noErr', 3000);
+            scrollTop('pa_contact_noErr');
+        }
+        // else if(pa_dob == ''){
+        //     $('#pa_dobErr').text('Please select patient DOB');
+        //     timeoutID('pa_dobErr', 3000);
+        //     scrollTop('pa_dobErr');
+        // }
+        else if(pa_age == ''){
+            $('#pa_ageErr').text('Please enter age');
+            timeoutID('pa_ageErr', 3000);
+            scrollTop('pa_ageErr');
+        }
+        else{
             $('#createBtn').addClass('spinner spinner-white spinner-right');
             $('#createBtn').attr('disabled', true);
             $.ajax({

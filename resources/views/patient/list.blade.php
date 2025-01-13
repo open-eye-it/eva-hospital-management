@@ -64,7 +64,7 @@
                                                 <td>{{ $patient->pa_id }}</td>
                                                 <td>{{ $patient->pa_name }}</td>
                                                 <td>{{ $patient->pa_contact_no }}</td>
-                                                <td>{{ date('d M Y', strtotime($patient->pa_dob)) }}</td>
+                                                <td>{{ ($patient->pa_dob != null && $patient->pa_dob != '') ? date('d M Y', strtotime($patient->pa_dob)) : '' }}</td>
                                                 <td>{{ $patient->pa_city }}</td>
                                                 <td>{{ $patient->pa_state }}</td>
                                                 <td>{{ $patient->AddedByData->person_name }}</td>
@@ -185,6 +185,10 @@
                     if (data.photo != '') {
                         photo = '<img src="' + data.photo + '" class="img-fluid" width="100px" />';
                     }
+                    let dob = '';
+                    if (data.pa_dob != null && data.pa_dob != '') {
+                        dob = moment($.trim(data.pa_dob)).format('DD MMM YYYY');
+                    }
                     let view = '<tr> \
                         <th>Patient ID</th> \
                         <td>' + $.trim(data.pa_id) + '</td> \
@@ -213,7 +217,7 @@
                         <th>State</th> \
                         <td>' + $.trim(data.pa_state) + '</td> \
                         <th>DOB</th> \
-                        <td>' + moment($.trim(data.pa_dob)).format('DD MMM YYYY') + '</td> \
+                        <td>' + dob + '</td> \
                     </tr> \
                     <tr> \
                         <th>Age</th> \

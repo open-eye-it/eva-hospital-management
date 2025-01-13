@@ -143,7 +143,7 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <i title="Print Bill" class="flaticon flaticon2-print icon-3x cursor_pointer" id="printPatientModal"></i>
+                <i title="Print Bill" class="flaticon flaticon2-print icon-3x cursor_pointer" id="printPatientModal1"></i>
                 <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -272,6 +272,8 @@
                         <th>Referred Name</th> \
                         <td colspan="3">' + $.trim(data.pa_referred_text) + '</td> \
                     </tr>';
+
+                    $('#printPatientModal1').attr('onclick', 'printPatientBill("' + pa_id + '")');
 
                     $('#viewDetail').html(view);
                     $('#fullViewModal').modal('show');

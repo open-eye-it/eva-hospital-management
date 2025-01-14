@@ -22,6 +22,7 @@ use App\Models\IndoorSheetMedicineExamination;
 use App\Models\IpdCharge;
 use App\Models\PostOperativeMedicine;
 use App\Models\IpdPreOperativeMedicine;
+use App\Models\PreOperativeMedicine;
 
 use App\Exports\IPDDetailExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -30,7 +31,7 @@ use Illuminate\Support\Facades\Storage;
 
 class IpdDetailController extends MainController
 {
-    public $patient, $room, $ipd_doc, $ipd, $ipd_note, $ipd_charge, $operation_medicine, $appointment, $notification, $indoor_sheet, $indoor_sheet_medicine, $indoor_sheet_medicine_examination, $post_medicine, $ipd_pre_operative_medicine;
+    public $patient, $room, $ipd_doc, $ipd, $ipd_note, $ipd_charge, $operation_medicine, $appointment, $notification, $indoor_sheet, $indoor_sheet_medicine, $indoor_sheet_medicine_examination, $post_medicine, $ipd_pre_operative_medicine, $pre_operative_medicine;
     public function __construct()
     {
         parent::__construct();
@@ -48,6 +49,7 @@ class IpdDetailController extends MainController
         $this->indoor_sheet_medicine_examination = new IndoorSheetMedicineExamination;
         $this->post_medicine = new PostOperativeMedicine;
         $this->ipd_pre_operative_medicine = new IpdPreOperativeMedicine;
+        $this->pre_operative_medicine = new PreOperativeMedicine;
     }
 
     public function index(Request $request)
@@ -185,7 +187,7 @@ class IpdDetailController extends MainController
                     }
 
                     /* Start:: Pre Operative medicine Add */
-                    $preMeidicineList = $this->ipd_pre_operative_medicine->getList([], false);
+                    $preMeidicineList = $this->pre_operative_medicine->getList([], false);
                     if (count($preMeidicineList->toArray()) > 0) {
                         foreach ($preMeidicineList as $preMedicine) {
                             $preMedicineData = [

@@ -167,6 +167,7 @@
                                                                 @can('ipd-examination-sheet')
                                                                 <li class="nav-item"><span class="nav-link" id="exSheet" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Examination Sheet"><i class="flaticon flaticon2-document icon-3x cursor_pointer"></i></span></li>
                                                                 @endcan
+                                                                <li class="nav-item"><span class="nav-link" id="PreOperativeMedicine" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Pre Operative Medicine"><i class="flaticon flaticon2-sheet icon-3x cursor_pointer"></i></span></li>
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -205,6 +206,76 @@
     </div>
 </div>
 <!--end::Row-->
+<div class="modal fade" id="PreOperativeMedicineModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg popup-80" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Pre OperativeMedicine</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeIndoorSheet()">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body max-h-500 overflow-auto">
+
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <strong>Patient Name:</strong> <span id="PreMedicinePatient"></span>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <strong>Type of surgery:</strong> <span id="PreMedicineSurgery"></span>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <strong>Date:</strong> {{ Date('d M Y') }}
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-lg-6 col-md-6 col-12">
+                        <div class="form-group">
+                            <label>Medicine/Recommendation <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" placeholder="Medicine/Recommendation" name="recommendation" id="recommendation" />
+                            <span class="text-danger" id="recommendationErr"></span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-12">
+                        <div class="form-group">
+                            <label>Given or Not?</label>
+                            <!-- <input type="text" class="form-control" placeholder="Company Name" name="gm_company_name" id="gm_company_name" /> -->
+                            <input type="checkbox" id="given_or_not" name="given_or_not" class="form-control checkbox">
+                            <span class="text-danger" id="given_or_notErr"></span>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea name="description" id="description" class="form-control" cols="30" rows="10"></textarea>
+                            <span class="text-danger" id="descriptionErr"></span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <input type="hidden" id="ipom_id" name="ipom_id" value="">
+                        <button type="submit" id="preMedicineAdd" class="btn btn-primary mt-4">Add <i class="la la-plus"></i></button>
+                    </div>
+                </div>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Recommendation</th>
+                            <th>Given or Not</th>
+                            <th>Description</th>
+                            <th>Added By</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ipomDataTable"></tbody>
+                </table>
+            </div>
+            <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+            </div> -->
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="IndoorSheetModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg popup-80" role="document">
         <div class="modal-content">
@@ -653,6 +724,132 @@
     </div>
 </div>
 <script>
+    $('body').on('click', '#PreOperativeMedicine', function(event) {
+        $('#PreOperativeMedicineModal').modal('show');
+        let ipd_id = $(this).data('id');
+        $.ajax({
+            url: "{{ route('ipd.pre_operative_medicine.list', '') }}/" + ipd_id,
+            method: "GET",
+            success: function(res) {
+                $('#preMedicineAdd').attr('onclick', "addPreMedicine('" + ipd_id + "')");
+                if (res.response == true) {
+                    $('#PreMedicinePatient').text(res?.data?.patientName);
+                    $('#PreMedicineSurgery').text(res?.data?.ipdDetail?.ipd_surgery_text);
+                    $('#ipomDataTable').html(res?.data?.html);
+                }
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    });
+
+    function addPreMedicine(ipd_id) {
+        let ipom_id = $('#ipom_id').val();
+        let recommendation = $('#recommendation').val();
+        let given_or_not = 0;
+        let given_or_not_text = 'No';
+        if ($("#given_or_not").prop('checked') == true) {
+            given_or_not = 1;
+            given_or_not_text = 'Yes';
+        }
+        let description = $('#description').val();
+        if (recommendation == '') {
+            scrollTop('recommendation');
+            $('#recommendationErr').text('Please enter recommendation');
+            timeoutID('recommendationErr', 3000);
+        } else {
+            $('#preMedicineAdd').addClass('spinner spinner-white spinner-right');
+            $('#preMedicineAdd').attr('disabled', true);
+            $.ajax({
+                headers: {
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                url: "{{ route('ipd.pre_operative_medicine.add') }}",
+                method: "POST",
+                data: {
+                    ipd_id: ipd_id,
+                    ipom_id: ipom_id,
+                    recommendation: recommendation,
+                    given_or_not: given_or_not,
+                    description: description
+                },
+                success: function(res) {
+                    if (res.response == true) {
+                        if (ipom_id == '') {
+                            $('#recommendation').val('');
+                            $('#given_or_not').prop('checked', false);
+                            $('#description').val('');
+                            $('#ipomDataTable').prepend(res.data.html);
+                        } else {
+                            $('#ipom_id').val('');
+                            $('#recommendation').val('');
+                            $('#given_or_not').prop('checked', false);
+                            $('#description').val('');
+                            $('#ipom_row_' + ipom_id + ' td:nth-child(1)').text(recommendation);
+                            $('#ipom_row_' + ipom_id + ' td:nth-child(2)').text(given_or_not_text);
+                            $('#ipom_row_' + ipom_id + ' td:nth-child(3)').text(description);
+                        }
+                        $('#preMedicineAdd').html('Add <i class="la la-plus"></i>');
+                        sweetAlertSuccess(res.message, 3000);
+                    } else {
+                        sweetAlertError(res.message, 3000);
+                    }
+                    $('#preMedicineAdd').removeClass('spinner spinner-white spinner-right');
+                    $('#preMedicineAdd').attr('disabled', false);
+                },
+                error: function(r) {
+                    let res = r.responseJSON;
+                    sweetAlertError(res.message, 3000);
+                    $('#preMedicineAdd').removeClass('spinner spinner-white spinner-right');
+                    $('#preMedicineAdd').attr('disabled', false);
+                }
+            });
+        }
+    }
+
+    function editPreMedicine(ipom_id) {
+        let ipom_id1 = atob(ipom_id);
+        let recommendation = $('#ipom_row_' + ipom_id1 + ' td:nth-child(1)').text();
+        let given_or_not = $('#ipom_row_' + ipom_id1 + ' td:nth-child(2)').text();
+        let description = $('#ipom_row_' + ipom_id1 + ' td:nth-child(3)').text();
+        $('#recommendation').val(recommendation);
+        if (given_or_not == 'Yes') {
+            $('#given_or_not').prop('checked', true);
+        } else {
+            $('#given_or_not').prop('checked', false);
+        }
+        $('#description').val(description);
+        $('#ipom_id').val(ipom_id1);
+        $('#preMedicineAdd').html('Update <i class="la la-plus"></i>');
+    }
+
+    function removerPreMedicine(ipom_id) {
+        $.ajax({
+            headers: {
+                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            },
+            url: "{{ route('ipd.pre_operative_medicine.remove', '') }}/" + ipom_id,
+            method: "GET",
+            success: function(res) {
+                if (res.response == true) {
+                    if (res.response == true) {
+                        $('#ipom_row_' + atob(ipom_id)).remove();
+                    } else {
+                        sweetAlertError(res.message, 3000);
+                    }
+                } else {
+                    sweetAlertError(res.message, 3000);
+                }
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    }
+
     /* Start:: Indoor Sheet */
     $('body').on('click', '#IndoorSheet', function(event) {
         $('#IndoorSheetModal').modal('show');

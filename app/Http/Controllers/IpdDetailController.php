@@ -21,6 +21,7 @@ use App\Models\IndoorSheetMedicine;
 use App\Models\IndoorSheetMedicineExamination;
 use App\Models\IpdCharge;
 use App\Models\PostOperativeMedicine;
+use App\Models\IpdPreOperativeMedicine;
 
 use App\Exports\IPDDetailExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -29,7 +30,7 @@ use Illuminate\Support\Facades\Storage;
 
 class IpdDetailController extends MainController
 {
-    public $patient, $room, $ipd_doc, $ipd, $ipd_note, $ipd_charge, $operation_medicine, $appointment, $notification, $indoor_sheet, $indoor_sheet_medicine, $indoor_sheet_medicine_examination, $post_medicine;
+    public $patient, $room, $ipd_doc, $ipd, $ipd_note, $ipd_charge, $operation_medicine, $appointment, $notification, $indoor_sheet, $indoor_sheet_medicine, $indoor_sheet_medicine_examination, $post_medicine, $ipd_pre_operative_medicine;
     public function __construct()
     {
         parent::__construct();
@@ -46,6 +47,7 @@ class IpdDetailController extends MainController
         $this->indoor_sheet_medicine = new IndoorSheetMedicine;
         $this->indoor_sheet_medicine_examination = new IndoorSheetMedicineExamination;
         $this->post_medicine = new PostOperativeMedicine;
+        $this->ipd_pre_operative_medicine = new IpdPreOperativeMedicine;
     }
 
     public function index(Request $request)
@@ -674,6 +676,82 @@ class IpdDetailController extends MainController
         }
     }
 
+    public function PreOperativeMedicinetList($ipd_id)
+    {
+        $ipd_id = base64_decode($ipd_id);
+        $ipdDetail = $this->ipd->singlData($ipd_id);
+        $medicineList = $this->ipd_pre_operative_medicine->getList(['ipd_id' => $ipd_id], false, 0, ['created_at', 'desc']);
+        if (count($medicineList->toArray()) > 0) {
+            $view = view('ipd.pre-operative-medicine.list', compact('medicineList'))->render();
+            $data = [
+                'html' => $view,
+                'ipdDetail' => $ipdDetail,
+                'patientName' => $ipdDetail?->patientData?->pa_name
+            ];
+            return $this->getSuccessResult($data, 'Medicine found.', true);
+        } else {
+            $data = [
+                'html' => '',
+                'ipdDetail' => $ipdDetail,
+                'patientName' => $ipdDetail?->patientData?->pa_name
+            ];
+            return $this->getSuccessResult($data, 'Medicine not available.', true);
+        }
+    }
+
+    public function PreOperativeMedicinetCreate(Request $request)
+    {
+        $input = $request->all();
+        $userLogin = Auth::user();
+        if ($input['ipom_id'] == '') {
+            // $checkDate = $this->indoor_sheet->singlDataByWhere(['ipd_id' => base64_decode($input['ipd_id']), 'is_date' => date('Y-m-d')]);
+            // if(empty($checkDate)){
+            $data = [
+                'ipom_id' => $this->getPreOperativeMedicineUniqueID(),
+                'ipd_id' => base64_decode($input['ipd_id']),
+                'pom_added_by' => $userLogin->user_id,
+                'pom_updated_by' => $userLogin->user_id,
+                'recommendation' => $input['recommendation'],
+                'given_or_not' => $input['given_or_not'],
+                'description' => $input['description']
+            ];
+            $insertData = $this->ipd_pre_operative_medicine->insertData($data);
+            if ($insertData->ipom_id) {
+                $view = view('ipd.pre-operative-medicine.single', compact('insertData'))->render();
+                $data = [
+                    'html' => $view
+                ];
+                return $this->getSuccessResult($data, 'Pre Operative Medicine added.', true);
+            } else {
+                return $this->getErrorMessage('Pre Operative Medicine not added, pleaase try again.', false);
+            }
+            // }else{
+            //     return $this->getErrorMessage('Today finding already added.', false);
+            // }
+        } else {
+            $data = [
+                'ipd_id' => base64_decode($input['ipd_id']),
+                'pom_updated_by' => $userLogin->user_id,
+                'recommendation' => $input['recommendation'],
+                'given_or_not' => $input['given_or_not'],
+                'description' => $input['description']
+            ];
+            $update = $this->ipd_pre_operative_medicine->updateData($data, ['ipom_id' => $input['ipom_id']]);
+            return $this->getSuccessResult([], 'Pre Operative Medicine updated.', true);
+        }
+    }
+
+    public function PreOperativeMedicinetRemove($ipom_id)
+    {
+        $ipom_id = base64_decode($ipom_id);
+        $remove = $this->ipd_pre_operative_medicine->deleteData($ipom_id);
+        if ($remove) {
+            return $this->getSuccessResult([], 'Pre Operative Medicine remove.', true);
+        } else {
+            return $this->getErrorMessage('Pre Operative Medicine not removed, pleaase try again.', false);
+        }
+    }
+
     public function IndoorSheetList($ipd_id)
     {
         $ipd_id = base64_decode($ipd_id);
@@ -952,6 +1030,17 @@ class IpdDetailController extends MainController
             $this->getUniqueID();
         } else {
             return $ion_id;
+        }
+    }
+
+    public function getPreOperativeMedicineUniqueID()
+    {
+        $ipom_id = $this->randomString(10, 'number');
+        $check = $this->ipd_pre_operative_medicine->singlData($ipom_id);
+        if (!empty($check)) {
+            $this->getPreOperativeMedicineUniqueID();
+        } else {
+            return $ipom_id;
         }
     }
 

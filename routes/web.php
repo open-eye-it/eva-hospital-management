@@ -251,6 +251,9 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
         Route::get('ipd_history/{pa_id}', [IpdDetailController::class, 'IpdHistory'])->name('ipd.ipd_history')->middleware(['role_or_permission:follow-up-ipd-ipd-history|ipd-ipd-history']);
         Route::get('export', [IpdDetailController::class, 'export'])->name('ipd.export');
         Route::get('note_update/{ipd_id}', [IpdDetailController::class, 'note_update'])->name('ipd.note.update');
+        Route::get('pre_operative_medicine/list/{ipd_id}', [IpdDetailController::class, 'PreOperativeMedicinetList'])->name('ipd.pre_operative_medicine.list');
+        Route::post('pre_operative_medicine/create', [IpdDetailController::class, 'PreOperativeMedicinetCreate'])->name('ipd.pre_operative_medicine.add');
+        Route::get('pre_operative_medicine/remove/{ipom_id}', [IpdDetailController::class, 'PreOperativeMedicinetRemove'])->name('ipd.pre_operative_medicine.remove');
         Route::get('indoor_sheet/list/{ipd_id}', [IpdDetailController::class, 'IndoorSheetList'])->name('ipd.indoor_sheet.list');
         Route::post('indoor_sheet/findings/create', [IpdDetailController::class, 'IndoorSheetFindingsCreate'])->name('ipd.indoor_sheet.findings.add');
         Route::get('indoor_sheet/findings/remove/{is_id}', [IpdDetailController::class, 'IndoorSheetFindingsRemove'])->name('ipd.indoor_sheet.findings.remove');

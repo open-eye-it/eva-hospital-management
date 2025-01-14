@@ -1,6 +1,6 @@
 @extends('layout.master');
-@section('title', 'Post Operation Medicine - Create')
-@section('breadcrumb-module', 'Post Operation Medicine')
+@section('title', 'Pre Operation Medicine - Create')
+@section('breadcrumb-module', 'Pre Operation Medicine')
 @section('page-content')
 <!--begin::Row-->
 <div class="row">
@@ -19,15 +19,30 @@
                                     <h3 class="card-title">Update</h3>
                                 </div>
                                 <!--begin::Form-->
-                                <form method="POST" action="{{ route('post-medicine.update', $data->poom_id) }}" id="createCatefgory">
+                                <form method="POST" action="{{ route('pre-medicine.update', $data->pom_id) }}" id="createCatefgory">
                                     <meta name="csrf-token" content="{{ csrf_token() }}">
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label>Recommendation <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" placeholder="Recommendation" name="recommendation" id="recommendation" value="{{ $data->recommendation }}" />
+                                                    <label>Medicine/Recommendation <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" placeholder="Medicine/Recommendation" name="recommendation" id="recommendation" value="{{ $data->recommendation }}" />
                                                     <span class="text-danger" id="recommendationErr"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label>Given or Not?</label>
+                                                    <!-- <input type="text" class="form-control" placeholder="Company Name" name="gm_company_name" id="gm_company_name" /> -->
+                                                    <input type="checkbox" id="given_or_not" name="given_or_not" class="form-control checkbox" {{ ($data->given_or_not == 1) ? 'checked' : '' }}>
+                                                    <span class="text-danger" id="given_or_notErr"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label>Description</label>
+                                                    <textarea name="description" id="description" class="form-control" cols="30" rows="10">{{ $data->description }}</textarea>
+                                                    <span class="text-danger" id="descriptionErr"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -62,16 +77,16 @@
     $("form").submit(function(e) {
         e.preventDefault();
         let recommendation = $('#recommendation').val();
+        let given_or_not = 0;
+        if($("#given_or_not").prop('checked') == true){
+            given_or_not = 1;
+        }
+        let description = $('#description').val();
         if(recommendation == ''){
-            $('#recommendationErr').text('Please enter recommendation');
+            $('#recommendationErr').text('Please enter medicine/recommendation');
             timeoutID('recommendationErr', 3000);
             scrollTop('recommendationErr');
         }
-        // else if(gm_company_name == ''){
-        //     $('#gm_company_nameErr').text('Please enter company name');
-        //     timeoutID('gm_company_nameErr', 3000);
-        //     scrollTop('gm_company_nameErr');
-        // }
         else{
             $('#createBtn').addClass('spinner spinner-white spinner-right');
             $('#createBtn').attr('disabled', true);
@@ -79,14 +94,14 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                url:"{{ route('post-medicine.update', base64_encode($data->poom_id)) }}",
+                url:"{{ route('pre-medicine.update', base64_encode($data->pom_id)) }}",
                 method:"POST",
-                data:{recommendation:recommendation},
+                data:{recommendation:recommendation, given_or_not:given_or_not, description:description},
                 success:function(res){
                     $('#createBtn').removeClass('spinner spinner-white spinner-right');
                     $('#createBtn').attr('disabled', false);
                     if(res.response === true){
-                        sweetAlertSuccess(res.message, 3000, "{{ route('post-medicine.list') }}");
+                        sweetAlertSuccess(res.message, 3000, "{{ route('pre-medicine.list') }}");
                     }else{
                         sweetAlertError(res.message, 3000); 
                     }

@@ -43,9 +43,9 @@ class PostOperativeMedicineController extends MainController
         ];
         $insert = $this->post_medicine->insertData($data);
         if (isset($insert->poom_id)) {
-            return $this->getSuccessResult([], $input['recommendation'] . ' added to pre operative medicine', true);
+            return $this->getSuccessResult([], $input['recommendation'] . ' added to Post Operative medicine', true);
         } else {
-            return $this->getErrorMessage($input['recommendation'] . ' not added to pre operative medicine, something is wrong.');
+            return $this->getErrorMessage($input['recommendation'] . ' not added to Post Operative medicine, something is wrong.');
         }
     }
 
@@ -80,9 +80,9 @@ class PostOperativeMedicineController extends MainController
             ];
             $update = $this->post_medicine->updateData($data, ['poom_id' => $poom_id]);
             if ($update == 1) {
-                return $this->getSuccessResult([], $input['recommendation'] . ' updated to Pre Operative medicine', true);
+                return $this->getSuccessResult([], $input['recommendation'] . ' updated to Post Operative medicine', true);
             } else {
-                return $this->getErrorMessage($input['recommendation'] . ' not updated to Pre Operative medicine, something is wrong.');
+                return $this->getErrorMessage($input['recommendation'] . ' not updated to Post Operative medicine, something is wrong.');
             }
         } else {
             return $this->getErrorMessage('Pre Operative Medicine not found.');

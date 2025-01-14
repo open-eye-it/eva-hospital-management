@@ -15,6 +15,7 @@ use App\Http\Controllers\ReferredDoctorController;
 use App\Http\Controllers\medicines\GeneralMedicineController;
 use App\Http\Controllers\medicines\OperationMedicineController;
 use App\Http\Controllers\medicines\PostOperativeMedicineController;
+use App\Http\Controllers\medicines\PreOperativeMedicineController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\FollowUpController;
@@ -161,6 +162,15 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
             Route::get('edit/{user_id}', [PostOperativeMedicineController::class, 'edit'])->name('post-medicine.edit')->middleware(['role_or_permission:post-operative-medicine-update']);
             Route::post('update/{user_id}', [PostOperativeMedicineController::class, 'update'])->name('post-medicine.update')->middleware(['role_or_permission:post-operative-medicine-update']);
             Route::get('status/{user_id}', [PostOperativeMedicineController::class, 'status'])->name('post-medicine.status')->middleware(['role_or_permission:post-operative-medicine-status']);
+        });
+
+        Route::prefix('pre-operative-medicine')->group(function () {
+            Route::get('create', [PreOperativeMedicineController::class, 'create'])->name('pre-medicine.create')->middleware(['role_or_permission:pre-operative-medicine-create']);
+            Route::post('store', [PreOperativeMedicineController::class, 'store'])->name('pre-medicine.store')->middleware(['role_or_permission:pre-operative-medicine-create']);
+            Route::get('list', [PreOperativeMedicineController::class, 'index'])->name('pre-medicine.list')->middleware(['role_or_permission:pre-operative-medicine-read']);
+            Route::get('edit/{user_id}', [PreOperativeMedicineController::class, 'edit'])->name('pre-medicine.edit')->middleware(['role_or_permission:pre-operative-medicine-update']);
+            Route::post('update/{user_id}', [PreOperativeMedicineController::class, 'update'])->name('pre-medicine.update')->middleware(['role_or_permission:pre-operative-medicine-update']);
+            Route::get('status/{user_id}', [PreOperativeMedicineController::class, 'status'])->name('pre-medicine.status')->middleware(['role_or_permission:pre-operative-medicine-status']);
         });
     });
     /* Patient Detail */

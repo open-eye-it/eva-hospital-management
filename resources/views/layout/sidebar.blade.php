@@ -339,6 +339,16 @@
 								</a>
 							</li>
 							@endcan
+							@can('pre-operative-medicine-read')
+							<li class="menu-item {{ (Request::segment(1) == 'medicine' && Request::segment(2) == 'pre-operative-medicine') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+								<a href="{{ route('pre-medicine.list') }}" class="menu-link">
+									<i class="menu-bullet menu-bullet-dot">
+										<span></span>
+									</i>
+									<span class="menu-text">Pre Operative Medicine</span>
+								</a>
+							</li>
+							@endcan
 						</ul>
 					</div>
 				</li>

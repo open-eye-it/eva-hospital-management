@@ -1,6 +1,6 @@
 @extends('layout.master');
-@section('title', 'Post Operation Medicine - List')
-@section('breadcrumb-module', 'Post Operation Medicine')
+@section('title', 'Pre Operation Medicine - List')
+@section('breadcrumb-module', 'Pre Operation Medicine')
 @section('page-content')
 <!--begin::Row-->
 <div class="row">
@@ -14,7 +14,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="card card-custom gutter-b p-5">
-                                <form action="{{ route('post-medicine.list') }}">
+                                <form action="{{ route('pre-medicine.list') }}">
                                     <div class="row">
                                         <div class="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
                                             <label>Search Recommendation</label>
@@ -22,9 +22,9 @@
                                         </div>
                                         <div class="col-12 form-group">
                                             <button class="btn btn-primary" type="submit">Search</button>
-                                            <a class="btn btn-danger" href="{{ route('post-medicine.list') }}">Resst</a>
-                                            @can('post-operative-medicine-create')
-                                            <a class="btn btn-primary float-right" href="{{ route('post-medicine.create') }}">Add <i class="fa fa-plus"></i></a>
+                                            <a class="btn btn-danger" href="{{ route('pre-medicine.list') }}">Resst</a>
+                                            @can('pre-operative-medicine-create')
+                                            <a class="btn btn-primary float-right" href="{{ route('pre-medicine.create') }}">Add <i class="fa fa-plus"></i></a>
                                             @endcan
                                         </div>
                                     </div>
@@ -44,41 +44,45 @@
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
-                                                <th>Recommendation</th>
+                                                <th>Name</th>
+                                                <th>Given or Not</th>
+                                                <th>Description</th>
                                                 <th>Added By</th>
-                                                @can('post-operative-medicine-status')
+                                                @can('pre-operative-medicine-status')
                                                 <th>Status</th>
                                                 @endcan
-                                                @can('post-operative-medicine-update')
+                                                @can('pre-operative-medicine-update')
                                                 <th>Actions</th>
                                                 @endcan
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @if(!$list->isEmpty())
-                                            @foreach($list as $key => $post_medicine)
+                                            @foreach($list as $key => $pre_medicine)
                                             <tr>
                                                 <td>{{ $list->firstItem() + $key }}</td>
-                                                <td>{{ $post_medicine->recommendation }}</td>
-                                                <td>{{ $post_medicine->AddedByData->person_name }}</td>
-                                                @can('post-operative-medicine-status')
+                                                <td>{{ $pre_medicine->recommendation }}</td>
+                                                <td>{{ ($pre_medicine->given_or_not == 1) ? 'Yes' : 'No' }}</td>
+                                                <td>{{ $pre_medicine->description }}</td>
+                                                <td>{{ $pre_medicine->AddedByData->person_name }}</td>
+                                                @can('pre-operative-medicine-status')
                                                 <td>
                                                     <label class="switch">
-                                                        <input type="checkbox" class="updateStatus" data-id="{{ base64_encode($post_medicine->poom_id) }}" {{ ($post_medicine->poom_status==1)?'checked':'' }}>
+                                                        <input type="checkbox" class="updateStatus" data-id="{{ base64_encode($pre_medicine->pom_id) }}" {{ ($pre_medicine->pom_status==1)?'checked':'' }}>
                                                         <span class="slider round"></span>
                                                     </label>
                                                 </td>
                                                 @endcan
-                                                @can('post-operative-medicine-update')
+                                                @can('pre-operative-medicine-update')
                                                 <td>
-                                                    <a href="{{ route('post-medicine.edit', base64_encode($post_medicine->poom_id)) }}" title="Edit"><i class="la la-edit icon-3x"></i></a>
+                                                    <a href="{{ route('pre-medicine.edit', base64_encode($pre_medicine->pom_id)) }}" title="Edit"><i class="la la-edit icon-3x"></i></a>
                                                 </td>
                                                 @endcan
                                             </tr>
                                             @endforeach
                                             @else
                                             <tr>
-                                                <td colspan="5">Record not found</td>
+                                                <td colspan="4">Record not found</td>
                                             </tr>
                                             @endif
                                         </tbody>
@@ -104,11 +108,11 @@
 <script>
     $('body').on('change', '.updateStatus', function(event) {
         event.preventDefault();
-        poom_id = $(this).data('id')
+        pom_id = $(this).data('id')
         dis = $(this);
 
         $.ajax({
-            url: "{{ route('post-medicine.status', '') }}" + "/" + poom_id,
+            url: "{{ route('pre-medicine.status', '') }}" + "/" + pom_id,
             method: "GET",
             success: function(res) {
                 if (res.response === true) {

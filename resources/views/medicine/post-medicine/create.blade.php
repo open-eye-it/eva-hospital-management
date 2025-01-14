@@ -1,6 +1,6 @@
 @extends('layout.master');
-@section('title', 'General Medicine - Add')
-@section('breadcrumb-module', 'General Medicine')
+@section('title', 'Post Operation Medicine - Add')
+@section('breadcrumb-module', 'Post Operation Medicine')
 @section('page-content')
 <!--begin::Row-->
 <div class="row">

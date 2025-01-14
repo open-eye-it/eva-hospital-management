@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('pom_added_by');
             $table->text('pom_updated_by');
             $table->text('recommendation');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->tinyInteger('given_or_not')->default(0)->comment('1-yes, 0-no');
             $table->timestamps();
         });

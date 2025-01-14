@@ -184,6 +184,24 @@ class IpdDetailController extends MainController
                         /* End:: Indoor sheet medicine Add */
                     }
 
+                    /* Start:: Pre Operative medicine Add */
+                    $preMeidicineList = $this->ipd_pre_operative_medicine->getList([], false);
+                    if (count($preMeidicineList->toArray()) > 0) {
+                        foreach ($preMeidicineList as $preMedicine) {
+                            $preMedicineData = [
+                                'ipom_id' => $this->getPreOperativeMedicineUniqueID(),
+                                'ipd_id' => $insert->ipd_id,
+                                'pom_added_by' => $login_user->user_id,
+                                'pom_updated_by' => $login_user->user_id,
+                                'recommendation' => $preMedicine->recommendation,
+                                'description' => $preMedicine->description,
+                                'given_or_not' => $preMedicine->given_or_not
+                            ];
+                            $preMeidicneAdd = $this->ipd_pre_operative_medicine->insertData($preMedicineData);
+                        }
+                    }
+                    /* End:: Pre Operative medicine Add */
+
                     return $this->getSuccessResult([], 'IPD added', true);
                 } else {
                     return $this->getErrorMessage('IPD not added, something is wrong.');

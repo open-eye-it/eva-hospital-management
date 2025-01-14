@@ -167,7 +167,7 @@
                                                                 @can('ipd-examination-sheet')
                                                                 <li class="nav-item"><span class="nav-link" id="exSheet" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Examination Sheet"><i class="flaticon flaticon2-document icon-3x cursor_pointer"></i></span></li>
                                                                 @endcan
-                                                                <li class="nav-item"><span class="nav-link" id="PreOperativeMedicine" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Pre Operative Medicine"><i class="flaticon flaticon2-sheet icon-3x cursor_pointer"></i></span></li>
+                                                                <li class="nav-item"><span class="nav-link" id="PreOperativeMedicine" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Pre Operative Medicine"><i class="flaticon flaticon-file-1 icon-3x cursor_pointer"></i></span></li>
                                                             </ul>
                                                         </div>
                                                     </div>

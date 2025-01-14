@@ -51,8 +51,12 @@ class IpdPreOperativeMedicine extends Model
     public function FilterData($data, $filterdata)
     {
         $search_text = isset($filterdata['search_text']) ? $filterdata['search_text'] : '';
+        $ipd_id = isset($filterdata['ipd_id']) ? $filterdata['ipd_id'] : '';
         if (isset($search_text) && $search_text != '') {
-            $data->where('recommendation', $search_text);
+            $data->where('recommendation', 'LIKE', '%' . $search_text . '%');
+        }
+        if (isset($ipd_id) && $ipd_id != '') {
+            $data->where('ipd_id', $ipd_id);
         }
     }
 

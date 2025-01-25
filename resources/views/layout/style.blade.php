@@ -19,4 +19,8 @@
 <!--end::Layout Themes-->
 <link rel="shortcut icon" href="{{ asset('assets/media/logos/favicon.ico') }}" />
 <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet" type="text/css" />
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@25.2.1/build/css/intlTelInput.css">
+
+
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>

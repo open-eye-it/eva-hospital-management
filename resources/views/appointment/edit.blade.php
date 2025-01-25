@@ -39,20 +39,20 @@
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label>Height</label>
-                                                    <input type="text" class="form-control" placeholder="Height" name="ap_height" id="ap_height" value="{{ $data->ap_height }}" />
+                                                    <label>Height__cm</label>
+                                                    <input type="text" class="form-control" placeholder="Height__cm" name="ap_height" id="ap_height" value="{{ $data->ap_height }}" />
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label>Weight</label>
-                                                    <input type="text" class="form-control" placeholder="Weight" name="ap_weight" id="ap_weight" value="{{ $data->ap_weight }}" />
+                                                    <label>Weight__kg</label>
+                                                    <input type="text" class="form-control" placeholder="Weight__kg" name="ap_weight" id="ap_weight" value="{{ $data->ap_weight }}" />
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label>BP</label>
-                                                    <input type="text" class="form-control" placeholder="BP" name="ap_bp" id="ap_bp" value="{{ $data->ap_bp }}" />
+                                                    <label>BP(_/_)mmhg</label>
+                                                    <input type="text" class="form-control" placeholder="BP(_/_)mmhg" name="ap_bp" id="ap_bp" value="{{ $data->ap_bp }}" />
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">

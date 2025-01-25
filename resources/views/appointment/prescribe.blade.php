@@ -67,19 +67,19 @@
                                         <div class="row">
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label>Height</label>
+                                                    <label>Height__cm</label>
                                                     <input type="text" class="form-control" value="{{ $data->ap_height }}" disabled>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label>Weight</label>
+                                                    <label>Weight__kg</label>
                                                     <input type="text" class="form-control" value="{{ $data->ap_weight }}" disabled>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label>BP</label>
+                                                    <label>BP(_/_)mmhg</label>
                                                     <input type="text" class="form-control" value="{{ $data->ap_bp }}" disabled>
                                                 </div>
                                             </div>

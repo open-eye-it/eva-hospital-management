@@ -123,7 +123,7 @@ class Patient extends Model
             $data->orWhere('pa_contact_no', 'LIKE', '%' . $search_text . '%');
             $data->orWhere('pa_alt_contact_no', 'LIKE', '%' . $search_text . '%');
             $data->orWhere('pa_email', 'LIKE', '%' . $search_text . '%');
-            $data->orWhere('pa_dob', 'LIKE', '%' . $search_text . '%');
+            // $data->orWhere('pa_dob', 'LIKE', '%' . $search_text . '%');
         }
         if (isset($created_at) && $created_at != '') {
             $data->whereDate('created_at', $created_at);

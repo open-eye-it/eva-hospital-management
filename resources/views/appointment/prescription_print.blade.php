@@ -84,13 +84,13 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="padding:10px;"><Strong>Height</Strong></td>
+                                    <td style="padding:10px;"><Strong>Height__cm</Strong></td>
                                     <td style="padding:10px;" colspan="2">{{ $data->ap_height }}</td>
-                                    <td style="padding:10px;"><strong>Weight</strong></td>
+                                    <td style="padding:10px;"><strong>Weight__kg</strong></td>
                                     <td style="padding:10px;" colspan="2">{{ $data->ap_weight }}</td>
                                 </tr>
                                 <tr>
-                                    <td style="padding:10px;"><Strong>BP</Strong></td>
+                                    <td style="padding:10px;"><Strong>BP(_/_)mmhg</Strong></td>
                                     <td style="padding:10px;" colspan="2">{{ $data->ap_bp }}</td>
                                     <td style="padding:10px;"><strong>Follow Up Date</strong></td>
                                     <td style="padding:10px;" colspan="2">{{ ($data->ap_follow_up_date != null && $data->ap_follow_up_date != '0000-00-00') ? date('d M Y', strtotime($data->ap_follow_up_date)) : '' }}</td>

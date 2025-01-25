@@ -33,14 +33,14 @@
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
                                                     <label>Contact No <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" placeholder="Contact No" name="pa_contact_no" id="pa_contact_no" />
+                                                    <input type="number" class="form-control" placeholder="Contact No" name="pa_contact_no" id="pa_contact_no" />
                                                     <span class="text-danger" id="pa_contact_noErr"></span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
                                                     <label>Alternate Contact No <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" placeholder="Alternate Contact No" name="pa_alt_contact_no" id="pa_alt_contact_no" />
+                                                    <input type="number" class="form-control" placeholder="Alternate Contact No" name="pa_alt_contact_no" id="pa_alt_contact_no" />
                                                     <span class="text-danger" id="pa_alt_contact_noErr"></span>
                                                 </div>
                                             </div>
@@ -65,6 +65,13 @@
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
+                                                    <label>State <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" placeholder="State" name="pa_state" id="pa_state" />
+                                                    <span class="text-danger" id="pa_stateErr"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
                                                     <label>City <span class="text-danger">*</span></label>
                                                     <input type="text" class="form-control" placeholder="City" name="pa_city" id="pa_city" />
                                                     <span class="text-danger" id="pa_cityErr"></span>
@@ -75,13 +82,6 @@
                                                     <label>Pin Code <span class="text-danger">*</span></label>
                                                     <input type="text" class="form-control" placeholder="Pin Code" name="pa_pincode" id="pa_pincode" />
                                                     <span class="text-danger" id="pa_pincodeErr"></span>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6 col-md-6 col-12">
-                                                <div class="form-group">
-                                                    <label>State <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" placeholder="State" name="pa_state" id="pa_state" />
-                                                    <span class="text-danger" id="pa_stateErr"></span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
@@ -343,8 +343,28 @@
             timeoutID('pa_contact_noErr', 3000);
             scrollTop('pa_contact_noErr');
         }
+        else if(pa_contact_no.length < 10){
+            $('#pa_contact_noErr').text('Contact number must be 10 digit');
+            timeoutID('pa_contact_noErr', 3000);
+            scrollTop('pa_contact_noErr');
+        }
+        else if(pa_contact_no.length > 10){
+            $('#pa_contact_noErr').text('Contact number must be 10 digit');
+            timeoutID('pa_contact_noErr', 3000);
+            scrollTop('pa_contact_noErr');
+        }
         else if(pa_alt_contact_no == ''){
             $('#pa_alt_contact_noErr').text('Please enter alternate contact no');
+            timeoutID('pa_alt_contact_noErr', 3000);
+            scrollTop('pa_alt_contact_noErr');
+        }
+        else if(pa_alt_contact_no.length < 10){
+            $('#pa_alt_contact_noErr').text('Contact number must be 10 digit');
+            timeoutID('pa_alt_contact_noErr', 3000);
+            scrollTop('pa_alt_contact_noErr');
+        }
+        else if(pa_alt_contact_no.length > 10){
+            $('#pa_alt_contact_noErr').text('Contact number must be 10 digit');
             timeoutID('pa_alt_contact_noErr', 3000);
             scrollTop('pa_alt_contact_noErr');
         }

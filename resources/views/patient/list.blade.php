@@ -16,12 +16,12 @@
                                 <form action="{{ route('patient.list') }}">
                                     <div class="row">
                                         <div class="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
-                                            <label>Search Patient <span class="text-danger">[Note: Search by patient id, name, contact no, alternate contact no, email, dob]</span></label>
+                                            <label>Search Patient <span class="text-danger">[Note: Search by patient id, name, contact no, alternate contact no, email]</span></label>
                                             <input type="text" class="form-control" placeholder="Search Patient" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
                                         </div>
                                         <div class="col-12 form-group">
                                             <button class="btn btn-primary" type="submit">Search</button>
-                                            <a class="btn btn-danger" href="{{ route('patient.list') }}">Resst</a>
+                                            <a class="btn btn-danger" href="{{ route('patient.list') }}">Reset</a>
                                             <a class="btn btn-primary float-right" href="{{ route('patient.create') }}">Add <i class="fa fa-plus"></i></a>
                                         </div>
                                     </div>
@@ -37,7 +37,7 @@
                                 </div>
                                 <div class="card-body">
                                     <!--begin: Datatable-->
-                                    <table class="table table-bordered table-separate scrollable_table_custom" id="">
+                                    <table class="table table-bordered table-separate scrollable_table_custom" id="patientTable">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
@@ -45,8 +45,8 @@
                                                 <th>Name</th>
                                                 <th>Contact No</th>
                                                 <th>DOB</th>
-                                                <th>City</th>
                                                 <th>State</th>
+                                                <th>City</th>
                                                 <th>Added By</th>
                                                 @can('patient-status')
                                                 <th>Status</th>
@@ -65,8 +65,8 @@
                                                 <td>{{ $patient->pa_name }}</td>
                                                 <td>{{ $patient->pa_contact_no }}</td>
                                                 <td>{{ ($patient->pa_dob != null && $patient->pa_dob != '') ? date('d M Y', strtotime($patient->pa_dob)) : '' }}</td>
-                                                <td>{{ $patient->pa_city }}</td>
                                                 <td>{{ $patient->pa_state }}</td>
+                                                <td>{{ $patient->pa_city }}</td>
                                                 <td>{{ $patient->AddedByData->person_name }}</td>
                                                 @can('patient-status')
                                                 <td>
@@ -150,6 +150,17 @@
     </div>
 </div>
 <script>
+    setTimeout(() => {
+        var table = $('#patientTable').DataTable();
+        table.destroy();
+        $('#patientTable').DataTable({
+            autoWidth: true,
+            searching: false,
+            paging: false,
+            info: false
+        });
+    }, 1000);
+
     $('body').on('change', '.updateStatus', function(event) {
         event.preventDefault();
         pa_id = $(this).data('id')

@@ -96,7 +96,7 @@
                                 </div>
                                 <div class="card-body">
                                     <!--begin: Datatable-->
-                                    <table class="table table-bordered table-separate scrollable_table_custom" id="">
+                                    <table class="table table-bordered table-separate scrollable_table_custom" id="appointmentTable">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
@@ -375,6 +375,17 @@
     </div>
 </div>
 <script>
+    setTimeout(() => {
+        var table = $('#appointmentTable').DataTable();
+        table.destroy();
+        $('#appointmentTable').DataTable({
+            autoWidth: true,
+            searching: false,
+            paging: false,
+            info: false
+        });
+    }, 1000);
+
     $('body').on('click', '#fullView', function(event) {
         let ap_id = $(this).data('id');
         $.ajax({
@@ -391,13 +402,13 @@
                     let view = '<tr> \
                         <th>Patient Name</th> \
                         <td>' + $.trim(data.patient_name) + '</td> \
-                        <th>Height</th> \
+                        <th>Height__cm</th> \
                         <td>' + $.trim(data.ap_height) + '</td> \
                     </tr> \
                     <tr> \
-                        <th>Weight</th> \
+                        <th>Weight__kg</th> \
                         <td>' + $.trim(data.ap_weight) + '</td> \
-                        <th>BP</th> \
+                        <th>BP(_/_)mmhg</th> \
                         <td>' + $.trim(data.ap_bp) + '</td> \
                     </tr> \
                     <tr> \

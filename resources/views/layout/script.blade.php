@@ -108,34 +108,4 @@
             window.location.href = url;
         }
     });
-
-    // /* Start:: Patient add Code */
-    const countryData = window.intlTelInput.getCountryData();
-    const input = document.querySelector("#pa_contact_no");
-    const addressDropdown = document.querySelector("#pa_country");
-
-    for (let i = 0; i < countryData.length; i++) {
-        const country = countryData[i];
-        const optionNode = document.createElement("option");
-        optionNode.value = country.iso2;
-        const textNode = document.createTextNode(country.name);
-        optionNode.appendChild(textNode);
-        addressDropdown.appendChild(optionNode);
-    }
-
-    const iti = window.intlTelInput(input, {
-        initialCountry: "in",
-        loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.2.1/build/js/utils.js"),
-    });
-
-    addressDropdown.value = iti.getSelectedCountryData().iso2;
-
-    input.addEventListener('countrychange', () => {
-        addressDropdown.value = iti.getSelectedCountryData().iso2;
-    });
-
-    addressDropdown.addEventListener('change', () => {
-        iti.setCountry(addressDropdown.value);
-    });
-    // /* End:: Patient add Code */
 </script>

@@ -84,6 +84,7 @@
 			});
 		}
 	</script>
+	@yield('custom-script')
 </body>
 <!--end::Body-->
 

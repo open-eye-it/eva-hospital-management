@@ -39,6 +39,7 @@
                                                     <span class="text-danger" id="pa_contact_noErr"></span>
                                                 </div>
                                             </div>
+                                            <input type="hidden" id="pa_country_code" name="pa_country_code" value="">
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
                                                     <label>Alternate Contact No <span class="text-danger">*</span></label>
@@ -335,7 +336,11 @@
     $("form").submit(function(e) {
         e.preventDefault();
         let pa_name = $('#pa_name').val();
-        let pa_contact_no = $('#pa_contact_no').val();
+        let pa_contact_no = jQuery.trim($('#pa_contact_no').val());
+        pa_contact_no = pa_contact_no.replace(' ', '');
+        pa_contact_no = pa_contact_no.replace(' ', '');
+        pa_contact_no = pa_contact_no.replace(' ', '');
+        console.log(pa_contact_no);
         let pa_alt_contact_no = $('#pa_alt_contact_no').val();
         let pa_address = $('#pa_address').val();
         let pa_city = $('#pa_city').val();
@@ -444,5 +449,43 @@
             });
         }
     })
+</script>
+@endsection
+@section('custom-script')
+<script>
+    // /* Start:: Patient add Code */
+    const countryData = window.intlTelInput.getCountryData();
+    const input = document.querySelector("#pa_contact_no");
+    const addressDropdown = document.querySelector("#pa_country");
+
+    for (let i = 0; i < countryData.length; i++) {
+        const country = countryData[i];
+        const optionNode = document.createElement("option");
+        optionNode.value = country.name;
+        const textNode = document.createTextNode(country.name);
+        optionNode.appendChild(textNode);
+        addressDropdown.appendChild(optionNode);
+    }
+
+    const iti = window.intlTelInput(input, {
+        initialCountry: "in",
+        loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.2.1/build/js/utils.js"),
+        hiddenInput: (telInputName) => ({
+            phone: "phone_full",
+            country: "pa_country_code"
+        }),
+    });
+
+    addressDropdown.value = iti.getSelectedCountryData().name;
+    $('#pa_country_code').val(iti.getSelectedCountryData().iso2);
+
+    input.addEventListener('countrychange', () => {
+        addressDropdown.value = iti.getSelectedCountryData().name;
+    });
+
+    addressDropdown.addEventListener('change', () => {
+        iti.setCountry(addressDropdown.value);
+    });
+    // /* End:: Patient add Code */
 </script>
 @endsection

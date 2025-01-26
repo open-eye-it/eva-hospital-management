@@ -219,42 +219,44 @@
                         <td colspan="3">' + $.trim(data.pa_address) + '</td> \
                     </tr> \
                     <tr> \
+                        <th>Country</th> \
+                        <td>' + $.trim(data.pa_country) + '</td> \
+                        <th>State</th> \
+                        <td>' + $.trim(data.pa_state) + '</td> \
+                    </tr> \
+                    <tr> \
                         <th>City</th> \
                         <td>' + $.trim(data.pa_city) + '</td> \
                         <th>Pin Code</th> \
                         <td>' + $.trim(data.pa_pincode) + '</td> \
                     </tr> \
                     <tr> \
-                        <th>State</th> \
-                        <td>' + $.trim(data.pa_state) + '</td> \
                         <th>DOB</th> \
                         <td>' + dob + '</td> \
-                    </tr> \
-                    <tr> \
                         <th>Age</th> \
                         <td>' + $.trim(data.pa_age) + '</td> \
+                    </tr> \
+                    <tr> \
                         <th>Gender</th> \
                         <td>' + $.trim(data.pa_gender) + '</td> \
-                    </tr> \
-                    <tr> \
                         <th>Marital Status</th> \
                         <td>' + $.trim(data.pa_marital_status) + '</td> \
+                    </tr> \
+                    <tr> \
                         <th>Occupation</th> \
                         <td>' + $.trim(data.pa_occupation) + '</td> \
-                    </tr> \
-                    <tr> \
                         <th>Number of Living Children</th> \
                         <td>' + $.trim(data.pa_children_no) + '</td> \
+                    </tr> \
+                    <tr> \
                         <th>Photo</th> \
                         <td>' + photo + '</td> \
-                    </tr> \
-                    <tr> \
                         <th>Referred By</th> \
                         <td>' + $.trim(data.pa_referred_by) + '</td> \
-                        <th>Referred Doctor</th> \
-                        <td>' + $.trim(data.pa_referred_doctor) + '</td> \
                     </tr> \
                     <tr> \
+                        <th>Referred Doctor</th> \
+                        <td>' + $.trim(data.pa_referred_doctor) + '</td> \
                         <th>Referred Name</th> \
                         <td colspan="3">' + $.trim(data.pa_referred_text) + '</td> \
                     </tr>';

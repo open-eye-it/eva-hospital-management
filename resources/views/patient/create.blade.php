@@ -481,6 +481,7 @@
 
     input.addEventListener('countrychange', () => {
         addressDropdown.value = iti.getSelectedCountryData().name;
+        $('#pa_country_code').val(iti.getSelectedCountryData().iso2);
     });
 
     addressDropdown.addEventListener('change', () => {

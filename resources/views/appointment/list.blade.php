@@ -100,14 +100,16 @@
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
-                                                <th>Appointment ID</th>
-                                                <th class="min-w-100px">Date</th>
-                                                <th>Case Type</th>
+                                                <!-- <th>Appointment ID</th> -->
                                                 <th>Patient ID</th>
                                                 <th>Patient Name</th>
-                                                <th>Doctor</th>
+                                                <th class="min-w-100px">DOA</th>
+                                                <th>Dr Name</th>
+                                                <th>Case</th>
+                                                <th>Fees Amount</th>
+                                                <th>Fees</th>
                                                 <th>Referred By</th>
-                                                <th>Has Madiclaim</th>
+                                                <!-- <th>Has Madiclaim</th> -->
                                                 @can('appointment-status')
                                                 <th>Status</th>
                                                 @endcan
@@ -124,14 +126,16 @@
                                             @foreach($list as $key => $appointment)
                                             <tr>
                                                 <td>{{ $list->firstItem() + $key }}</td>
-                                                <td>{{ $appointment->ap_id }}</td>
-                                                <td>{{ date('d M Y',strtotime($appointment->ap_date)) }}</td>
-                                                <td>{{ $appointment->ap_case_type }}</td>
+                                                <!-- <td>{{ $appointment->ap_id }}</td> -->
                                                 <td>{{ $appointment->pa_id }}</td>
                                                 <td>{{ $appointment->patientData->pa_name }}</td>
+                                                <td>{{ date('d M Y',strtotime($appointment->ap_date)) }}</td>
                                                 <td>{{ $appointment->doctorData->person_name }}</td>
+                                                <td>{{ $appointment->ap_case_type }}</td>
+                                                <td>{{ $appointment->ap_charge }}</td>
+                                                <td>{{ ucfirst($appointment->ap_charge_status) }}</td>
                                                 <td>{{ $appointment?->patientData?->pa_referred_doctor }}</td>
-                                                <td>{{ ($appointment->ap_pament_mode == 'mediclaim') ? 'Yes' : 'No' }}</td>
+                                                <!-- <td>{{ ($appointment->ap_pament_mode == 'mediclaim') ? 'Yes' : 'No' }}</td> -->
                                                 @can('appointment-status')
                                                 <td>
                                                     @if($appointment->ap_status == 'pending')

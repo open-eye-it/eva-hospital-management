@@ -250,6 +250,18 @@
         let arr = val.split('-');
         //ap_charge
         $('#ap_charge').val(arr[1]);
+
+        if(arr[0] == 'foc' || arr[0] == 'follow up'){
+            $('#ap_charge_status').val('paid');
+            $('#ap_charge_status').prop('disabled', true);
+            $('#ap_payment_mode').val('cash');
+            $('#ap_payment_mode').prop('disabled', true);
+        }else{
+            $('#ap_charge_status').val('pending');
+            $('#ap_charge_status').prop('disabled', false);
+            $('#ap_payment_mode').val('');
+            $('#ap_payment_mode').prop('disabled', false);
+        }
     }
 
     function changePaymnt(val){

@@ -33,7 +33,9 @@
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
                                                     <label>Contact No <span class="text-danger">*</span></label>
-                                                    <input type="number" class="form-control" placeholder="Contact No" name="pa_contact_no" id="pa_contact_no" />
+                                                    <div>
+                                                        <input type="tel" class="form-control" placeholder="Contact No" name="pa_contact_no" id="pa_contact_no" />
+                                                    </div>
                                                     <span class="text-danger" id="pa_contact_noErr"></span>
                                                 </div>
                                             </div>
@@ -61,6 +63,14 @@
                                                     <label>Address <span class="text-danger">*</span></label>
                                                     <input type="text" class="form-control" placeholder="Address" name="pa_address" id="pa_address" />
                                                     <span class="text-danger" id="pa_addressErr"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label>Country</label>
+                                                    <select name="pa_country" id="pa_country" class="form-control">
+                                                        <option value="">-Select</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">

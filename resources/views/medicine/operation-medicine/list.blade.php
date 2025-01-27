@@ -22,7 +22,7 @@
                                         </div>
                                         <div class="col-12 form-group">
                                             <button class="btn btn-primary" type="submit">Search</button>
-                                            <a class="btn btn-danger" href="{{ route('operation-medicine.list') }}">Resst</a>
+                                            <a class="btn btn-danger" href="{{ route('operation-medicine.list') }}">Reset</a>
                                             @can('operation-medicine-read')
                                             <a class="btn btn-primary float-right" href="{{ route('operation-medicine.create') }}">Add <i class="fa fa-plus"></i></a>
                                             @endcan

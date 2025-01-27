@@ -28,7 +28,7 @@
                                         </div>
                                         <div class="col-12 form-group">
                                             <button class="btn btn-primary" type="submit">Search</button>
-                                            <a class="btn btn-danger" href="{{ route('referred-doctor.list') }}">Resst</a>
+                                            <a class="btn btn-danger" href="{{ route('referred-doctor.list') }}">Reset</a>
                                             <a class="btn btn-primary float-right" href="{{ route('referred-doctor.create') }}">Add <i class="fa fa-plus"></i></a>
                                         </div>
                                     </div>
@@ -66,26 +66,26 @@
                                                 <td>{{ $referred_doctor?->patientData()->count() }}</td>
                                                 @else
                                                 @php
-                                                    $patients = $referred_doctor?->patientData;
-                                                    $count = 0;
-                                                    foreach ($patients as $patient) {
-                                                    $dateArr = explode(' - ', $searchData['patient_date_range']);
-                                                    $dateArr[0] = date('Y-m-d', strtotime($dateArr[0]));
-                                                    $dateArr[1] = date('Y-m-d', strtotime($dateArr[1]));
+                                                $patients = $referred_doctor?->patientData;
+                                                $count = 0;
+                                                foreach ($patients as $patient) {
+                                                $dateArr = explode(' - ', $searchData['patient_date_range']);
+                                                $dateArr[0] = date('Y-m-d', strtotime($dateArr[0]));
+                                                $dateArr[1] = date('Y-m-d', strtotime($dateArr[1]));
 
-                                                        if (date('Y-m-d', strtotime($patient->created_at)) >= $dateArr[0] && date('Y-m-d', strtotime($patient->created_at)) <= $dateArr[1]) {
-                                                            $count +=1;
-                                                        }
+                                                if (date('Y-m-d', strtotime($patient->created_at)) >= $dateArr[0] && date('Y-m-d', strtotime($patient->created_at)) <= $dateArr[1]) {
+                                                    $count +=1;
                                                     }
-                                                @endphp
-                                                <td>{{ $count }}</td>
-                                                @endif
-                                                <td>{{ $referred_doctor->AddedByData->person_name }}</td>
-                                                @can('referred-doctor-update')
-                                                <td>
-                                                    <a href="{{ route('referred-doctor.edit', base64_encode($referred_doctor->rd_id)) }}" title="Edit"><i class="la la-edit icon-3x"></i></a>
-                                                </td>
-                                                @endcan
+                                                    }
+                                                    @endphp
+                                                    <td>{{ $count }}</td>
+                                                    @endif
+                                                    <td>{{ $referred_doctor->AddedByData->person_name }}</td>
+                                                    @can('referred-doctor-update')
+                                                    <td>
+                                                        <a href="{{ route('referred-doctor.edit', base64_encode($referred_doctor->rd_id)) }}" title="Edit"><i class="la la-edit icon-3x"></i></a>
+                                                    </td>
+                                                    @endcan
                                             </tr>
                                             @endforeach
                                             @else

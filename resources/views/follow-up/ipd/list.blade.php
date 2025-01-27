@@ -28,7 +28,7 @@
                                         </div>
                                         <div class="col-12 form-group">
                                             <button class="btn btn-primary" type="submit">Search</button>
-                                            <a class="btn btn-danger" href="{{ route('follow-up.ipd.list') }}">Resst</a>
+                                            <a class="btn btn-danger" href="{{ route('follow-up.ipd.list') }}">Reset</a>
                                             <button type="button" class="btn btn-info" onclick="exportIPD()"><i class="fa fa-file-export"></i> Export</button>
                                         </div>
                                     </div>
@@ -848,7 +848,7 @@
                     table.destroy();
                     $('#followUpOpdppopup').DataTable({
                         autoWidth: true,
-                        searching: false,   
+                        searching: false,
                         paging: false,
                         info: false
                     });
@@ -861,7 +861,7 @@
                     $('#opdHistoryViewModal').modal('show');
                     //$('.dataTables_wrapper').DataTable().columns.adjust().draw();
                     //$('#followUpOpdppopup').DataTable({colReorder: true});
-                    
+
                 } else {
                     sweetAlertError(res.message, 3000);
                 }

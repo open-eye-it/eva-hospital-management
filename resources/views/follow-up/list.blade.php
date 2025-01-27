@@ -27,7 +27,7 @@
                                         </div>
                                         <div class="col-12 form-group">
                                             <button class="btn btn-primary" type="submit">Search</button>
-                                            <a class="btn btn-danger" href="{{ route('follow-up.list') }}">Resst</a>
+                                            <a class="btn btn-danger" href="{{ route('follow-up.list') }}">Reset</a>
                                             <button type="button" class="btn btn-info" onclick="exportFollowUp()"><i class="fa fa-file-export"></i> Export</button>
                                         </div>
                                     </div>

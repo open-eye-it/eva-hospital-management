@@ -28,7 +28,7 @@
                                         </div>
                                         <div class="col-12 form-group">
                                             <button class="btn btn-primary" type="submit">Search</button>
-                                            <a class="btn btn-danger" href="{{ route('ipd-acount-detail.list') }}">Resst</a>
+                                            <a class="btn btn-danger" href="{{ route('ipd-acount-detail.list') }}">Reset</a>
                                             <button type="button" class="btn btn-info" onclick="exportIPD()"><i class="fa fa-file-export"></i> Export</button>
                                         </div>
                                     </div>
@@ -361,7 +361,8 @@
         $.ajax({
             url: "{{ route('ipd-acount-detail.bill-detail', '') }}" + "/" + ipd_id,
             method: "GET",
-            success: function(res) {console.log(res);
+            success: function(res) {
+                console.log(res);
                 $('#billAmountViewModal').modal('show');
                 if (res.response === true) {
                     let data = res.data;
@@ -373,9 +374,10 @@
                     $('#ipdIdShow').text(ipdData.ipd_id);
                     $('#ipdPatientNameShow').text(patientData.pa_name);
 
-                    let monthName = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-                    var mydate = new Date(ipdData.ipd_admit_date);console.log(ipdData.ipd_admit_date);
-                    let ipd_admit_date_format = mydate.getDate()+' '+monthName[mydate.getMonth()-1]+' '+mydate.getFullYear();
+                    let monthName = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                    var mydate = new Date(ipdData.ipd_admit_date);
+                    console.log(ipdData.ipd_admit_date);
+                    let ipd_admit_date_format = mydate.getDate() + ' ' + monthName[mydate.getMonth() - 1] + ' ' + mydate.getFullYear();
                     $('#ipd_admit_date_format').text(ipd_admit_date_format)
 
                     $('#billAmount').text(ipdData.ipd_bill_amount);
@@ -440,9 +442,9 @@
         let ipd_discount = $('#ipd_discount').val();
         let ipd_discount_approved_by = $('#ipd_discount_approved_by').val();
         let ipd_id = $('#ipd_id').val();
-        if(ipd_discount_approved_by == ''){
+        if (ipd_discount_approved_by == '') {
             $('#ipd_discount_approved_byErr').text('Please enter approved by');
-        }else{
+        } else {
             $('#ipd_discount_approved_byErr').text('');
             $.ajax({
                 headers: {

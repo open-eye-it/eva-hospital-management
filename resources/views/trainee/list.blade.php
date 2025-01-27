@@ -30,7 +30,7 @@
                                         </div>
                                         <div class="col-12 form-group">
                                             <button class="btn btn-primary" type="submit">Search</button>
-                                            <a class="btn btn-danger" href="{{ route('trainee.list') }}">Resst</a>
+                                            <a class="btn btn-danger" href="{{ route('trainee.list') }}">Reset</a>
                                             <a class="btn btn-primary float-right" href="{{ route('trainee.create') }}">Add <i class="fa fa-plus"></i></a>
                                         </div>
                                     </div>
@@ -339,10 +339,10 @@
                     if (data.tr_documents != '' && data.tr_documents != null) {
                         let fileArr = JSON.parse(data.tr_documents);
                         for (let i = 0; i < fileArr.length; i++) {
-                            let filepath = window.location.origin + '/storage/'+fileArr[i];
+                            let filepath = window.location.origin + '/storage/' + fileArr[i];
                             // fileList += '<p class="btn btn-primary" onclick="downloadFile(`' + fileArr[i] + '`)">' + fileArr[i] + '</p>';
                             //fileList += '<div><a title="download" class="btn btn-primary mt-4" download href="{{ route("trainee.file.download", "") }}/' + btoa(fileArr[i]) + '">' + fileArr[i] + ' <i class="fa fa-download"></i></a></div>';
-                            fileList += '<div><a target="_blank" title="download" class="btn btn-primary mt-4" href="'+filepath+'">' + fileArr[i] + ' <i class="fa fa-download"></i></a></div>';
+                            fileList += '<div><a target="_blank" title="download" class="btn btn-primary mt-4" href="' + filepath + '">' + fileArr[i] + ' <i class="fa fa-download"></i></a></div>';
                         }
                     }
                     let view = '<tr> \
@@ -511,7 +511,7 @@
         });
     }
 
-    function printReceipt(tpl_id){
+    function printReceipt(tpl_id) {
         let url = "{{ route('trainee.payment.receipt', ['tpl_id' => ':tpl_id']) }}";
         url = url.replace(':tpl_id', tpl_id);
         $.ajax({

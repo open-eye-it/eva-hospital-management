@@ -28,7 +28,7 @@
                                         </div>
                                         <div class="col-12 form-group">
                                             <button class="btn btn-primary" type="submit">Search</button>
-                                            <a class="btn btn-danger" href="{{ route('opd-account-detail.list') }}">Resst</a>
+                                            <a class="btn btn-danger" href="{{ route('opd-account-detail.list') }}">Reset</a>
                                         </div>
                                     </div>
                                 </form>

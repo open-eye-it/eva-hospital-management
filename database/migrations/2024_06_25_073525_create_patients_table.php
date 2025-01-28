@@ -17,7 +17,11 @@ return new class extends Migration
             $table->bigInteger('pa_added_by')->comment('user table id user_id');
             $table->bigInteger('pa_updated_by')->comment('user table id user_id');
             $table->string('pa_name')->index();
+            $table->string('pa_country_code')->nullable();
+            $table->string('pa_dial_code')->nullable();
             $table->string('pa_contact_no')->nullable()->index();
+            $table->string('pa_alt_country_code')->nullable();
+            $table->string('pa_alt_dial_code')->nullable();
             $table->string('pa_alt_contact_no')->nullable()->index();
             $table->string('pa_email')->nullable()->index();
             $table->string('pa_address')->nullable();

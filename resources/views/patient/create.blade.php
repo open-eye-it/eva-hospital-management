@@ -40,13 +40,16 @@
                                                 </div>
                                             </div>
                                             <input type="hidden" id="pa_country_code" name="pa_country_code" value="">
+                                            <input type="hidden" id="pa_dial_code" name="pa_dial_code" value="">
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
                                                     <label>Alternate Contact No <span class="text-danger">*</span></label>
-                                                    <input type="number" class="form-control" placeholder="Alternate Contact No" name="pa_alt_contact_no" id="pa_alt_contact_no" />
+                                                    <input type="tel" class="form-control" placeholder="Alternate Contact No" name="pa_alt_contact_no" id="pa_alt_contact_no" />
                                                     <span class="text-danger" id="pa_alt_contact_noErr"></span>
                                                 </div>
                                             </div>
+                                            <input type="hidden" id="pa_alt_country_code" name="pa_alt_country_code" value="">
+                                            <input type="hidden" id="pa_alt_dial_code" name="pa_alt_dial_code" value="">
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
                                                     <label>Email</label>
@@ -340,8 +343,16 @@
         pa_contact_no = pa_contact_no.replace(' ', '');
         pa_contact_no = pa_contact_no.replace(' ', '');
         pa_contact_no = pa_contact_no.replace(' ', '');
-        console.log(pa_contact_no);
+        pa_contact_no = pa_contact_no.replace('(', '');
+        pa_contact_no = pa_contact_no.replace(')', '');
+        pa_contact_no = pa_contact_no.replace('-', '');
         let pa_alt_contact_no = $('#pa_alt_contact_no').val();
+        pa_alt_contact_no = pa_alt_contact_no.replace(' ', '');
+        pa_alt_contact_no = pa_alt_contact_no.replace(' ', '');
+        pa_alt_contact_no = pa_alt_contact_no.replace(' ', '');
+        pa_alt_contact_no = pa_alt_contact_no.replace('(', '');
+        pa_alt_contact_no = pa_alt_contact_no.replace(')', '');
+        pa_alt_contact_no = pa_alt_contact_no.replace('-', '');
         let pa_address = $('#pa_address').val();
         let pa_city = $('#pa_city').val();
         let pa_pincode = $('#pa_pincode').val();
@@ -457,11 +468,11 @@
     const countryData = window.intlTelInput.getCountryData();
     const input = document.querySelector("#pa_contact_no");
     const addressDropdown = document.querySelector("#pa_country");
-
+    
     for (let i = 0; i < countryData.length; i++) {
         const country = countryData[i];
         const optionNode = document.createElement("option");
-        optionNode.value = country.name;
+        optionNode.value = country.iso2;
         const textNode = document.createTextNode(country.name);
         optionNode.appendChild(textNode);
         addressDropdown.appendChild(optionNode);
@@ -471,22 +482,39 @@
         initialCountry: "in",
         loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.2.1/build/js/utils.js"),
         hiddenInput: (telInputName) => ({
-            phone: "phone_full",
+            pa_contact_no: "phone_full",
             country: "pa_country_code"
         }),
     });
 
-    addressDropdown.value = iti.getSelectedCountryData().name;
+    addressDropdown.value = iti.getSelectedCountryData().iso2;
     $('#pa_country_code').val(iti.getSelectedCountryData().iso2);
+    $('#pa_dial_code').val(iti.getSelectedCountryData().dialCode);
 
     input.addEventListener('countrychange', () => {
-        addressDropdown.value = iti.getSelectedCountryData().name;
+        addressDropdown.value = iti.getSelectedCountryData().iso2;
         $('#pa_country_code').val(iti.getSelectedCountryData().iso2);
+        $('#pa_dial_code').val(iti.getSelectedCountryData().dialCode);
     });
 
     addressDropdown.addEventListener('change', () => {
         iti.setCountry(addressDropdown.value);
     });
     // /* End:: Patient add Code */
+    const input1 = document.querySelector("#pa_alt_contact_no");
+    const iti1 = window.intlTelInput(input1, {
+        initialCountry: "in",
+        loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.2.1/build/js/utils.js"),
+        hiddenInput: (telInputName) => ({
+            pa_alt_contact_no: "phone_full",
+            country: "pa_alt_country_code"
+        }),
+    });
+    $('#pa_alt_country_code').val(iti1.getSelectedCountryData().iso2);
+    $('#pa_alt_dial_code').val(iti1.getSelectedCountryData().dialCode);
+    input1.addEventListener('countrychange', () => {
+        $('#pa_alt_country_code').val(iti1.getSelectedCountryData().iso2);
+        $('#pa_alt_dial_code').val(iti1.getSelectedCountryData().dialCode);
+    });
 </script>
 @endsection

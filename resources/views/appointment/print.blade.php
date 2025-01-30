@@ -88,14 +88,14 @@
                                 <tr>
                                     <td style="padding:10px;"></td>
                                     <td style="padding:10px; border-right:1px solid;"></td>
-                                    <th style="padding:10px; border-bottom:1px solid; border-right:1px solid; text-align:left;">Total</th>
-                                    <td style="padding:10px; border-bottom:1px solid;">{{ $data->ap_additional_charge }}</td>
+                                    <th style="padding:10px; border-bottom:1px solid; border-right:1px solid; text-align:left;">Case - {{ ucfirst($data->ap_case_type) }}</th>
+                                    <td style="padding:10px; border-bottom:1px solid;">{{ $data->ap_charge }}</td>
                                 </tr>
                                 <tr>
                                     <td style="padding:10px;"></td>
                                     <td style="padding:10px; border-right:1px solid;"></td>
-                                    <th style="padding:10px; border-bottom:1px solid; border-right:1px solid; text-align:left;">Case - {{ ucfirst($data->ap_case_type) }}</th>
-                                    <td style="padding:10px; border-bottom:1px solid;">{{ $data->ap_charge }}</td>
+                                    <th style="padding:10px; border-bottom:1px solid; border-right:1px solid; text-align:left;">Total</th>
+                                    <td style="padding:10px; border-bottom:1px solid;">{{ $data->ap_additional_charge }}</td>
                                 </tr>
                                 <tr>
                                     <td style="padding:10px; border-bottom:1px solid;"></td>

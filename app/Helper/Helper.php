@@ -90,7 +90,7 @@ function PaymentMode()
             'ap_payment_mode' => 'card'
         ],
         [
-            'ap_payment_mode' => 'upi'
+            'ap_payment_mode' => 'UPI'
         ],
         // [
         //     'ap_payment_mode' => 'mediclaim'

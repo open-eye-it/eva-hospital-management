@@ -11,7 +11,7 @@ class VisitingFee extends Model
 
     protected $fillable = ['vf_id', 'vf_added_by', 'vf_updated_by', 'vf_case_type', 'vf_fees'];
 
-    public function getList($filterData = [], $paginate = true, $limit = 10, $order_by = ['created_at', 'desc'])
+    public function getList($filterData = [], $paginate = true, $limit = 10, $order_by = ['created_at', 'asc'])
     {
         $data = static::select('*');
         $this->FilterData($data, $filterData);

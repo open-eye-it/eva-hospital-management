@@ -45,6 +45,7 @@
                                                 <th>Name</th>
                                                 <th>Contact No</th>
                                                 <th>DOB</th>
+                                                <th>Age</th>
                                                 <th>State</th>
                                                 <th>City</th>
                                                 <th>Added By</th>
@@ -65,6 +66,7 @@
                                                 <td>{{ $patient->pa_name }}</td>
                                                 <td>{{ $patient->pa_contact_no }}</td>
                                                 <td>{{ ($patient->pa_dob != null && $patient->pa_dob != '') ? date('d M Y', strtotime($patient->pa_dob)) : '' }}</td>
+                                                <td>{{ $patient->pa_age }}</td>
                                                 <td>{{ $patient->pa_state }}</td>
                                                 <td>{{ $patient->pa_city }}</td>
                                                 <td>{{ $patient->AddedByData->person_name }}</td>

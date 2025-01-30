@@ -128,7 +128,7 @@
                                                     <select class="form-control" name="ap_payment_mode" id="ap_payment_mode" onchange="changePaymnt(this.value)">
                                                         <option value="">Select</option>
                                                         @foreach(PaymentMode() as $paymentType)
-                                                        <option value="{{ $paymentType['ap_payment_mode'] }}">{{ ucfirst($paymentType['ap_payment_mode']) }}</option>
+                                                        <option value="{{ $paymentType['ap_payment_mode'] }}" {{ ($paymentType['ap_payment_mode'] == 'cash') ? 'selected' : '' }}>{{ ucfirst($paymentType['ap_payment_mode']) }}</option>
                                                         @endforeach
                                                     </select>
                                                     <span class="text-danger" id="ap_payment_modeErr"></span>
@@ -263,6 +263,19 @@
             $('#ap_payment_mode').prop('disabled', false);
         }
     }
+
+    setTimeout(() => {
+        $('#ap_case_type option').each(function(){
+            let myval = $(this).val();
+            let arr = myval.split('-');
+            if(arr[0] == 'new'){
+                $('#ap_case_type').val(myval);
+                changeFee(myval);
+            }
+        });
+
+        $('#ap_payment_mode').val('cash');
+    }, 500);
 
     function changePaymnt(val){
         $('#ap_payment_detail').val();

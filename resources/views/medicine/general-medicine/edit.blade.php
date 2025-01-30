@@ -1,0 +1,120 @@
+@extends('layout.master');
+@section('title', 'General Medicine - Create')
+@section('breadcrumb-module', 'General Medicine')
+@section('page-content')
+<!--begin::Row-->
+<div class="row">
+    <div class="col-lg-12 col-xxl-12">
+        <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+
+            <!--begin::Entry-->
+            <div class="d-flex flex-column-fluid">
+                <!--begin::Container-->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <!--begin::Card-->
+                            <div class="card card-custom gutter-b example example-compact">
+                                <div class="card-header">
+                                    <h3 class="card-title">Update</h3>
+                                </div>
+                                <!--begin::Form-->
+                                <form method="POST" action="{{ route('general-medicine.update', $data->gm_id) }}" id="createCatefgory">
+                                    <meta name="csrf-token" content="{{ csrf_token() }}">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label>Medicine Name <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" placeholder="Medicine Name" name="gm_name" id="gm_name" value="{{ $data->gm_name }}" />
+                                                    <span class="text-danger" id="gm_nameErr"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label>Company Name</label>
+                                                    <input type="text" class="form-control" placeholder="Company Name" name="gm_company_name" id="gm_company_name" value="{{ $data->gm_company_name }}" />
+                                                    <span class="text-danger" id="gm_company_nameErr"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label>Description</label>
+                                                    <textarea name="gm_description" id="gm_description" class="form-control" cols="30" rows="10">{{ $data->gm_description }}</textarea>
+                                                    <span class="text-danger" id="gm_company_nameErr"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--begin: Code-->
+                                        <div class="example-code mt-10">
+                                            <div class="example-highlight">
+                                                <pre style="height:400px">
+                                            </div>
+                                        </div>
+                                        <!--end: Code-->
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="submit" class="btn btn-primary mr-2" id="createBtn">Update</button>
+                                        <a href="{{ url()->previous() }}" class="btn btn-secondary">Cancel</a>
+                                    </div>
+                                </form>
+                                <!--end::Form-->
+                            </div>
+                            <!--end::Card-->
+                        </div>
+                    </div>
+                </div>
+                <!--end::Container-->
+            </div>
+            <!--end::Entry-->
+        </div>
+
+    </div>
+</div>
+<!--end::Row-->
+<script>
+    $("form").submit(function(e) {
+        e.preventDefault();
+        let gm_name = $('#gm_name').val();
+        let gm_company_name = $('#gm_company_name').val();
+        let gm_description = $('#gm_description').val();
+        if(gm_name == ''){
+            $('#gm_nameErr').text('Please enter medicine name');
+            timeoutID('gm_nameErr', 3000);
+            scrollTop('gm_nameErr');
+        }
+        // else if(gm_company_name == ''){
+        //     $('#gm_company_nameErr').text('Please enter company name');
+        //     timeoutID('gm_company_nameErr', 3000);
+        //     scrollTop('gm_company_nameErr');
+        // }
+        else{
+            $('#createBtn').addClass('spinner spinner-white spinner-right');
+            $('#createBtn').attr('disabled', true);
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url:"{{ route('general-medicine.update', base64_encode($data->gm_id)) }}",
+                method:"POST",
+                data:{gm_name:gm_name, gm_company_name:gm_company_name, gm_description:gm_description},
+                success:function(res){
+                    $('#createBtn').removeClass('spinner spinner-white spinner-right');
+                    $('#createBtn').attr('disabled', false);
+                    if(res.response === true){
+                        sweetAlertSuccess(res.message, 3000, "{{ route('general-medicine.list') }}");
+                    }else{
+                        sweetAlertError(res.message, 3000); 
+                    }
+                },
+                error: function(r){
+                    $('#createBtn').removeClass('spinner spinner-white spinner-right');
+                    $('#createBtn').attr('disabled', false);
+                    let res = r.responseJSON;
+                    sweetAlertError(res.message, 3000); 
+                }
+            });
+        }
+    })
+</script>
+@endsection

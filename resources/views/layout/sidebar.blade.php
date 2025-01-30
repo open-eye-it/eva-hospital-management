@@ -63,7 +63,7 @@
 						<span class="svg-icon menu-icon">
 							<i class="icon-2x flaticon-user-settings"></i>
 						</span>
-						<span class="menu-text">Patient</span>
+						<span class="menu-text">Patient (F2)</span>
 					</a>
 				</li>
 				<!-- <li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'patient') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
@@ -107,7 +107,7 @@
 						<span class="svg-icon menu-icon">
 							<i class="icon-2x flaticon-calendar-2"></i>
 						</span>
-						<span class="menu-text">Appointment</span>
+						<span class="menu-text">Appointment (F8)</span>
 					</a>
 				</li>
 				<!-- <li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'appointment') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
@@ -151,7 +151,7 @@
 						<span class="svg-icon menu-icon">
 							<i class="icon-2x la la-bed"></i>
 						</span>
-						<span class="menu-text">IPD</span>
+						<span class="menu-text">IPD (F9)</span>
 					</a>
 				</li>
 				<!-- <li class="menu-item menu-item-submenu {{ (Request::segment(1) == 'ipd') ? 'menu-item-open menu-item-here' : '' }}" aria-haspopup="true" data-menu-toggle="hover">

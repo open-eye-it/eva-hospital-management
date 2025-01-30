@@ -105,17 +105,45 @@
                                 <div class="form-group row">
                                     <label class="col-xl-3 col-lg-3 col-form-label">Current Password</label>
                                     <div class="col-lg-9 col-xl-6">
+                                        <div class="input-group">
+                                            <input class="form-control form-control" type="password" id="old_password" name="old_password" value="">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text" id="old_pass_icon" onclick="showOldPassword()">
+                                                    <i class="far fa-eye-slash icon-lg"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <span class="text-danger" id="old_password_err"></span>
+                                    </div>
+                                </div>
+                                <!-- <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label">Current Password</label>
+                                    <div class="col-lg-9 col-xl-6">
                                         <div class="">
                                             <input class="form-control form-control" type="password" id="old_password" name="old_password" value="">
                                         </div>
                                         <span class="text-danger" id="old_password_err"></span>
                                     </div>
-                                </div>
-                                <div class="form-group row">
+                                </div> -->
+                                <!-- <div class="form-group row">
                                     <label class="col-xl-3 col-lg-3 col-form-label">New Password</label>
                                     <div class="col-lg-9 col-xl-6">
                                         <div class="">
                                             <input class="form-control form-control" type="password" id="password" name="password" value="">
+                                        </div>
+                                        <span class="text-danger" id="password_err"></span>
+                                    </div>
+                                </div> -->
+                                <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label">New Password</label>
+                                    <div class="col-lg-9 col-xl-6">
+                                        <div class="input-group">
+                                            <input class="form-control form-control" type="password" id="password" name="password" value="">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text" id="new_pass_icon" onclick="showPassword()">
+                                                    <i class="far fa-eye-slash icon-lg"></i>
+                                                </span>
+                                            </div>
                                         </div>
                                         <span class="text-danger" id="password_err"></span>
                                     </div>
@@ -157,5 +185,31 @@
             scrollTop('password');
         }
     });
+
+    function showOldPassword() {
+        let pa_attr = $('#old_password').attr('type');
+        if (pa_attr == 'password') {
+            $('#old_password').attr('type', 'text');
+            $('#old_pass_icon i').removeClass('fa-eye-slash');
+            $('#old_pass_icon i').addClass('fa-eye');
+        } else {
+            $('#old_password').attr('type', 'password');
+            $('#old_pass_icon i').addClass('fa-eye-slash');
+            $('#old_pass_icon i').removeClass('fa-eye');
+        }
+    }
+
+    function showPassword() {
+        let pa_attr = $('#password').attr('type');
+        if (pa_attr == 'password') {
+            $('#password').attr('type', 'text');
+            $('#new_pass_icon i').removeClass('fa-eye-slash');
+            $('#new_pass_icon i').addClass('fa-eye');
+        } else {
+            $('#password').attr('type', 'password');
+            $('#new_pass_icon i').addClass('fa-eye-slash');
+            $('#new_pass_icon i').removeClass('fa-eye');
+        }
+    }
 </script>
 @endsection

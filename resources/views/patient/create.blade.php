@@ -25,7 +25,7 @@
                                         <h4>Patient Details</h4>
                                         <hr class="mt-1 mb-4">
                                         <div class="row">
-                                            <div class="col-lg-3 col-md-4 col-12">
+                                            <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
                                                     <label>Patient Name <span class="text-danger">*</span></label>
                                                     <input type="text" class="form-control" placeholder="Patient Name" name="pa_name" id="pa_name" />
@@ -52,34 +52,7 @@
                                             </div>
                                             <input type="hidden" id="pa_alt_country_code" name="pa_alt_country_code" value="">
                                             <input type="hidden" id="pa_alt_dial_code" name="pa_alt_dial_code" value="">
-                                            <div class="col-lg-3 col-md-4 col-12">
-                                                <div class="form-group">
-                                                    <label>Email</label>
-                                                    <input type="text" class="form-control" placeholder="Email" name="pa_email" id="pa_email" />
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3 col-md-4 col-12">
-                                                <div class="form-group">
-                                                    <label>Pan Card</label>
-                                                    <input type="text" class="form-control" placeholder="Pan Card" name="pa_pan_card" id="pa_pan_card" />
-                                                </div>
-                                            </div>
-
-                                            <div class="col-lg-3 col-md-4 col-12">
-                                                <div class="form-group">
-                                                    <label>DOB</label>
-                                                    <input type="date" class="form-control" placeholder="DOB" name="pa_dob" id="pa_dob" max="{{ date('Y-m-d') }}" onchange="changeDOB(this.value)" />
-                                                    <span class="text-danger" id="pa_dobErr"></span>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3 col-md-4 col-12">
-                                                <div class="form-group">
-                                                    <label>Age <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" placeholder="Age" name="pa_age" id="pa_age" />
-                                                    <span class="text-danger" id="pa_ageErr"></span>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3 col-md-4 col-12">
+                                            <div class="col-lg-2 col-md-3 col-12">
                                                 <div class="form-group">
                                                     <label>Gender</label>
                                                     <select name="pa_gender" id="pa_gender" class="form-control">
@@ -89,9 +62,38 @@
                                                     </select>
                                                 </div>
                                             </div>
-
-
-
+                                            <div class="col-lg-2 col-md-3 col-12">
+                                                <div class="form-group">
+                                                    <label>Age <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" placeholder="Age" name="pa_age" id="pa_age" />
+                                                    <span class="text-danger" id="pa_ageErr"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2 col-md-3 col-12">
+                                                <div class="form-group">
+                                                    <label>DOB</label>
+                                                    <input type="date" class="form-control" placeholder="DOB" name="pa_dob" id="pa_dob" max="{{ date('Y-m-d') }}" onchange="changeDOB(this.value)" />
+                                                    <span class="text-danger" id="pa_dobErr"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2 col-md-3 col-12">
+                                                <div class="form-group">
+                                                    <label>Pan Card</label>
+                                                    <input type="text" class="form-control" placeholder="Pan Card" name="pa_pan_card" id="pa_pan_card" />
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2 col-md-3 col-12">
+                                                <div class="form-group">
+                                                    <label>Email</label>
+                                                    <input type="text" class="form-control" placeholder="Email" name="pa_email" id="pa_email" />
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2 col-md-3 col-12">
+                                                <div class="form-group">
+                                                    <label>Photo</label>
+                                                    <input type="file" class="form-control" placeholder="Photo" name="pa_photo" id="pa_photo" />
+                                                </div>
+                                            </div>
                                         </div>
                                         <h4>Address</h4>
                                         <hr class="mt-1 mb-4">
@@ -152,12 +154,6 @@
                                                 <div class="form-group">
                                                     <label>Occupation</label>
                                                     <input type="text" class="form-control" placeholder="Occupation" name="pa_occupation" id="pa_occupation" />
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3 col-md-4 col-12">
-                                                <div class="form-group">
-                                                    <label>Photo</label>
-                                                    <input type="file" class="form-control" placeholder="Photo" name="pa_photo" id="pa_photo" />
                                                 </div>
                                             </div>
                                             <div class="col-lg-3 col-md-4 col-12">

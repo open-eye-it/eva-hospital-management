@@ -60,9 +60,20 @@
 								<input class="form-control h-auto form-control-solid py-4 px-8" type="text" placeholder="Username" name="username" id="username" autocomplete="off" />
 								<span class="text text-danger" id="usernameErr"></span>
 							</div>
-							<div class="form-group mb-5 text-left">
+							<!-- <div class="form-group mb-5 text-left">
 								<input class="form-control h-auto form-control-solid py-4 px-8" type="password" placeholder="Password" name="password" id="password" />
 								<span class="text text-danger" id="passwordErr"></span>
+							</div> -->
+							<div class="form-group mb-5 text-left">
+								<div class="input-group">
+									<input class="form-control h-auto form-control-solid py-4 px-8" type="password" id="password" name="password" value="" placeholder="Password">
+									<div class="input-group-append">
+										<span class="input-group-text" id="new_pass_icon" onclick="showPassword()">
+											<i class="far fa-eye-slash icon-lg"></i>
+										</span>
+									</div>
+								</div>
+								<span class="text-danger" id="password_err"></span>
 							</div>
 							<button id="kt_login_signin_submit" class="btn btn-primary font-weight-bold px-9 py-4 my-3 mx-4">Sign In</button>
 						</form>
@@ -103,6 +114,19 @@
 
 			}
 		})
+
+		function showPassword() {
+			let pa_attr = $('#password').attr('type');
+			if (pa_attr == 'password') {
+				$('#password').attr('type', 'text');
+				$('#new_pass_icon i').removeClass('fa-eye-slash');
+				$('#new_pass_icon i').addClass('fa-eye');
+			} else {
+				$('#password').attr('type', 'password');
+				$('#new_pass_icon i').addClass('fa-eye-slash');
+				$('#new_pass_icon i').removeClass('fa-eye');
+			}
+		}
 	</script>
 </body>
 <!--end::Body-->

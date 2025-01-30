@@ -23,7 +23,7 @@
                                     <meta name="csrf-token" content="{{ csrf_token() }}">
                                     <div class="card-body pt-4">
                                         <div class="row">
-                                            <div class="col-lg-3 col-md-4 col-12">
+                                            <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
                                                     <label for="ap_pa_search">Patient Name <span class="text-danger">*</span></label>
                                                     <select name="pa_id" id="ap_pa_search" class="form-control">
@@ -37,19 +37,19 @@
                                                     <span class="text-danger" id="pa_idErr"></span>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-3 col-md-4 col-12">
+                                            <div class="col-lg-2 col-md-3 col-12">
                                                 <div class="form-group">
                                                     <label for="ap_height">Height__cm</label>
                                                     <input type="text" class="form-control" placeholder="Height__cm" name="ap_height" id="ap_height" />
                                                 </div>
                                             </div>
-                                            <div class="col-lg-3 col-md-4 col-12">
+                                            <div class="col-lg-2 col-md-3 col-12">
                                                 <div class="form-group">
                                                     <label for="ap_weight">Weight__kg</label>
                                                     <input type="text" class="form-control" placeholder="Weight__kg" name="ap_weight" id="ap_weight" />
                                                 </div>
                                             </div>
-                                            <div class="col-lg-3 col-md-4 col-12">
+                                            <div class="col-lg-2 col-md-3 col-12">
                                                 <div class="form-group">
                                                     <label for="ap_bp">BP(_/_)mmhg</label>
                                                     <input type="text" class="form-control" placeholder="BP(_/_)mmhg" name="ap_bp" id="ap_bp" />
@@ -84,6 +84,16 @@
                                             </div>
                                             <div class="col-lg-3 col-md-4 col-12">
                                                 <div class="form-group">
+                                                    <label for="ap_case_type">Workshop Attended? <span class="text-danger">*</span></label>
+                                                    <select class="form-control" name="ap_is_workshop" id="ap_is_workshop" onchange="changeIsWorkshop(this.value)">
+                                                        <option value="no">No</option>
+                                                        <option value="yes">Yes</option>
+                                                    </select>
+                                                    <span class="text-danger" id="ap_is_workshopErr"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3 col-md-4 col-12">
+                                                <div class="form-group">
                                                     <label for="ap_case_type">Case Type <span class="text-danger">*</span></label>
                                                     <select class="form-control" name="ap_case_type" id="ap_case_type" onchange="changeFee(this.value)">
                                                         <option value="">Select</option>
@@ -114,16 +124,6 @@
                                             </div>
                                             <div class="col-lg-3 col-md-4 col-12">
                                                 <div class="form-group">
-                                                    <label for="ap_case_type">Workshop Attended? <span class="text-danger">*</span></label>
-                                                    <select class="form-control" name="ap_is_workshop" id="ap_is_workshop" onchange="changeIsWorkshop(this.value)">
-                                                        <option value="no">No</option>
-                                                        <option value="yes">Yes</option>
-                                                    </select>
-                                                    <span class="text-danger" id="ap_is_workshopErr"></span>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3 col-md-4 col-12">
-                                                <div class="form-group">
                                                     <label for="ap_payment_mode">Mode of Payment <span class="text-danger">*</span></label>
                                                     <select class="form-control" name="ap_payment_mode" id="ap_payment_mode" onchange="changePaymnt(this.value)">
                                                         <option value="">Select</option>
@@ -140,35 +140,35 @@
                                                     <input type="text" class="form-control" placeholder="Payment Detail" name="ap_payment_detail" id="ap_payment_detail" />
                                                 </div>
                                             </div>
-                                            <div class="col-lg-3 col-md-4 col-12">
+                                            <div class="col-lg-3 col-md-4 col-12 d-none">
                                                 <div class="form-group">
                                                     <label>Last Menstrual Period</label>
                                                     <input type="text" class="form-control" placeholder="Last Menstrual Period" name="pa_last_monestrual_period" id="pa_last_monestrual_period" />
                                                 </div>
                                             </div>
-                                            <div class="col-lg-3 col-md-4 col-12">
+                                            <div class="col-lg-3 col-md-4 col-12 d-none">
                                                 <div class="form-group">
                                                     <label>Number of Pregnancy</label>
                                                     <input type="text" class="form-control" placeholder="Number of Pregnancy" name="pa_pregnancy_no" id="pa_pregnancy_no" />
                                                 </div>
                                             </div>
-                                            <div class="col-lg-3 col-md-4 col-12">
+                                            <div class="col-lg-3 col-md-4 col-12 d-none">
                                                 <div class="form-group">
                                                     <label>Number of Miscarriages</label>
                                                     <input type="text" class="form-control" placeholder="Number of Miscarriages" name="pa_miscarriages_no" id="pa_miscarriages_no" />
                                                 </div>
                                             </div>
-                                            <div class="col-lg-3 col-md-4 col-12">
+                                            <div class="col-lg-3 col-md-4 col-12 d-none">
                                                 <div class="form-group">
                                                     <label>Number of Living Children</label>
                                                     <input type="text" class="form-control" placeholder="Number of Living Children" name="pa_children_no" id="pa_children_no" />
                                                 </div>
                                             </div>
-                                            <div class="col-12">
+                                            <div class="col-12 d-none">
                                                 <h4>Do you consume any of below?</h4>
                                                 <hr class="mt-1 mb-4">
                                             </div>
-                                            <div class="col-lg-3 col-md-4 col-12">
+                                            <div class="col-lg-3 col-md-4 col-12 d-none">
                                                 <div class="form-group">
                                                     <label>Tobacco</label>
                                                     <select name="pa_tobacco" id="pa_tobacco" class="form-control">
@@ -179,7 +179,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-3 col-md-4 col-12">
+                                            <div class="col-lg-3 col-md-4 col-12 d-none">
                                                 <div class="form-group">
                                                     <label>Smoking</label>
                                                     <select name="pa_smoking" id="pa_smoking" class="form-control">
@@ -190,7 +190,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-3 col-md-4 col-12">
+                                            <div class="col-lg-3 col-md-4 col-12 d-none">
                                                 <div class="form-group">
                                                     <label>Alcohol</label>
                                                     <select name="pa_alcohol" id="pa_alcohol" class="form-control">
@@ -201,13 +201,13 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-12">
+                                            <div class="col-lg-6 col-md-6 col-12 d-none">
                                                 <div class="form-group">
                                                     <label>Any medical or surgical history?</label>
                                                     <textarea name="pa_medical_history" id="pa_medical_history" class="form-control" cols="30" rows="5"></textarea>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-12">
+                                            <div class="col-lg-6 col-md-6 col-12 d-none">
                                                 <div class="form-group">
                                                     <label>Family member had any medical or surgical history?</label>
                                                     <textarea name="pa_family_medical_history" id="pa_family_medical_history" class="form-control" cols="30" rows="5"></textarea>

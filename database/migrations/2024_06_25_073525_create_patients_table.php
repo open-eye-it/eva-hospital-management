@@ -50,6 +50,7 @@ return new class extends Migration
             $table->string('pa_referred_doctor')->nullable();
             $table->string('pa_referred_text')->nullable();
             $table->integer('pa_status')->default(1)->comment('1-active/0-disable');
+            $table->text('pa_blood_group')->nullable();
             $table->timestamps();
         });
     }

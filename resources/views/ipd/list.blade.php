@@ -72,11 +72,13 @@
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
-                                                <th>IPD ID</th>
-                                                <th>Admit Date</th>
-                                                <th>Room No</th>
                                                 <th>Patient ID</th>
                                                 <th>Patient Name</th>
+                                                <th>Room No</th>
+                                                <th>Dr. Name</th>
+                                                <th>Surgery Detail</th>
+                                                <th>Date of Admit</th>
+                                                <th>Dat of Surgery</th>
                                                 <th>Age</th>
                                                 <th>Contact No</th>
                                                 <!-- <th>Bill Amount</th>
@@ -100,11 +102,13 @@
                                             @foreach($list as $key => $ipd)
                                             <tr>
                                                 <td>{{ $list->firstItem() + $key }}</td>
-                                                <td>{{ $ipd->ipd_id }}</td>
-                                                <td>{{ date('d M Y', strtotime($ipd->ipd_admit_date)) }}</td>
-                                                <td>{{ $ipd?->roomData?->rm_building.'-'.$ipd?->roomData?->rm_floor.'-'.$ipd?->roomData?->rm_ward.'-'.$ipd?->roomData?->rm_no }}</td>
                                                 <td>{{ $ipd->pa_id }}</td>
                                                 <td>{{ $ipd->patientData->pa_name }}</td>
+                                                <td>{{ $ipd?->roomData?->rm_building.'-'.$ipd?->roomData?->rm_floor.'-'.$ipd?->roomData?->rm_ward.'-'.$ipd?->roomData?->rm_no }}</td>
+                                                <td>{{ $ipd?->ipd_doctor }}</td>
+                                                <td>{{ $ipd?->ipd_surgery_text }}</td>
+                                                <td>{{ date('d M Y', strtotime($ipd->ipd_admit_date)) }}</td>
+                                                <td>{{ date('d M Y', strtotime($ipd->ipd_surgery_date)) }}</td>
                                                 <td>{{ $ipd->patientData->pa_age }}</td>
                                                 <td>{{ $ipd->patientData->pa_contact_no }}</td>
                                                 <!-- <td id="billAmountShow_{{ $ipd->ipd_id }}">{{ $ipd->ipd_bill_amount }}</td>

@@ -94,7 +94,7 @@
                                                 <img src="{{ ImagePath($data->pa_photo) }}" class="img-fluid" width="100px" />
                                             </div>
                                         </div>
-                                        <h4>Address</h4>
+                                        <h4>Address and Blood Group</h4>
                                         <hr class="mt-1 mb-4">
                                         <div class="row">
                                             <div class="col-lg-6 col-md-6 col-12">
@@ -131,6 +131,22 @@
                                                     <label>Pin Code <span class="text-danger">*</span></label>
                                                     <input type="text" class="form-control" placeholder="Pin Code" name="pa_pincode" id="pa_pincode" value="{{ $data->pa_pincode }}" />
                                                     <span class="text-danger" id="pa_pincodeErr"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3 col-md-4 col-12">
+                                                <div class="form-group">
+                                                    <label>Blood Gruop</label>
+                                                    <select name="pa_blood_group" id="pa_blood_group" class="form-control">
+                                                        <option value="">-select-</option>
+                                                        <option value="A+" {{ ($data->pa_blood_group == 'A+') ? 'selected' : '' }}>A+</option>
+                                                        <option value="A-" {{ ($data->pa_blood_group == 'A-') ? 'selected' : '' }}>A-</option>
+                                                        <option value="B+" {{ ($data->pa_blood_group == 'B+') ? 'selected' : '' }}>B+</option>
+                                                        <option value="B-" {{ ($data->pa_blood_group == 'B-') ? 'selected' : '' }}>B-</option>
+                                                        <option value="O+" {{ ($data->pa_blood_group == 'O+') ? 'selected' : '' }}>O+</option>
+                                                        <option value="O-" {{ ($data->pa_blood_group == 'O-') ? 'selected' : '' }}>O-</option>
+                                                        <option value="AB+" {{ ($data->pa_blood_group == 'AB+') ? 'selected' : '' }}>AB+</option>
+                                                        <option value="AB-" {{ ($data->pa_blood_group == 'AB-') ? 'selected' : '' }}>AB-</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>

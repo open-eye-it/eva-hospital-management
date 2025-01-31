@@ -75,6 +75,12 @@
                                     <th style="padding:10px; border-top:1px solid; border-bottom:1px solid; border-right:1px solid; text-align:left;">Rate / Charges (Rs.)</th>
                                     <th style="padding:10px; border-top:1px solid; border-bottom:1px solid; text-align:left;">Amount (Rs.)</th>
                                 </tr>
+                                <tr>
+                                    <td style="padding:10px; border-bottom:1px solid; border-right:1px solid;">Case - {{ ucfirst($data->ap_case_type) }}</td>
+                                    <td style="padding:10px; border-bottom:1px solid; border-right:1px solid;">0</td>
+                                    <td style="padding:10px; border-bottom:1px solid; border-right:1px solid;">{{ $data->ap_charge }}</td>
+                                    <td style="padding:10px; border-bottom:1px solid;">{{ $data->ap_charge }}</td>
+                                </tr>
                                 @if(!empty($data->appointmentAdditionalChargesList->toArray()))
                                 @foreach($data->appointmentAdditionalChargesList as $additionalCharge)
                                 <tr>
@@ -85,18 +91,18 @@
                                 </tr>
                                 @endforeach
                                 @endif
-                                <tr>
+                                <!-- <tr>
                                     <td style="padding:10px;"></td>
                                     <td style="padding:10px; border-right:1px solid;"></td>
                                     <th style="padding:10px; border-bottom:1px solid; border-right:1px solid; text-align:left;">Case - {{ ucfirst($data->ap_case_type) }}</th>
                                     <td style="padding:10px; border-bottom:1px solid;">{{ $data->ap_charge }}</td>
-                                </tr>
-                                <tr>
+                                </tr> -->
+                                <!-- <tr>
                                     <td style="padding:10px;"></td>
                                     <td style="padding:10px; border-right:1px solid;"></td>
                                     <th style="padding:10px; border-bottom:1px solid; border-right:1px solid; text-align:left;">Total</th>
                                     <td style="padding:10px; border-bottom:1px solid;">{{ $data->ap_additional_charge }}</td>
-                                </tr>
+                                </tr> -->
                                 <tr>
                                     <td style="padding:10px; border-bottom:1px solid;"></td>
                                     <td style="padding:10px; border-bottom:1px solid; border-right:1px solid;"></td>

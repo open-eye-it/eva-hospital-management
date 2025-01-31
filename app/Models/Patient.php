@@ -49,7 +49,8 @@ class Patient extends Model
         'pa_referred_by',
         'pa_referred_doctor',
         'pa_referred_text',
-        'pa_status'
+        'pa_status',
+        'pa_blood_group'
     ];
 
     public function checkEmailExist($pa_email)

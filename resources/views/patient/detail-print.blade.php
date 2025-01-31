@@ -59,28 +59,40 @@
                                     <td style="padding:7px;">{{ (($patientData->pa_alt_dial_code != '' || $patientData->pa_alt_dial_code != null) ? '+' : '').$patientData->pa_alt_dial_code.' '.$patientData->pa_alt_contact_no }}</td>
                                 </tr>
                                 <tr>
-                                    <td style="padding:7px;"><Strong>Email</Strong></td>
-                                    <td style="padding:7px;">{{ $patientData->pa_email }}</td>
-                                    <td style="padding:7px;"><strong>Address</strong></td>
-                                    <td style="padding:7px;">{{ $patientData->pa_address }}</td>
+                                    <td style="padding:7px;"><strong>Gender</strong></td>
+                                    <td style="padding:7px;">{{ $patientData->pa_gender }}</td>
+                                    <td style="padding:7px;"><Strong>Age</Strong></td>
+                                    <td style="padding:7px;">{{ $patientData->pa_age }}</td>
                                 </tr>
                                 <tr>
-                                    <td style="padding:7px;"><Strong>City</Strong></td>
-                                    <td style="padding:7px;">{{ $patientData->pa_city }}</td>
-                                    <td style="padding:7px;"><strong>Pin Code</strong></td>
-                                    <td style="padding:7px;">{{ $patientData->pa_pincode }}</td>
+                                    <td style="padding:7px;"><strong>DOB</strong></td>
+                                    <td style="padding:7px;">{{ $patientData->pa_dob }}</td>
+                                    <td style="padding:7px;"><strong>Pan Card</strong></td>
+                                    <td style="padding:7px;">{{ $patientData->pa_pan_card }}</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:7px;"><Strong>Email</Strong></td>
+                                    <td style="padding:7px;">{{ $patientData->pa_email }}</td>
+                                    <td style="padding:7px;"><strong>Photo</strong></td>
+                                    <td style="padding:7px;"><img src="{{ ImagePath($patientData->pa_photo) }}" width="100px" /></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:7px;"><strong>Address</strong></td>
+                                    <td style="padding:7px;">{{ $patientData->pa_address }}</td>
+                                    <td style="padding:7px;"><strong>Country</strong></td>
+                                    <td style="padding:7px;">{{ $patientData->pa_country }}</td>
                                 </tr>
                                 <tr>
                                     <td style="padding:7px;"><Strong>State</Strong></td>
                                     <td style="padding:7px;">{{ $patientData->pa_state }}</td>
-                                    <td style="padding:7px;"><strong>DOB</strong></td>
-                                    <td style="padding:7px;">{{ $patientData->pa_dob }}</td>
+                                    <td style="padding:7px;"><Strong>City</Strong></td>
+                                    <td style="padding:7px;">{{ $patientData->pa_city }}</td>
                                 </tr>
                                 <tr>
-                                    <td style="padding:7px;"><Strong>Age</Strong></td>
-                                    <td style="padding:7px;">{{ $patientData->pa_age }}</td>
-                                    <td style="padding:7px;"><strong>Gender</strong></td>
-                                    <td style="padding:7px;">{{ $patientData->pa_gender }}</td>
+                                    <td style="padding:7px;"><strong>Pin Code</strong></td>
+                                    <td style="padding:7px;">{{ $patientData->pa_pincode }}</td>
+                                    <td style="padding:7px;"><strong>Blood Group</strong></td>
+                                    <td style="padding:7px;">{{ $patientData->pa_blood_group }}</td>
                                 </tr>
                                 <tr>
                                     <td style="padding:7px;"><Strong>Marital Status</Strong></td>
@@ -103,10 +115,10 @@
                                 <tr>
                                     <!-- <td style="padding:7px;"><Strong>Number of Living Children</Strong></td>
                                     <td style="padding:7px;">{{ $patientData->pa_children_no }}</td> -->
-                                    <td style="padding:7px;"><strong>Photo</strong></td>
-                                    <td style="padding:7px;"><img src="{{ ImagePath($patientData->pa_photo) }}" width="100px" /></td>
                                     <td style="padding:7px;"><Strong>Referred By</Strong></td>
                                     <td style="padding:7px;">{{ $patientData->pa_referred_by }}</td>
+                                    <td style="padding:7px;"><strong>Referred Doctor</strong></td>
+                                    <td style="padding:7px;">{{ $patientData->pa_referred_doctor }}</td>
                                 </tr>
                                 <!-- <tr>
                                     <td style="padding:7px;" colspan="4"><Strong>Do you consume any of below?</Strong></td>
@@ -132,8 +144,6 @@
                                 <tr>
                                     <!-- <td style="padding:7px;"><Strong>Referred By</Strong></td>
                                     <td style="padding:7px;">{{ $patientData->pa_referred_by }}</td> -->
-                                    <td style="padding:7px;"><strong>Referred Doctor</strong></td>
-                                    <td style="padding:7px;">{{ $patientData->pa_referred_doctor }}</td>
                                     <td style="padding:7px;"><Strong>Referred Name</Strong></td>
                                     <td style="padding:7px;" colspan="3">{{ $patientData->pa_referred_text }}</td>
                                 </tr>

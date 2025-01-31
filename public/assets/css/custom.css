@@ -340,5 +340,9 @@ td.min-width-200 {
 }
 
 .form-group {
-    margin-bottom: 1rem;
+    margin-bottom: 0.7rem;
+}
+
+.select2-container--default .select2-selection--single {
+    min-height: 40px;
 }

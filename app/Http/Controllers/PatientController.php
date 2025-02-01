@@ -83,6 +83,17 @@ class PatientController extends MainController
         }
 
         $input['pa_id'] = $pa_id;
+
+        $input['pa_contact_no'] = str_replace(' ', '', $input['pa_contact_no']);
+        $input['pa_contact_no'] = str_replace('(', '', $input['pa_contact_no']);
+        $input['pa_contact_no'] = str_replace(')', '', $input['pa_contact_no']);
+        $input['pa_contact_no'] = str_replace('-', '', $input['pa_contact_no']);
+
+        $input['pa_alt_contact_no'] = str_replace(' ', '', $input['pa_alt_contact_no']);
+        $input['pa_alt_contact_no'] = str_replace('(', '', $input['pa_alt_contact_no']);
+        $input['pa_alt_contact_no'] = str_replace(')', '', $input['pa_alt_contact_no']);
+        $input['pa_alt_contact_no'] = str_replace('-', '', $input['pa_alt_contact_no']);
+
         $input['pa_added_by'] = $login_user_id;
         $input['pa_updated_by'] = $login_user_id;
         $input['pa_photo'] = json_encode([$file]);
@@ -159,6 +170,17 @@ class PatientController extends MainController
 
         $input['pa_updated_by'] = $login_user_id;
         $input['pa_photo'] = json_encode([$file]);
+
+        $input['pa_contact_no'] = str_replace(' ', '', $input['pa_contact_no']);
+        $input['pa_contact_no'] = str_replace('(', '', $input['pa_contact_no']);
+        $input['pa_contact_no'] = str_replace(')', '', $input['pa_contact_no']);
+        $input['pa_contact_no'] = str_replace('-', '', $input['pa_contact_no']);
+
+        $input['pa_alt_contact_no'] = str_replace(' ', '', $input['pa_alt_contact_no']);
+        $input['pa_alt_contact_no'] = str_replace('(', '', $input['pa_alt_contact_no']);
+        $input['pa_alt_contact_no'] = str_replace(')', '', $input['pa_alt_contact_no']);
+        $input['pa_alt_contact_no'] = str_replace('-', '', $input['pa_alt_contact_no']);
+
         $update = $this->patient->updateData($input, $pa_id);
         if ($update == 1) {
             return $this->getSuccessResult([], $input['pa_name'] . ' updated as Patient', true);

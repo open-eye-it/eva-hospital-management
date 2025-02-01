@@ -77,7 +77,7 @@
                                 </tr>
                                 <tr>
                                     <td style="padding:10px; border-bottom:1px solid; border-right:1px solid;">Case - {{ ucfirst($data->ap_case_type) }}</td>
-                                    <td style="padding:10px; border-bottom:1px solid; border-right:1px solid;">0</td>
+                                    <td style="padding:10px; border-bottom:1px solid; border-right:1px solid;">-</td>
                                     <td style="padding:10px; border-bottom:1px solid; border-right:1px solid;">{{ $data->ap_charge }}</td>
                                     <td style="padding:10px; border-bottom:1px solid;">{{ $data->ap_charge }}</td>
                                 </tr>

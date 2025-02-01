@@ -105,7 +105,7 @@
                                                 <td>{{ $ipd->pa_id }}</td>
                                                 <td>{{ $ipd->patientData->pa_name }}</td>
                                                 <td>{{ $ipd?->roomData?->rm_building.'-'.$ipd?->roomData?->rm_floor.'-'.$ipd?->roomData?->rm_ward.'-'.$ipd?->roomData?->rm_no }}</td>
-                                                <td>{{ $ipd?->ipd_doctor }}</td>
+                                                <td>{{ $ipd?->doctorData?->name }}</td>
                                                 <td>{{ $ipd?->ipd_surgery_text }}</td>
                                                 <td>{{ date('d M Y', strtotime($ipd->ipd_admit_date)) }}</td>
                                                 <td>{{ date('d M Y', strtotime($ipd->ipd_surgery_date)) }}</td>

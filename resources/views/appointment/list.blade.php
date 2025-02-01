@@ -16,15 +16,15 @@
                             <div class="card card-custom gutter-b pt-5 pl-5 pr-5 pb-0">
                                 <form action="{{ route('appointment.list') }}" class="mb-0">
                                     <div class="row">
-                                        <div class="col-lg-3 col-md-4 col-sm-6 col-12 form-group">
+                                        <div class="col-lg-3 col-md-4 col-sm-6 col-12 form-group d-none">
                                             <label for="search_text">Search Appointment ID</label>
                                             <input type="text" class="form-control" placeholder="Search Appointment ID" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
                                         </div>
-                                        <div class="col-lg-3 col-md-4 col-sm-6 col-12 form-group">
+                                        <div class="col-lg-2 col-md-3 col-sm-6 col-12 form-group">
                                             <label for="search_text">Patient ID or Phone Number</label>
                                             <input type="text" class="form-control" placeholder="Patient ID or Phone Number" name="patient_id_phone_number" id="patient_id_phone_number" value="{{ $searchData['patient_id_phone_number'] }}">
                                         </div>
-                                        <div class="col-lg-3 col-md-4 col-sm-6 col-12 form-group">
+                                        <div class="col-lg-2 col-md-3 col-sm-6 col-12 form-group">
                                             <label for="patient">Patient</label>
                                             <select name="patient" id="patient" class="form-control">
                                                 <option value="">Select</option>
@@ -35,13 +35,13 @@
                                                 @endif
                                             </select>
                                         </div>
-                                        <div class="col-lg-3 col-md-4 col-sm-6 col-12 form-group">
+                                        <div class="col-lg-2 col-md-3 col-sm-6 col-12 form-group">
                                             <label for="appointment_date">Appointment Date</label>
                                             <div class='input-group' id='appointment_date_range'>
                                                 <input type='text' name="appointment_date_range" id="appointment_date_range_filter" class="form-control" placeholder="Select date range" value="{{ $searchData['appointment_date_range'] }}" />
                                             </div>
                                         </div>
-                                        <div class="col-lg-3 col-md-4 col-sm-6 col-12 form-group">
+                                        <div class="col-lg-2 col-md-3 col-sm-6 col-12 form-group">
                                             <label for="patient">Doctor</label>
                                             <select name="doctor" id="doctor" class="form-control">
                                                 <option value="">Select</option>
@@ -52,7 +52,7 @@
                                                 @endif
                                             </select>
                                         </div>
-                                        <div class="col-lg-3 col-md-4 col-sm-6 col-12 form-group">
+                                        <div class="col-lg-2 col-md-3 col-sm-6 col-12 form-group">
                                             <label for="case_type">Case Type</label>
                                             <select class="form-control" name="case_type" id="case_type1" onchange="changeFee(this.value)">
                                                 <option value="">Select</option>
@@ -63,7 +63,7 @@
                                                 @endif
                                             </select>
                                         </div>
-                                        <div class="col-lg-3 col-md-4 col-sm-6 col-12 form-group">
+                                        <div class="col-lg-2 col-md-3 col-sm-6 col-12 form-group">
                                             <label for="patient">Status</label>
                                             <select class="form-control" name="ap_status" id="ap_status1" onchange="changeFee(this.value)">
                                                 <option value="">Select</option>
@@ -131,7 +131,7 @@
                                                 <td>{{ $appointment->patientData->pa_name }}</td>
                                                 <td>{{ date('d M Y',strtotime($appointment->ap_date)) }}</td>
                                                 <td>{{ $appointment->doctorData->person_name }}</td>
-                                                <td>{{ $appointment->ap_case_type }}</td>
+                                                <td>{{ ucfirst($appointment->ap_case_type) }}</td>
                                                 <td>{{ $appointment->ap_charge }}</td>
                                                 <td>{{ ucfirst($appointment->ap_charge_status) }}</td>
                                                 <td>{{ $appointment?->patientData?->pa_referred_doctor }}</td>

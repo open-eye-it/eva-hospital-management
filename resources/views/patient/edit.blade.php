@@ -695,8 +695,9 @@
         $('#pa_alt_dial_code').val(iti1.getSelectedCountryData().dialCode);
     });
 
-    setTimeout(() => {
-        $('#pa_contact_no').val("{{ $data->pa_contact_no }}");
-    }, 2000);
+    // setTimeout(() => {
+    //     $('#pa_contact_no').val("{{ $data->pa_contact_no }}");
+    //     $('#pa_alt_contact_no').val("{{ $data->pa_alt_contact_no }}");
+    // }, 2000);
 </script>
 @endsection

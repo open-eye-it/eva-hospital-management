@@ -17,8 +17,8 @@
                                 <form action="{{ route('trainee.list') }}">
                                     <div class="row p-5">
                                         <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
-                                            <label>Search ID or Name or Contact No</label>
-                                            <input type="text" class="form-control" placeholder="Search ID or Name or Contact No" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
+                                            <label>Trainee ID or Name or Contact No</label>
+                                            <input type="text" class="form-control" placeholder="Trainee ID or Name or Contact No" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
                                         </div>
                                         <div class="col-lg-3 col-md-4 col-sm-6 col-12 form-group">
                                             <label>Start Date</label>
@@ -28,7 +28,7 @@
                                             <label>End Date</label>
                                             <input type="date" name="end_date" id="end_date" value="{{ $searchData['end_date'] }}" class="form-control">
                                         </div>
-                                        <div class="col-12 form-group">
+                                        <div class="col-12">
                                             <button class="btn btn-primary" type="submit">Search</button>
                                             <a class="btn btn-danger" href="{{ route('trainee.list') }}">Reset</a>
                                             <a class="btn btn-primary float-right" href="{{ route('trainee.create') }}">Add <i class="fa fa-plus"></i></a>

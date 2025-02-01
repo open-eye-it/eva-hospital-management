@@ -11,27 +11,32 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Models\Appointment;
 use App\Models\AppointmentAdditionalCharge;
+use App\Models\Patient;
 
 class OPDAccountDetailController extends MainController
 {
     public function __construct()
     {
         parent::__construct();
+        $this->patient     = new Patient;
         $this->appointment = new Appointment;
         $this->additional_charge = new AppointmentAdditionalCharge;
     }
 
     public function index(Request $request)
     {
+        $patientList = $this->patient->getList([], false);
+
         $input = $request->query();
         $searchData['search_text']             = isset($input['search_text']) ? $input['search_text'] : '';
+        $searchData['patient']  = isset($input['patient']) ? $input['patient'] : '';
         $searchData['appointment_date_range']  = isset($input['appointment_date_range']) ? $input['appointment_date_range'] : date('Y-m-d') . ' - ' . date('Y-m-d');
         $total_fees = $this->totalFees($searchData);
 
         $total_additional_fees = $this->totalAdditionalFees($searchData);
 
         $list = $this->appointment->getList($searchData);
-        return view('account-detail.opd.list', compact('list', 'searchData', 'total_fees', 'total_additional_fees'));
+        return view('account-detail.opd.list', compact('list', 'patientList', 'searchData', 'total_fees', 'total_additional_fees'));
     }
 
     /* Total of Charge */

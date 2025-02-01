@@ -16,11 +16,11 @@
                             <div class="card card-custom gutter-b p-5">
                                 <form action="{{ route('pre-medicine.list') }}">
                                     <div class="row">
-                                        <div class="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
-                                            <label>Search Recommendation</label>
-                                            <input type="text" class="form-control" placeholder="Search Recommendation" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
+                                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
+                                            <label>Recommendation</label>
+                                            <input type="text" class="form-control" placeholder="Recommendation" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
                                         </div>
-                                        <div class="col-12 form-group">
+                                        <div class="col-12">
                                             <button class="btn btn-primary" type="submit">Search</button>
                                             <a class="btn btn-danger" href="{{ route('pre-medicine.list') }}">Reset</a>
                                             @can('pre-operative-medicine-create')

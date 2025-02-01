@@ -91,10 +91,11 @@
                                             </div>
                                             <input type="hidden" id="country_code" name="country_code" value="{{ $data->country_code }}">
                                             <input type="hidden" id="dial_code" name="dial_code" value="{{ $data->dial_code }}">
-                                            <div class="col-lg-6 col-md-6 col-12">
+                                            <div class="col-12">
                                                 <div class="form-group">
                                                     <label>Address</label>
-                                                    <textarea name="address" id="address" class="form-control" cols="30" rows="10">{{ $data->address }}</textarea>
+                                                    <!-- <textarea name="address" id="address" class="form-control" cols="30" rows="10">{{ $data->address }}</textarea> -->
+                                                    <input type="text" class="form-control" id="address" name="address" value="{{ $data->address }}">
                                                 </div>
                                             </div>
                                         </div>

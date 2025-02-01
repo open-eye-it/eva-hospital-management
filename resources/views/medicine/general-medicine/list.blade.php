@@ -16,11 +16,11 @@
                             <div class="card card-custom gutter-b p-5">
                                 <form action="{{ route('general-medicine.list') }}">
                                     <div class="row">
-                                        <div class="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
-                                            <label>Search Medicine Name, Company Name</label>
-                                            <input type="text" class="form-control" placeholder="Search Medicine Name, Company Name" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
+                                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
+                                            <label>Medicine Name, Company Name</label>
+                                            <input type="text" class="form-control" placeholder="Medicine Name, Company Name" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
                                         </div>
-                                        <div class="col-12 form-group">
+                                        <div class="col-12">
                                             <button class="btn btn-primary" type="submit">Search</button>
                                             <a class="btn btn-danger" href="{{ route('general-medicine.list') }}">Reset</a>
                                             @can('general-medicine-read')

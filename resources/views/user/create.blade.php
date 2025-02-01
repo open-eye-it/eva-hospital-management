@@ -83,10 +83,11 @@
                                             </div>
                                             <input type="hidden" id="country_code" name="country_code" value="">
                                             <input type="hidden" id="dial_code" name="dial_code" value="">
-                                            <div class="col-lg-6 col-md-6 col-12">
+                                            <div class="col-12">
                                                 <div class="form-group">
                                                     <label>Address</label>
-                                                    <textarea name="address" id="address" class="form-control" cols="30" rows="10"></textarea>
+                                                    <!-- <textarea name="address" id="address" class="form-control" cols="30" rows="10"></textarea> -->
+                                                    <input type="text" class="form-control" id="address" name="address">
                                                 </div>
                                             </div>
                                         </div>

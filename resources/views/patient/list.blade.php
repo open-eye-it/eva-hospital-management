@@ -12,14 +12,14 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-12">
-                            <div class="card card-custom gutter-b pt-5 pl-5 pr-5 pb-0">
+                            <div class="card card-custom gutter-b p-5">
                                 <form action="{{ route('patient.list') }}" class="mb-0">
                                     <div class="row">
                                         <div class="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
-                                            <label>Search Patient <span class="text-danger">[Note: Search by patient id, name, contact no, alternate contact no, email]</span></label>
-                                            <input type="text" class="form-control" placeholder="Search Patient" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
+                                            <label>Patient <span class="text-danger">[Note: Search by patient id, name, contact no, alternate contact no, email]</span></label>
+                                            <input type="text" class="form-control" placeholder="Patient" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
                                         </div>
-                                        <div class="col-12 form-group">
+                                        <div class="col-12">
                                             <button class="btn btn-primary" type="submit">Search</button>
                                             <a class="btn btn-danger" href="{{ route('patient.list') }}">Reset</a>
                                             <a class="btn btn-primary float-right" href="{{ route('patient.create') }}">Add <i class="fa fa-plus"></i> (F4)</a>

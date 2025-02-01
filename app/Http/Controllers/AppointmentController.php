@@ -45,7 +45,7 @@ class AppointmentController extends MainController
         $userLogin = Auth::user();
         $userRole = $userLogin->roles->pluck('id')[0];
         $input = $request->all();
-        $patientList = $this->patient->getList();
+        $patientList = $this->patient->getList([], false);
         $doctorList = User::select('user_id', 'person_name')->role('doctor')->where('user_status', 1)->orderBy('id', 'asc')->get()->toArray();
         $assDoctorList = User::select('user_id', 'person_name')->role('assistant_doctor')->where('user_status', 1)->orderBy('id', 'asc')->get()->toArray();
         $doctors = array_merge($doctorList, $assDoctorList);
@@ -182,7 +182,7 @@ class AppointmentController extends MainController
         if ($request->hasFile('ap_doc')) {
             $fileName = $request->ap_doc->getClientOriginalName();
             $filteNameArr = explode('.', $fileName);
-            $fileNameFinal = $filteNameArr[0].'-'.$this->randomString(7, 'number');
+            $fileNameFinal = $filteNameArr[0] . '-' . $this->randomString(7, 'number');
             $fileNameFinal = str_replace(' ', '-', $fileNameFinal);
             // $file = UploadCustomeImage($request->file('ap_doc'), $ap_id . '-' . $this->randomString(10, 'number'));
             $file = UploadCustomeImage($request->file('ap_doc'), $fileNameFinal);
@@ -342,7 +342,7 @@ class AppointmentController extends MainController
         $query = $request->query();
         $am_id = $this->getAppointmentMedicineID();
         $login_user_id = Auth::user()->user_id;
-        
+
         $data['am_id'] = $am_id;
         $data['ap_id'] = base64_decode($query['ap_id']);
         $data['am_added_by'] = $login_user_id;
@@ -352,7 +352,7 @@ class AppointmentController extends MainController
         $data['am_afternoon'] = $query['am_afternoon'];
         $data['am_evening'] = $query['am_evening'];
 
-        if($query['gm_id_original'] == ''){
+        if ($query['gm_id_original'] == '') {
             $gm_id = $this->getUserID();
             $data1 = [
                 'gm_id'           => $gm_id,
@@ -364,13 +364,13 @@ class AppointmentController extends MainController
             ];
             $insertGeneralMedicine = $this->general_medicine->insertGeneralMedicine($data1);
             $data['gm_id'] = $insertGeneralMedicine->gm_id;
-        }else{
+        } else {
             $data['gm_id'] = $query['gm_id_original'];
         }
-        
+
 
         $query['ap_id'] = base64_decode($query['ap_id']);
-        
+
         $query['am_id'] = $am_id;
         $login_user_id = Auth::user()->user_id;
         $query['am_added_by'] = $login_user_id;

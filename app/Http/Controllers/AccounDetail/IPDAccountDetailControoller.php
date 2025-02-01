@@ -21,20 +21,23 @@ class IPDAccountDetailControoller extends MainController
         $this->ipd = new IpdDetail;
         $this->ipd_charge = new IpdCharge;
         $this->ipd_payment = new IpdPaymentList;
-        $this->patient_model = new Patient;
+        $this->patient       = new Patient;
     }
 
     public function index(Request $request)
     {
+        $patientList = $this->patient->getList([], false);
+
         $input = $request->all();
         $searchData['search_text']      = isset($input['search_text']) ? $input['search_text'] : '';
         $searchData['admit_date_range'] = isset($input['admit_date_range']) ? $input['admit_date_range'] : date('Y-m-d') . ' - ' . date('Y-m-d');
+        $searchData['patient']  = isset($input['patient']) ? $input['patient'] : '';
         $searchDataEncoded = base64_encode(json_encode($searchData));
         $list = $this->ipd->getList($searchData);
 
         $total_fees = $this->totalBillAmount($searchData);
         $total_received_fees = $this->totalReceivedAmount($searchData);
-        return view('account-detail.ipd.list', compact('list', 'searchData', 'searchDataEncoded', 'total_fees', 'total_received_fees'));
+        return view('account-detail.ipd.list', compact('list', 'patientList', 'searchData', 'searchDataEncoded', 'total_fees', 'total_received_fees'));
     }
 
     /* Total of Charge */
@@ -59,7 +62,7 @@ class IPDAccountDetailControoller extends MainController
         $chargeList = $this->ipd_charge->getList($filterData, false)->toArray();
         $paymentList = $this->ipd_payment->getList($filterData, false)->toArray();
         $ipdData = $this->ipd->singlData($ipd_id);
-        $patientData = $this->patient_model->singlData($ipdData->pa_id);
+        $patientData = $this->patient->singlData($ipdData->pa_id);
 
         $data['ipdData'] = $ipdData;
         $data['chargeList'] = $chargeList;

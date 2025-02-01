@@ -24,7 +24,7 @@ class IpdPaymentList extends Model
 
     public function getList($filterdata = [], $paginate = true, $limit = 10, $order_by = ['created_at', 'asc'])
     {
-        $data = static::select('*', DB::raw('DATE_FORMAT(created_at, "%d %M %Y") as ipl_received_date'));
+        $data = static::select('*', DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d") as ipl_received_date'));
         $this->FilterData($data, $filterdata);
         $data->orderBy($order_by[0], $order_by[1]);
         if ($paginate === true) :

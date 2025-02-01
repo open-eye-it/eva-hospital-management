@@ -324,6 +324,9 @@ textarea {
 .popup-90 {
     max-width: 90% !important;
 }
+.popup-100 {
+    max-width: 100% !important;
+}
 
 td.min-width-100 {
     min-width: 100px;
@@ -339,10 +342,23 @@ td.min-width-200 {
     width: 100%;
 }
 
+form {
+    margin-bottom: 0px;
+}
+
 .form-group {
     margin-bottom: 0.7rem;
 }
 
 .select2-container--default .select2-selection--single {
     min-height: 40px;
+}
+
+/* Accoutn Details IPD - Billing Description */
+#chargeDetilsTable tbody tr td:nth-child(1) {
+    min-width: 300px;
+}
+
+#paymentReceivedDetailsTable tbody tr td:nth-child(2) {
+    min-width: 100px;
 }

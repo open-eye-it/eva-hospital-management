@@ -106,7 +106,7 @@
                                     <label class="col-xl-3 col-lg-3 col-form-label">Current Password</label>
                                     <div class="col-lg-9 col-xl-6">
                                         <div class="input-group">
-                                            <input class="form-control form-control" type="password" id="old_password" name="old_password" value="">
+                                            <input class="form-control form-control" type="password" id="old_password" name="old_password" value="" placeholder="Current Password">
                                             <div class="input-group-append">
                                                 <span class="input-group-text" id="old_pass_icon" onclick="showOldPassword()">
                                                     <i class="far fa-eye-slash icon-lg"></i>
@@ -138,7 +138,7 @@
                                     <label class="col-xl-3 col-lg-3 col-form-label">New Password</label>
                                     <div class="col-lg-9 col-xl-6">
                                         <div class="input-group">
-                                            <input class="form-control form-control" type="password" id="password" name="password" value="">
+                                            <input class="form-control form-control" type="password" id="password" name="password" value="" placeholder="New Password">
                                             <div class="input-group-append">
                                                 <span class="input-group-text" id="new_pass_icon" onclick="showPassword()">
                                                     <i class="far fa-eye-slash icon-lg"></i>

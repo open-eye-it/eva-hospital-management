@@ -71,23 +71,23 @@
                                 </tr>
                                 <tr>
                                     <th style="padding:10px; border-top:1px solid; border-bottom:1px solid; border-right:1px solid; text-align:left;">Services / Charges Description</th>
-                                    <th style="padding:10px; border-top:1px solid; border-bottom:1px solid; border-right:1px solid; text-align:left;">Qty. / Visit</th>
+                                    <th style="padding:10px; border-top:1px solid; border-bottom:1px solid; border-right:1px solid; text-align:center;">Qty. / Visit</th>
                                     <th style="padding:10px; border-top:1px solid; border-bottom:1px solid; border-right:1px solid; text-align:left;">Rate / Charges (Rs.)</th>
                                     <th style="padding:10px; border-top:1px solid; border-bottom:1px solid; text-align:left;">Amount (Rs.)</th>
                                 </tr>
                                 <tr>
                                     <td style="padding:10px; border-bottom:1px solid; border-right:1px solid;">Case - {{ ucfirst($data->ap_case_type) }}</td>
-                                    <td style="padding:10px; border-bottom:1px solid; border-right:1px solid;">-</td>
-                                    <td style="padding:10px; border-bottom:1px solid; border-right:1px solid;">{{ $data->ap_charge }}</td>
-                                    <td style="padding:10px; border-bottom:1px solid;">{{ $data->ap_charge }}</td>
+                                    <td style="padding:10px; border-bottom:1px solid; border-right:1px solid; text-align:center;">-</td>
+                                    <td style="padding:10px; border-bottom:1px solid; border-right:1px solid; text-align:right;">{{ $data->ap_charge }}</td>
+                                    <td style="padding:10px; border-bottom:1px solid; text-align:right;">{{ $data->ap_charge }}</td>
                                 </tr>
                                 @if(!empty($data->appointmentAdditionalChargesList->toArray()))
                                 @foreach($data->appointmentAdditionalChargesList as $additionalCharge)
                                 <tr>
                                     <td style="padding:10px; border-bottom:1px solid; border-right:1px solid;">{{ $additionalCharge->apac_desc }}</td>
-                                    <td style="padding:10px; border-bottom:1px solid; border-right:1px solid;">{{ $additionalCharge->apac_qty }}</td>
-                                    <td style="padding:10px; border-bottom:1px solid; border-right:1px solid;">{{ $additionalCharge->apac_charge }}</td>
-                                    <td style="padding:10px; border-bottom:1px solid;">{{ $additionalCharge->apac_final_charge }}</td>
+                                    <td style="padding:10px; border-bottom:1px solid; border-right:1px solid; text-align:center;">{{ $additionalCharge->apac_qty }}</td>
+                                    <td style="padding:10px; border-bottom:1px solid; border-right:1px solid; text-align:right;">{{ $additionalCharge->apac_charge }}</td>
+                                    <td style="padding:10px; border-bottom:1px solid; text-align:right;">{{ $additionalCharge->apac_final_charge }}</td>
                                 </tr>
                                 @endforeach
                                 @endif
@@ -107,7 +107,7 @@
                                     <td style="padding:10px; border-bottom:1px solid;"></td>
                                     <td style="padding:10px; border-bottom:1px solid; border-right:1px solid;"></td>
                                     <th style="padding:10px; border-bottom:1px solid; border-right:1px solid; text-align:left;">Final Amount</th>
-                                    <td style="padding:10px; border-bottom:1px solid;">{{ $data->ap_charge+$data->ap_additional_charge }}</td>
+                                    <td style="padding:10px; border-bottom:1px solid; text-align:right;">{{ $data->ap_charge+$data->ap_additional_charge }}</td>
                                 </tr>
                                 <tr>
                                     <td colspan="4" style="padding:10px; text-align:left;"><strong>Amount In Words:</strong>

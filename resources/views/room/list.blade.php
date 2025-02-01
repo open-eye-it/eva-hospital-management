@@ -17,8 +17,8 @@
                                 <form action="{{ route('room.list') }}">
                                     <div class="row p-5">
                                         <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
-                                            <label>Search room number or charge</label>
-                                            <input type="text" class="form-control" placeholder="Search room number or charge" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
+                                            <label>Room Number or Charge</label>
+                                            <input type="text" class="form-control" placeholder="Room Number or Charge" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
                                         </div>
                                         <div class="col-lg-3 col-md-4 col-sm-6 col-12 form-group">
                                             <label for="">BUilding</label>

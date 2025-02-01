@@ -16,17 +16,28 @@
                             <div class="card card-custom gutter-b p-5">
                                 <form action="{{ route('opd-account-detail.list') }}">
                                     <div class="row">
-                                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
-                                            <label for="search_text">Search Patient ID</label>
-                                            <input type="text" class="form-control" placeholder="Search Appointment ID" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-12 form-group">
+                                            <label for="search_text">Patient ID</label>
+                                            <input type="text" class="form-control" placeholder="Appointment ID" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
                                         </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-12 form-group">
+                                            <label for="patient">Patient</label>
+                                            <select name="patient" id="patient" class="form-control">
+                                                <option value="">Select</option>
+                                                @if(!empty($patientList))
+                                                @foreach($patientList as $plist)
+                                                <option value="{{ $plist->pa_id }}" {{ ($plist->pa_id == $searchData['patient']) ? 'selected' : '' }}>{{ $plist->pa_name }} - {{ $plist->pa_id }}</option>
+                                                @endforeach
+                                                @endif
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-12 form-group">
                                             <label for="appointment_date">OPD Date</label>
                                             <div class='input-group' id='appointment_date_range'>
                                                 <input type='text' name="appointment_date_range" class="form-control" readonly="readonly" placeholder="Select date range" value="{{ $searchData['appointment_date_range'] }}" />
                                             </div>
                                         </div>
-                                        <div class="col-12 form-group">
+                                        <div class="col-12">
                                             <button class="btn btn-primary" type="submit">Search</button>
                                             <a class="btn btn-danger" href="{{ route('opd-account-detail.list') }}">Reset</a>
                                         </div>
@@ -51,16 +62,16 @@
                                             <tr>
                                                 <th>ID</th>
                                                 <th>Appointment ID</th>
-                                                <th>Date</th>
+                                                <th>DOA</th>
                                                 <th>Patient ID</th>
                                                 <th>Patient Name</th>
                                                 <th>Contact No</th>
-                                                <th>Case Type</th>
+                                                <th>Case</th>
                                                 <th>Is FOC</th>
                                                 <th>Fee</th>
                                                 <th>Fee Status</th>
                                                 <th>Extra Charges</th>
-                                                <th>Follow Up Date</th>
+                                                <!-- <th>Follow Up Date</th> -->
                                                 <th>Decided Date of Surgery</th>
                                                 @can('account-detail-opd-additional-charge')
                                                 <th>Add Charges</th>
@@ -77,12 +88,12 @@
                                                 <td>{{ $appointment->pa_id }}</td>
                                                 <td>{{ $appointment->patientData->pa_name }}</td>
                                                 <td>{{ $appointment->patientData->pa_contact_no }}</td>
-                                                <td>{{ $appointment->ap_case_type }}</td>
+                                                <td>{{ ucfirst($appointment->ap_case_type) }}</td>
                                                 <td>{{ ($appointment->ap_is_foc == 'yes') ? 'Yes' : 'No' }}</td>
                                                 <td>{{ $appointment->ap_charge }}</td>
                                                 <td>{{ ucfirst($appointment->ap_charge_status) }}</td>
                                                 <td id="app_row_additional_charge_{{ $appointment->ap_id }}">{{ $appointment->ap_additional_charge }}</td>
-                                                <td>{{ ($appointment->ap_follow_up_date != '' || !empty($appointment->ap_follow_up_date)) ? date('d M Y', strtotime($appointment->ap_follow_up_date)) : '' }}</td>
+                                                <!-- <td>{{ ($appointment->ap_follow_up_date != '' || !empty($appointment->ap_follow_up_date)) ? date('d M Y', strtotime($appointment->ap_follow_up_date)) : '' }}</td> -->
                                                 <td>{{ date('d M Y', strtotime($appointment->ap_surg_date)) }}</td>
                                                 @can('account-detail-opd-additional-charge')
                                                 <td>
@@ -135,24 +146,31 @@
                             <span class="text-danger" id="apac_descErr"></span>
                         </div>
                     </div>
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                         <div class="form-group">
                             <label for="apac_qty">QTY <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control" name="apac_qty" id="apac_qty" value="">
+                            <input type="number" class="form-control" name="apac_qty" id="apac_qty" value="0" onchange="changeQty(this.value)">
                             <span class="text-danger" id="apac_qtyErr"></span>
                         </div>
                     </div>
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                         <div class="form-group">
                             <label for="apac_charge">Charge <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="apac_charge" id="apac_charge" value="">
+                            <input type="number" class="form-control" name="apac_charge" id="apac_charge" value="0" onchange="changeCharge(this.value)">
                             <span class="text-danger" id="apac_chargeErr"></span>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                        <div class="form-group">
+                            <label for="apac_charge">Total Charge <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" name="apac_total_charge" id="apac_total_charge" value="0" disabled>
+                            <span class="text-danger" id="apac_total_chargeErr"></span>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-12">
                         <div class="form-group">
                             <label for="apac_payment_mode">Mode of Payment <span class="text-danger">*</span></label>
-                            <select class="form-control" name="apac_payment_mode" id="apac_payment_mode" onchange="changePaymnt(this.value)">
+                            <select class="form-control" name="apac_payment_mode" id="apac_payment_mode">
                                 <option value="">Select</option>
                                 @foreach(PaymentMode() as $paymentType)
                                 <option value="{{ $paymentType['ap_payment_mode'] }}">{{ ucfirst($paymentType['ap_payment_mode']) }}</option>
@@ -188,6 +206,30 @@
     </div>
 </div>
 <script>
+    function changeQty(val) {
+        let charge = $('#apac_charge').val();
+        let total = val * charge;
+        $('#apac_total_charge').val(total);
+    }
+
+    function changeCharge(val) {
+        let qty = $('#apac_qty').val();
+        let total = val * qty;
+        $('#apac_total_charge').val(total);
+    }
+    $('#apac_qty').on('keyup', function() {
+        let val = $(this).val();
+        let charge = $('#apac_charge').val();
+        let total = val * charge;
+        $('#apac_total_charge').val(total);
+    });
+    $('#apac_charge').on('keyup', function() {
+        let val = $(this).val();
+        let qty = $('#apac_qty').val();
+        let total = val * qty;
+        $('#apac_total_charge').val(total);
+    });
+
     setTimeout(() => {
         var table = $('#accountDetailsOpdTable').DataTable();
         table.destroy();

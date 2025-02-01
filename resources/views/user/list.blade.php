@@ -16,11 +16,11 @@
                             <div class="card card-custom gutter-b p-5">
                                 <form action="{{ route('user.list') }}">
                                     <div class="row">
-                                        <div class="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
-                                            <label>Search Name, Email, Person Name</label>
-                                            <input type="text" class="form-control" placeholder="Search Name, Email, Person Name" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
+                                        <div class="col-lg-4 col-md-6 col-sm-6 col-12 form-group">
+                                            <label>Name, Email, Person Name</label>
+                                            <input type="text" class="form-control" placeholder="Name, Email, Person Name" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
                                         </div>
-                                        <div class="col-12 form-group">
+                                        <div class="col-12">
                                             <button class="btn btn-primary" type="submit">Search</button>
                                             <a class="btn btn-danger" href="{{ route('user.list') }}">Reset</a>
                                             <a class="btn btn-primary float-right" href="{{ route('user.create') }}">Add <i class="fa fa-plus"></i></a>
@@ -45,6 +45,7 @@
                                                 <th>Person Name</th>
                                                 <th>User Name</th>
                                                 <th>Category</th>
+                                                <th>Contact No</th>
                                                 <th>Added By</th>
                                                 @can('user-status')
                                                 <th>Status</th>
@@ -62,6 +63,7 @@
                                                 <td>{{ $user->person_name }}</td>
                                                 <td>{{ $user->name }}</td>
                                                 <td>{{ implode('|', $user->getRoleDisplayNames()->toArray()) }}</td>
+                                                <td>{{ $user->contactno }}</td>
                                                 <td>{{ $user->AddedByData->person_name }}</td>
                                                 @can('user-status')
                                                 <td>

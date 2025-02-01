@@ -17,8 +17,8 @@
                                 <form action="{{ route('referred-doctor.list') }}">
                                     <div class="row">
                                         <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
-                                            <label>Search Doctor/Other Name</label>
-                                            <input type="text" class="form-control" placeholder="Search Doctor/Other Name" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
+                                            <label>Doctor/Other Name</label>
+                                            <input type="text" class="form-control" placeholder="Doctor/Other Name" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
                                         </div>
                                         <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
                                             <label for="patient_date">Patient Count Range</label>
@@ -26,7 +26,7 @@
                                                 <input type='text' name="patient_date_range" class="form-control" readonly="readonly" placeholder="Select date range" value="{{ $searchData['patient_date_range'] }}" />
                                             </div>
                                         </div>
-                                        <div class="col-12 form-group">
+                                        <div class="col-12">
                                             <button class="btn btn-primary" type="submit">Search</button>
                                             <a class="btn btn-danger" href="{{ route('referred-doctor.list') }}">Reset</a>
                                             <a class="btn btn-primary float-right" href="{{ route('referred-doctor.create') }}">Add <i class="fa fa-plus"></i></a>

@@ -13,7 +13,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-12">
-                            <div class="card card-custom gutter-b pt-5 pl-5 pr-5 pb-0">
+                            <div class="card card-custom gutter-b p-5">
                                 <form action="{{ route('appointment.list') }}" class="mb-0">
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 col-sm-6 col-12 form-group d-none">
@@ -21,8 +21,8 @@
                                             <input type="text" class="form-control" placeholder="Search Appointment ID" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
                                         </div>
                                         <div class="col-lg-2 col-md-3 col-sm-6 col-12 form-group">
-                                            <label for="search_text">Patient ID or Phone Number</label>
-                                            <input type="text" class="form-control" placeholder="Patient ID or Phone Number" name="patient_id_phone_number" id="patient_id_phone_number" value="{{ $searchData['patient_id_phone_number'] }}">
+                                            <label for="search_text">PID or Phone Number</label>
+                                            <input type="text" class="form-control" placeholder="PID or Phone Number" name="patient_id_phone_number" id="patient_id_phone_number" value="{{ $searchData['patient_id_phone_number'] }}">
                                         </div>
                                         <div class="col-lg-2 col-md-3 col-sm-6 col-12 form-group">
                                             <label for="patient">Patient</label>
@@ -72,7 +72,7 @@
                                                 <option value="cancelled" {{ ($searchData['ap_status'] == 'cancelled') ? 'selected' : '' }}>Cancelled</option>
                                             </select>
                                         </div>
-                                        <div class="col-12 form-group">
+                                        <div class="col-12">
                                             <button class="btn btn-primary" type="submit">Search</button>
                                             <a class="btn btn-danger" href="{{ route('appointment.list') }}">Reset</a>
                                             <button type="button" class="btn btn-info" onclick="exportAppointment()"><i class="fa fa-file-export"></i> Export</button>

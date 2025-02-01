@@ -16,11 +16,11 @@
                             <div class="card card-custom gutter-b p-5">
                                 <form action="{{ route('mac_address.list') }}">
                                     <div class="row">
-                                        <div class="col-lg-6 col-md-6 col-sm-6 col-12 form-group">
-                                            <label>Search Address</label>
-                                            <input type="text" class="form-control" placeholder="Search Address" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-12 form-group">
+                                            <label>Address</label>
+                                            <input type="text" class="form-control" placeholder="Address" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
                                         </div>
-                                        <div class="col-12 form-group">
+                                        <div class="col-12">
                                             <button class="btn btn-primary" type="submit">Search</button>
                                             <a class="btn btn-danger" href="{{ route('mac_address.list') }}">Reset</a>
                                             <a class="btn btn-primary float-right" href="{{ route('mac_address.create') }}">Add <i class="fa fa-plus"></i></a>

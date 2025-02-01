@@ -16,17 +16,28 @@
                             <div class="card card-custom gutter-b p-5">
                                 <form action="{{ route('ipd-acount-detail.list') }}">
                                     <div class="row">
-                                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
-                                            <label for="search_text">Search IPD ID</label>
-                                            <input type="text" class="form-control" placeholder="Search IPD ID" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-12 form-group">
+                                            <label for="search_text">IPD ID</label>
+                                            <input type="text" class="form-control" placeholder="IPD ID" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
                                         </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-12 form-group">
+                                            <label for="patient">Patient</label>
+                                            <select name="patient" id="patient" class="form-control">
+                                                <option value="">Select</option>
+                                                @if(!empty($patientList))
+                                                @foreach($patientList as $plist)
+                                                <option value="{{ $plist->pa_id }}" {{ ($plist->pa_id == $searchData['patient']) ? 'selected' : '' }}>{{ $plist->pa_name }} - {{ $plist->pa_id }}</option>
+                                                @endforeach
+                                                @endif
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-12 form-group">
                                             <label for="appointment_date">Admit Date</label>
                                             <div class='input-group' id='appointment_date_range'>
                                                 <input type='text' name="admit_date_range" id="admit_date_range" class="form-control" placeholder="Select date range" value="{{ $searchData['admit_date_range'] }}" />
                                             </div>
                                         </div>
-                                        <div class="col-12 form-group">
+                                        <div class="col-12">
                                             <button class="btn btn-primary" type="submit">Search</button>
                                             <a class="btn btn-danger" href="{{ route('ipd-acount-detail.list') }}">Reset</a>
                                             <button type="button" class="btn btn-info" onclick="exportIPD()"><i class="fa fa-file-export"></i> Export</button>
@@ -60,11 +71,11 @@
                                                 <th>Patient Name</th>
                                                 <th>Contact No</th>
                                                 <th>Has Mediclaim</th>
+                                                <th>DOA</th>
+                                                <th>DOD</th>
+                                                <th>Is Discharged</th>
                                                 <th>Bill Amount</th>
                                                 <th>Received Amount</th>
-                                                <th>Admit Date</th>
-                                                <th>Discharge Date</th>
-                                                <th>Is Discharged</th>
                                                 @if(auth()->user()->can('account-detail-ipd-bill-amount') || auth()->user()->can('account-detail-ipd-print-bill'))
                                                 <th>Actions</th>
                                                 @endif
@@ -79,11 +90,11 @@
                                                 <td>{{ $ipd->patientData->pa_name }}</td>
                                                 <td>{{ $ipd->patientData->pa_contact_no }}</td>
                                                 <td>{{ ($ipd->ipd_mediclaim == 'yes') ? 'Yes' : 'No' }}</td>
-                                                <td id="billAmountShow_{{ $ipd->ipd_id }}">{{ $ipd->ipd_bill_amount }}</td>
-                                                <td id="billReceivedAmountShow_{{ $ipd->ipd_id }}">{{ $ipd->ipd_received_amount }}</td>
                                                 <td>{{ date('d M Y', strtotime($ipd->ipd_admit_date)) }}</td>
                                                 <td>{{ ($ipd->ipd_discharge_date != null) ? date('d M Y', strtotime($ipd->ipd_discharge_date)) : '' }}</td>
                                                 <td>{{ ($ipd->ipd_discharge_date != null) ? 'Yes' : 'No' }}</td>
+                                                <td id="billAmountShow_{{ $ipd->ipd_id }}">{{ $ipd->ipd_bill_amount }}</td>
+                                                <td id="billReceivedAmountShow_{{ $ipd->ipd_id }}">{{ $ipd->ipd_received_amount }}</td>
                                                 @if(auth()->user()->can('account-detail-ipd-bill-amount') || auth()->user()->can('account-detail-ipd-print-bill'))
                                                 <td>
                                                     @can('account-detail-ipd-bill-amount')
@@ -212,7 +223,7 @@
     </div>
 </div>
 <div class="modal fade" id="billAmountViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl popup-90" role="document">
+    <div class="modal-dialog modal-xl popup-100" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Billing Description</h5>
@@ -222,46 +233,36 @@
             </div>
             <div class="modal-body" id="billAmountViewDetail">
                 <div class="row">
-                    <div class="col-lg-2 col-md-3 col-sm-12 col-xs-12"><strong>IPD ID: </strong> <span id="ipdIdShow"></span></div>
-                    <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12"><strong>Patient Name: </strong> <span id="ipdPatientNameShow"></span></div>
-                    <div class="col-lg-7 col-md-5 col-sm-12 col-xs-12"><strong>IPD Date: </strong><span id="ipd_admit_date_format"></span></div>
-                    <div class="col-lg-2 col-md-3 col-sm-12 col-xs-12"><strong>Bill Amount: </strong><span id="billAmount">18000</span> Rs.</div>
-                    <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12"><strong>Received Amount: </strong><span id="receivedAmount">18000</span> Rs.</div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12"><strong>IPD ID: </strong> <span id="ipdIdShow"></span></div>
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12"><strong>Patient Name: </strong> <span id="ipdPatientNameShow"></span></div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12"><strong>IPD Date: </strong><span id="ipd_admit_date_format"></span></div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12"><strong>Bill Amount: </strong><span id="billAmount">18000</span> Rs.</div>
+                    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12"><strong>Received Amount: </strong><span id="receivedAmount">18000</span> Rs.</div>
                 </div>
                 <div class="row mt-4">
                     <input type="hidden" id="ipd_id" name="ipd_id" value="">
                     <div class="col-lg-5 col-md-6 col-sm-12 col-xs-12 col-12 pt-4 border-right-lg border-right-md">
                         <h4 class="text-center"><strong>Charge Details</strong></h4>
                         <div class="row pt-2">
-                            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12 col-12">
+                            <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12 col-12">
                                 <div class="form-group">
                                     <label for="">Charge For <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" id="ic_text" name="ic_text">
                                     <span class="text-danger" id="ic_textErr"></span>
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-12">
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 col-12">
                                 <div class="form-group">
                                     <label for="">Amount <span class="text-danger">*</span></label>
                                     <input type="number" class="form-control" id="ic_amount" name="ic_amount">
                                     <span class="text-danger" id="ic_amountErr"></span>
                                 </div>
                             </div>
+                            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12 col-12 mt-lg-3 mt-md-3">
+                                <button class="btn btn-primary mt-lg-4 mt-md-4" id="addNewCharge">Add</button>
+                            </div>
                         </div>
-                        <input type="hidden" id="ic_id" name="ic_id" value="">
-                        <button class="btn btn-primary" id="addNewCharge">Add</button>
-                        <table class="table scrollable_table_custom">
-                            <thead>
-                                <tr>
-                                    <th>Charge ID</th>
-                                    <th>Particular</th>
-                                    <th>Amount</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="chargeDetail"></tbody>
-                        </table>
-                        <div class="row pt-2">
+                        <div class="row pt-0">
                             <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 col-12">
                                 <div class="form-group">
                                     <label for="">Discount</label>
@@ -277,59 +278,77 @@
                                 </div>
                             </div>
                             <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12 col-12">
-                                <div class="form-group pt-4 mt-4">
-                                    <button class="btn btn-primary" id="updateDiscount">Update</button>
+                                <div class="form-group mt-lg-3 mt-md-3">
+                                    <button class="btn btn-primary mt-lg-4 mt-md-4" id="updateDiscount">Update</button>
                                 </div>
                             </div>
                         </div>
+                        <input type="hidden" id="ic_id" name="ic_id" value="">
+                        <!-- <button class="btn btn-primary" id="addNewCharge">Add</button> -->
+                        <table class="table scrollable_table_custom" id="chargeDetilsTable">
+                            <thead>
+                                <tr>
+                                    <!-- <th>Charge ID</th> -->
+                                    <th>Particular</th>
+                                    <th>Amount</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="chargeDetail"></tbody>
+                        </table>
+
                     </div>
                     <div class="col-lg-7 col-md-6 col-sm-12 col-xs-12 col-12 pt-4">
                         <h4 class="text-center"><strong>Payment Received Details</strong></h4>
                         <div class="row pt-2">
-                            <div class="col-12">
+                            <div class="col-lg-6 col-md-6 col-sm-12col-xs-12">
                                 <div class="form-group">
                                     <label for="">Paid By <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" id="ipl_paid_by" name="ipl_paid_by">
                                     <span class="text-danger" id="ipl_paid_byErr"></span>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-12">
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 col-12">
                                 <div class="form-group">
                                     <label for="">Mode of Payment <span class="text-danger">*</span></label>
                                     <select class="form-control" name="ipd_received_by" id="ipd_received_by">
                                         <option value="cash">Cash</option>
                                         <option value="cheque">Cheque</option>
                                         <option value="card">Card</option>
+                                        <option value="UPI">UPI</option>
                                     </select>
                                     <span class="text-danger" id="ipd_received_byErr"></span>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-12">
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 col-12">
                                 <div class="form-group">
                                     <label for="">Amount <span class="text-danger">*</span></label>
                                     <input type="number" class="form-control" id="ipl_amount" name="ipl_amount">
                                     <span class="text-danger" id="ipl_amountErr"></span>
                                 </div>
                             </div>
-                            <div class="col-12">
+                            <div class="col-lg-10 col-md-10 col-sm-8 col-xs-12">
                                 <div class="form-group">
                                     <label for="">Description</label>
                                     <input type="text" class="form-control" id="ipl_desc" name="ipl_desc">
                                     <span class="text-danger" id="ipl_descErr"></span>
                                 </div>
                             </div>
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 mt-lg-3 mt-md-3">
+                                <button class="btn btn-primary mt-lg-4 mt-md-4" id="addNewPayment">Add</button>
+                            </div>
                         </div>
                         <input type="hidden" id="ipl_id" name="ipl_id" value="">
-                        <button class="btn btn-primary" id="addNewPayment">Add</button>
-                        <table class="table scrollable_table_custom">
+                        <!-- <button class="btn btn-primary" id="addNewPayment">Add</button> -->
+                        <table class="table scrollable_table_custom" id="paymentReceivedDetailsTable">
                             <thead>
                                 <tr>
                                     <th>Receipt No</th>
-                                    <th>Date of Received</th>
+                                    <th>Date</th>
                                     <th>Amount</th>
-                                    <th>Mode of Payment</th>
-                                    <th>Description</th>
+                                    <th>MOP</th>
                                     <th>Paid By</th>
+                                    <th>Description</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -385,10 +404,9 @@
                     $('#ipdIdShow').text(ipdData.ipd_id);
                     $('#ipdPatientNameShow').text(patientData.pa_name);
 
-                    let monthName = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                    let monthName = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
                     var mydate = new Date(ipdData.ipd_admit_date);
-                    console.log(ipdData.ipd_admit_date);
-                    let ipd_admit_date_format = mydate.getDate() + ' ' + monthName[mydate.getMonth() - 1] + ' ' + mydate.getFullYear();
+                    let ipd_admit_date_format = mydate.getDate() + ' ' + monthName[mydate.getMonth()] + ' ' + mydate.getFullYear();
                     $('#ipd_admit_date_format').text(ipd_admit_date_format)
 
                     $('#billAmount').text(ipdData.ipd_bill_amount);
@@ -396,7 +414,6 @@
                     if (chargeList.length > 0) {
                         for (let i = 0; i < chargeList.length; i++) {
                             chargeRow += '<tr id="row_' + chargeList[i].ic_id + '"> \
-                                <td>' + chargeList[i].ic_id + '</td> \
                                 <td>' + chargeList[i].ic_text + '</td> \
                                 <td>' + chargeList[i].ic_amount + '</td> \
                                 <td> \
@@ -408,19 +425,37 @@
                     }
 
                     $('#addNewCharge').attr("onclick", "addCharge('" + ipd_id + "')");
+
+                    var table = $('#chargeDetilsTable').DataTable();
+                    table.destroy();
+                    $('#chargeDetilsTable').DataTable({
+                        autoWidth: true,
+                        searching: false,
+                        paging: false,
+                        info: false
+                    });
+
                     $('#chargeDetail').html(chargeRow);
 
                     let paymentList = res.data.paymentList;
                     let paymentRow = '';
                     if (paymentList.length > 0) {
                         for (let i = 0; i < paymentList.length; i++) {
+                            let MOP = paymentList[i].ipl_received_by;
+                            if (MOP != 'UPI') {
+                                MOP = MOP.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+                                    return letter.toUpperCase();
+                                });
+                            }
+                            var mydate1 = new Date(paymentList[i].ipl_received_date);
+                            let ipl_received_date1 = mydate1.getDate() + ' ' + monthName[mydate1.getMonth()] + ' ' + mydate1.getFullYear();
                             paymentRow += '<tr id="row_' + paymentList[i].ipl_id + '"> \
                                 <td>' + paymentList[i].ipl_id + '</td> \
-                                <td>' + paymentList[i].ipl_received_date + '</td> \
+                                <td>' + ipl_received_date1 + '</td> \
                                 <td>' + paymentList[i].ipl_amount + '</td> \
-                                <td>' + paymentList[i].ipl_received_by + '</td> \
-                                <td>' + paymentList[i].ipl_desc + '</td> \
+                                <td>' + MOP + '</td> \
                                 <td>' + paymentList[i].ipl_paid_by + '</td> \
+                                <td>' + paymentList[i].ipl_desc + '</td> \
                                 <td> \
                                     <i title="Edit" class="la la-edit icon-3x cursor_pointer" onclick="editPayment(' + paymentList[i].ipl_id + ', ' + paymentList[i].ipd_id + ')"></i> \
                                     <i title="Remove" class="la la-trash icon-3x cursor_pointer" onclick="removePayment(' + paymentList[i].ipl_id + ', ' + paymentList[i].ipd_id + ')"></i> \
@@ -430,6 +465,16 @@
                         }
                     }
                     $('#addNewPayment').attr("onclick", "addPayment('" + ipd_id + "')");
+
+                    var table = $('#paymentReceivedDetailsTable').DataTable();
+                    table.destroy();
+                    $('#paymentReceivedDetailsTable').DataTable({
+                        autoWidth: true,
+                        searching: false,
+                        paging: false,
+                        info: false
+                    });
+
                     $('#paymentDetail').html(paymentRow);
 
                     $('#ipd_discount').val(ipdData.ipd_discount);
@@ -506,7 +551,6 @@
                         let data = res.data;
                         if (ic_id == '') {
                             let chargeRow = '<tr id="row_' + data.ic_id + '"> \
-                                <td>' + data.ic_id + '</td> \
                                 <td>' + data.ic_text + '</td> \
                                 <td>' + data.ic_amount + '</td> \
                                 <td> \
@@ -612,8 +656,8 @@
                                 <td>' + data.iplData.ipl_received_date + '</td> \
                                 <td>' + data.iplData.ipl_amount + '</td> \
                                 <td>' + data.iplData.ipl_received_by + '</td> \
-                                <td>' + data.iplData.ipl_desc + '</td> \
                                 <td>' + data.iplData.ipl_paid_by + '</td> \
+                                <td>' + data.iplData.ipl_desc + '</td> \
                                 <td> \
                                     <i class="la la-edit icon-3x cursor_pointer" onclick="editPayment(' + data.iplData.ipl_id + ', ' + data.iplData.ipd_id + ')"></i> \
                                     <i class="la la-trash icon-3x cursor_pointer" onclick="removePayment(' + data.iplData.ipl_id + ', ' + data.iplData.ipd_id + ')"></i> \

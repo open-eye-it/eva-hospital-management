@@ -27,7 +27,7 @@ class CategoryController extends MainController
 
         $searchData['search_text']  = isset($input['search_text']) ? $input['search_text'] : '';
         if (isset($input['search_text']) && $input['search_text'] != null) {
-            $roles =  Role::where('display_name', 'LIKE', '%' . $searchData . '%')->paginate(10);
+            $roles =  Role::where('display_name', 'LIKE', '%' . $searchData['search_text'] . '%')->paginate(10);
         } else {
             $roles    = Role::orderBy('created_at', 'DESC')->paginate(10);
         }

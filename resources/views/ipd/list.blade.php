@@ -16,17 +16,17 @@
                             <div class="card card-custom gutter-b p-5">
                                 <form action="{{ route('ipd.list') }}">
                                     <div class="row">
-                                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
-                                            <label for="search_text">Search IPD ID</label>
-                                            <input type="text" class="form-control" placeholder="Search IPD ID" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-12 form-group">
+                                            <label for="search_text">IPD ID</label>
+                                            <input type="text" class="form-control" placeholder="IPD ID" name="search_text" id="search_text" value="{{ $searchData['search_text'] }}">
                                         </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-12 form-group">
                                             <label for="appointment_date">Admit Date</label>
                                             <div class='input-group' id='appointment_date_range'>
                                                 <input type='text' name="admit_date_range" id="admit_date_range" class="form-control" placeholder="Select date range" value="{{ $searchData['admit_date_range'] }}" />
                                             </div>
                                         </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-12 form-group">
                                             <label for="patient">Doctor</label>
                                             <select name="ipd_doctor" id="ipd_doctor" class="form-control">
                                                 <option value="">Select</option>
@@ -37,7 +37,7 @@
                                                 @endif
                                             </select>
                                         </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 form-group">
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-12">
                                             <label for="">Status</label>
                                             <select name="ipd_status" id="ipd_status" class="form-control" onchange="changeStatusVal(this.value)">
                                                 <option value="">-Select-</option>
@@ -48,8 +48,8 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <div class="col-12 form-group">
+                                    <div class="row">
+                                        <div class="col-12">
                                             <button class="btn btn-primary" type="submit">Search</button>
                                             <a class="btn btn-danger" href="{{ route('ipd.list') }}">Reset</a>
                                             <button type="button" class="btn btn-info" onclick="exportIPD()"><i class="fa fa-file-export"></i> Export</button>

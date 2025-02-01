@@ -43,12 +43,20 @@ class UserController extends MainController
         if (empty($checkEmailorUser)) {
             $user_id = $this->getUserID();
             $login_user_id = Auth::user()->user_id;
+
+            $input['country_code'] = str_replace(' ', '', $input['country_code']);
+            $input['country_code'] = str_replace('(', '', $input['country_code']);
+            $input['country_code'] = str_replace(')', '', $input['country_code']);
+            $input['country_code'] = str_replace('-', '', $input['country_code']);
+
             $data = [
                 'user_id'             => $user_id,
                 'name'                => $input['uname'],
                 'email'               => $input['email'],
                 'password'            => HASH::make($input['password']),
                 'person_name'         => $input['person_name'],
+                'country_code'        => $input['country_code'],
+                'dial_code'           => $input['dial_code'],
                 'contactno'           => $input['contactno'],
                 'address'             => $input['address'],
                 'added_by'            => $login_user_id,
@@ -94,14 +102,24 @@ class UserController extends MainController
         $updated_by = Auth::user()->user_id;
         $userData = $this->user->singlUser($user_id);
         if (!empty($userData)) {
+            $input['country_code'] = str_replace(' ', '', $input['country_code']);
+            $input['country_code'] = str_replace('(', '', $input['country_code']);
+            $input['country_code'] = str_replace(')', '', $input['country_code']);
+            $input['country_code'] = str_replace('-', '', $input['country_code']);
+
             $data = [
                 'name'                => $input['uname'],
                 'email'               => $input['email'],
                 'person_name'         => $input['person_name'],
+                'country_code'        => $input['country_code'],
+                'dial_code'           => $input['dial_code'],
                 'contactno'           => $input['contactno'],
                 'address'             => $input['address'],
                 'updated_by'          => $updated_by,
             ];
+            if ($input['password'] != '') {
+                $data['password'] = HASH::make($input['password']);
+            }
             $update = $this->user->updateUser($data, $user_id);
             if ($update == 1) {
                 $userData->syncRoles($input['cat_id']);

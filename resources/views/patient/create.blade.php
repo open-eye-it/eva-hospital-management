@@ -563,7 +563,7 @@
             timeoutID('pa_alt_contact_noErr', 3000);
             scrollTop('pa_alt_contact_noErr');
         }
-        else if(pa_alt_contact_no.length < 10){
+        else if(pa_alt_contact_no.length < 10 || pa_alt_contact_no.length > 10){
             $('#pa_alt_contact_noErr').text('Contact number must be 10 digit');
             timeoutID('pa_alt_contact_noErr', 3000);
             scrollTop('pa_alt_contact_noErr');

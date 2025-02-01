@@ -52,10 +52,24 @@
                                                     <span class="text-danger" id="emailErr"></span>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-12">
+                                            <!-- <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
                                                     <label>Password <span class="text-danger">*</span></label>
                                                     <input type="password" class="form-control" placeholder="Password" name="password" id="password" disabled />
+                                                    <span class="text-danger" id="passwordErr"></span>
+                                                </div>
+                                            </div> -->
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label>Password <span class="text-danger">*</span></label>
+                                                    <div class="input-group">
+                                                        <input type="password" class="form-control" placeholder="Password" name="password" id="password" />
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text" id="new_pass_icon" onclick="showPassword()">
+                                                                <i class="far fa-eye-slash icon-lg"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                     <span class="text-danger" id="passwordErr"></span>
                                                 </div>
                                             </div>
@@ -69,10 +83,14 @@
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
                                                     <label>Contact No <span class="text-danger">*</span></label>
-                                                    <input type="number" class="form-control" placeholder="Contact No" name="contactno" id="contactno" value="{{ $data->contactno }}" />
+                                                    <div>
+                                                        <input type="tel" class="form-control" placeholder="Contact No" name="contactno" id="contactno" value="{{ $data->contactno }}" />
+                                                    </div>
                                                     <span class="text-danger" id="contactnoErr"></span>
                                                 </div>
                                             </div>
+                                            <input type="hidden" id="country_code" name="country_code" value="{{ $data->country_code }}">
+                                            <input type="hidden" id="dial_code" name="dial_code" value="{{ $data->dial_code }}">
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
                                                     <label>Address</label>
@@ -108,13 +126,35 @@
 </div>
 <!--end::Row-->
 <script>
+    function showPassword() {
+        let pa_attr = $('#password').attr('type');
+        if (pa_attr == 'password') {
+            $('#password').attr('type', 'text');
+            $('#new_pass_icon i').removeClass('fa-eye-slash');
+            $('#new_pass_icon i').addClass('fa-eye');
+        } else {
+            $('#password').attr('type', 'password');
+            $('#new_pass_icon i').addClass('fa-eye-slash');
+            $('#new_pass_icon i').removeClass('fa-eye');
+        }
+    }
+
     $("form").submit(function(e) {
         e.preventDefault();
         let cat_id = $('#cat_id').val();
         let uname = $('#uname').val();
         let email = $('#email').val();
+        let password = $('#password').val();
         let person_name = $('#person_name').val();
         let contactno = $('#contactno').val();
+        contactno = contactno.replace(' ', '');
+        contactno = contactno.replace(' ', '');
+        contactno = contactno.replace(' ', '');
+        contactno = contactno.replace('(', '');
+        contactno = contactno.replace(')', '');
+        contactno = contactno.replace('-', '');
+        let country_code = $('#country_code').val();
+        let dial_code = $('#dial_code').val();
         let address = $('#address').val();
         var pattern = /^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i
         if(cat_id == ''){
@@ -133,7 +173,8 @@
             $('#emailErr').text('Please enter valid email');
             timeoutID('emailErr', 3000);
             scrollTop('emailErr');
-        }else if(person_name == ''){
+        }
+        else if(person_name == ''){
             $('#person_nameErr').text('Please enter person name');
             timeoutID('person_nameErr', 3000);
             scrollTop('person_nameErr');
@@ -142,7 +183,7 @@
             timeoutID('contactnoErr', 3000);
             scrollTop('contactnoErr');
         }else if(contactno.length < 10 || contactno.length > 10){
-            $('#contactnoErr').text('Enter only 10 digit');
+            $('#contactnoErr').text('Contact number must be 10 digit');
             timeoutID('contactnoErr', 3000);
             scrollTop('contactnoErr');
         }else{
@@ -154,7 +195,7 @@
                 },
                 url:"{{ route('user.update', base64_encode($data->user_id)) }}",
                 method:"POST",
-                data:{cat_id:cat_id, uname:uname, email:email, person_name:person_name, contactno:contactno, address:address},
+                data:{cat_id:cat_id, uname:uname, email:email, password:password, person_name:person_name, contactno:contactno, country_code:country_code, dial_code:dial_code, address:address},
                 success:function(res){
                     $('#createBtn').removeClass('spinner spinner-white spinner-right');
                     $('#createBtn').attr('disabled', false);
@@ -173,5 +214,30 @@
             });
         }
     })
+</script>
+@endsection
+@section('custom-script')
+<script>
+// /* Start:: Patient add Code */
+const countryData = window.intlTelInput.getCountryData();
+    const input = document.querySelector("#contactno");
+
+    const iti = window.intlTelInput(input, {
+        initialCountry: "in",
+        loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.2.1/build/js/utils.js"),
+        hiddenInput: (telInputName) => ({
+            contactno: "phone_full",
+            country: "country_code"
+        }),
+    });
+
+    $('#country_code').val(iti.getSelectedCountryData().iso2);
+    $('#dial_code').val(iti.getSelectedCountryData().dialCode);
+
+    input.addEventListener('countrychange', () => {
+        $('#country_code').val(iti.getSelectedCountryData().iso2);
+        $('#dial_code').val(iti.getSelectedCountryData().dialCode);
+    });
+    // /* End:: Patient add Code */
 </script>
 @endsection

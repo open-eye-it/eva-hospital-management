@@ -420,8 +420,16 @@
     // $("#ap_bp").inputmask('(_/_)', {
     //     numericInput: true
     // });
-    // $('#ap_bp').mask('(000/000)', {
-    //     placeholder: "(_/_)"
-    // });
+    $('#ap_bp').mask('(000/000)', {
+        placeholder: "(_/_)"
+    });
+
+    $("#ap_weight").keypress(function (e) {
+        if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
+                //display error message
+                $("#errmsg").html("Digits Only").show().fadeOut("slow");
+                return false;
+            }
+    });
 </script>
 @endsection

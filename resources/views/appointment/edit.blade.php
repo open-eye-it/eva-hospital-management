@@ -94,7 +94,7 @@
                                             </div>
                                             <div class="col-lg-3 col-md-4 col-12">
                                                 <div class="form-group">
-                                                    <label>Case Type <span class="text-danger">*</span></label>
+                                                    <label>Case Type <span class="text-danger">*</span> {{ $data->ap_case_type }}</label>
                                                     <select class="form-control" name="ap_case_type" id="ap_case_type" onchange="changeFee(this.value)">
                                                         <option value="">Select</option>
                                                         @if(!empty($visitingFees))
@@ -403,5 +403,23 @@
             });
         }
     })
+</script>
+@endsection
+@section('custom-script')
+<script>
+    // $("#ap_bp").inputmask('(_/_)', {
+    //     numericInput: true
+    // });
+    $('#ap_bp').mask('(000/000)', {
+        placeholder: "(_/_)"
+    });
+
+    $("#ap_weight").keypress(function (e) {
+        if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
+                //display error message
+                $("#errmsg").html("Digits Only").show().fadeOut("slow");
+                return false;
+            }
+    });
 </script>
 @endsection

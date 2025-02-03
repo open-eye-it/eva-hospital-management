@@ -122,7 +122,7 @@ class AppointmentController extends MainController
         $ap_id = base64_decode($ap_id);
         $data = $this->appointment->singlData($ap_id);
         if (!empty($data)) {
-            $patientList = $this->patient->getList();
+            $patientList = $this->patient->getList([], false);
             $doctorList = User::select('user_id', 'person_name')->role('doctor')->orderBy('id', 'asc')->get()->toArray();
             $assDoctorList = User::select('user_id', 'person_name')->role('assistant_doctor')->orderBy('id', 'asc')->get()->toArray();
             $doctors = array_merge($doctorList, $assDoctorList);

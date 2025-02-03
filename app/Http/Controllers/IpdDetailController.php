@@ -622,14 +622,13 @@ class IpdDetailController extends MainController
             foreach ($list as $appointment) {
                 $is_foc = ($appointment->ap_is_foc == 'yes') ? 'Yes' : 'No';
                 $follow_up_date = ($appointment->ap_follow_up_date != '' || !empty($appointment->ap_follow_up_date)) ? date('d M Y', strtotime($appointment->ap_follow_up_date)) : '';
-                $surgery_date = date('d M Y', strtotime($appointment->ap_surg_date));
+                $surgery_date = ($appointment->ap_surg_date != null && $appointment->ap_surg_date != '') ? date('d M Y', strtotime($appointment->ap_surg_date)) : '';
                 $tableRow .= '<tr>
                     <td>' . $i . '</td>
                     <td>' . $appointment->ap_id . '</td>
-                    <td>' . date('d M Y', strtotime($appointment->ap_id)) . '</td>
+                    <td>' . date('d M Y', strtotime($appointment->ap_date)) . '</td>
                     <td>' . $appointment->pa_id . '</td>
                     <td>' . $appointment->patientData->pa_name . '</td>
-                    <td>' . $appointment->patientData->pa_contact_no . '</td>
                     <td>' . $appointment->ap_case_type . '</td>
                     <td>' . $is_foc . '</td>
                     <td>' . $appointment->ap_charge . '</td>
@@ -665,6 +664,8 @@ class IpdDetailController extends MainController
                 $is_foc = ($ipd->ipd_is_foc == 'yes') ? 'Yes' : 'No';
                 $is_mediclaim = ($ipd->ipd_mediclaim == 'yes') ? 'Yes' : 'No';
                 $encodedIpdId = base64_encode($ipd->ipd_id);
+                $surgery_date = ($ipd->ipd_surgery_date != null && $ipd->ipd_surgery_date != '') ? date('d M Y', strtotime($ipd->ipd_surgery_date)) : '';
+                $discharge_date = ($ipd->ipd_discharge_date != null && $ipd->ipd_discharge_date != '') ? date('d M Y', strtotime($ipd->ipd_discharge_date)) : '';
                 $tableRow .= '<tr>
                     <td>' . $i . '</td>
                     <td>' . $ipd->ipd_id . '</td>
@@ -675,9 +676,9 @@ class IpdDetailController extends MainController
                     <td>' . $ipd->patientData->pa_age . '</td>
                     <td>' . $ipd->patientData->pa_contact_no . '</td>
                     <td>' . $ipd->ipd_surgery_text . '</td>
-                    <td>' . date('d M Y', strtotime($ipd->ipd_surgery_date)) . '</td>
+                    <td>' . $surgery_date . '</td>
                     <td>' . $ipd->doctorData->person_name . '</td>
-                    <td>' . date('d M Y', strtotime($ipd->ipd_discharge_date)) . '</td>
+                    <td>' . $discharge_date . '</td>
                     <td>' . $ipd->ipd_bill_amount . '</td>
                     <td>' . $ipd->ipd_received_amount . '</td>
                     <td><span class="ipdPopupOperativeNote" id="operativeNoteView" data-id="' . $encodedIpdId . '" title="Operative Notes"><i class="flaticon flaticon-notes icon-3x cursor_pointer"></i></span></td>

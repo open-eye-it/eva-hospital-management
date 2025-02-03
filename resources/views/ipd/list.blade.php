@@ -659,7 +659,7 @@
             </div>
             <div class="modal-body">
                 <h4>Total Fees: <span id="opd_total_fees"></span></h4>
-                <table class="table table-bordered scrollable_table_custom" id="opdHistoryViewTable">
+                <table class="table" id="opdHistoryViewTable">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -697,7 +697,7 @@
             <div class="modal-body">
                 <h4>Bill Amount: <span id="ipd_total_bill"></span></h4>
                 <h4>Received Amount: <span id="ipd_total_received"></span></h4>
-                <table class="table table-bordered scrollable_table_custom" id="ipdPopupList">
+                <table class="table" id="ipdPopupList">
                     <thead>
                         <tr>
                             <th>ID</th>

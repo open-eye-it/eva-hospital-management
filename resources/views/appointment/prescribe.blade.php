@@ -108,13 +108,13 @@ PROVISIONAL DIAGNOSIS
 
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="row">
-                                                    <div class="col-12">
+                                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                                         <div class="form-group">
                                                             <label for="ap_follow_up_date">Follow Up Date</label>
                                                             <input type="date" class="form-control" name="ap_follow_up_date" id="ap_follow_up_date" value="{{ $data->ap_follow_up_date }}">
                                                         </div>
                                                     </div>
-                                                    <div class="col-12">
+                                                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                                                         <div class="form-group">
                                                             <label for="ap_is_foc">Is FOC?</label>
                                                             <select class="form-control" name="ap_is_foc" id="ap_is_foc">
@@ -123,30 +123,29 @@ PROVISIONAL DIAGNOSIS
                                                             </select>
                                                         </div>
                                                     </div>
+                                                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                                        <div class="form-group">
+                                                            <label for="ap_surg_required">Surgery Required?</label>
+                                                            <select class="form-control" name="ap_surg_required" id="ap_surg_required" onchange="changeSurgeryRequired(this.value)">
+                                                                <option value="yes" {{ ($data->ap_surg_required == 'yes') ? 'selected' : '' }}>Yes</option>
+                                                                <option value="no" {{ ($data->ap_surg_required == 'no') ? 'selected' : '' }}>No</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-sm-12 col-12 {{ ($data->ap_surg_required != 'yes') ? 'd-none' : '' }}" id="surgeryDate">
+                                                        <div class="form-group">
+                                                            <label for="ap_surg_date">Surgery Date</label>
+                                                            <input type="date" class="form-control" name="ap_surg_date" id="ap_surg_date" value="{{ $data->ap_surg_date }}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-sm-12 col-12 {{ ($data->ap_surg_required != 'yes') ? 'd-none' : '' }}" id="surgeryType">
+                                                        <div class="form-group">
+                                                            <label for="ap_surg_type">Type of Surgery</label>
+                                                            <input type="text" class="form-control" name="ap_surg_type" id="ap_surg_type" value="{{ $data->ap_surg_type }}">
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-4 col-md-4 col-12">
-                                                <div class="form-group">
-                                                    <label for="ap_surg_required">Surgery Required?</label>
-                                                    <select class="form-control" name="ap_surg_required" id="ap_surg_required" onchange="changeSurgeryRequired(this.value)">
-                                                        <option value="yes" {{ ($data->ap_surg_required == 'yes') ? 'selected' : '' }}>Yes</option>
-                                                        <option value="no" {{ ($data->ap_surg_required == 'no') ? 'selected' : '' }}>No</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-4 col-md-4 col-12 {{ ($data->ap_surg_required != 'yes') ? 'd-none' : '' }}" id="surgeryDate">
-                                                <div class="form-group">
-                                                    <label for="ap_surg_date">Surgery Date</label>
-                                                    <input type="date" class="form-control" name="ap_surg_date" id="ap_surg_date" value="{{ $data->ap_surg_date }}">
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-4 col-md-4 col-12 {{ ($data->ap_surg_required != 'yes') ? 'd-none' : '' }}" id="surgeryType">
-                                                <div class="form-group">
-                                                    <label for="ap_surg_type">Type of Surgery</label>
-                                                    <input type="text" class="form-control" name="ap_surg_type" id="ap_surg_type" value="{{ $data->ap_surg_type }}">
-                                                </div>
-                                            </div>
-
                                         </div>
                                         <hr />
                                         <h4>Medicine Detail</h4>

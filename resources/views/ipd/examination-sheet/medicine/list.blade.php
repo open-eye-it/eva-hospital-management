@@ -6,7 +6,7 @@
         <input type="datetime-local" name="isme_given_datetime[]" id="isme_given_datetime" class="form-control">
     </td>
     <td>
-        <textarea name="ramerakData" rows="5" class="remarkMessage" id="ramerakData" value=""></textarea>
+        <textarea name="ramerakData" rows="1" class="form-control remarkMessage" id="ramerakData" value=""></textarea>
     </td>
     <td>
         <input type="checkbox" class="form-control" name="exm_checked[]" id="exm_checked" {{ ($data->ism_checked_by != '') ? 'checked' : '' }}>

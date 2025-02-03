@@ -144,35 +144,35 @@
                                                                 <!-- <li class="nav-item"><a class="nav-link" href="#"><i class="nav-icon la la-edit"></i><span class="nav-text">Edit Details</span></a></li>
                                                                 <li class="nav-item"><a class="nav-link" href="#"><i class="nav-icon la la-leaf"></i><span class="nav-text">Update Status</span></a></li>
                                                                 <li class="nav-item"><a class="nav-link" href="#"><i class="nav-icon la la-print"></i><span class="nav-text">Print</span></a></li> -->
-                                                                @can('ipd-edit')
-                                                                <li class="nav-item"><a class="nav-link" href="{{ route('ipd.edit', base64_encode($ipd->ipd_id)) }}" title="Edit"><i class="la la-edit icon-3x"></i></a></li>
-                                                                @endcan
                                                                 @can('ipd-full-view')
                                                                 <li class="nav-item"><span class="nav-link" id="fullView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Full View"><i class="la la-eye icon-3x cursor_pointer"></i></span> </li>
+                                                                @endcan
+                                                                @can('ipd-edit')
+                                                                <li class="nav-item"><a class="nav-link" href="{{ route('ipd.edit', base64_encode($ipd->ipd_id)) }}" title="Edit"><i class="la la-edit icon-3x"></i></a></li>
                                                                 @endcan
                                                                 @can('ipd-bill-amount')
                                                                 <li class="nav-item"><span class="nav-link" id="billAmountView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Bill Amount"><i class="la la-money-bill icon-3x cursor_pointer"></i></span></li>
                                                                 @endcan
+                                                                @can('ipd-detail-print')
+                                                                <li class="nav-item"><span class="nav-link" id="IPDPrint" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Bill Detail"><i class="flaticon flaticon2-print icon-3x cursor_pointer"></i></span></li>
+                                                                @endcan
                                                                 @can('ipd-operative-note')
                                                                 <li class="nav-item"><span class="nav-link" id="operativeNoteView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Operative Notes"><i class="flaticon flaticon-notes icon-3x cursor_pointer"></i></span></li>
                                                                 @endcan
-                                                                @can('ipd-prescribe')
-                                                                <li class="nav-item"><span class="nav-link" id="prescribeView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Prescribe"><i class="la la-pills icon-3x cursor_pointer"></i></span></li>
-                                                                @endcan
-                                                                @can('ipd-detail-print')
-                                                                <li class="nav-item"><span class="nav-link" id="IPDPrint" data-id="{{ base64_encode($ipd->ipd_id) }}" title="IPD Detail"><i class="flaticon flaticon2-print icon-3x cursor_pointer"></i></span></li>
-                                                                @endcan
                                                                 @can('ipd-documents')
                                                                 <li class="nav-item"><span class="nav-link" id="IPDDocument" data-id="{{ base64_encode($ipd->ipd_id) }}" title="IPD Documents"><i class="flaticon flaticon-file icon-3x cursor_pointer"></i></span></li>
+                                                                @endcan
+                                                                @can('ipd-prescribe')
+                                                                <li class="nav-item"><span class="nav-link" id="prescribeView" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Operation Medicine"><i class="la la-pills icon-3x cursor_pointer"></i></span></li>
+                                                                @endcan
+                                                                @can('ipd-pre-operative-medicine')
+                                                                <li class="nav-item"><span class="nav-link" id="PreOperativeMedicine" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Pre Operative Medicine"><i class="flaticon flaticon-file-1 icon-3x cursor_pointer"></i></span></li>
                                                                 @endcan
                                                                 @can('ipd-indoor-sheet')
                                                                 <li class="nav-item"><span class="nav-link" id="IndoorSheet" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Indoor Sheet"><i class="flaticon flaticon2-sheet icon-3x cursor_pointer"></i></span></li>
                                                                 @endcan
                                                                 @can('ipd-examination-sheet')
-                                                                <li class="nav-item"><span class="nav-link" id="exSheet" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Examination Sheet"><i class="flaticon flaticon2-document icon-3x cursor_pointer"></i></span></li>
-                                                                @endcan
-                                                                @can('ipd-pre-operative-medicine')
-                                                                <li class="nav-item"><span class="nav-link" id="PreOperativeMedicine" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Pre Operative Medicine"><i class="flaticon flaticon-file-1 icon-3x cursor_pointer"></i></span></li>
+                                                                <li class="nav-item"><span class="nav-link" id="exSheet" data-id="{{ base64_encode($ipd->ipd_id) }}" title="Treatment"><i class="flaticon flaticon2-document icon-3x cursor_pointer"></i></span></li>
                                                                 @endcan
                                                             </ul>
                                                         </div>
@@ -360,10 +360,10 @@
     </div>
 </div>
 <div class="modal fade" id="exSheetModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-dialog modal-xl popup-90" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Examination Sheet</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Treatment</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeEaxminationSheet()">
                     <i aria-hidden="true" class="ki ki-close"></i>
                 </button>
@@ -426,7 +426,7 @@
                     </div>
                     <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 form-group">
                         <label for="ramerakData1">Remark</label>
-                        <textarea name="ramerakData1" rows="5" class="remarkMessage1 form-control" id="ramerakData1" value=""></textarea>
+                        <textarea name="ramerakData1" rows="1" class="remarkMessage1 form-control" id="ramerakData1" value=""></textarea>
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 form-group mt-4">
                         <input type="hidden" name="isme_id1" id="isme_id1" value="">
@@ -608,7 +608,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="operativeNoteViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="operativeNoteViewModal" style="z-index: 9999;" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -659,7 +659,7 @@
             </div>
             <div class="modal-body">
                 <h4>Total Fees: <span id="opd_total_fees"></span></h4>
-                <table class="table table-bordered scrollable_table_custom">
+                <table class="table table-bordered scrollable_table_custom" id="opdHistoryViewTable">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -697,7 +697,7 @@
             <div class="modal-body">
                 <h4>Bill Amount: <span id="ipd_total_bill"></span></h4>
                 <h4>Received Amount: <span id="ipd_total_received"></span></h4>
-                <table class="table table-bordered scrollable_table_custom">
+                <table class="table table-bordered scrollable_table_custom" id="ipdPopupList">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -712,12 +712,13 @@
                             <th>Surgery Date</th>
                             <th>Doctor</th>
                             <th>Discharge Date</th>
-                            <th>Follow Up Date</th>
-                            <th>Is Foc</th>
-                            <th>Status</th>
-                            <th>Mediclaim</th>
+                            <!-- <th>Follow Up Date</th>
+                            <th>Is Foc</th> -->
+                            <!-- <th>Status</th> -->
+                            <!-- <th>Mediclaim</th> -->
                             <th>Bill Amount</th>
                             <th>Received Amount</th>
+                            <th>Operative Note</th>
                         </tr>
                     </thead>
                     <tbody id="ipdHistoryViewDetail"></tbody>
@@ -1270,10 +1271,10 @@
                 success: function(res) {
                     if (res.response == true) {
                         console.log(res.data);
-                        $('#isme_row_' + isme_id + ' td:nth-child(3)').text(res.data.datetime);
-                        $('#isme_row_' + isme_id + ' td:nth-child(4)').text(res.data.isme_created_datetime);
-                        $('#isme_row_' + isme_id + ' td:nth-child(5)').text(res.data.remark);
-                        $('#isme_row_' + isme_id + ' td:nth-child(6)').text(res.data.added_by);
+                        $('#isme_row_' + isme_id + ' td:nth-child(2)').text(res.data.datetime);
+                        $('#isme_row_' + isme_id + ' td:nth-child(3)').text(res.data.isme_created_datetime);
+                        $('#isme_row_' + isme_id + ' td:nth-child(4)').text(res.data.remark);
+                        $('#isme_row_' + isme_id + ' td:nth-child(5)').text(res.data.added_by);
 
                         $('#isme_given_datetime1').val('');
                         $('#ramerakData1').val('');
@@ -1780,15 +1781,19 @@
                     }
 
                     let view = '<div class="row"> \
-                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-2 form-group"> \
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-2 form-group"> \
+                            <label for="patient_name">Patient ID</label> \
+                            <input type="text" class="form-control" name="patient_id" id="patient_id" value="' + data.patient_id + '" disabled /> \
+                        </div> \
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-2 form-group"> \
                             <label for="patient_name">Patient Name</label> \
                             <input type="text" class="form-control" name="patient_name" id="patient_name" value="' + data.patient_name + '" disabled /> \
                         </div> \
-                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-2 form-group"> \
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-2 form-group"> \
                             <label for="patient_age">Patient Age</label> \
                             <input type="text" class="form-control" name="patient_age" id="patient_age" value="' + data.patient_age + '" disabled /> \
                         </div> \
-                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-2 form-group"> \
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-2 form-group"> \
                             <label for="ipd_operation_medicine_date">Print Date <span class="text-danger">*</span></label> \
                             <input type="date" class="form-control" name="ipd_operation_medicine_date" id="ipd_operation_medicine_date" value="' + data.ipd_operation_medicine_date + '" /> \
                             <span class="text-primary cursor_pointer" onclick="ResetOperationMedicineDate()">Reset</span> \

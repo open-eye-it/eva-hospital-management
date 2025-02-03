@@ -5,6 +5,7 @@
     <td>{{ $charge->apac_qty }}</td>
     <td>{{ $charge->apac_charge }}</td>
     <td>{{ $charge->apac_final_charge }}</td>
+    <td>{{ ucfirst($charge->apac_payment_mode) }}</td>
     <td><i title="Remove" class="la la-trash icon-3x cursor_pointer" onclick="removerCharge('{{ $charge->apac_id }}', '{{ base64_encode($ap_id) }}', '{{ base64_encode($queryData) }}')"></i></td>
 </tr>
 @endforeach

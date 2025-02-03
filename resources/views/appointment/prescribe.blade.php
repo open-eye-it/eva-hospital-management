@@ -24,29 +24,17 @@
                                     <div class="card-body">
                                         <h4>Patient Detail</h4>
                                         <div class="row">
-                                            <div class="col-lg-6 col-md-6 col-12">
-                                                <div class="form-group">
-                                                    <label>Patient Name <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" value="{{ $data->patientData->pa_name }}" disabled>
-                                                </div>
+                                            <div class="col-lg-4 col-md-4 col-12">
+                                                <strong>Patient ID: </strong>{{ $data->patientData->pa_name }}
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-12">
-                                                <div class="form-group">
-                                                    <label>Patient ID <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" value="{{ $data->patientData->pa_id }}" disabled>
-                                                </div>
+                                            <div class="col-lg-4 col-md-4 col-12">
+                                                <strong>Patient Name: </strong>{{ $data->patientData->pa_id }}
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-12">
-                                                <div class="form-group">
-                                                    <label>Patient Age <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" value="{{ $data->patientData->pa_age }}" disabled>
-                                                </div>
+                                            <div class="col-lg-4 col-md-4 col-12">
+                                                <strong>Age: </strong>{{ $data->patientData->pa_age }}
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-12">
-                                                <div class="form-group">
-                                                    <label>Address <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" value="{{ $data->patientData->pa_address }}" disabled>
-                                                </div>
+                                            <div class="col-lg-8 col-md-8 col-12">
+                                                <strong>Adress: </strong>{{ $data->patientData->pa_address }}
                                             </div>
                                             @php $pa_referred_by = ''; @endphp
                                             @if($data->patientData->pa_referred_by == 'doctor')
@@ -55,74 +43,32 @@
                                             @if($data->patientData->pa_referred_by == 'other')
                                             @php $pa_referred_by = ucFirst($data->patientData->pa_referred_text); @endphp
                                             @endif
-                                            <div class="col-lg-6 col-md-6 col-12">
-                                                <div class="form-group">
-                                                    <label>Referred By</label>
-                                                    <input type="text" class="form-control" value="{{ $pa_referred_by }}" disabled>
-                                                </div>
+                                            <div class="col-lg-4 col-md-4 col-12">
+                                                <strong>Referred By: </strong>{{ $pa_referred_by }}
                                             </div>
                                         </div>
                                         <hr />
                                         <h4>Appointment Detail <button type="button" class="btn btn-primary" onclick="checkAllHeightWeightBP('{{ base64_encode($data->pa_id) }}')">Check Ht-Wt-BP</button></h4>
                                         <div class="row">
-                                            <div class="col-lg-6 col-md-6 col-12">
-                                                <div class="form-group">
-                                                    <label>Height__cm</label>
-                                                    <input type="text" class="form-control" value="{{ $data->ap_height }}" disabled>
-                                                </div>
+                                            <div class="col-lg-4 col-md-4 col-12">
+                                                <strong>Height__cm: </strong>{{ $data->ap_height }}
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-12">
-                                                <div class="form-group">
-                                                    <label>Weight__kg</label>
-                                                    <input type="text" class="form-control" value="{{ $data->ap_weight }}" disabled>
-                                                </div>
+                                            <div class="col-lg-4 col-md-4 col-12">
+                                                <strong>Weight__kg: </strong>{{ $data->ap_weight }}
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-12">
-                                                <div class="form-group">
-                                                    <label>BP(_/_)mmhg</label>
-                                                    <input type="text" class="form-control" value="{{ $data->ap_bp }}" disabled>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6 col-md-6 col-12">
-                                                <div class="form-group">
-                                                    <label for="ap_follow_up_date">Follow Up Date</label>
-                                                    <input type="date" class="form-control" name="ap_follow_up_date" id="ap_follow_up_date" value="{{ $data->ap_follow_up_date }}">
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6 col-md-6 col-12">
-                                                <div class="form-group">
-                                                    <label for="ap_surg_required">Surgery Required?</label>
-                                                    <select class="form-control" name="ap_surg_required" id="ap_surg_required" onchange="changeSurgeryRequired(this.value)">
-                                                        <option value="yes" {{ ($data->ap_surg_required == 'yes') ? 'selected' : '' }}>Yes</option>
-                                                        <option value="no" {{ ($data->ap_surg_required == 'no') ? 'selected' : '' }}>No</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6 col-md-6 col-12 {{ ($data->ap_surg_required != 'yes') ? 'd-none' : '' }}" id="surgeryDate">
-                                                <div class="form-group">
-                                                    <label for="ap_surg_date">Surgery Date</label>
-                                                    <input type="date" class="form-control" name="ap_surg_date" id="ap_surg_date" value="{{ $data->ap_surg_date }}">
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6 col-md-6 col-12 {{ ($data->ap_surg_required != 'yes') ? 'd-none' : '' }}" id="surgeryType">
-                                                <div class="form-group">
-                                                    <label for="ap_surg_type">Type of Surgery</label>
-                                                    <input type="text" class="form-control" name="ap_surg_type" id="ap_surg_type" value="{{ $data->ap_surg_type }}">
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6 col-md-6 col-12">
-                                                <div class="form-group">
-                                                    <label for="ap_is_foc">Is FOC?</label>
-                                                    <select class="form-control" name="ap_is_foc" id="ap_is_foc">
-                                                        <option value="yes" {{ ($data->ap_is_foc == 'yes') ? 'selected' : '' }}>Yes</option>
-                                                        <option value="no" {{ ($data->ap_is_foc == 'no') ? 'selected' : '' }}>No</option>
-                                                    </select>
-                                                </div>
+                                            <div class="col-lg-4 col-md-4 col-12">
+                                                <strong>BP(_/_)mmhg: </strong>{{ $data->ap_bp }}
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
                                                     <label for="ap_complaint">Complaints</label>
-                                                    <textarea class="form-control" name="ap_complaint" id="ap_complaint" cols="30" rows="5">{{ $data->ap_complaint }}</textarea>
+                                                    <textarea class="form-control" name="ap_complaint" id="ap_complaint" cols="30" rows="3">{{ $data->ap_complaint }}</textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label for="ap_any_advice">Any Advice</label>
+                                                    <textarea class="form-control" name="ap_any_advice" id="ap_any_advice" cols="30" rows="3">{{ $data->ap_any_advice }}</textarea>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
@@ -159,17 +105,53 @@ PROVISIONAL DIAGNOSIS
                                                         } @endphp</textarea>
                                                 </div>
                                             </div>
+
                                             <div class="col-lg-6 col-md-6 col-12">
-                                                <div class="form-group">
-                                                    <label for="ap_any_advice">Any Advice</label>
-                                                    <textarea class="form-control" name="ap_any_advice" id="ap_any_advice" cols="30" rows="5">{{ $data->ap_any_advice }}</textarea>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label for="ap_follow_up_date">Follow Up Date</label>
+                                                            <input type="date" class="form-control" name="ap_follow_up_date" id="ap_follow_up_date" value="{{ $data->ap_follow_up_date }}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label for="ap_is_foc">Is FOC?</label>
+                                                            <select class="form-control" name="ap_is_foc" id="ap_is_foc">
+                                                                <option value="yes" {{ ($data->ap_is_foc == 'yes') ? 'selected' : '' }}>Yes</option>
+                                                                <option value="no" {{ ($data->ap_is_foc == 'no') ? 'selected' : '' }}>No</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <div class="col-lg-4 col-md-4 col-12">
+                                                <div class="form-group">
+                                                    <label for="ap_surg_required">Surgery Required?</label>
+                                                    <select class="form-control" name="ap_surg_required" id="ap_surg_required" onchange="changeSurgeryRequired(this.value)">
+                                                        <option value="yes" {{ ($data->ap_surg_required == 'yes') ? 'selected' : '' }}>Yes</option>
+                                                        <option value="no" {{ ($data->ap_surg_required == 'no') ? 'selected' : '' }}>No</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 col-md-4 col-12 {{ ($data->ap_surg_required != 'yes') ? 'd-none' : '' }}" id="surgeryDate">
+                                                <div class="form-group">
+                                                    <label for="ap_surg_date">Surgery Date</label>
+                                                    <input type="date" class="form-control" name="ap_surg_date" id="ap_surg_date" value="{{ $data->ap_surg_date }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 col-md-4 col-12 {{ ($data->ap_surg_required != 'yes') ? 'd-none' : '' }}" id="surgeryType">
+                                                <div class="form-group">
+                                                    <label for="ap_surg_type">Type of Surgery</label>
+                                                    <input type="text" class="form-control" name="ap_surg_type" id="ap_surg_type" value="{{ $data->ap_surg_type }}">
+                                                </div>
+                                            </div>
+
                                         </div>
                                         <hr />
                                         <h4>Medicine Detail</h4>
                                         <div class="row">
-                                            <div class="col-lg-6 col-md-6 col-12">
+                                            <div class="col-lg-2 col-md-3 col-12">
                                                 <div class="form-group search_bar">
                                                     <label>Medicine</label>
                                                     <input type="text" id="gm_id" name="gm_id" placeholder="Medicine" class="form-control" onkeyup="searchGeneralMedicine(this.value)" />
@@ -191,21 +173,21 @@ PROVISIONAL DIAGNOSIS
                                                     <span class="text-danger" id="gm_idErr"></span>
                                                 </div>
                                             </div> -->
-                                            <div class="col-lg-6 col-md-6 col-12">
+                                            <div class="col-lg-2 col-md-3 col-12">
                                                 <div class="form-group">
                                                     <label for="am_days">No of Days <span class="text-danger">*</span></label>
                                                     <input type="number" class="form-control" value="" name="am_days" id="am_days">
                                                     <span class="text-danger" id="am_daysErr"></span>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-12">
+                                            <div class="col-lg-2 col-md-3 col-12">
                                                 <div class="form-group">
                                                     <label for="am_timing">Timing <span class="text-danger">*</span></label>
                                                     <input type="text" class="form-control" value="" name="am_timing" id="am_timing">
                                                     <span class="text-danger" id="am_timingErr"></span>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-12">
+                                            <div class="col-lg-2 col-md-3 col-12">
                                                 <div class="form-group">
                                                     <label for="ap_morning">Morning</label>
                                                     <select class="form-control" name="am_morning" id="am_morning">
@@ -214,7 +196,7 @@ PROVISIONAL DIAGNOSIS
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-12">
+                                            <div class="col-lg-2 col-md-3 col-12">
                                                 <div class="form-group">
                                                     <label for="ap_afternoon">Afternoon</label>
                                                     <select class="form-control" name="am_afternoon" id="am_afternoon">
@@ -223,7 +205,7 @@ PROVISIONAL DIAGNOSIS
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-12">
+                                            <div class="col-lg-2 col-md-3 col-12">
                                                 <div class="form-group">
                                                     <label for="ap_evening">Evening</label>
                                                     <select class="form-control" name="am_evening" id="am_evening">

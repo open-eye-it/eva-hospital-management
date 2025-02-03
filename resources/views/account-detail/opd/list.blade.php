@@ -191,6 +191,7 @@
                             <th>QTY</th>
                             <th>Charge</th>
                             <th>Total Charge</th>
+                            <th>Mode of Payment</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -304,6 +305,7 @@
                         <td>' + data.data.apac_qty + '</td> \
                         <td>' + data.data.apac_charge + '</td> \
                         <td>' + data.data.apac_final_charge + '</td> \
+                        <td>' + data.data.apac_payment_mode + '</td> \
                         <td><i title="Remove" class="la la-trash icon-3x cursor_pointer" onclick="removerCharge(' + data.data.apac_id + ', ' + ap_id + ', ' + btoa(queryData) + ')"></i></td> <\tr > ';
                         $('#allAdditionalCharge').prepend(data.tableRow);
                         $('#total_fees_amount').text(data.total_final);

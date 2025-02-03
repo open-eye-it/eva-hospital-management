@@ -525,6 +525,7 @@ class IpdDetailController extends MainController
         $medicineList = $this->operation_medicine->getAllMedicine(['om_status' => 1]);
         $data = $this->ipd->singlData($ipd_id);
         if (count($data->toArray()) > 0) {
+            $data1['patient_id'] = $data->patientData->pa_id;
             $data1['patient_name'] = $data->patientData->pa_name;
             $data1['patient_age'] = $data->patientData->pa_age;
             $data1['ipd_id'] = $data->ipd_id;
@@ -663,6 +664,7 @@ class IpdDetailController extends MainController
             foreach ($list as $ipd) {
                 $is_foc = ($ipd->ipd_is_foc == 'yes') ? 'Yes' : 'No';
                 $is_mediclaim = ($ipd->ipd_mediclaim == 'yes') ? 'Yes' : 'No';
+                $encodedIpdId = base64_encode($ipd->ipd_id);
                 $tableRow .= '<tr>
                     <td>' . $i . '</td>
                     <td>' . $ipd->ipd_id . '</td>
@@ -676,12 +678,9 @@ class IpdDetailController extends MainController
                     <td>' . date('d M Y', strtotime($ipd->ipd_surgery_date)) . '</td>
                     <td>' . $ipd->doctorData->person_name . '</td>
                     <td>' . date('d M Y', strtotime($ipd->ipd_discharge_date)) . '</td>
-                    <td>' . date('d M Y', strtotime($ipd->ipd_follow_up_date)) . '</td>
-                    <td>' . $is_foc . '</td>
-                    <td>' . $is_mediclaim . '</td>
-                    <td>' . ucfirst($ipd->ipd_status) . '</td>
                     <td>' . $ipd->ipd_bill_amount . '</td>
                     <td>' . $ipd->ipd_received_amount . '</td>
+                    <td><span class="ipdPopupOperativeNote" id="operativeNoteView" data-id="' . $encodedIpdId . '" title="Operative Notes"><i class="flaticon flaticon-notes icon-3x cursor_pointer"></i></span></td>
                 </tr>';
             }
 

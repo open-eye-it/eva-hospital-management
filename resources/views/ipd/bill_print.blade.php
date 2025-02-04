@@ -80,13 +80,13 @@
                             <table style="margin:auto; width:100%; padding:5px; margin-top:20px;">
                                 <tr>
                                     <td style="font-weight: bold;">Age/Gender</td>
-                                    <td style="width:40%;">{{ $data1['age'] }} Yrs/{{ ucfirst(substr($data1['gender'], 0, 1)) }}</td>
+                                    <td style="width: 30%;">{{ $data1['age'] }} Yrs/{{ ucfirst(substr($data1['gender'], 0, 1)) }}</td>
                                     <td style="font-weight: bold;">Admission Date/Time</td>
                                     <td>{{ date('d M Y, h:i a', strtotime($data1['ipd_admit_date'])) }}</td>
                                 </tr>
                                 <tr>
                                     <td style="font-weight: bold;">Doctor Name</td>
-                                    <td style="width:40%;">{{ $data1['doctor'] }}</td>
+                                    <td style="width: 30%;">{{ $data1['doctor'] }}</td>
                                     <td style="font-weight: bold;">Discharge Date/Time</td>
                                     <td>{{ date('d M Y, h:i a', strtotime($data1['ipd_discharge_date'])) }}</td>
                                 </tr>

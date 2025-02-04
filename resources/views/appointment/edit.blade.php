@@ -407,9 +407,9 @@
 @endsection
 @section('custom-script')
 <script>
-    // $("#ap_bp").inputmask('(_/_)', {
-    //     numericInput: true
-    // });
+    $('#ap_height').mask('0\'0"', {
+        placeholder: "0'0\""
+    });
     $('#ap_bp').mask('(000/000)', {
         placeholder: "(_/_)"
     });

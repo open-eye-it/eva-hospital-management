@@ -96,7 +96,7 @@
                                 </div>
                                 <div class="card-body">
                                     <!--begin: Datatable-->
-                                    <table class="table table-bordered table-separate scrollable_table_custom" id="appointmentTable">
+                                    <table class="table table-bordered table-separate" id="appointmentTable">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
@@ -379,16 +379,16 @@
     </div>
 </div>
 <script>
-    setTimeout(() => {
-        var table = $('#appointmentTable').DataTable();
-        table.destroy();
-        $('#appointmentTable').DataTable({
-            autoWidth: true,
-            searching: false,
-            paging: false,
-            info: false
-        });
-    }, 1000);
+    // setTimeout(() => {
+    //     var table = $('#appointmentTable').DataTable();
+    //     table.destroy();
+    //     $('#appointmentTable').DataTable({
+    //         autoWidth: true,
+    //         searching: false,
+    //         paging: false,
+    //         info: false
+    //     });
+    // }, 1000);
 
     $('body').on('click', '#fullView', function(event) {
         let ap_id = $(this).data('id');

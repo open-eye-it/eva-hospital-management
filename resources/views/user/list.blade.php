@@ -38,7 +38,7 @@
                                 </div>
                                 <div class="card-body">
                                     <!--begin: Datatable-->
-                                    <table class="table table-bordered scrollable_table_custom" id="userListTable">
+                                    <table class="table table-bordered" id="userListTable">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
@@ -135,16 +135,16 @@
     </div>
 </div>
 <script>
-    setTimeout(() => {
-        var table = $('#userListTable').DataTable();
-        table.destroy();
-        $('#userListTable').DataTable({
-            autoWidth: true,
-            searching: false,
-            paging: false,
-            info: false
-        });
-    }, 1000);
+    // setTimeout(() => {
+    //     var table = $('#userListTable').DataTable();
+    //     table.destroy();
+    //     $('#userListTable').DataTable({
+    //         autoWidth: true,
+    //         searching: false,
+    //         paging: false,
+    //         info: false
+    //     });
+    // }, 1000);
 
     $('body').on('change', '.updateStatus', function(event) {
         event.preventDefault();

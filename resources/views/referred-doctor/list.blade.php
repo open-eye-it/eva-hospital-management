@@ -44,7 +44,7 @@
                                 </div>
                                 <div class="card-body">
                                     <!--begin: Datatable-->
-                                    <table class="table table-bordered scrollable_table_custom" id="referDoctorListTable">
+                                    <table class="table table-bordered" id="referDoctorListTable">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
@@ -115,14 +115,14 @@
 <!--end::Row-->
 @endsection
 <script>
-    setTimeout(() => {
-        var table = $('#referDoctorListTable').DataTable();
-        table.destroy();
-        $('#referDoctorListTable').DataTable({
-            autoWidth: true,
-            searching: false,
-            paging: false,
-            info: false
-        });
-    }, 1000);
+    // setTimeout(() => {
+    //     var table = $('#referDoctorListTable').DataTable();
+    //     table.destroy();
+    //     $('#referDoctorListTable').DataTable({
+    //         autoWidth: true,
+    //         searching: false,
+    //         paging: false,
+    //         info: false
+    //     });
+    // }, 1000);
 </script>

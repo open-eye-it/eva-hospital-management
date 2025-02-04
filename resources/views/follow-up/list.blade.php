@@ -46,7 +46,7 @@
                                 </div>
                                 <div class="card-body">
                                     <!--begin: Datatable-->
-                                    <table class="table table-bordered table-hover scrollable_table_custom" id="followUpOpdListTable">
+                                    <table class="table table-bordered table-hover" id="followUpOpdListTable">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
@@ -219,16 +219,16 @@
     </div>
 </div>
 <script>
-    setTimeout(() => {
-        var table = $('#followUpOpdListTable').DataTable();
-        table.destroy();
-        $('#followUpOpdListTable').DataTable({
-            autoWidth: true,
-            searching: false,
-            paging: false,
-            info: false
-        });
-    }, 1000);
+    // setTimeout(() => {
+    //     var table = $('#followUpOpdListTable').DataTable();
+    //     table.destroy();
+    //     $('#followUpOpdListTable').DataTable({
+    //         autoWidth: true,
+    //         searching: false,
+    //         paging: false,
+    //         info: false
+    //     });
+    // }, 1000);
 
     function additionalChargeShow(ap_id, queryData) {
         $.ajax({

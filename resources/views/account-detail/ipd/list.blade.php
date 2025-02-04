@@ -63,7 +63,7 @@
                                 </div>
                                 <div class="card-body">
                                     <!--begin: Datatable-->
-                                    <table class="table table-bordered scrollable_table_custom" id="accountDetailsIpdTable">
+                                    <table class="table table-bordered" id="accountDetailsIpdTable">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
@@ -365,16 +365,16 @@
     </div>
 </div>
 <script>
-    setTimeout(() => {
-        var table = $('#accountDetailsIpdTable').DataTable();
-        table.destroy();
-        $('#accountDetailsIpdTable').DataTable({
-            autoWidth: true,
-            searching: false,
-            paging: false,
-            info: false
-        });
-    }, 1000);
+    // setTimeout(() => {
+    //     var table = $('#accountDetailsIpdTable').DataTable();
+    //     table.destroy();
+    //     $('#accountDetailsIpdTable').DataTable({
+    //         autoWidth: true,
+    //         searching: false,
+    //         paging: false,
+    //         info: false
+    //     });
+    // }, 1000);
 
     var filterData = "{{ $searchDataEncoded }}";
 

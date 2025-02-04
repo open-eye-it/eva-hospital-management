@@ -40,7 +40,7 @@
                                 </div>
                                 <div class="card-body">
                                     <!--begin: Datatable-->
-                                    <table class="table table-bordered scrollable_table_custom" id="generalMedicineTable">
+                                    <table class="table table-bordered" id="generalMedicineTable">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
@@ -102,16 +102,16 @@
 </div>
 <!--end::Row-->
 <script>
-    setTimeout(() => {
-        var table = $('#postMedicineTable').DataTable();
-        table.destroy();
-        $('#generalMedicineTable').DataTable({
-            autoWidth: true,
-            searching: false,
-            paging: false,
-            info: false
-        });
-    }, 1000);
+    // setTimeout(() => {
+    //     var table = $('#postMedicineTable').DataTable();
+    //     table.destroy();
+    //     $('#generalMedicineTable').DataTable({
+    //         autoWidth: true,
+    //         searching: false,
+    //         paging: false,
+    //         info: false
+    //     });
+    // }, 1000);
 
     $('body').on('change', '.updateStatus', function(event) {
         event.preventDefault();

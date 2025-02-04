@@ -407,8 +407,8 @@
 @endsection
 @section('custom-script')
 <script>
-    $('#ap_height').mask('0\'0"', {
-        placeholder: "0'0\""
+    $('#ap_height').mask('0\'00"', {
+        placeholder: "0'00\""
     });
     $('#ap_bp').mask('(000/000)', {
         placeholder: "(_/_)"

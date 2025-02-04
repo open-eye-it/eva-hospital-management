@@ -57,7 +57,7 @@
                                 </div>
                                 <div class="card-body">
                                     <!--begin: Datatable-->
-                                    <table class="table table-bordered table-hover scrollable_table_custom" id="accountDetailsOpdTable">
+                                    <table class="table table-bordered table-hover" id="accountDetailsOpdTable">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
@@ -231,16 +231,16 @@
         $('#apac_total_charge').val(total);
     });
 
-    setTimeout(() => {
-        var table = $('#accountDetailsOpdTable').DataTable();
-        table.destroy();
-        $('#accountDetailsOpdTable').DataTable({
-            autoWidth: true,
-            searching: false,
-            paging: false,
-            info: false
-        });
-    }, 1000);
+    // setTimeout(() => {
+    //     var table = $('#accountDetailsOpdTable').DataTable();
+    //     table.destroy();
+    //     $('#accountDetailsOpdTable').DataTable({
+    //         autoWidth: true,
+    //         searching: false,
+    //         paging: false,
+    //         info: false
+    //     });
+    // }, 1000);
 
     function additionalChargeShow(ap_id, queryData) {
         let url = "{{ route('opd-account-detail.additional-charge.list', ['ap_id' => ':ap_id', 'queryData' => ':queryData']) }}";

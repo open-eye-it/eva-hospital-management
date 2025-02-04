@@ -44,7 +44,7 @@
                                 </div>
                                 <div class="card-body">
                                     <!--begin: Datatable-->
-                                    <table class="table table-bordered table-hover scrollable_table_custom" id="followUpIpdListTable">
+                                    <table class="table table-bordered table-hover" id="followUpIpdListTable">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
@@ -409,16 +409,16 @@
     </div>
 </div>
 <script>
-    setTimeout(() => {
-        var table = $('#followUpIpdListTable').DataTable();
-        table.destroy();
-        $('#followUpIpdListTable').DataTable({
-            autoWidth: true,
-            searching: false,
-            paging: false,
-            info: false
-        });
-    }, 1000);
+    // setTimeout(() => {
+    //     var table = $('#followUpIpdListTable').DataTable();
+    //     table.destroy();
+    //     $('#followUpIpdListTable').DataTable({
+    //         autoWidth: true,
+    //         searching: false,
+    //         paging: false,
+    //         info: false
+    //     });
+    // }, 1000);
 
     /* Export IPD Details */
     function exportIPD() {

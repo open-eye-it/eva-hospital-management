@@ -362,3 +362,7 @@ form {
 #paymentReceivedDetailsTable tbody tr td:nth-child(2) {
     min-width: 100px;
 }
+
+.btn {
+    min-width: 80px;
+}

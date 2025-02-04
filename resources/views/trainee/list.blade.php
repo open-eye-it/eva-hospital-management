@@ -46,7 +46,7 @@
                                 </div>
                                 <div class="card-body">
                                     <!--begin: Datatable-->
-                                    <table class="table table-bordered scrollable_table_custom" id="traineeListTable">
+                                    <table class="table table-bordered" id="traineeListTable">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
@@ -236,16 +236,16 @@
     </div>
 </div>
 <script>
-    setTimeout(() => {
-        var table = $('#traineeListTable').DataTable();
-        table.destroy();
-        $('#traineeListTable').DataTable({
-            autoWidth: true,
-            searching: false,
-            paging: false,
-            info: false
-        });
-    }, 1000);
+    // setTimeout(() => {
+    //     var table = $('#traineeListTable').DataTable();
+    //     table.destroy();
+    //     $('#traineeListTable').DataTable({
+    //         autoWidth: true,
+    //         searching: false,
+    //         paging: false,
+    //         info: false
+    //     });
+    // }, 1000);
 
     function showStatus(tr_id) {
         $.ajax({

@@ -38,7 +38,7 @@
                                 </div>
                                 <div class="card-body">
                                     <!--begin: Datatable-->
-                                    <table class="table table-bordered scrollable_table_custom" id="macAddressTable">
+                                    <table class="table table-bordered" id="macAddressTable">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
@@ -107,16 +107,16 @@
 </div>
 <!--end::Row-->
 <script>
-    setTimeout(() => {
-        var table = $('#macAddressTable').DataTable();
-        table.destroy();
-        $('#macAddressTable').DataTable({
-            autoWidth: true,
-            searching: false,
-            paging: false,
-            info: false
-        });
-    }, 1000);
+    // setTimeout(() => {
+    //     var table = $('#macAddressTable').DataTable();
+    //     table.destroy();
+    //     $('#macAddressTable').DataTable({
+    //         autoWidth: true,
+    //         searching: false,
+    //         paging: false,
+    //         info: false
+    //     });
+    // }, 1000);
 
     $('body').on('change', '.updateStatus', function(event) {
         event.preventDefault();

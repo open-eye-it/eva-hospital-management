@@ -68,7 +68,7 @@
                                 </div>
                                 <div class="card-body overflow_visible">
                                     <!--begin: Datatable-->
-                                    <table class="table table-bordered scrollable_table_custom" id="ipdListTable">
+                                    <table class="table table-bordered" id="ipdListTable">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
@@ -732,16 +732,16 @@
     </div>
 </div>
 <script>
-    setTimeout(() => {
-        var table = $('#ipdListTable').DataTable();
-        table.destroy();
-        $('#ipdListTable').DataTable({
-            autoWidth: true,
-            searching: false,
-            paging: false,
-            info: false
-        });
-    }, 1000);
+    // setTimeout(() => {
+    //     var table = $('#ipdListTable').DataTable();
+    //     table.destroy();
+    //     $('#ipdListTable').DataTable({
+    //         autoWidth: true,
+    //         searching: false,
+    //         paging: false,
+    //         info: false
+    //     });
+    // }, 1000);
 
     $('body').on('click', '#PreOperativeMedicine', function(event) {
         $('#PreOperativeMedicineModal').modal('show');

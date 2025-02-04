@@ -635,6 +635,7 @@ class IpdDetailController extends MainController
                     <td>' . $appointment->ap_additional_charge . '</td>
                     <td>' . $follow_up_date . '</td>
                     <td>' . $surgery_date . '</td>
+                    <td><span id="prescriptionBillView" data-id="' . base64_encode($appointment->ap_id) . '" title="Prescription Bill"><i class="flaticon flaticon2-print icon-3x cursor_pointer"></i></span></td>
                 </tr>';
             }
 

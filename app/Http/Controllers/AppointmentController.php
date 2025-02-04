@@ -326,7 +326,9 @@ class AppointmentController extends MainController
                 }
             }
         }
-        $input['ap_status'] = 'completed';
+        if ($input['prescribe'] == 'yes') {
+            $input['ap_status'] = 'completed';
+        }
         $update = $this->appointment->updateData($input, $ap_id);
         if ($update == 1) {
             $data = $this->appointment->singlData($ap_id);

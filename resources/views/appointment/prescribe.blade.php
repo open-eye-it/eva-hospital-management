@@ -259,6 +259,7 @@ PROVISIONAL DIAGNOSIS
                                     </div>
                                     <div class="card-footer">
                                         <button type="submit" class="btn btn-primary mr-2" id="createBtn">Prescribe</button>
+                                        <a class="btn btn-primary mr-2" href="javascript:void(0)" onclick="saavePrescription()" id="saveBtn">Save</a>
                                         <a href="{{ url()->previous() }}" class="btn btn-secondary">Cancel</a>
                                     </div>
                                 </form>
@@ -368,6 +369,46 @@ PROVISIONAL DIAGNOSIS
         }
     }
 
+    function saavePrescription(){
+        let ap_follow_up_date = $('#ap_follow_up_date').val();
+        let ap_surg_required = $('#ap_surg_required').val();
+        let ap_surg_date = $('#ap_surg_date').val();
+        let ap_surg_type = $('#ap_surg_type').val();
+        let ap_is_foc = $('#ap_is_foc').val();
+        let ap_complaint = $('#ap_complaint').val();
+        let ap_other_detail = $('#ap_other_detail').val();
+        let ap_any_advice = $('#ap_any_advice').val();
+        $('#saveBtn').addClass('spinner spinner-white spinner-right');
+        $('#saveBtn').attr('disabled', true);
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            },
+            url:"{{ route('appointment.prescribe.store', base64_encode($data->ap_id)) }}",
+            method:"POST",
+            data:{prescribe: 'no', ap_follow_up_date:ap_follow_up_date, ap_surg_required:ap_surg_required,ap_surg_date:ap_surg_date,ap_surg_type:ap_surg_type, ap_is_foc:ap_is_foc, ap_complaint:ap_complaint, ap_other_detail:ap_other_detail, ap_any_advice:ap_any_advice},
+            success:function(res){
+                $('#saveBtn').removeClass('spinner spinner-white spinner-right');
+                $('#saveBtn').attr('disabled', false);
+                if(res.response === true){
+                    //sweetAlertSuccess(res.message, 3000, "{{ route('appointment.list') }}");
+                    let previous_url = "{{ Request::session()->previousUrl() }}";
+                    previous_url = previous_url.replaceAll('amp;', '');
+                    previous_url = previous_url.replaceAll('%20-%20', '+-+');
+                    sweetAlertSuccess(res.message, 3000, previous_url);
+                }else{
+                    sweetAlertError(res.message, 3000); 
+                }
+            },
+            error: function(r){
+                $('#saveBtn').removeClass('spinner spinner-white spinner-right');
+                $('#saveBtn').attr('disabled', false);
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000); 
+            }
+        });
+    }
+
     $("form").submit(function(e) {
         e.preventDefault();
         let ap_follow_up_date = $('#ap_follow_up_date').val();
@@ -386,7 +427,7 @@ PROVISIONAL DIAGNOSIS
             },
             url:"{{ route('appointment.prescribe.store', base64_encode($data->ap_id)) }}",
             method:"POST",
-            data:{ap_follow_up_date:ap_follow_up_date, ap_surg_required:ap_surg_required,ap_surg_date:ap_surg_date,ap_surg_type:ap_surg_type, ap_is_foc:ap_is_foc, ap_complaint:ap_complaint, ap_other_detail:ap_other_detail, ap_any_advice:ap_any_advice},
+            data:{prescribe: 'yes', ap_follow_up_date:ap_follow_up_date, ap_surg_required:ap_surg_required,ap_surg_date:ap_surg_date,ap_surg_type:ap_surg_type, ap_is_foc:ap_is_foc, ap_complaint:ap_complaint, ap_other_detail:ap_other_detail, ap_any_advice:ap_any_advice},
             success:function(res){
                 $('#createBtn').removeClass('spinner spinner-white spinner-right');
                 $('#createBtn').attr('disabled', false);

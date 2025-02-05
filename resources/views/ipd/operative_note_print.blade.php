@@ -40,7 +40,7 @@
                 <td>
                     <div class="content">
                         <div style="border:2px solid; width:100%; text-align:center;">
-                            <img src="{{ url('assets/eva/img/logo/eva-logo.png') }}" style="max-width:200px;" />
+                            <!-- <img src="{{ url('assets/eva/img/logo/eva-logo.png') }}" style="max-width:200px;" /> -->
                             <h3 style="margin-top:0px; margin-bottom:0px; padding-bottom:10px;">
                                 Operative Notes
                             </h3>

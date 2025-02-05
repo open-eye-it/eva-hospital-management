@@ -40,7 +40,7 @@
                 <td>
                     <div class="content">
                         <div style="border:2px solid; width:100%; text-align:center;">
-                            <img src="{{ url('assets/eva/img/logo/eva-logo.png') }}" style="max-width:200px;" />
+                            <!-- <img src="{{ url('assets/eva/img/logo/eva-logo.png') }}" style="max-width:200px;" /> -->
                             <h3 style="margin-top:0px; margin-bottom:0px; padding-bottom:10px;">
                                 Operation Medicine
                             </h3>
@@ -94,15 +94,15 @@
                                 @if(!empty($medicineList->toArray()))
                                 @foreach($medicineList as $medicine)
                                 @php
-                                    $ipdMedicine = $data1['ipd_operation_medicine'];
-                                    $medicineVal = 0;
-                                    if(!empty($ipdMedicine)){
-                                        foreach($ipdMedicine as $med){
-                                            if($med->medicine_id == $medicine['om_id']){
-                                                $medicineVal = $med->medicine_val;
-                                            }
-                                        }
-                                    }
+                                $ipdMedicine = $data1['ipd_operation_medicine'];
+                                $medicineVal = 0;
+                                if(!empty($ipdMedicine)){
+                                foreach($ipdMedicine as $med){
+                                if($med->medicine_id == $medicine['om_id']){
+                                $medicineVal = $med->medicine_val;
+                                }
+                                }
+                                }
                                 @endphp
                                 <tr>
                                     <td for="medicine_{{ $medicine->om_id  }}">{{ $medicine->om_name.' ('.$medicine->om_company_name.')' }}</td>

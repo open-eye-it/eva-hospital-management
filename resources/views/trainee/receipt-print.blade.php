@@ -7,7 +7,7 @@
 
 <body style="font-family: Arial, Helvetica, saans-serif; font-style: italic;">
     <div style="border:2px solid; width:100%; text-align:center; padding-top:20px;">
-        <img src="assets/eva/img/logo/eva-logo.png" style="max-width:200px;" />
+        <!-- <img src="assets/eva/img/logo/eva-logo.png" style="max-width:200px;" /> -->
         <h3 style="margin-bottom:0px; padding-bottom:0px;">
             Receipt No: {{ $paymentData->tpl_id }}
         </h3>
@@ -16,7 +16,7 @@
         <p>You have provide a payment of <strong>{{ $paymentData->tpl_desc }}</strong></p>
         <p>a sum of Rupees <strong>{{ displaywords($paymentData->tpl_amount) }}</strong></p>
         <p>For Bill No <strong>{{ $paymentData->tpl_id }}</strong> Bill Amoun (Rs.) <strong>{{ $paymentData->tpl_amount }}</strong></p>
-        
+
         <p>Training from <strong>{{ date('d M Y', strtotime($paymentData?->traineeData?->tr_start_date)) }}</strong> to <strong>{{ date('d M Y', strtotime($paymentData?->traineeData?->tr_end_date)) }}</strong></p>
         <p style="margin-top:50px;"></p>
         <table style="margin-left:20px; padding-right:40px; width:100%; font-style: normal;">

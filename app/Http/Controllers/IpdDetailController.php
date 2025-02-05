@@ -686,6 +686,11 @@ class IpdDetailController extends MainController
                 $encodedIpdId = base64_encode($ipd->ipd_id);
                 $surgery_date = ($ipd->ipd_surgery_date != null && $ipd->ipd_surgery_date != '') ? date('d M Y', strtotime($ipd->ipd_surgery_date)) : '';
                 $discharge_date = ($ipd->ipd_discharge_date != null && $ipd->ipd_discharge_date != '') ? date('d M Y', strtotime($ipd->ipd_discharge_date)) : '';
+                $discharSummaryDesign = '';
+                if ($ipd->ipd_status = 'discharged') {
+                    $ipdIdEncoded = $ipd->ipd_id;
+                    $discharSummaryDesign = '<span id="dischargeSummaryPrint" onclick="dischargeSummaryPrint(' . $ipdIdEncoded . ')" data-id="' . $ipdIdEncoded . '"><i class="flaticon flaticon2-print icon-3x cursor_pointer"></i></span>';
+                }
                 $tableRow .= '<tr>
                     <td>' . $i . '</td>
                     <td>' . $ipd->ipd_id . '</td>
@@ -702,6 +707,7 @@ class IpdDetailController extends MainController
                     <td>' . $ipd->ipd_bill_amount . '</td>
                     <td>' . $ipd->ipd_received_amount . '</td>
                     <td><span class="ipdPopupOperativeNote" id="operativeNoteView" data-id="' . $encodedIpdId . '" title="Operative Notes"><i class="flaticon flaticon-notes icon-3x cursor_pointer"></i></span></td>
+                    <td>' . $discharSummaryDesign . '</td>
                 </tr>';
             }
 

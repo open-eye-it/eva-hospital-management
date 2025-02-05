@@ -721,6 +721,7 @@
                             <th>Bill Amount</th>
                             <th>Received Amount</th>
                             <th>Operative Note</th>
+                            <th>Discharge Summary</th>
                         </tr>
                     </thead>
                     <tbody id="ipdHistoryViewDetail"></tbody>
@@ -1457,6 +1458,20 @@
             }
         });
     });
+
+    function dischargeSummaryPrint(ipd_id) {
+        $.ajax({
+            url: "{{ route('ipd.discharge_summary.print', '') }}" + "/" + btoa(ipd_id),
+            method: "GET",
+            success: function(res) {
+                printData(res);
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    }
 
     function changeStatusVal(ip_status_val) {
         $('#dischargeSummaryPrint').addClass('d-none');

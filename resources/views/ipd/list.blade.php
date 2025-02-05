@@ -533,7 +533,8 @@
                     </div>
                     <!-- <span class="btn btn-danger mr-2" id="cancelledStatus">Cancel</span> -->
                     <div>
-                        <button class="btn btn-primary" id="statusButton">Submit</button>
+                        <button class="btn btn-primary" id="statusButton">Submit</button>&nbsp;
+                        <button class="btn btn-info d-none" id="dischargeSummaryPrint" data-id="">Print <i class="flaticon flaticon2-print cursor_pointer"></i></button>
                     </div>
                 </table>
             </div>
@@ -1426,6 +1427,13 @@
                     $('#ipd_treatment_given').val(data.ipd_treatment_given);
                     $('#ipd_treatment_discharge').val(data.ipd_treatment_discharge);
                     $('#ipd_cancel_reason').val(data.ipd_cancel_reason);
+
+                    $('#dischargeSummaryPrint').attr('data-id', ipd_id);
+                    if (data.ipd_status == 'discharged') {
+                        $('#dischargeSummaryPrint').removeClass('d-none');
+                    } else {
+                        $('#dischargeSummaryPrint').addClass('d-none');
+                    }
                 }
             },
             error: function(r) {
@@ -1435,13 +1443,30 @@
         });
     }
 
+    $('#dischargeSummaryPrint').click(function() {
+        let ipd_id = $(this).data('id');
+        $.ajax({
+            url: "{{ route('ipd.discharge_summary.print', '') }}" + "/" + ipd_id,
+            method: "GET",
+            success: function(res) {
+                printData(res);
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    });
+
     function changeStatusVal(ip_status_val) {
+        $('#dischargeSummaryPrint').addClass('d-none');
         if (ip_status_val == 'cancelled') {
             $('#dischargeStatusVal').addClass('d-none');
             $('#cancelStatusVal').removeClass('d-none');
         } else if (ip_status_val == 'discharged') {
             $('#dischargeStatusVal').removeClass('d-none');
             $('#cancelStatusVal').addClass('d-none');
+            $('#dischargeSummaryPrint').removeClass('d-none');
         } else {
             $('#dischargeStatusVal').addClass('d-none');
             $('#cancelStatusVal').addClass('d-none');

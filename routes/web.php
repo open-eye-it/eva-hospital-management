@@ -239,6 +239,7 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
         Route::get('doc/download/{id?}', [IpdDetailController::class, 'ipdDocDownload'])->name('ipd.doc.download');
         Route::get('view/{ipd_id}', [IpdDetailController::class, 'view'])->name('ipd.view')->middleware(['role_or_permission:ipd-status|ipd-full-view|ipd-bill-amount']);
         Route::get('status/{string_val}', [IpdDetailController::class, 'status'])->name('ipd.status')->middleware(['role_or_permission:ipd-status']);
+        Route::get('discharge_summary_print/{ipd_id}', [IpdDetailController::class, 'IPDDischargeSummaryPrint'])->name('ipd.discharge_summary.print');
         Route::get('bill_amount_update/{ipd_id}', [IpdDetailController::class, 'BillAmountUpdate'])->name('ipd.bill_amount.update')->middleware(['role_or_permission:ipd-bill-amount']);
         Route::get('operative_note/{ipd_id}', [IpdDetailController::class, 'IPDOperativeNote'])->name('ipd.operative_note.view')->middleware(['role_or_permission:ipd-operative-note']);
         Route::get('operative_note_update/{ipd_id}', [IpdDetailController::class, 'IPDOperativeNoteUpdate'])->name('ipd.operative_note.update')->middleware(['role_or_permission:ipd-operative-notes']);

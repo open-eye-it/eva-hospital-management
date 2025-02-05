@@ -428,6 +428,25 @@ class IpdDetailController extends MainController
         }
     }
 
+    /** Discharge Summary Print */
+    public function IPDDischargeSummaryPrint($ipd_id)
+    {
+        $ipd_id = base64_decode($ipd_id);
+        $data = $this->ipd->singlData($ipd_id);
+        if (!empty($data)) {
+            $data1 = $data->toArray();
+            $data1['patient_id'] = $data->patientData->pa_id;
+            $data1['patient_name'] = $data->patientData->pa_name;
+            $data1['patient_age'] = $data->patientData->pa_age;
+            $data1['ion_note'] = (string)$data->operativNoteData->ion_note;
+
+            //return $this->getSuccessResult($data1, 'IPD detail found', true);
+            return response()->view('ipd.discharge_summary_print', compact('data1'));
+        } else {
+            return $this->getErrorMessage('IPD detail not found');
+        }
+    }
+
     /* Bill Amount Update */
     public function BillAmountUpdate(Request $request, $ipd_id)
     {

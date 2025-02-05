@@ -687,7 +687,7 @@ class IpdDetailController extends MainController
                 $surgery_date = ($ipd->ipd_surgery_date != null && $ipd->ipd_surgery_date != '') ? date('d M Y', strtotime($ipd->ipd_surgery_date)) : '';
                 $discharge_date = ($ipd->ipd_discharge_date != null && $ipd->ipd_discharge_date != '') ? date('d M Y', strtotime($ipd->ipd_discharge_date)) : '';
                 $discharSummaryDesign = '';
-                if ($ipd->ipd_status = 'discharged') {
+                if ($ipd->ipd_status == 'discharged') {
                     $ipdIdEncoded = $ipd->ipd_id;
                     $discharSummaryDesign = '<span id="dischargeSummaryPrint" onclick="dischargeSummaryPrint(' . $ipdIdEncoded . ')" data-id="' . $ipdIdEncoded . '"><i class="flaticon flaticon2-print icon-3x cursor_pointer"></i></span>';
                 }

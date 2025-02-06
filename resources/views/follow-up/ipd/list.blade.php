@@ -376,7 +376,9 @@
                 </button>
             </div>
             <div class="modal-body">
-                <h4>Total Fees: <span id="ipd_total_fees"></span></h4>
+                <!-- <h4>Total Fees: <span id="ipd_total_fees"></span></h4> -->
+                <h4>Bill Amount: <span id="ipd_total_bill"></span></h4>
+                <h4>Received Amount: <span id="ipd_total_received"></span></h4>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -386,17 +388,16 @@
                             <th>Room No</th>
                             <th>Patient ID</th>
                             <th>Patient Name</th>
-                            <th>DOM</th>
                             <th>AGE</th>
                             <th>Contact No</th>
                             <th>Surgery Type</th>
                             <th>Surgery Date</th>
                             <th>Doctor</th>
                             <th>Discharge Date</th>
-                            <th>Follow Up Date</th>
-                            <th>Is Foc</th>
                             <th>Bill Amount</th>
                             <th>Received Amount</th>
+                            <th>Operative Note</th>
+                            <th>Discharge Summary</th>
                         </tr>
                     </thead>
                     <tbody id="ipdHistoryViewDetail"></tbody>
@@ -891,12 +892,16 @@
             url: "{{ route('ipd.ipd_history', '') }}" + "/" + pa_id,
             method: "GET",
             success: function(res) {
-                console.log(res);
                 if (res.response === true) {
+                    // let data = res.data.list;
+                    // let total_fees = res.data.total_fees;
+                    // let total_additional_fees = res.data.total_additional_fees;
+                    // $('#ipd_total_fees').text(total_fees + total_additional_fees);
                     let data = res.data.list;
-                    let total_fees = res.data.total_fees;
-                    let total_additional_fees = res.data.total_additional_fees;
-                    $('#ipd_total_fees').text(total_fees + total_additional_fees);
+                    let total_bill = res.data.total_bill;
+                    let total_received = res.data.total_received;
+                    $('#ipd_total_bill').text(total_bill);
+                    $('#ipd_total_received').text(total_received);
                     $('#ipdHistoryViewDetail').html(data);
                     $('#ipdHistoryViewModal').modal('show');
                 } else {

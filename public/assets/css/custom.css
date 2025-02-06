@@ -366,3 +366,7 @@ form {
 .btn {
     min-width: 80px;
 }
+
+.swal2-backdrop-show {
+    z-index: 9999;
+}

@@ -340,7 +340,7 @@
             </div>
             <div class="modal-body">
                 <h4>Total Fees: <span id="opd_total_fees"></span></h4>
-                <table class="table table-bordered scrollable_table_custom" id="followUpOpdppopup">
+                <table class="table table-bordered" id="followUpOpdppopup">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -377,7 +377,7 @@
             </div>
             <div class="modal-body">
                 <h4>Total Fees: <span id="ipd_total_fees"></span></h4>
-                <table class="table table-bordered scrollable_table_custom">
+                <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -855,14 +855,14 @@
             success: function(res) {
                 console.log(res);
                 if (res.response === true) {
-                    var table = $('#followUpOpdppopup').DataTable();
-                    table.destroy();
-                    $('#followUpOpdppopup').DataTable({
-                        autoWidth: true,
-                        searching: false,
-                        paging: false,
-                        info: false
-                    });
+                    // var table = $('#followUpOpdppopup').DataTable();
+                    // table.destroy();
+                    // $('#followUpOpdppopup').DataTable({
+                    //     autoWidth: true,
+                    //     searching: false,
+                    //     paging: false,
+                    //     info: false
+                    // });
 
                     let data = res.data.list;
                     let total_fees = res.data.total_fees;
@@ -940,26 +940,30 @@
         let ipd_follow_up_date = $('#ipd_follow_up_date').val();
         let ipd_follow_up_note = $('#ipd_follow_up_note').val();
         let query = 'ipd_follow_up_date=' + ipd_follow_up_date + '&ipd_follow_up_note=' + ipd_follow_up_note;
+        $('#addNote').addClass('spinner spinner-white spinner-right');
+        $('#addNote').attr('disabled', true);
         $.ajax({
             url: "{{ route('ipd.note.update', '') }}" + "/" + ipd_id + "?" + query,
             method: "GET",
             success: function(res) {
-                console.log(res);
                 if (res.response === true) {
                     $('#ipd_follow_up_date').val('');
                     $('#ipd_follow_up_note').val('');
                     $('#addNote').removeAttr('onclick');
                     $('#noteModal').modal('hide');
                     sweetAlertSuccess(res.message, 3000, '');
-                    window.location.reload();
+                    //window.location.reload();
                 } else {
                     sweetAlertError(res.message, 3000);
                 }
+                $('#addNote').removeClass('spinner spinner-white spinner-right');
+                $('#addNote').attr('disabled', false);
             },
             error: function(r) {
-                console.log(r);
                 let res = r.responseJSON;
                 sweetAlertError(res.message, 3000);
+                $('#addNote').removeClass('spinner spinner-white spinner-right');
+                $('#addNote').attr('disabled', false);
             }
         });
     }

@@ -203,7 +203,7 @@
                     <div class="col-12">
                         <div class="form-group">
                             <label for="apac_qty">Notes </label>
-                            <textarea class="form-control" name="ap_follow_up_note" id="ap_follow_up_note" cols="30" rows="10"></textarea>
+                            <textarea class="form-control" name="ap_follow_up_note" id="ap_follow_up_note" cols="30" rows="8"></textarea>
                             <span class="text-danger" id="apac_qtyErr"></span>
                         </div>
                     </div>
@@ -345,26 +345,30 @@
         let ap_follow_up_date = $('#ap_follow_up_date').val();
         let ap_follow_up_note = $('#ap_follow_up_note').val();
         let query = 'ap_follow_up_date=' + ap_follow_up_date + '&ap_follow_up_note=' + ap_follow_up_note;
+        $('#addNote').addClass('spinner spinner-white spinner-right');
+        $('#addNote').attr('disabled', true);
         $.ajax({
             url: "{{ route('appointment.note.update', '') }}" + "/" + ap_id + "?" + query,
             method: "GET",
             success: function(res) {
-                console.log(res);
                 if (res.response === true) {
                     $('#ap_follow_up_date').val('');
                     $('#ap_follow_up_note').val('');
                     $('#addNote').removeAttr('onclick');
                     $('#noteModal').modal('hide');
                     sweetAlertSuccess(res.message, 3000, '');
-                    window.location.reload();
+                    //window.location.reload();
                 } else {
                     sweetAlertError(res.message, 3000);
                 }
+                $('#addNote').removeClass('spinner spinner-white spinner-right');
+                $('#addNote').attr('disabled', false);
             },
             error: function(r) {
-                console.log(r);
                 let res = r.responseJSON;
                 sweetAlertError(res.message, 3000);
+                $('#addNote').removeClass('spinner spinner-white spinner-right');
+                $('#addNote').attr('disabled', false);
             }
         });
     }

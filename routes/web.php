@@ -242,7 +242,7 @@ Route::middleware(['mac_address_check', 'signin-check'])->group(function () {
         Route::get('discharge_summary_print/{ipd_id}', [IpdDetailController::class, 'IPDDischargeSummaryPrint'])->name('ipd.discharge_summary.print');
         Route::get('bill_amount_update/{ipd_id}', [IpdDetailController::class, 'BillAmountUpdate'])->name('ipd.bill_amount.update')->middleware(['role_or_permission:ipd-bill-amount']);
         Route::get('operative_note/{ipd_id}', [IpdDetailController::class, 'IPDOperativeNote'])->name('ipd.operative_note.view')->middleware(['role_or_permission:ipd-operative-note']);
-        Route::get('operative_note_update/{ipd_id}', [IpdDetailController::class, 'IPDOperativeNoteUpdate'])->name('ipd.operative_note.update')->middleware(['role_or_permission:ipd-operative-notes']);
+        Route::get('operative_note_update/{ipd_id}', [IpdDetailController::class, 'IPDOperativeNoteUpdate'])->name('ipd.operative_note.update')->middleware(['role_or_permission:ipd-operative-note']);
         Route::get('operative_note_print/{ipd_id}', [IpdDetailController::class, 'IPDOperativeNotePrint'])->name('ipd.operative_note.print');
         Route::get('prescription_view/{ipd_id}', [IpdDetailController::class, 'PrescriptionView'])->name('ipd.prescription.view')->middleware(['role_or_permission:ipd-prescribe']);
         Route::get('operation_medicine_print/{ipd_id}', [IpdDetailController::class, 'IPDOperationMedicinePrint'])->name('ipd.operation_medicine.print');

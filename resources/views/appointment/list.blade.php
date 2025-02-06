@@ -364,6 +364,7 @@
                             <th>QTY</th>
                             <th>Charge</th>
                             <th>Total Charge</th>
+                            <th>Mode of Payment</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -766,6 +767,8 @@
         } else if (file == '') {
             $('#ipdap_doc_err').text('Please select document');
         } else {
+            $('#docAdd').addClass('spinner spinner-white spinner-right');
+            $('#docAdd').attr('disabled', true);
             let formData = new FormData(this);
             $.ajax({
                 headers: {
@@ -783,10 +786,14 @@
                     } else {
                         sweetAlertError(res.message, 3000);
                     }
+                    $('#docAdd').removeClass('spinner spinner-white spinner-right');
+                    $('#docAdd').attr('disabled', false);
                 },
                 error: function(r) {
                     let res = r.responseJSON;
                     sweetAlertError(res.message, 3000);
+                    $('#docAdd').removeClass('spinner spinner-white spinner-right');
+                    $('#docAdd').attr('disabled', false);
                 }
             });
         }

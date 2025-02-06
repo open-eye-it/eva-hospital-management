@@ -1659,6 +1659,8 @@
     /* Update Bill Amount */
     function updateBillAmount(ipd_id) {
         let ipd_bill_amount = $('#ipd_bill_amount_update').val();
+        $('#bill_amount_update_btn').addClass('spinner spinner-white spinner-right');
+        $('#bill_amount_update_btn').attr('disabled', true);
         $.ajax({
             url: "{{ route('ipd.bill_amount.update', '') }}" + '/' + btoa(ipd_id) + '?ipd_bill_amount=' + ipd_bill_amount,
             method: "get",
@@ -1669,10 +1671,14 @@
                 } else {
                     sweetAlertError(res.message, 3000);
                 }
+                $('#bill_amount_update_btn').removeClass('spinner spinner-white spinner-right');
+                $('#bill_amount_update_btn').attr('disabled', false);
             },
             error: function(r) {
                 let res = r.responseJSON;
                 sweetAlertError(res.message, 3000);
+                $('#bill_amount_update_btn').removeClass('spinner spinner-white spinner-right');
+                $('#bill_amount_update_btn').attr('disabled', false);
             }
         });
     }
@@ -1706,7 +1712,7 @@
                         </div> \
                         <div class="col-12 form-group"> \
                             <label for="ion_note">Operative Note <span class="text-danger">*</span></label> \
-                            <textarea class="form-control" name="ion_note" id="ion_note" rows="15">' + data.ion_note + '</textarea> \
+                            <textarea class="form-control" name="ion_note" id="ion_note" rows="8">' + data.ion_note + '</textarea> \
                             <span class="text-danger" id="ion_noteErr"></span> \
                         </div> \
                         <div class="col-12 form-group"> \
@@ -1764,6 +1770,8 @@
     function updateOperativeNote(ipd_id) {
         let ion_date = $('#ion_date').val();
         let ion_note = $('#ion_note').val();
+        $('#operative_note_update_btn').addClass('spinner spinner-white spinner-right');
+        $('#operative_note_update_btn').attr('disabled', true);
         $.ajax({
             url: "{{ route('ipd.operative_note.update', '') }}" + '/' + btoa(ipd_id) + '?ion_date=' + ion_date + '&ion_note=' + ion_note,
             method: "get",
@@ -1774,10 +1782,14 @@
                 } else {
                     sweetAlertError(res.message, 3000);
                 }
+                $('#operative_note_update_btn').removeClass('spinner spinner-white spinner-right');
+                $('#operative_note_update_btn').attr('disabled', false);
             },
             error: function(r) {
                 let res = r.responseJSON;
                 sweetAlertError(res.message, 3000);
+                $('#operative_note_update_btn').removeClass('spinner spinner-white spinner-right');
+                $('#operative_note_update_btn').attr('disabled', false);
             }
         });
     }
@@ -1893,6 +1905,8 @@
         $('input[name^=medicine]').map(function(idx, elem) {
             medicine_arr.push($(elem).val());
         }).get();
+        $('#operative_note_update_btn').addClass('spinner spinner-white spinner-right');
+        $('#operative_note_update_btn').attr('disabled', true);
         $.ajax({
             url: "{{ route('ipd.prescription.update', '') }}" + '/' + btoa(ipd_id) + '?ipd_operation_medicine_date=' + ipd_operation_medicine_date + '&medicine_arr=' + btoa(medicine_arr),
             method: "get",
@@ -1903,10 +1917,14 @@
                 } else {
                     sweetAlertError(res.message, 3000);
                 }
+                $('#operative_note_update_btn').removeClass('spinner spinner-white spinner-right');
+                $('#operative_note_update_btn').attr('disabled', false);
             },
             error: function(r) {
                 let res = r.responseJSON;
                 sweetAlertError(res.message, 3000);
+                $('#operative_note_update_btn').removeClass('spinner spinner-white spinner-right');
+                $('#operative_note_update_btn').attr('disabled', false);
             }
         });
     }

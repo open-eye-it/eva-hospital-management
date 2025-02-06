@@ -348,13 +348,13 @@
                             <th>Date</th>
                             <th>Patient ID</th>
                             <th>Patient Name</th>
-                            <th>Contact No</th>
                             <th>Case Type</th>
                             <th>Is FOC</th>
                             <th>Fee</th>
                             <th>Additional Charge</th>
                             <th>Follow Up Date</th>
                             <th>Decided Date of Surgery</th>
+                            <th>Prescription</th>
                         </tr>
                     </thead>
                     <tbody id="opdHistoryViewDetail"></tbody>
@@ -885,6 +885,24 @@
         });
     })
 
+    /* OPD Prescription print */
+    $('body').on('click', '#prescriptionBillView', function(event) {
+        let ap_id = $(this).data('id');
+        $.ajax({
+            url: "{{ route('appointment.prescription_bill_print', '') }}" + "/" + ap_id,
+            method: "GET",
+            success: function(res) {
+                printData(res);
+            },
+            error: function(r) {
+                console.log(r);
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+        //openPrintDialogue();
+    });
+
     /* IPD History Show */
     $('body').on('click', '#ipdHistoryView', function(event) {
         let pa_id = $(this).data('id');
@@ -914,6 +932,35 @@
             }
         });
     })
+
+    $('#dischargeSummaryPrint').click(function() {
+        let ipd_id = $(this).data('id');
+        $.ajax({
+            url: "{{ route('ipd.discharge_summary.print', '') }}" + "/" + ipd_id,
+            method: "GET",
+            success: function(res) {
+                printData(res);
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    });
+
+    function dischargeSummaryPrint(ipd_id) {
+        $.ajax({
+            url: "{{ route('ipd.discharge_summary.print', '') }}" + "/" + btoa(ipd_id),
+            method: "GET",
+            success: function(res) {
+                printData(res);
+            },
+            error: function(r) {
+                let res = r.responseJSON;
+                sweetAlertError(res.message, 3000);
+            }
+        });
+    }
 
     /* OPD Note Show */
     $('body').on('click', '#IPDNote', function() {
@@ -972,5 +1019,23 @@
             }
         });
     }
+
+    /* Print Data */
+    function printData(data) {
+        $('<iframe>', {
+                name: 'myiframe',
+                class: 'printFrame'
+            })
+            .appendTo('body')
+            .contents().find('body')
+            .append(data);
+
+        window.frames['myiframe'].focus();
+        window.frames['myiframe'].print();
+
+        setTimeout(() => {
+            $(".printFrame").remove();
+        }, 1000);
+    };
 </script>
 @endsection
